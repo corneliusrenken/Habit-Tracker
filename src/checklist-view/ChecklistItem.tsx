@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Habit } from '../types';
-import { gridHeightInPx } from '../universalStyling';
+import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
 
 type ChecklistItemProps = {
   habit: Habit;
@@ -9,6 +9,7 @@ type ChecklistItemProps = {
 
 const ChecklistItemContainer = styled.div`
   height: ${gridHeightInPx}px;
+  width: ${gridWidthInPx * 7}px;
   position: absolute;
   ${({ order }: { order: number }) => `
     top: ${gridHeightInPx * order}px;
