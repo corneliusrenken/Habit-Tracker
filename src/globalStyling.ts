@@ -23,7 +23,7 @@ export default createGlobalStyle`
     padding: 0;
     border: 0;
     font-size: 100%;
-    font: inherit;
+    /* font: inherit; */
     vertical-align: baseline;
   }
 
@@ -66,5 +66,6 @@ export default createGlobalStyle`
   *:before,
   *:after {
     box-sizing: border-box;
+    font-family: 'DM Sans', sans-serif;
   }
 `;
