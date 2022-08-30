@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Checklist from './Checklist';
 import { Habit } from '../types';
 import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
+import WeekDays from './WeekDays';
 
 const ChecklistViewContainer = styled.div`
   width: ${gridWidthInPx * 7}px;
@@ -21,9 +22,7 @@ function ChecklistView({ habits }: ChecklistViewProps) {
     <ChecklistViewContainer
       habitCount={habits.length}
     >
-      <div style={{ height: `${gridHeightInPx}px`, backgroundColor: 'lime' }}>
-        Days
-      </div>
+      <WeekDays />
       <div style={{ height: `${gridHeightInPx}px`, backgroundColor: 'lime' }}>
         Dates
       </div>
