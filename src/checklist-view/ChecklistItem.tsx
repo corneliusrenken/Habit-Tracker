@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Habit } from './types';
-import { gridHeightInPx } from './universalStyling';
+import { Habit } from '../types';
+import { gridHeightInPx } from '../universalStyling';
 
 type ChecklistItemProps = {
   habit: Habit;

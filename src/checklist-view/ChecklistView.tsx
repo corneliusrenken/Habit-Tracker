@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import Checklist from './CheckList';
-import { Habit } from './types';
-import { gridHeightInPx, gridWidthInPx } from './universalStyling';
+import { Habit } from '../types';
+import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
 
 const ChecklistViewContainer = styled.div`
   width: ${gridWidthInPx * 7}px;

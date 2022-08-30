@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import CheckListView from './CheckListView';
+import CheckListView from './ChecklistView';
 import { Habit } from './types';
 
 const habitSeed: Array<Habit> = [

@@ -1,6 +1,6 @@
 import React from 'react';
-import ChecklistItem from './CheckListItem';
-import { Habit } from './types';
+import ChecklistItem from './ChecklistItem';
+import { Habit } from '../types';
 
 type ChecklistProps = {
   habits: Array<Habit>;
