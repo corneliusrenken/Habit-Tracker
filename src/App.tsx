@@ -5,25 +5,25 @@ import { Habit } from './types';
 const habitSeed: Array<Habit> = [
   {
     id: 1,
-    order: 1,
+    order: 0,
     name: 'go out with dogs',
     dayStreak: 1,
   },
   {
     id: 2,
-    order: 2,
+    order: 1,
     name: 'read',
     dayStreak: 3,
   },
   {
     id: 3,
-    order: 3,
+    order: 2,
     name: 'sleep 8 hours',
     dayStreak: 2,
   },
   {
     id: 4,
-    order: 4,
+    order: 3,
     name: '6h coding challenges',
     dayStreak: 5,
   },

@@ -9,15 +9,23 @@ type ChecklistItemProps = {
 
 const ChecklistItemContainer = styled.div`
   height: ${gridHeightInPx}px;
+  position: absolute;
+  ${({ order }: { order: number }) => `
+    top: ${gridHeightInPx * order}px;
+  `}
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
+  transition: top 1s;
 `;
 
 function ChecklistItem({ habit }: ChecklistItemProps) {
   return (
-    <ChecklistItemContainer key={habit.id}>
+    <ChecklistItemContainer
+      key={habit.id}
+      order={habit.order}
+    >
       <p>{habit.name}</p>
       <p>{habit.dayStreak}</p>
     </ChecklistItemContainer>
