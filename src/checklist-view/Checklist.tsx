@@ -6,7 +6,7 @@ import { gridHeightInPx } from '../universalStyling';
 
 type ChecklistProps = {
   habits: Array<HabitWithOffset>;
-  markHabitComplete: Function;
+  toggleHabitComplete: Function;
 };
 
 const ChecklistContainer = styled.div`
@@ -16,7 +16,7 @@ const ChecklistContainer = styled.div`
   `}
 `;
 
-function Checklist({ habits, markHabitComplete }: ChecklistProps) {
+function Checklist({ habits, toggleHabitComplete }: ChecklistProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
@@ -31,12 +31,12 @@ function Checklist({ habits, markHabitComplete }: ChecklistProps) {
       }
       if (e.key === 'Enter') {
         const currentID = habits[habits.findIndex((habit) => selectedIndex === habit.offset)].id;
-        markHabitComplete(currentID);
+        toggleHabitComplete(currentID);
       }
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [habits, markHabitComplete, selectedIndex]);
+  }, [habits, toggleHabitComplete, selectedIndex]);
 
   return (
     <ChecklistContainer

@@ -52,7 +52,7 @@ function App() {
     setHabits(addHabitsOffset(newHabits));
   };
 
-  const markHabitComplete = (id: number) => {
+  const toggleHabitComplete = (id: number) => {
     const newHabits = habits.slice();
     const index = newHabits.findIndex((habit) => habit.id === id);
     newHabits[index].complete = !newHabits[index].complete;
@@ -79,7 +79,7 @@ function App() {
       <div style={{ height: '1000px' }} />
       <CheckListView
         habits={habits}
-        markHabitComplete={markHabitComplete}
+        toggleHabitComplete={toggleHabitComplete}
       />
     </div>
   );
