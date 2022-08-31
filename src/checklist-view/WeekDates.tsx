@@ -16,7 +16,9 @@ function WeekDates() {
   return (
     <div>
       {weekDates.map((date) => (
-        <WeekDate>
+        <WeekDate
+          key={date}
+        >
           {date}
         </WeekDate>
       ))}

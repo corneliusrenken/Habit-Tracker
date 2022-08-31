@@ -21,7 +21,10 @@ function Checklist({ habits }: ChecklistProps) {
       habitLength={habits.length}
     >
       {habits.map((habit) => (
-        <ChecklistItem habit={habit} />
+        <ChecklistItem
+          key={habit.id}
+          habit={habit}
+        />
       ))}
     </ChecklistContainer>
   );

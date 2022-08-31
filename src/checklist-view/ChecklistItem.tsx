@@ -24,7 +24,6 @@ const ChecklistItemContainer = styled.div`
 function ChecklistItem({ habit }: ChecklistItemProps) {
   return (
     <ChecklistItemContainer
-      key={habit.id}
       order={habit.order}
     >
       <p>{habit.name}</p>

@@ -15,8 +15,10 @@ function WeekDays() {
 
   return (
     <div>
-      {weekDays.map((day) => (
-        <WeekDay>
+      {weekDays.map((day, index) => (
+        <WeekDay
+          key={`${day + index}`}
+        >
           {day}
         </WeekDay>
       ))}
