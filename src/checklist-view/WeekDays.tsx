@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { getWeekDays } from '../customDateFuncs';
 import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
 
 const WeekDay = styled.div`
@@ -8,10 +9,11 @@ const WeekDay = styled.div`
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  font-size: 10px;
 `;
 
 function WeekDays() {
-  const weekDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+  const weekDays = getWeekDays(1);
 
   return (
     <div>

@@ -47,6 +47,7 @@ const addHabitsOffset = (habits: Array<Habit | HabitWithOffset>): Array<HabitWit
 
 function App() {
   const [habits, setHabits] = useState<Array<HabitWithOffset>>([]);
+  const [today] = useState<Date>(new Date());
 
   const setHabitsAndAddOffset = (newHabits: Array<Habit | HabitWithOffset>) => {
     setHabits(addHabitsOffset(newHabits));
@@ -80,6 +81,7 @@ function App() {
       <CheckListView
         habits={habits}
         toggleHabitComplete={toggleHabitComplete}
+        today={today}
       />
     </div>
   );

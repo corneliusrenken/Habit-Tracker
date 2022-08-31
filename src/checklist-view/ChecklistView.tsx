@@ -17,15 +17,18 @@ const ChecklistViewContainer = styled.div`
 type ChecklistViewProps = {
   habits: Array<HabitWithOffset>;
   toggleHabitComplete: Function;
+  today: Date;
 };
 
-function ChecklistView({ habits, toggleHabitComplete }: ChecklistViewProps) {
+function ChecklistView({ habits, toggleHabitComplete, today }: ChecklistViewProps) {
   return (
     <ChecklistViewContainer
       habitCount={habits.length}
     >
       <WeekDays />
-      <WeekDates />
+      <WeekDates
+        today={today}
+      />
       <Checklist
         habits={habits}
         toggleHabitComplete={toggleHabitComplete}

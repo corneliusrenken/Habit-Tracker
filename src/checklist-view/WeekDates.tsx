@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { getWeekDates } from '../customDateFuncs';
 import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
 
 const WeekDate = styled.div`
@@ -10,8 +11,12 @@ const WeekDate = styled.div`
   align-items: center;
 `;
 
-function WeekDates() {
-  const weekDates = ['29', '30', '31', '1', '2', '3', '4'];
+type WeekDatesProps = {
+  today: Date;
+};
+
+function WeekDates({ today }: WeekDatesProps) {
+  const weekDates = getWeekDates(today, 1);
 
   return (
     <div>
