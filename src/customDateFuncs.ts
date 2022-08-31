@@ -29,3 +29,7 @@ export function getWeekDays(weekStartOffset: number): Array<string> {
   }
   return days;
 }
+
+export function getTodaysIndex(date: Date, weekStartOffset: number): number {
+  return (date.getDay() + 7 - weekStartOffset) % 7;
+}
