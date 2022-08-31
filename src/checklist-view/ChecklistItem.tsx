@@ -5,14 +5,16 @@ import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
 
 type ChecklistItemProps = {
   habit: Habit;
+  selected: boolean;
 };
 
 const ChecklistItemContainer = styled.div`
   height: ${gridHeightInPx}px;
   width: ${gridWidthInPx * 7}px;
   position: absolute;
-  ${({ order }: { order: number }) => `
+  ${({ order, selected }: { order: number, selected: boolean }) => `
     top: ${gridHeightInPx * order}px;
+    padding-left: ${selected ? '10px' : '0'};
   `}
   display: flex;
   flex-direction: row;
@@ -21,10 +23,11 @@ const ChecklistItemContainer = styled.div`
   transition: top 1s;
 `;
 
-function ChecklistItem({ habit }: ChecklistItemProps) {
+function ChecklistItem({ habit, selected }: ChecklistItemProps) {
   return (
     <ChecklistItemContainer
       order={habit.order}
+      selected={selected}
     >
       <p>{habit.name}</p>
       <p>{habit.dayStreak}</p>
