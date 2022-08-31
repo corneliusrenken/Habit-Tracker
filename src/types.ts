@@ -3,4 +3,9 @@ export type Habit = {
   order: number;
   name: string;
   dayStreak: number;
+  complete: boolean;
+};
+
+export type HabitWithOffset = Habit & {
+  offset: number;
 };

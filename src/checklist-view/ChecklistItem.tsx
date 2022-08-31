@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Habit } from '../types';
+import { HabitWithOffset } from '../types';
 import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
 
 type ChecklistItemProps = {
-  habit: Habit;
+  habit: HabitWithOffset;
   selected: boolean;
 };
 
@@ -12,22 +12,24 @@ const ChecklistItemContainer = styled.div`
   height: ${gridHeightInPx}px;
   width: ${gridWidthInPx * 7}px;
   position: absolute;
-  ${({ order, selected }: { order: number, selected: boolean }) => `
-    top: ${gridHeightInPx * order}px;
+  ${({ offset, selected, complete }: { offset: number, selected: boolean, complete: boolean }) => `
+    color: ${complete ? 'gray' : 'black'};
+    top: ${gridHeightInPx * offset}px;
     padding-left: ${selected ? '10px' : '0'};
   `}
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  transition: top 1s;
+  transition: top 0.5s;
 `;
 
 function ChecklistItem({ habit, selected }: ChecklistItemProps) {
   return (
     <ChecklistItemContainer
-      order={habit.order}
+      offset={habit.offset}
       selected={selected}
+      complete={habit.complete}
     >
       <p>{habit.name}</p>
       <p>{habit.dayStreak}</p>

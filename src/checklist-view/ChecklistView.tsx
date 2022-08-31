@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import Checklist from './Checklist';
-import { Habit } from '../types';
+import { HabitWithOffset } from '../types';
 import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
 import WeekDays from './WeekDays';
 import WeekDates from './WeekDates';
@@ -15,10 +15,11 @@ const ChecklistViewContainer = styled.div`
 `;
 
 type ChecklistViewProps = {
-  habits: Array<Habit>;
+  habits: Array<HabitWithOffset>;
+  markHabitComplete: Function;
 };
 
-function ChecklistView({ habits }: ChecklistViewProps) {
+function ChecklistView({ habits, markHabitComplete }: ChecklistViewProps) {
   return (
     <ChecklistViewContainer
       habitCount={habits.length}
@@ -27,6 +28,7 @@ function ChecklistView({ habits }: ChecklistViewProps) {
       <WeekDates />
       <Checklist
         habits={habits}
+        markHabitComplete={markHabitComplete}
       />
     </ChecklistViewContainer>
   );
