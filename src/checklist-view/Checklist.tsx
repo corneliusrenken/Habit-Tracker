@@ -29,9 +29,10 @@ function Checklist({ habits, toggleHabitComplete }: ChecklistProps) {
         setSelectedIndex((selectedIndex + 1) % habits.length);
         e.preventDefault();
       }
-      if (e.key === 'Enter') {
+      if (e.key === 'Enter' || e.key === 'e') {
         const currentID = habits[habits.findIndex((habit) => selectedIndex === habit.offset)].id;
         toggleHabitComplete(currentID);
+        e.preventDefault();
       }
     };
     window.addEventListener('keydown', onKeyDown);
