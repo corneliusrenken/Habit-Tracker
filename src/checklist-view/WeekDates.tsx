@@ -18,9 +18,6 @@ const Date = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  ${({ today }: { today: boolean }) => `
-    ${today && 'color: white;'}
-  `}
 `;
 
 const DateSelectorContainer = styled.div`
@@ -32,10 +29,10 @@ const DateSelectorContainer = styled.div`
 `;
 
 const DateSelector = styled.div`
-  height: 26px;
-  width: 26px;
+  height: 40px;
+  width: 40px;
   border-radius: 50%;
-  background-color: #CC4445;
+  border: 1px solid #CC4445;
 `;
 
 type WeekDatesProps = {
@@ -52,7 +49,6 @@ function WeekDates({ today }: WeekDatesProps) {
         <DateContainer>
           <Date
             key={date}
-            today={todaysIndex === index}
           >
             {date}
           </Date>
