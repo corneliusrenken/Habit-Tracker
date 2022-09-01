@@ -25,11 +25,8 @@ model Habit {
   order       Int
   user        User         @relation(fields: [user_id], references: [id])
   user_id     Int
-  streak      Streak       @relation(fields: [streak_id], references: [id])
-  streak_id   Int          @unique
   occurrences Occurrence[]
 
-  @@index([user_id, streak_id])
   @@unique([order, user_id])
   @@map("habits")
 }
@@ -43,16 +40,6 @@ model Occurrence {
   @@index([habit_id])
   @@unique([date, habit_id])
   @@map("occurrences")
-}
-
-model Streak {
-  id      Int    @id @default(autoincrement())
-  min     Int    @default(0)
-  max     Int    @default(0)
-  current Int    @default(0)
-  Habit   Habit?
-
-  @@map("streaks")
 }
 
 model CompletedDay {
