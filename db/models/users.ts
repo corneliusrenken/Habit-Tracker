@@ -4,7 +4,7 @@ import prisma from '..';
 // temporary user before oAuth
 export function addUser() {
   return prisma.user.create({
-    data: true,
+    data: {},
     select: {
       id: true,
     },
