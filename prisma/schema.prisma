@@ -34,7 +34,7 @@ model Habit {
 model Occurrence {
   id       Int      @id @default(autoincrement())
   date     DateTime @db.Date
-  habit    Habit    @relation(fields: [habit_id], references: [id])
+  habit    Habit    @relation(fields: [habit_id], references: [id], onDelete: Cascade)
   habit_id Int
 
   @@index([habit_id])
