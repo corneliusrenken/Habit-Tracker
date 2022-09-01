@@ -1,31 +1,34 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import styled from 'styled-components';
 import { getTodaysIndex, getWeekDates } from '../customDateFuncs';
 import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
 
-const DateContainer = styled.div`
+const WeekDatesContainer = styled.div`
   height: ${gridHeightInPx}px;
-  width: ${gridWidthInPx}px;
+  width: ${gridWidthInPx * 7}px;
   position: relative;
-  display: inline-block;
 `;
 
 const Date = styled.div`
   height: ${gridHeightInPx}px;
   width: ${gridWidthInPx}px;
-  position: absolute;
   z-index: 1;
-  display: flex;
+  display: inline-flex;
   justify-content: center;
   align-items: center;
 `;
 
 const DateSelectorContainer = styled.div`
   position: absolute;
-  height: 100%;
-  width: 100%;  display: flex;
+  height: ${gridHeightInPx}px;
+  width: ${gridWidthInPx}px;
+  top: 0;
+  left: ${({ offset }: { offset: number }) => offset * gridWidthInPx}px;
+  display: flex;
   justify-content: center;
   align-items: center;
+  transition: left 0.5s;
 `;
 
 const DateSelector = styled.div`
@@ -44,22 +47,20 @@ function WeekDates({ today }: WeekDatesProps) {
   const todaysIndex = getTodaysIndex(today, 1);
 
   return (
-    <div>
-      {weekDates.map((date, index) => (
-        <DateContainer>
-          <Date
-            key={date}
-          >
-            {date}
-          </Date>
-          {todaysIndex === index && (
-            <DateSelectorContainer>
-              <DateSelector />
-            </DateSelectorContainer>
-          )}
-        </DateContainer>
+    <WeekDatesContainer>
+      {weekDates.map((date) => (
+        <Date
+          key={date}
+        >
+          {date}
+        </Date>
       ))}
-    </div>
+      <DateSelectorContainer
+        offset={todaysIndex}
+      >
+        <DateSelector />
+      </DateSelectorContainer>
+    </WeekDatesContainer>
   );
 }
 
