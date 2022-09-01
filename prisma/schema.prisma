@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             Int            @id @default(autoincrement())
+  completed_days CompletedDay[]
+  habits         Habit[]
+
+  @@map("users")
+}
+
+model Habit {
+  id          Int          @id @default(autoincrement())
+  name        String
+  selected    Boolean
+  order       Int
+  user        User         @relation(fields: [user_id], references: [id])
+  user_id     Int
+  streak      Streak       @relation(fields: [streak_id], references: [id])
+  streak_id   Int          @unique
+  occurrences Occurrence[]
+
+  @@index([user_id, streak_id])
+  @@unique([order, user_id])
+  @@map("habits")
+}
+
+model Occurrence {
+  id       Int      @id @default(autoincrement())
+  date     DateTime @db.Date
+  habit    Habit    @relation(fields: [habit_id], references: [id])
+  habit_id Int
+
+  @@index([habit_id])
+  @@unique([date, habit_id])
+  @@map("occurrences")
+}
+
+model Streak {
+  id      Int    @id @default(autoincrement())
+  min     Int    @default(0)
+  max     Int    @default(0)
+  current Int    @default(0)
+  Habit   Habit?
+
+  @@map("streaks")
+}
+
+model CompletedDay {
+  id      Int      @id @default(autoincrement())
+  date    DateTime @db.Date
+  user    User     @relation(fields: [user_id], references: [id])
+  user_id Int
+
+  @@index([user_id])
+  @@unique([date, user_id])
+  @@map("completed_days")
+}
