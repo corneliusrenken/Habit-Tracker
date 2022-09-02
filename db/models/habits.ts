@@ -34,5 +34,11 @@ export function getHabits(userId: number) {
     orderBy: {
       id: 'asc',
     },
+    select: {
+      id: true,
+      name: true,
+      order: true,
+      selected: true,
+    },
   });
 }
