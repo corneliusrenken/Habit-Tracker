@@ -32,7 +32,7 @@ function ChecklistItem({ habit, selected }: ChecklistItemProps) {
       complete={habit.complete}
     >
       <p>{habit.name}</p>
-      <p>{habit.dayStreak}</p>
+      <p>3</p>
     </ChecklistItemContainer>
   );
 }

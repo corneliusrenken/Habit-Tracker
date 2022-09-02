@@ -33,3 +33,10 @@ export function getWeekDays(weekStartOffset: number): Array<string> {
 export function getTodaysIndex(date: Date, weekStartOffset: number): number {
   return (date.getDay() + 7 - weekStartOffset) % 7;
 }
+
+export function toCustomDateString(date: Date): string {
+  const y = date.getFullYear();
+  const m = (date.getMonth() + 1).toString().padStart(2, '0');
+  const d = date.getDate().toString().padStart(2, '0');
+  return `${y}-${m}-${d}`;
+}

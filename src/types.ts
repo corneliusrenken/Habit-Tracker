@@ -1,11 +1,14 @@
 export type Habit = {
   id: number;
-  order: number;
   name: string;
-  dayStreak: number;
-  complete: boolean;
+  order: number;
+  selected: boolean;
 };
 
-export type HabitWithOffset = Habit & {
+export type HabitWithComplete = Habit & {
+  complete: boolean,
+};
+
+export type HabitWithOffset = HabitWithComplete & {
   offset: number;
 };

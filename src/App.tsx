@@ -1,39 +1,19 @@
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import CheckListView from './checklist-view/ChecklistView';
-import { Habit, HabitWithOffset } from './types';
+import { toCustomDateString } from './customDateFuncs';
+import { Habit, HabitWithComplete, HabitWithOffset } from './types';
 
-const habitSeed: Array<Habit> = [
-  {
-    id: 1,
-    order: 0,
-    name: 'go out with dogs',
-    dayStreak: 1,
-    complete: false,
-  },
-  {
-    id: 2,
-    order: 1,
-    name: 'read',
-    dayStreak: 3,
-    complete: false,
-  },
-  {
-    id: 3,
-    order: 2,
-    name: 'sleep 8 hours',
-    dayStreak: 2,
-    complete: true,
-  },
-  {
-    id: 4,
-    order: 3,
-    name: '6h coding challenges',
-    dayStreak: 5,
-    complete: false,
-  },
-];
+// eslint-disable-next-line max-len
+const addCompleteToHabits = (habits: Array<Habit>, occurrences: Array<number> | undefined): Array<HabitWithComplete> => (
+  habits.map((habit) => {
+    const complete = occurrences?.findIndex((id) => id === habit.id) !== -1;
+    return { ...habit, complete };
+  })
+);
 
-const addHabitsOffset = (habits: Array<Habit | HabitWithOffset>): Array<HabitWithOffset> => (
+// eslint-disable-next-line max-len
+const addOffsetToHabits = (habits: Array<HabitWithComplete | HabitWithOffset>): Array<HabitWithOffset> => (
   habits.sort((a, b) => {
     if (a.complete !== b.complete) {
       return a.complete ? 1 : -1;
@@ -49,23 +29,49 @@ function App() {
   const [habits, setHabits] = useState<Array<HabitWithOffset>>([]);
   const [today] = useState<Date>(new Date());
 
-  const setHabitsAndAddOffset = (newHabits: Array<Habit | HabitWithOffset>) => {
-    setHabits(addHabitsOffset(newHabits));
-  };
-
   const toggleHabitComplete = (id: number) => {
     const newHabits = habits.slice();
-    const index = newHabits.findIndex((habit) => habit.id === id);
-    newHabits[index].complete = !newHabits[index].complete;
-    setHabitsAndAddOffset(newHabits);
+    const indexOfId = newHabits.findIndex((habit) => habit.id === id);
+    if (newHabits[indexOfId].complete) {
+      axios({
+        method: 'delete',
+        url: '/api/occurrences/',
+        data: {
+          habitId: id,
+          date: toCustomDateString(today),
+        },
+      });
+    } else {
+      axios({
+        method: 'post',
+        url: '/api/occurrences/',
+        data: {
+          habitId: id,
+          date: toCustomDateString(today),
+        },
+      });
+    }
+    newHabits[indexOfId].complete = !newHabits[indexOfId].complete;
+    const newOffset = addOffsetToHabits(newHabits);
+    setHabits(newOffset);
   };
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setHabitsAndAddOffset(habitSeed);
-    }, 1000);
-    return () => clearTimeout(timeout);
-  }, []);
+    const fetchData = async () => {
+      const todayString = toCustomDateString(today);
+      const responses = await Promise.all([
+        axios.get('/api/habits/1'),
+        axios.get(`/api/occurrences/1/${todayString}/${todayString}`),
+      ]);
+      const habitsData = responses[0].data;
+      const occurrencesData = responses[1].data;
+      const habitsWithComplete = addCompleteToHabits(habitsData, occurrencesData[todayString]);
+      const habitsWithOffset = addOffsetToHabits(habitsWithComplete);
+      setHabits(habitsWithOffset);
+    };
+
+    fetchData();
+  }, [today]);
 
   // scroll to bottom of page whenever habits change in length
   useEffect(() => {
