@@ -1,20 +1,32 @@
 import prisma from '..';
 
-export function getOccurrences(userId: number, date: string) {
-  return prisma.occurrence.findMany({
-    where: {
-      habit: {
-        user_id: userId,
-      },
-      date,
-    },
-    orderBy: {
-      habit_id: 'asc',
-    },
-    select: {
-      habit_id: true,
-    },
-  });
+type OccRange = Promise<Array<{ dates: { [key: string]: Array<number> } }>>;
+
+export function getOccurrences(userId: number, fromDate: string, toDate: string): OccRange {
+  return prisma.$queryRaw`
+    SELECT
+      COALESCE(
+        JSON_OBJECT_AGG(date, habits)
+      FILTER (WHERE date IS NOT NULL), '{}') AS dates
+    FROM (
+      SELECT
+        date AS date,
+        JSON_AGG(habit_id ORDER BY habit_id ASC) AS habits
+      FROM
+        occurrences
+      JOIN
+        habits
+      ON
+        occurrences.habit_id = habits.id
+      WHERE
+        user_id = ${userId}
+      AND
+        date >= TO_DATE(${fromDate}, 'YYYY-MM-DD')
+      AND
+        date <= TO_DATE(${toDate}, 'YYYY-MM-DD')
+      GROUP BY date
+    ) AS agg
+  `;
 }
 
 export function addOccurrence(habitId: number, date: string) {

@@ -14,10 +14,12 @@ router.get('/habits/:userId', async (req, res) => {
   }
 });
 
-router.get('/occurrences/:userId/:date', async (req, res) => {
+router.get('/occurrences/:userId/:fromDate/:toDate', async (req, res) => {
   try {
-    const occurrences = await getOccurrences(Number(req.params.userId), `${req.params.date}T00:00:00Z`);
-    res.status(200).json(occurrences);
+    const fromDate = `${req.params.fromDate}T00:00:00Z`;
+    const toDate = `${req.params.toDate}T00:00:00Z`;
+    const occurrences = await getOccurrences(Number(req.params.userId), fromDate, toDate);
+    res.status(200).json(occurrences[0].dates);
   } catch (err) {
     res.status(500).send(`${err}`);
   }
