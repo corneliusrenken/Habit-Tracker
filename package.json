@@ -20,6 +20,7 @@
   "scripts": {
     "start": "react-scripts start",
     "server": "npx nodemon server/index.ts",
+    "seed": "npx prisma migrate reset",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -35,6 +36,9 @@
     "parserOptions": {
       "project": "./tsconfig.json"
     }
+  },
+  "prisma": {
+    "seed": "ts-node db/seed.ts"
   },
   "browserslist": {
     "production": [
