@@ -1,7 +1,7 @@
 import express from 'express';
 import { addCompletedDay, deleteCompletedDay } from '../db/models/completedDays';
 import { getHabits } from '../db/models/habits';
-import { addOccurrence, deleteOccurrence } from '../db/models/occurrences';
+import { addOccurrence, deleteOccurrence, getOccurrences } from '../db/models/occurrences';
 
 const router = express.Router();
 
@@ -9,6 +9,15 @@ router.get('/habits/:userId', async (req, res) => {
   try {
     const habits = await getHabits(Number(req.params.userId));
     res.status(200).json(habits);
+  } catch (err) {
+    res.status(500).send(`${err}`);
+  }
+});
+
+router.get('/occurrences/:userId/:date', async (req, res) => {
+  try {
+    const occurrences = await getOccurrences(Number(req.params.userId), `${req.params.date}T00:00:00Z`);
+    res.status(200).json(occurrences);
   } catch (err) {
     res.status(500).send(`${err}`);
   }
