@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { PrismaClient } from '@prisma/client';
 import { addCompletedDay } from './models/completedDays';
 import { addHabit } from './models/habits';
