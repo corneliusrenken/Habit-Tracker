@@ -25,7 +25,7 @@ async function main() {
   ];
 
   const seed = '2373103710371037373103710371730173';
-  const today = new Date();
+  const today = new Date('2022-09-02T12:00:00Z');
 
   const promises = [];
 

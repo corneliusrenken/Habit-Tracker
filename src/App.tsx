@@ -1,13 +1,18 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import CheckListView from './checklist-view/ChecklistView';
 import { toCustomDateString } from './customDateFuncs';
-import { Habit, HabitWithComplete, HabitWithOffset } from './types';
+import {
+  Habit, HabitWithComplete, HabitWithOffset, Occurrences,
+} from './types';
 
 // eslint-disable-next-line max-len
 const addCompleteToHabits = (habits: Array<Habit>, occurrences: Array<number> | undefined): Array<HabitWithComplete> => (
   habits.map((habit) => {
-    const complete = occurrences?.findIndex((id) => id === habit.id) !== -1;
+    if (occurrences === undefined) {
+      return { ...habit, complete: false };
+    }
+    const complete = occurrences.findIndex((id) => id === habit.id) !== -1;
     return { ...habit, complete };
   })
 );
@@ -26,66 +31,73 @@ const addOffsetToHabits = (habits: Array<HabitWithComplete | HabitWithOffset>): 
 );
 
 function App() {
-  const [habits, setHabits] = useState<Array<HabitWithOffset>>([]);
+  const [occurrences, setOccurrences] = useState<Occurrences>({});
+  const [habits, setHabits] = useState<Array<Habit>>([]);
+  const [habitsWithOffset, setHabitsWithOffset] = useState<Array<HabitWithOffset>>([]);
   const [today] = useState<Date>(new Date());
 
+  const calculateHabitsWithOffset = useCallback(() => {
+    const todayString = toCustomDateString(today);
+    const complete = addCompleteToHabits(habits, occurrences[todayString]);
+    const offset = addOffsetToHabits(complete);
+    setHabitsWithOffset(offset);
+  }, [habits, occurrences, today]);
+
+  useEffect(() => {
+    calculateHabitsWithOffset();
+  }, [calculateHabitsWithOffset]);
+
   const toggleHabitComplete = (id: number) => {
-    const newHabits = habits.slice();
-    const indexOfId = newHabits.findIndex((habit) => habit.id === id);
-    if (newHabits[indexOfId].complete) {
-      axios({
-        method: 'delete',
-        url: '/api/occurrences/',
-        data: {
-          habitId: id,
-          date: toCustomDateString(today),
-        },
-      });
+    const todayString = toCustomDateString(today);
+    const newOccurrences = occurrences[todayString] !== undefined
+      ? occurrences[todayString].slice()
+      : [];
+    const indexOfOccurrence = newOccurrences.indexOf(id);
+    let httpMethod;
+    if (indexOfOccurrence === -1) {
+      newOccurrences.push(id);
+      httpMethod = 'post';
     } else {
-      axios({
-        method: 'post',
-        url: '/api/occurrences/',
-        data: {
-          habitId: id,
-          date: toCustomDateString(today),
-        },
-      });
+      newOccurrences.splice(indexOfOccurrence, 1);
+      httpMethod = 'delete';
     }
-    newHabits[indexOfId].complete = !newHabits[indexOfId].complete;
-    const newOffset = addOffsetToHabits(newHabits);
-    setHabits(newOffset);
+    axios({
+      url: '/api/occurrences',
+      method: httpMethod,
+      data: {
+        habitId: id,
+        date: todayString,
+      },
+    });
+    setOccurrences({
+      ...occurrences,
+      [todayString]: newOccurrences,
+    });
   };
 
   useEffect(() => {
     const fetchData = async () => {
+      const yesterday = new Date(today);
+      yesterday.setDate(today.getDate() - 1);
       const todayString = toCustomDateString(today);
+      const yesterdayString = toCustomDateString(yesterday);
       const responses = await Promise.all([
         axios.get('/api/habits/1'),
-        axios.get(`/api/occurrences/1/${todayString}/${todayString}`),
+        axios.get(`/api/occurrences/1/${yesterdayString}/${todayString}`),
       ]);
       const habitsData = responses[0].data;
       const occurrencesData = responses[1].data;
-      const habitsWithComplete = addCompleteToHabits(habitsData, occurrencesData[todayString]);
-      const habitsWithOffset = addOffsetToHabits(habitsWithComplete);
-      setHabits(habitsWithOffset);
+      setHabits(habitsData);
+      setOccurrences(occurrencesData);
     };
 
     fetchData();
   }, [today]);
 
-  // scroll to bottom of page whenever habits change in length
-  useEffect(() => {
-    window.scrollTo({
-      top: document.body.scrollHeight,
-    });
-  }, [habits.length]);
-
   return (
     <div>
-      {/* placeholder for history view */}
-      <div style={{ height: '1000px' }} />
       <CheckListView
-        habits={habits}
+        habits={habitsWithOffset}
         toggleHabitComplete={toggleHabitComplete}
         today={today}
       />

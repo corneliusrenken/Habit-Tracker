@@ -12,3 +12,7 @@ export type HabitWithComplete = Habit & {
 export type HabitWithOffset = HabitWithComplete & {
   offset: number;
 };
+
+export type Occurrences = {
+  [key: string]: Array<number>;
+};
