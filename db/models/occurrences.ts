@@ -3,6 +3,9 @@ import prisma from '..';
 export function getOccurrences(userId: number, date: string) {
   return prisma.occurrence.findMany({
     where: {
+      habit: {
+        user_id: userId,
+      },
       date,
     },
     orderBy: {
