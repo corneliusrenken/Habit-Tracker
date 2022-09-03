@@ -1,7 +1,7 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import styled from 'styled-components';
-import { getTodaysIndex, getWeekDates } from '../customDateFuncs';
+import { getTodaysIndex, getWeekDates, toCustomDateString } from '../customDateFuncs';
+import { CompletedDays } from '../types';
 import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
 
 const WeekDatesContainer = styled.div`
@@ -17,6 +17,9 @@ const Date = styled.div`
   display: inline-flex;
   justify-content: center;
   align-items: center;
+  ${({ complete }: { complete: boolean }) => complete && `
+    color: red;
+  `}
 `;
 
 const DateSelectorContainer = styled.div`
@@ -40,9 +43,10 @@ const DateSelector = styled.div`
 
 type WeekDatesProps = {
   today: Date;
+  completedDays: CompletedDays;
 };
 
-function WeekDates({ today }: WeekDatesProps) {
+function WeekDates({ today, completedDays }: WeekDatesProps) {
   const weekDates = getWeekDates(today, 1);
   const todaysIndex = getTodaysIndex(today, 1);
 
@@ -50,9 +54,10 @@ function WeekDates({ today }: WeekDatesProps) {
     <WeekDatesContainer>
       {weekDates.map((date) => (
         <Date
-          key={date}
+          key={date.getDate()}
+          complete={!!completedDays.completed[toCustomDateString(date)]}
         >
-          {date}
+          {date.getDate()}
         </Date>
       ))}
       <DateSelectorContainer

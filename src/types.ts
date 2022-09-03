@@ -6,7 +6,7 @@ export type Habit = {
 };
 
 export type HabitWithComplete = Habit & {
-  complete: boolean,
+  complete: boolean;
 };
 
 export type HabitWithOffset = HabitWithComplete & {
@@ -15,4 +15,9 @@ export type HabitWithOffset = HabitWithComplete & {
 
 export type Occurrences = {
   [key: string]: Array<number>;
+};
+
+export type CompletedDays = {
+  completed: { [key: string]: boolean };
+  oldest: string | null;
 };

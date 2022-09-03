@@ -3,6 +3,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import CheckListView from './checklist-view/ChecklistView';
 import { toCustomDateString } from './customDateFuncs';
 import {
+  CompletedDays,
   Habit, HabitWithComplete, HabitWithOffset, Occurrences,
 } from './types';
 
@@ -31,10 +32,35 @@ const addOffsetToHabits = (habits: Array<HabitWithComplete | HabitWithOffset>): 
 );
 
 function App() {
+  // eslint-disable-next-line max-len
+  const [completedDays, setCompletedDays] = useState<CompletedDays>({ completed: {}, oldest: null });
   const [occurrences, setOccurrences] = useState<Occurrences>({});
   const [habits, setHabits] = useState<Array<Habit>>([]);
   const [habitsWithOffset, setHabitsWithOffset] = useState<Array<HabitWithOffset>>([]);
   const [today] = useState<Date>(new Date());
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userId = 1;
+      const yesterday = new Date(today);
+      yesterday.setDate(today.getDate() - 1);
+      const todayString = toCustomDateString(today);
+      const yesterdayString = toCustomDateString(yesterday);
+      const responses = await Promise.all([
+        axios.get(`/api/habits/${userId}`),
+        axios.get(`/api/occurrences/${userId}/${yesterdayString}/${todayString}`),
+        axios.get(`/api/completed-days/${userId}`),
+      ]);
+      const habitsData = responses[0].data;
+      const occurrencesData = responses[1].data;
+      const completedDaysData = responses[2].data;
+      setHabits(habitsData);
+      setOccurrences(occurrencesData);
+      setCompletedDays(completedDaysData);
+    };
+
+    fetchData();
+  }, [today]);
 
   const calculateHabitsWithOffset = useCallback(() => {
     const todayString = toCustomDateString(today);
@@ -53,46 +79,62 @@ function App() {
       ? occurrences[todayString].slice()
       : [];
     const indexOfOccurrence = newOccurrences.indexOf(id);
-    let httpMethod;
+    let occurrenceHttpMethod;
+    let completeHttpMethod;
+    const incompleteCount = habitsWithOffset.filter((habit) => (
+      !habit.complete && habit.selected
+    )).length;
     if (indexOfOccurrence === -1) {
       newOccurrences.push(id);
-      httpMethod = 'post';
+      occurrenceHttpMethod = 'post';
+      if (incompleteCount === 1) {
+        completeHttpMethod = 'post';
+
+        const newCompletedDays: CompletedDays = {
+          oldest: completedDays.oldest || `${todayString}T00:00:00.000Z`,
+          completed: { ...completedDays.completed, [todayString]: true },
+        };
+
+        setCompletedDays(newCompletedDays);
+      }
     } else {
       newOccurrences.splice(indexOfOccurrence, 1);
-      httpMethod = 'delete';
+      occurrenceHttpMethod = 'delete';
+      if (incompleteCount === 0) {
+        completeHttpMethod = 'delete';
+
+        const newCompletedDays: CompletedDays = {
+          oldest: completedDays.oldest?.startsWith(todayString) ? null : completedDays.oldest,
+          completed: { ...completedDays.completed },
+        };
+        delete newCompletedDays.completed[todayString];
+
+        setCompletedDays(newCompletedDays);
+      }
     }
     axios({
       url: '/api/occurrences',
-      method: httpMethod,
+      method: occurrenceHttpMethod,
       data: {
         habitId: id,
         date: todayString,
       },
     });
+    if (completeHttpMethod) {
+      axios({
+        url: '/api/completed-days',
+        method: completeHttpMethod,
+        data: {
+          userId: 1,
+          date: todayString,
+        },
+      });
+    }
     setOccurrences({
       ...occurrences,
       [todayString]: newOccurrences,
     });
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const yesterday = new Date(today);
-      yesterday.setDate(today.getDate() - 1);
-      const todayString = toCustomDateString(today);
-      const yesterdayString = toCustomDateString(yesterday);
-      const responses = await Promise.all([
-        axios.get('/api/habits/1'),
-        axios.get(`/api/occurrences/1/${yesterdayString}/${todayString}`),
-      ]);
-      const habitsData = responses[0].data;
-      const occurrencesData = responses[1].data;
-      setHabits(habitsData);
-      setOccurrences(occurrencesData);
-    };
-
-    fetchData();
-  }, [today]);
 
   return (
     <div>
@@ -100,6 +142,7 @@ function App() {
         habits={habitsWithOffset}
         toggleHabitComplete={toggleHabitComplete}
         today={today}
+        completedDays={completedDays}
       />
     </div>
   );

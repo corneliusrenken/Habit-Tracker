@@ -1,13 +1,13 @@
 // weekStartOffset 0: week starts on sunday
 //                 1: week starts on monday
 //                 2: week starts on tuesday
-export function getWeekDates(date: Date, weekStartOffset: number): Array<number> {
+export function getWeekDates(date: Date, weekStartOffset: number): Array<Date> {
   const dates = [];
   const weekDay = date.getDay();
   for (let i = 0; i < 7; i += 1) {
     const temp = new Date(date);
     temp.setDate(date.getDate() + i - weekDay + weekStartOffset);
-    dates.push(temp.getDate());
+    dates.push(temp);
   }
   return dates;
 }

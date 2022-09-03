@@ -1,17 +1,19 @@
 import prisma from '..';
 
-export function getCompletedDays(userId: number) {
-  return prisma.completedDay.findMany({
-    where: {
-      user_id: userId,
-    },
-    select: {
-      date: true,
-    },
-    orderBy: {
-      date: 'asc',
-    },
-  });
+type CompletedDays = Promise<Array<{ completed: { [key: string]: boolean }, oldest: string }>>;
+
+export function getCompletedDays(userId: number): CompletedDays {
+  return prisma.$queryRaw`
+    SELECT
+      COALESCE(
+        JSON_OBJECT_AGG(date, true)
+      FILTER (WHERE date IS NOT NULL), '{}') AS completed,
+      min(date) AS oldest
+    FROM
+      completed_days
+    WHERE
+      user_id = ${userId}
+  `;
 }
 
 export function addCompletedDay(userId: number, date: string) {

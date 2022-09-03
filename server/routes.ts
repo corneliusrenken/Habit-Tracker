@@ -48,7 +48,7 @@ router.delete('/occurrences', async (req, res) => {
 router.get('/completed-days/:userId', async (req, res) => {
   try {
     const completedDays = await getCompletedDays(Number(req.params.userId));
-    res.status(201).json(completedDays);
+    res.status(201).json(completedDays[0]);
   } catch (err) {
     res.status(500).send(`${err}`);
   }
