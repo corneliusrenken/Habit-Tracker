@@ -1,5 +1,5 @@
 import express from 'express';
-import { addCompletedDay, deleteCompletedDay } from '../db/models/completedDays';
+import { addCompletedDay, deleteCompletedDay, getCompletedDays } from '../db/models/completedDays';
 import { getHabits } from '../db/models/habits';
 import { addOccurrence, deleteOccurrence, getOccurrences } from '../db/models/occurrences';
 
@@ -40,6 +40,15 @@ router.delete('/occurrences', async (req, res) => {
     const { habitId, date } = req.body;
     await deleteOccurrence(habitId, `${date}T00:00:00Z`);
     res.status(200).end();
+  } catch (err) {
+    res.status(500).send(`${err}`);
+  }
+});
+
+router.get('/completed-days/:userId', async (req, res) => {
+  try {
+    const completedDays = await getCompletedDays(Number(req.params.userId));
+    res.status(201).json(completedDays);
   } catch (err) {
     res.status(500).send(`${err}`);
   }
