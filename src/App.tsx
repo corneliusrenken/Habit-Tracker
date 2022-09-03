@@ -1,9 +1,10 @@
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import CheckListView from './checklist-view/ChecklistView';
-import { toCustomDateString } from './customDateFuncs';
+import { getDateInfo } from './customDateFuncs';
 import {
   CompletedDays,
+  DateInfo,
   Habit, HabitWithComplete, HabitWithOffset, Occurrences,
 } from './types';
 
@@ -37,15 +38,12 @@ function App() {
   const [occurrences, setOccurrences] = useState<Occurrences>({});
   const [habits, setHabits] = useState<Array<Habit>>([]);
   const [habitsWithOffset, setHabitsWithOffset] = useState<Array<HabitWithOffset>>([]);
-  const [today] = useState<Date>(new Date());
+  const [dateInfo] = useState<DateInfo>(getDateInfo(new Date(), 1));
 
   useEffect(() => {
     const fetchData = async () => {
       const userId = 1;
-      const yesterday = new Date(today);
-      yesterday.setDate(today.getDate() - 1);
-      const todayString = toCustomDateString(today);
-      const yesterdayString = toCustomDateString(yesterday);
+      const { todayString, yesterdayString } = dateInfo;
       const responses = await Promise.all([
         axios.get(`/api/habits/${userId}`),
         axios.get(`/api/occurrences/${userId}/${yesterdayString}/${todayString}`),
@@ -60,21 +58,21 @@ function App() {
     };
 
     fetchData();
-  }, [today]);
+  }, [dateInfo]);
 
   const calculateHabitsWithOffset = useCallback(() => {
-    const todayString = toCustomDateString(today);
+    const { todayString } = dateInfo;
     const complete = addCompleteToHabits(habits, occurrences[todayString]);
     const offset = addOffsetToHabits(complete);
     setHabitsWithOffset(offset);
-  }, [habits, occurrences, today]);
+  }, [habits, occurrences, dateInfo]);
 
   useEffect(() => {
     calculateHabitsWithOffset();
   }, [calculateHabitsWithOffset]);
 
   const toggleHabitComplete = (id: number) => {
-    const todayString = toCustomDateString(today);
+    const { todayString } = dateInfo;
     const newOccurrences = occurrences[todayString] !== undefined
       ? occurrences[todayString].slice()
       : [];
@@ -141,7 +139,7 @@ function App() {
       <CheckListView
         habits={habitsWithOffset}
         toggleHabitComplete={toggleHabitComplete}
-        today={today}
+        dateInfo={dateInfo}
         completedDays={completedDays}
       />
     </div>

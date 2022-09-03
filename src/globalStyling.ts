@@ -1,4 +1,5 @@
 import { createGlobalStyle } from 'styled-components';
+import { Theme } from './types';
 
 export default createGlobalStyle`
   /* http://meyerweb.com/eric/tools/css/reset/
@@ -67,5 +68,11 @@ export default createGlobalStyle`
   *:after {
     box-sizing: border-box;
     font-family: 'DM Sans', sans-serif;
+  }
+
+  html {
+    ${({ theme }: { theme: Theme }) => `
+      background-color: ${theme.background};
+    `}
   }
 `;

@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
-import { getTodaysIndex, getWeekDates, toCustomDateString } from '../customDateFuncs';
-import { CompletedDays } from '../types';
+import { toCustomDateString } from '../customDateFuncs';
+import { CompletedDays, DateInfo, Theme } from '../types';
 import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
 
 const WeekDatesContainer = styled.div`
   height: ${gridHeightInPx}px;
   width: ${gridWidthInPx * 7}px;
   position: relative;
-`;
+  `;
 
 const Date = styled.div`
   height: ${gridHeightInPx}px;
@@ -17,8 +17,8 @@ const Date = styled.div`
   display: inline-flex;
   justify-content: center;
   align-items: center;
-  ${({ complete }: { complete: boolean }) => complete && `
-    color: red;
+  ${({ complete, theme }: { complete: boolean, theme: Theme }) => `
+    ${complete ? `color: ${theme.secondary};` : ''}
   `}
 `;
 
@@ -38,21 +38,20 @@ const DateSelector = styled.div`
   height: 40px;
   width: 40px;
   border-radius: 50%;
-  border: 1px solid #CC4445;
+  ${({ theme }: { theme: Theme }) => `
+    border: 1px solid ${theme.tertiary};
+  `}
 `;
 
 type WeekDatesProps = {
-  today: Date;
+  dateInfo: DateInfo;
   completedDays: CompletedDays;
 };
 
-function WeekDates({ today, completedDays }: WeekDatesProps) {
-  const weekDates = getWeekDates(today, 1);
-  const todaysIndex = getTodaysIndex(today, 1);
-
+function WeekDates({ dateInfo, completedDays }: WeekDatesProps) {
   return (
     <WeekDatesContainer>
-      {weekDates.map((date) => (
+      {dateInfo.weekDates.map((date) => (
         <Date
           key={date.getDate()}
           complete={!!completedDays.completed[toCustomDateString(date)]}
@@ -61,7 +60,7 @@ function WeekDates({ today, completedDays }: WeekDatesProps) {
         </Date>
       ))}
       <DateSelectorContainer
-        offset={todaysIndex}
+        offset={dateInfo.todaysIndex}
       >
         <DateSelector />
       </DateSelectorContainer>

@@ -1,3 +1,5 @@
+import { DateInfo } from './types';
+
 // weekStartOffset 0: week starts on sunday
 //                 1: week starts on monday
 //                 2: week starts on tuesday
@@ -39,4 +41,18 @@ export function toCustomDateString(date: Date): string {
   const m = (date.getMonth() + 1).toString().padStart(2, '0');
   const d = date.getDate().toString().padStart(2, '0');
   return `${y}-${m}-${d}`;
+}
+
+export function getDateInfo(date: Date, weekStartOffset: number): DateInfo {
+  const yesterday = new Date(date);
+  yesterday.setDate(date.getDate() - 1);
+  return {
+    today: date,
+    todayString: toCustomDateString(date),
+    yesterday,
+    yesterdayString: toCustomDateString(yesterday),
+    weekDates: getWeekDates(date, weekStartOffset),
+    weekDays: getWeekDays(weekStartOffset),
+    todaysIndex: getTodaysIndex(date, weekStartOffset),
+  };
 }

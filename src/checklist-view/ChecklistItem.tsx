@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { HabitWithOffset } from '../types';
+import { HabitWithOffset, Theme } from '../types';
 import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
 
 type ChecklistItemProps = {
@@ -13,8 +13,8 @@ const ChecklistItemContainer = styled.div`
   height: ${gridHeightInPx}px;
   width: ${gridWidthInPx * 7}px;
   position: absolute;
-  ${({ offset, complete }: { offset: number, complete: boolean }) => `
-    color: ${complete ? 'gray' : 'black'};
+  ${({ offset, complete, theme }: { offset: number, complete: boolean, theme: Theme }) => `
+    color: ${complete ? theme.secondary : theme.primary};
     top: ${gridHeightInPx * offset}px;
   `}
   display: flex;

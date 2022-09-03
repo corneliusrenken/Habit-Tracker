@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ChecklistItem from './ChecklistItem';
-import { HabitWithOffset } from '../types';
+import { HabitWithOffset, Theme } from '../types';
 import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
 
 type ChecklistProps = {
@@ -20,8 +20,10 @@ const Selector = styled.div`
   position: absolute;
   height: ${gridHeightInPx}px;
   width: ${gridWidthInPx * 7}px;
-  background-color: #e2e2e2;
-  top: ${({ selectedIndex }: { selectedIndex: number }) => selectedIndex * gridHeightInPx}px;
+  ${({ selectedIndex, theme }: { selectedIndex: number, theme: Theme }) => `
+    top: ${selectedIndex * gridHeightInPx}px;
+    background-color: ${theme.secondary};
+  `}
   transition: top 0.2s;
 `;
 
