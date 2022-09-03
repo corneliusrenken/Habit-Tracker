@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ChecklistItem from './ChecklistItem';
 import { HabitWithOffset } from '../types';
-import { gridHeightInPx } from '../universalStyling';
+import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
 
 type ChecklistProps = {
   habits: Array<HabitWithOffset>;
@@ -14,6 +14,15 @@ const ChecklistContainer = styled.div`
   ${({ habitLength }: { habitLength: number }) => `
     height: ${habitLength * gridHeightInPx}px;
   `}
+`;
+
+const Selector = styled.div`
+  position: absolute;
+  height: ${gridHeightInPx}px;
+  width: ${gridWidthInPx * 7}px;
+  background-color: #e2e2e2;
+  top: ${({ selectedIndex }: { selectedIndex: number }) => selectedIndex * gridHeightInPx}px;
+  transition: top 0.3s;
 `;
 
 function Checklist({ habits, toggleHabitComplete }: ChecklistProps) {
@@ -47,9 +56,11 @@ function Checklist({ habits, toggleHabitComplete }: ChecklistProps) {
         <ChecklistItem
           key={habit.id}
           habit={habit}
-          selected={habit.offset === selectedIndex}
         />
       ))}
+      <Selector
+        selectedIndex={selectedIndex}
+      />
     </ChecklistContainer>
   );
 }
