@@ -22,7 +22,7 @@ const Selector = styled.div`
   width: ${gridWidthInPx * 7}px;
   background-color: #e2e2e2;
   top: ${({ selectedIndex }: { selectedIndex: number }) => selectedIndex * gridHeightInPx}px;
-  transition: top 0.3s;
+  transition: top 0.2s;
 `;
 
 function Checklist({ habits, toggleHabitComplete }: ChecklistProps) {
@@ -56,6 +56,8 @@ function Checklist({ habits, toggleHabitComplete }: ChecklistProps) {
         <ChecklistItem
           key={habit.id}
           habit={habit}
+          setSelectedIndex={setSelectedIndex}
+          toggleComplete={() => toggleHabitComplete(habit.id)}
         />
       ))}
       <Selector

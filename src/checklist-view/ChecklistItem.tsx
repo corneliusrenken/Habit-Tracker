@@ -5,6 +5,8 @@ import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
 
 type ChecklistItemProps = {
   habit: HabitWithOffset;
+  setSelectedIndex: Function;
+  toggleComplete: Function;
 };
 
 const ChecklistItemContainer = styled.div`
@@ -23,11 +25,13 @@ const ChecklistItemContainer = styled.div`
   z-index: 1;
 `;
 
-function ChecklistItem({ habit }: ChecklistItemProps) {
+function ChecklistItem({ habit, setSelectedIndex, toggleComplete }: ChecklistItemProps) {
   return (
     <ChecklistItemContainer
       offset={habit.offset}
       complete={habit.complete}
+      onMouseEnter={() => setSelectedIndex(habit.offset)}
+      onClick={() => toggleComplete()}
     >
       <p>{habit.name}</p>
       <p>3</p>
