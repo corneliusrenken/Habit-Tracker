@@ -7,6 +7,7 @@ type ChecklistItemProps = {
   habit: HabitWithOffset;
   setSelectedIndex: Function;
   toggleComplete: Function;
+  setUsingMouse: Function;
 };
 
 const ChecklistItemContainer = styled.div`
@@ -25,12 +26,17 @@ const ChecklistItemContainer = styled.div`
   z-index: 1;
 `;
 
-function ChecklistItem({ habit, setSelectedIndex, toggleComplete }: ChecklistItemProps) {
+function ChecklistItem({
+  habit, setSelectedIndex, toggleComplete, setUsingMouse,
+}: ChecklistItemProps) {
   return (
     <ChecklistItemContainer
       offset={habit.offset}
       complete={habit.complete}
-      onMouseEnter={() => setSelectedIndex(habit.offset)}
+      onMouseEnter={() => {
+        setSelectedIndex(habit.offset);
+        setUsingMouse(true);
+      }}
       onClick={() => toggleComplete()}
     >
       <p>{habit.name}</p>

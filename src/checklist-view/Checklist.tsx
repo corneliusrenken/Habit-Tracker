@@ -20,23 +20,26 @@ const Selector = styled.div`
   position: absolute;
   height: ${gridHeightInPx}px;
   width: ${gridWidthInPx * 7}px;
-  ${({ selectedIndex, theme }: { selectedIndex: number, theme: Theme }) => `
+  ${({ selectedIndex, theme, usingMouse }: { selectedIndex: number, theme: Theme, usingMouse: boolean }) => `
     top: ${selectedIndex * gridHeightInPx}px;
     background-color: ${theme.secondary};
+    transition: top ${usingMouse ? '0s' : '0.2s'};
   `}
-  transition: top 0.2s;
 `;
 
 function Checklist({ habits, toggleHabitComplete }: ChecklistProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const [usingMouse, setUsingMouse] = useState(false);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowUp' || e.key === 'w') {
+        setUsingMouse(false);
         setSelectedIndex((selectedIndex + habits.length - 1) % habits.length);
         e.preventDefault();
       }
       if (e.key === 'ArrowDown' || e.key === 's') {
+        setUsingMouse(false);
         setSelectedIndex((selectedIndex + 1) % habits.length);
         e.preventDefault();
       }
@@ -60,10 +63,12 @@ function Checklist({ habits, toggleHabitComplete }: ChecklistProps) {
           habit={habit}
           setSelectedIndex={setSelectedIndex}
           toggleComplete={() => toggleHabitComplete(habit.id)}
+          setUsingMouse={setUsingMouse}
         />
       ))}
       <Selector
         selectedIndex={selectedIndex}
+        usingMouse={usingMouse}
       />
     </ChecklistContainer>
   );
