@@ -74,5 +74,7 @@ export default createGlobalStyle`
     ${({ theme }: { theme: Theme }) => `
       background-color: ${theme.background};
     `}
+    user-select: none;
+    cursor: default;
   }
 `;

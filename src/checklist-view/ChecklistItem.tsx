@@ -24,6 +24,7 @@ const ChecklistItemContainer = styled.div`
   justify-content: space-between;
   transition: top 0.5s;
   z-index: 1;
+  cursor: pointer;
 `;
 
 function ChecklistItem({
