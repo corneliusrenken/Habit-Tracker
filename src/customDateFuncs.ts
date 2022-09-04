@@ -3,18 +3,18 @@ import { DateInfo } from './types';
 // weekStartOffset 0: week starts on sunday
 //                 1: week starts on monday
 //                 2: week starts on tuesday
-export function getWeekDates(date: Date, weekStartOffset: number): Array<Date> {
+function getWeekDates(date: Date, weekStartOffset: number): Array<Date> {
   const dates = [];
-  const weekDay = date.getDay();
+  const weekDay = (date.getDay() + 7 - weekStartOffset) % 7;
   for (let i = 0; i < 7; i += 1) {
     const temp = new Date(date);
-    temp.setDate(date.getDate() + i - weekDay + weekStartOffset);
+    temp.setDate(date.getDate() + i - weekDay);
     dates.push(temp);
   }
   return dates;
 }
 
-export function getWeekDays(weekStartOffset: number): Array<string> {
+function getWeekDays(weekStartOffset: number): Array<string> {
   const dayIndexToDayString = [
     'S',
     'M',
@@ -32,7 +32,7 @@ export function getWeekDays(weekStartOffset: number): Array<string> {
   return days;
 }
 
-export function getTodaysIndex(date: Date, weekStartOffset: number): number {
+function getTodaysIndex(date: Date, weekStartOffset: number): number {
   return (date.getDay() + 7 - weekStartOffset) % 7;
 }
 
@@ -44,6 +44,7 @@ export function toCustomDateString(date: Date): string {
 }
 
 export function getDateInfo(date: Date, weekStartOffset: number): DateInfo {
+  console.log('calculating date info');
   const yesterday = new Date(date);
   yesterday.setDate(date.getDate() - 1);
   return {

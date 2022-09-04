@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { getWeekDays, toCustomDateString } from '../customDateFuncs';
+import { toCustomDateString } from '../customDateFuncs';
 import { CompletedDays, DateInfo, Theme } from '../types';
 import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
 
@@ -22,11 +22,9 @@ type WeekDaysProps = {
 };
 
 function WeekDays({ dateInfo, completedDays }: WeekDaysProps) {
-  const weekDays = getWeekDays(1);
-
   return (
     <div>
-      {weekDays.map((day, index) => (
+      {dateInfo.weekDays.map((day, index) => (
         <WeekDay
           key={`${day + index}`}
           complete={!!completedDays.completed[toCustomDateString(dateInfo.weekDates[index])]}
