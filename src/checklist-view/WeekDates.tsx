@@ -39,7 +39,7 @@ const DateSelector = styled.div`
   width: 40px;
   border-radius: 50%;
   ${({ theme }: { theme: Theme }) => `
-    border: 1px solid ${theme.tertiary};
+    border: 1px solid ${theme.primary};
   `}
 `;
 

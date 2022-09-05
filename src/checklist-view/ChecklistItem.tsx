@@ -3,20 +3,32 @@ import styled from 'styled-components';
 import { HabitWithOffset, Theme } from '../types';
 import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
 
+type Padding = {
+  left: number;
+  right: number;
+};
+
 type ChecklistItemProps = {
   habit: HabitWithOffset;
   setSelectedIndex: Function;
   toggleComplete: Function;
   setUsingMouse: Function;
+  padding: Padding;
 };
 
 const ChecklistItemContainer = styled.div`
   height: ${gridHeightInPx}px;
   width: ${gridWidthInPx * 7}px;
   position: absolute;
-  ${({ offset, complete, theme }: { offset: number, complete: boolean, theme: Theme }) => `
+  ${({
+    offset, complete, padding, theme,
+  }: {
+    offset: number, complete: boolean, padding: Padding, theme: Theme,
+  }) => `
     color: ${complete ? theme.secondary : theme.primary};
     top: ${gridHeightInPx * offset}px;
+    padding-right: ${padding.right}px;
+    padding-left: ${padding.left}px;
   `}
   display: flex;
   flex-direction: row;
@@ -28,12 +40,13 @@ const ChecklistItemContainer = styled.div`
 `;
 
 function ChecklistItem({
-  habit, setSelectedIndex, toggleComplete, setUsingMouse,
+  habit, setSelectedIndex, toggleComplete, setUsingMouse, padding,
 }: ChecklistItemProps) {
   return (
     <ChecklistItemContainer
       offset={habit.offset}
       complete={habit.complete}
+      padding={padding}
       onMouseEnter={() => {
         setSelectedIndex(habit.offset);
         setUsingMouse(true);

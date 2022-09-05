@@ -41,6 +41,7 @@ function ChecklistView({
         completedDays={completedDays}
       />
       <Checklist
+        dateInfo={dateInfo}
         habits={habits}
         toggleHabitComplete={toggleHabitComplete}
       />

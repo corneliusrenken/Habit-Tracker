@@ -30,11 +30,13 @@ export type Theme = {
 };
 
 export type DateInfo = {
-  today: Date,
-  todayString: string,
-  yesterday: Date,
-  yesterdayString: string,
-  weekDates: Array<Date>,
-  weekDays: Array<string>,
-  todaysIndex: number,
+  today: Date;
+  todayString: string;
+  yesterday: Date;
+  yesterdayString: string;
+  weekDates: Array<Date>;
+  weekDays: Array<string>;
+  todaysIndex: number;
+  firstDateWidthInPx: number;
+  lastDateWidthInPx: number;
 };

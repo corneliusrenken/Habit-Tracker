@@ -1,3 +1,4 @@
+import getTextWidthInPx from './getTextWidthInPx';
 import { DateInfo } from './types';
 
 // weekStartOffset 0: week starts on sunday
@@ -47,13 +48,16 @@ export function getDateInfo(date: Date, weekStartOffset: number): DateInfo {
   console.log('calculating date info');
   const yesterday = new Date(date);
   yesterday.setDate(date.getDate() - 1);
+  const weekDates = getWeekDates(date, weekStartOffset);
   return {
     today: date,
     todayString: toCustomDateString(date),
     yesterday,
     yesterdayString: toCustomDateString(yesterday),
-    weekDates: getWeekDates(date, weekStartOffset),
+    weekDates,
     weekDays: getWeekDays(weekStartOffset),
     todaysIndex: getTodaysIndex(date, weekStartOffset),
+    firstDateWidthInPx: getTextWidthInPx(weekDates[0].getDate()),
+    lastDateWidthInPx: getTextWidthInPx(weekDates[6].getDate()),
   };
 }

@@ -13,7 +13,7 @@ const theme = {
   primary: '#000',
   secondary: '#CED0C3',
   tertiary: '#CC4445',
-  background: '#fff',
+  background: '#FFF',
 };
 
 root.render(
