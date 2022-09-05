@@ -12,7 +12,7 @@ type ChecklistItemProps = {
   habit: HabitWithOffset;
   setSelectedIndex: Function;
   toggleComplete: Function;
-  setUsingMouse: Function;
+  usingMouse: boolean;
   padding: Padding;
 };
 
@@ -40,7 +40,7 @@ const ChecklistItemContainer = styled.div`
 `;
 
 function ChecklistItem({
-  habit, setSelectedIndex, toggleComplete, setUsingMouse, padding,
+  habit, setSelectedIndex, toggleComplete, usingMouse, padding,
 }: ChecklistItemProps) {
   return (
     <ChecklistItemContainer
@@ -48,8 +48,9 @@ function ChecklistItem({
       complete={habit.complete}
       padding={padding}
       onMouseEnter={() => {
-        setSelectedIndex(habit.offset);
-        setUsingMouse(true);
+        if (usingMouse) {
+          setSelectedIndex(habit.offset);
+        }
       }}
       onClick={() => toggleComplete()}
     >

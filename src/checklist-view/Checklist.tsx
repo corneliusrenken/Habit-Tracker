@@ -33,6 +33,17 @@ function Checklist({ habits, toggleHabitComplete, dateInfo }: ChecklistProps) {
   const [usingMouse, setUsingMouse] = useState(false);
 
   useEffect(() => {
+    const onMouseMove = () => {
+      setUsingMouse(true);
+      window.removeEventListener('mousemove', onMouseMove);
+    };
+    if (!usingMouse) {
+      window.addEventListener('mousemove', onMouseMove);
+    }
+    return () => window.removeEventListener('mousemove', onMouseMove);
+  }, [usingMouse]);
+
+  useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowUp' || e.key === 'w') {
         setUsingMouse(false);
@@ -45,6 +56,7 @@ function Checklist({ habits, toggleHabitComplete, dateInfo }: ChecklistProps) {
         e.preventDefault();
       }
       if (e.key === 'Enter' || e.key === 'e') {
+        setUsingMouse(false);
         const currentID = habits[habits.findIndex((habit) => selectedIndex === habit.offset)].id;
         toggleHabitComplete(currentID);
         e.preventDefault();
@@ -64,7 +76,7 @@ function Checklist({ habits, toggleHabitComplete, dateInfo }: ChecklistProps) {
           habit={habit}
           setSelectedIndex={setSelectedIndex}
           toggleComplete={() => toggleHabitComplete(habit.id)}
-          setUsingMouse={setUsingMouse}
+          usingMouse={usingMouse}
           padding={{
             left: (50 - dateInfo.firstDateWidthInPx) / 2,
             right: (50 - dateInfo.lastDateWidthInPx) / 2,
