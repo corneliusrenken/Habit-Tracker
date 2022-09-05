@@ -45,7 +45,6 @@ export function toCustomDateString(date: Date): string {
 }
 
 export function getDateInfo(date: Date, weekStartOffset: number): DateInfo {
-  console.log('calculating date info');
   const yesterday = new Date(date);
   yesterday.setDate(date.getDate() - 1);
   const weekDates = getWeekDates(date, weekStartOffset);

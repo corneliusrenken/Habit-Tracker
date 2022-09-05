@@ -32,13 +32,15 @@ const addOffsetToHabits = (habits: Array<HabitWithComplete | HabitWithOffset>): 
   }).sort((a, b) => a.id - b.id)
 );
 
+const initDateInfo = getDateInfo(new Date(), 1);
+
 function App() {
+  const [dateInfo] = useState<DateInfo>(initDateInfo);
   // eslint-disable-next-line max-len
   const [completedDays, setCompletedDays] = useState<CompletedDays>({ completed: {}, oldest: null });
   const [occurrences, setOccurrences] = useState<Occurrences>({});
   const [habits, setHabits] = useState<Array<Habit>>([]);
   const [habitsWithOffset, setHabitsWithOffset] = useState<Array<HabitWithOffset>>([]);
-  const [dateInfo] = useState<DateInfo>(getDateInfo(new Date(), 1));
 
   useEffect(() => {
     const fetchData = async () => {
