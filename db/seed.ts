@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import { PrismaClient } from '@prisma/client';
+import { toCustomDateString } from '../src/customDateFuncs';
 import { addCompletedDay } from './models/completedDays';
 import { addHabit } from './models/habits';
 import { addOccurrence } from './models/occurrences';
@@ -24,6 +25,7 @@ async function main() {
     await addHabit(user.id, habitNames[3], 3),
   ];
 
+  /*
   const seed = '2373103710371037373103710371730173';
   const today = new Date('2022-09-02T12:00:00Z');
 
@@ -33,7 +35,8 @@ async function main() {
     const digit = (Number(seed[i]) % 4) + 1;
     const temp = new Date(today);
     temp.setDate(today.getDate() - i);
-    const dateString = `${temp.getFullYear()}-${(temp.getMonth() + 1).toString().padStart(2, '0')}-${temp.getDate().toString().padStart(2, '0')}`;
+    const dateString = `${temp.getFullYear()}-${(temp.getMonth() + 1).
+      toString().padStart(2, '0')}-${temp.getDate().toString().padStart(2, '0')}`;
     for (let j = 0; j < digit; j += 1) {
       promises.push(addOccurrence(habits[j].id, `${dateString}T00:00:00Z`));
     }
@@ -43,6 +46,26 @@ async function main() {
   }
 
   Promise.all(promises);
+  */
+  const today = new Date();
+  const tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+  const dayAfterT = new Date();
+  dayAfterT.setDate(today.getDate() + 2);
+  const dayAfterTwo = new Date();
+  dayAfterTwo.setDate(today.getDate() + 3);
+
+  await addOccurrence(1, `${toCustomDateString(today)}T00:00:00Z`);
+  await addOccurrence(2, `${toCustomDateString(today)}T00:00:00Z`);
+  await addOccurrence(3, `${toCustomDateString(today)}T00:00:00Z`);
+
+  await addOccurrence(2, `${toCustomDateString(tomorrow)}T00:00:00Z`);
+  await addOccurrence(3, `${toCustomDateString(tomorrow)}T00:00:00Z`);
+
+  await addOccurrence(3, `${toCustomDateString(dayAfterT)}T00:00:00Z`);
+
+  await addOccurrence(2, `${toCustomDateString(dayAfterTwo)}T00:00:00Z`);
+  await addOccurrence(3, `${toCustomDateString(dayAfterTwo)}T00:00:00Z`);
 }
 
 main()
