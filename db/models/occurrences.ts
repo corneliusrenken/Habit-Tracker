@@ -67,6 +67,8 @@ export function getOccurrenceStreaks(userId: number, date: string): OccStreaks {
         streaks
       WHERE
         streak_end = TO_DATE(${date}, 'YYYY-MM-DD')
+      OR
+        streak_end = TO_DATE(${date}, 'YYYY-MM-DD') - INTERVAL '1 DAY'
     ), max_streaks AS (
       SELECT
         habit_id,

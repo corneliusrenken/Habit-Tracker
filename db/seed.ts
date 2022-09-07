@@ -12,10 +12,10 @@ async function main() {
   const user = await addUser();
 
   const habitNames = [
-    'go out with dogs',
-    'read',
-    '6h coding challenges',
-    'sleep 8 hours',
+    'go out with dogs', // 0 streak current, 1 max
+    'read', //  1 streak current, 2 max
+    '6h coding challenges', // 4 streak current, 4 max
+    'sleep 8 hours', // 0 streak current, 0 max
   ];
 
   const habits = [
@@ -48,24 +48,29 @@ async function main() {
   Promise.all(promises);
   */
   const today = new Date();
-  const tomorrow = new Date();
-  tomorrow.setDate(today.getDate() + 1);
-  const dayAfterT = new Date();
-  dayAfterT.setDate(today.getDate() + 2);
-  const dayAfterTwo = new Date();
-  dayAfterTwo.setDate(today.getDate() + 3);
+  today.setDate(today.getDate());
+  const before1 = new Date();
+  before1.setDate(today.getDate() - 1);
+  const before2 = new Date();
+  before2.setDate(today.getDate() - 2);
+  const before3 = new Date();
+  before3.setDate(today.getDate() - 3);
 
-  await addOccurrence(1, `${toCustomDateString(today)}T00:00:00Z`);
-  await addOccurrence(2, `${toCustomDateString(today)}T00:00:00Z`);
+  // await addOccurrence(1, `${toCustomDateString(before3)}T00:00:00Z`);
+  // await addOccurrence(2, `${toCustomDateString(before3)}T00:00:00Z`);
+  // await addOccurrence(3, `${toCustomDateString(before3)}T00:00:00Z`);
+
+  // await addOccurrence(2, `${toCustomDateString(before2)}T00:00:00Z`);
+  // await addOccurrence(3, `${toCustomDateString(before2)}T00:00:00Z`);
+
+  // await addOccurrence(3, `${toCustomDateString(before1)}T00:00:00Z`);
+
+  // await addOccurrence(2, `${toCustomDateString(today)}T00:00:00Z`);
+  // await addOccurrence(3, `${toCustomDateString(today)}T00:00:00Z`);
+
+  await addOccurrence(1, `${toCustomDateString(before2)}T00:00:00Z`);
+  await addOccurrence(2, `${toCustomDateString(before1)}T00:00:00Z`);
   await addOccurrence(3, `${toCustomDateString(today)}T00:00:00Z`);
-
-  await addOccurrence(2, `${toCustomDateString(tomorrow)}T00:00:00Z`);
-  await addOccurrence(3, `${toCustomDateString(tomorrow)}T00:00:00Z`);
-
-  await addOccurrence(3, `${toCustomDateString(dayAfterT)}T00:00:00Z`);
-
-  await addOccurrence(2, `${toCustomDateString(dayAfterTwo)}T00:00:00Z`);
-  await addOccurrence(3, `${toCustomDateString(dayAfterTwo)}T00:00:00Z`);
 }
 
 main()
