@@ -14,11 +14,11 @@ export type HabitWithOffset = HabitWithComplete & {
 };
 
 export type Occurrences = {
-  [key: string]: Array<number>;
+  [date: string]: Array<number>;
 };
 
 export type CompletedDays = {
-  completed: { [key: string]: boolean };
+  completed: { [date: string]: boolean };
   oldest: string | null;
 };
 
@@ -39,4 +39,11 @@ export type DateInfo = {
   todaysIndex: number;
   firstDateWidthInPx: number;
   lastDateWidthInPx: number;
+};
+
+export type Streaks = {
+  [id: string]: {
+    current: number;
+    maximum: number;
+  };
 };

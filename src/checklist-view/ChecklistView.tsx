@@ -1,7 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import Checklist from './Checklist';
-import { CompletedDays, DateInfo, HabitWithOffset } from '../types';
+import {
+  CompletedDays, DateInfo, HabitWithOffset, Streaks,
+} from '../types';
 import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
 import WeekDays from './WeekDays';
 import WeekDates from './WeekDates';
@@ -19,10 +21,11 @@ type ChecklistViewProps = {
   toggleHabitComplete: Function;
   dateInfo: DateInfo;
   completedDays: CompletedDays | undefined;
+  streaks: Streaks;
 };
 
 function ChecklistView({
-  habits, toggleHabitComplete, dateInfo, completedDays,
+  habits, toggleHabitComplete, dateInfo, completedDays, streaks,
 }: ChecklistViewProps) {
   if (completedDays === undefined) {
     return <div />;
@@ -44,6 +47,7 @@ function ChecklistView({
         dateInfo={dateInfo}
         habits={habits}
         toggleHabitComplete={toggleHabitComplete}
+        streaks={streaks}
       />
     </ChecklistViewContainer>
   );

@@ -5,7 +5,7 @@ import { getDateInfo } from './customDateFuncs';
 import {
   CompletedDays,
   DateInfo,
-  Habit, HabitWithComplete, HabitWithOffset, Occurrences,
+  Habit, HabitWithComplete, HabitWithOffset, Occurrences, Streaks,
 } from './types';
 
 // eslint-disable-next-line max-len
@@ -39,6 +39,7 @@ function App() {
   // eslint-disable-next-line max-len
   const [completedDays, setCompletedDays] = useState<CompletedDays>({ completed: {}, oldest: null });
   const [occurrences, setOccurrences] = useState<Occurrences>({});
+  const [streaks, setStreaks] = useState<Streaks>({});
   const [habits, setHabits] = useState<Array<Habit>>([]);
   const [habitsWithOffset, setHabitsWithOffset] = useState<Array<HabitWithOffset>>([]);
 
@@ -50,13 +51,12 @@ function App() {
         axios.get(`/api/habits/${userId}`),
         axios.get(`/api/occurrences/${userId}/${yesterdayString}/${todayString}`),
         axios.get(`/api/completed-days/${userId}`),
+        axios.get(`/api/occurrences/streaks/${userId}/${todayString}`),
       ]);
-      const habitsData = responses[0].data;
-      const occurrencesData = responses[1].data;
-      const completedDaysData = responses[2].data;
-      setHabits(habitsData);
-      setOccurrences(occurrencesData);
-      setCompletedDays(completedDaysData);
+      setHabits(responses[0].data);
+      setOccurrences(responses[1].data);
+      setCompletedDays(responses[2].data);
+      setStreaks(responses[3].data);
     };
 
     fetchData();
@@ -87,6 +87,15 @@ function App() {
     if (indexOfOccurrence === -1) {
       newOccurrences.push(id);
       occurrenceHttpMethod = 'post';
+
+      setStreaks({
+        ...streaks,
+        [id]: {
+          current: streaks[id].current + 1,
+          maximum: streaks[id].maximum, // updates later through api call
+        },
+      });
+
       if (incompleteCount === 1) {
         completeHttpMethod = 'post';
 
@@ -94,12 +103,20 @@ function App() {
           oldest: completedDays.oldest || `${todayString}T00:00:00.000Z`,
           completed: { ...completedDays.completed, [todayString]: true },
         };
-
         setCompletedDays(newCompletedDays);
       }
     } else {
       newOccurrences.splice(indexOfOccurrence, 1);
       occurrenceHttpMethod = 'delete';
+
+      setStreaks({
+        ...streaks,
+        [id]: {
+          current: streaks[id].current - 1,
+          maximum: streaks[id].maximum, // updates later through api call
+        },
+      });
+
       if (incompleteCount === 0) {
         completeHttpMethod = 'delete';
 
@@ -108,7 +125,6 @@ function App() {
           completed: { ...completedDays.completed },
         };
         delete newCompletedDays.completed[todayString];
-
         setCompletedDays(newCompletedDays);
       }
     }
@@ -119,7 +135,13 @@ function App() {
         habitId: id,
         date: todayString,
       },
-    });
+    })
+      .then(() => (
+        axios.get(`/api/occurrences/streaks/1/${todayString}`)
+      ))
+      .then(({ data }) => {
+        setStreaks(data);
+      });
     if (completeHttpMethod) {
       axios({
         url: '/api/completed-days',
@@ -130,6 +152,7 @@ function App() {
         },
       });
     }
+
     setOccurrences({
       ...occurrences,
       [todayString]: newOccurrences,
@@ -143,6 +166,7 @@ function App() {
         toggleHabitComplete={toggleHabitComplete}
         dateInfo={dateInfo}
         completedDays={completedDays}
+        streaks={streaks}
       />
     </div>
   );

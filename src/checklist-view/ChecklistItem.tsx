@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { HabitWithOffset, Theme } from '../types';
+import { HabitWithOffset, Streaks, Theme } from '../types';
 import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
 
 type Padding = {
@@ -14,6 +14,7 @@ type ChecklistItemProps = {
   toggleComplete: Function;
   usingMouse: boolean;
   padding: Padding;
+  streaks: Streaks;
 };
 
 const ChecklistItemContainer = styled.div`
@@ -40,7 +41,7 @@ const ChecklistItemContainer = styled.div`
 `;
 
 function ChecklistItem({
-  habit, setSelectedIndex, toggleComplete, usingMouse, padding,
+  habit, setSelectedIndex, toggleComplete, usingMouse, padding, streaks,
 }: ChecklistItemProps) {
   return (
     <ChecklistItemContainer
@@ -55,7 +56,7 @@ function ChecklistItem({
       onClick={() => toggleComplete()}
     >
       <p>{habit.name}</p>
-      <p>3</p>
+      <p>{streaks[habit.id].current}</p>
     </ChecklistItemContainer>
   );
 }

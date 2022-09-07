@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import ChecklistItem from './ChecklistItem';
-import { DateInfo, HabitWithOffset, Theme } from '../types';
+import {
+  DateInfo, HabitWithOffset, Streaks, Theme,
+} from '../types';
 import { gridHeightInPx, gridWidthInPx } from '../universalStyling';
 
 type ChecklistProps = {
   habits: Array<HabitWithOffset>;
   toggleHabitComplete: Function;
   dateInfo: DateInfo;
+  streaks: Streaks;
 };
 
 const ChecklistContainer = styled.div`
@@ -28,7 +31,9 @@ const Selector = styled.div`
   `}
 `;
 
-function Checklist({ habits, toggleHabitComplete, dateInfo }: ChecklistProps) {
+function Checklist({
+  habits, toggleHabitComplete, dateInfo, streaks,
+}: ChecklistProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [usingMouse, setUsingMouse] = useState(false);
 
@@ -74,6 +79,7 @@ function Checklist({ habits, toggleHabitComplete, dateInfo }: ChecklistProps) {
         <ChecklistItem
           key={habit.id}
           habit={habit}
+          streaks={streaks}
           setSelectedIndex={setSelectedIndex}
           toggleComplete={() => toggleHabitComplete(habit.id)}
           usingMouse={usingMouse}
