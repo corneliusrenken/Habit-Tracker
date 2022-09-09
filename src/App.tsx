@@ -47,8 +47,6 @@ function App() {
   const [habits, setHabits] = useState<Array<Habit>>([]);
   const [habitsWithOffset, setHabitsWithOffset] = useState<Array<HabitWithOffset>>([]);
 
-  console.log(occurrences);
-
   useEffect(() => {
     const fetchData = async () => {
       const userId = 1;
