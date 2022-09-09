@@ -49,7 +49,14 @@ function App() {
       const { todayString, yesterdayString } = dateInfo;
       const responses = await Promise.all([
         axios.get(`/api/habits/${userId}`),
-        axios.get(`/api/occurrences/${userId}/${yesterdayString}/${todayString}`),
+        axios({
+          method: 'get',
+          url: `/api/occurrences/${userId}`,
+          params: {
+            from: yesterdayString,
+            until: todayString,
+          },
+        }),
         axios.get(`/api/completed-days/${userId}`),
         axios.get(`/api/occurrences/streaks/${userId}/${todayString}`),
       ]);
