@@ -32,22 +32,9 @@ export const initializeData = async (states: InitializeDataStates) => {
   const { todayString, yesterdayString } = dateInfo;
   const responses = await Promise.all([
     axios.get(`/api/habits/${userId}`),
-    axios({
-      method: 'get',
-      url: `/api/occurrences/${userId}`,
-      params: {
-        from: yesterdayString,
-        until: todayString,
-      },
-    }),
+    axios.get(`/api/occurrences/${userId}`, { params: { from: yesterdayString, until: todayString } }),
     axios.get(`/api/completed-days/${userId}`),
-    axios({
-      method: 'get',
-      url: `/api/occurrences/streaks/${userId}`,
-      params: {
-        today: todayString,
-      },
-    }),
+    axios.get(`/api/occurrences/streaks/${userId}`, { params: { today: todayString } }),
   ]);
   setHabits(responses[0].data);
   setOccurrences(responses[1].data);
