@@ -16,9 +16,14 @@ router.get('/habits/:userId', async (req, res) => {
   }
 });
 
-router.get('/occurrences/streaks/:userId/:date', async (req, res) => {
+router.get('/occurrences/streaks/:userId/', async (req, res) => {
+  const today = req.query.today ? `${req.query.today}` : undefined;
+  if (!today) {
+    res.status(400).end();
+    return;
+  }
   try {
-    const streaks = await getOccurrenceStreaks(Number(req.params.userId), req.params.date);
+    const streaks = await getOccurrenceStreaks(Number(req.params.userId), today);
     res.status(200).json(streaks[0].streaks);
   } catch (err) {
     res.status(500).send(`${err}`);

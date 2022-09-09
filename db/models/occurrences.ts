@@ -1,13 +1,13 @@
 import { Prisma } from '@prisma/client';
 import prisma from '..';
 
-type OccorrenceRange = Promise<Array<{
+type Occorrences = Promise<Array<{
   occurrences: { oldest: string } & {
     [date: string]: Array<number>;
   }
 }>>;
 // eslint-disable-next-line max-len
-export function getOccurrences(userId: number, from: string | undefined, until: string | undefined): OccorrenceRange {
+export function getOccurrences(userId: number, from: string | undefined, until: string | undefined): Occorrences {
   return prisma.$queryRaw`
     SELECT
       COALESCE(
@@ -40,9 +40,9 @@ export function getOccurrences(userId: number, from: string | undefined, until: 
 }
 
 // eslint-disable-next-line max-len
-type OccStreaks = Promise<Array<{ streaks: { [key: string]: { current: number, maximum: number } } }>>;
+type OccurrenceStreaks = Promise<Array<{ streaks: { [key: string]: { current: number, maximum: number } } }>>;
 
-export function getOccurrenceStreaks(userId: number, date: string): OccStreaks {
+export function getOccurrenceStreaks(userId: number, today: string): OccurrenceStreaks {
   return prisma.$queryRaw`
     WITH user_occurrences AS (
       SELECT
@@ -76,9 +76,9 @@ export function getOccurrenceStreaks(userId: number, date: string): OccStreaks {
       FROM
         streaks
       WHERE
-        streak_end = TO_DATE(${date}, 'YYYY-MM-DD')
+        streak_end = TO_DATE(${today}, 'YYYY-MM-DD')
       OR
-        streak_end = TO_DATE(${date}, 'YYYY-MM-DD') - INTERVAL '1 DAY'
+        streak_end = TO_DATE(${today}, 'YYYY-MM-DD') - INTERVAL '1 DAY'
     ), max_streaks AS (
       SELECT
         habit_id,
