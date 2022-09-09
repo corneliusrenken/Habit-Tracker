@@ -8,7 +8,7 @@ export function getCompletedDays(userId: number): CompletedDays {
       COALESCE(
         JSON_OBJECT_AGG(date, true)
       FILTER (WHERE date IS NOT NULL), '{}') AS completed,
-      min(date) AS oldest
+      to_char(min(date), 'YYYY-MM-DD') AS oldest
     FROM
       completed_days
     WHERE

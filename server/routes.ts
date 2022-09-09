@@ -25,12 +25,12 @@ router.get('/occurrences/streaks/:userId/:date', async (req, res) => {
   }
 });
 
-router.get('/occurrences/:userId/:fromDate/:toDate', async (req, res) => {
+router.get('/occurrences/:userId', async (req, res) => {
   try {
-    const fromDate = `${req.params.fromDate}T00:00:00Z`;
-    const toDate = `${req.params.toDate}T00:00:00Z`;
-    const occurrences = await getOccurrences(Number(req.params.userId), fromDate, toDate);
-    res.status(200).json(occurrences[0].dates);
+    const from = req.query.from ? `${req.query.from}` : undefined;
+    const until = req.query.until ? `${req.query.until}` : undefined;
+    const occurrences = await getOccurrences(Number(req.params.userId), from, until);
+    res.status(200).json(occurrences[0]);
   } catch (err) {
     res.status(500).send(`${err}`);
   }

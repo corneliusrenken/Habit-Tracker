@@ -1,13 +1,19 @@
+import { Prisma } from '@prisma/client';
 import prisma from '..';
 
-type OccRange = Promise<Array<{ dates: { [key: string]: Array<number> } }>>;
-
-export function getOccurrences(userId: number, fromDate: string, toDate: string): OccRange {
+type OccorrenceRange = Promise<Array<{
+  occurrences: { oldest: string } & {
+    [date: string]: Array<number>;
+  }
+}>>;
+// eslint-disable-next-line max-len
+export function getOccurrences(userId: number, from: string | undefined, until: string | undefined): OccorrenceRange {
   return prisma.$queryRaw`
     SELECT
       COALESCE(
         JSON_OBJECT_AGG(date, habits)
-      FILTER (WHERE date IS NOT NULL), '{}') AS dates
+      FILTER (WHERE date IS NOT NULL), '{}') AS occurrences,
+      to_char(min(date), 'YYYY-MM-DD') AS oldest
     FROM (
       SELECT
         date AS date,
@@ -20,10 +26,14 @@ export function getOccurrences(userId: number, fromDate: string, toDate: string)
         occurrences.habit_id = habits.id
       WHERE
         user_id = ${userId}
-      AND
-        date >= TO_DATE(${fromDate}, 'YYYY-MM-DD')
-      AND
-        date <= TO_DATE(${toDate}, 'YYYY-MM-DD')
+      ${from ? Prisma.sql`
+        AND
+          date >= TO_DATE(${from}, 'YYYY-MM-DD')
+      ` : Prisma.empty}
+      ${until ? Prisma.sql`
+        AND
+          date <= TO_DATE(${until}, 'YYYY-MM-DD')
+      ` : Prisma.empty}
       GROUP BY date
     ) AS agg
   `;
