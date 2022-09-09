@@ -1,11 +1,15 @@
 import axios from 'axios';
 import React, { useCallback, useEffect, useState } from 'react';
 import CheckListView from './checklist-view/ChecklistView';
-import { getDateInfo } from './customDateFuncs';
+import { getDateInfo, isDateStringEarlier } from './customDateFuncs';
 import {
   CompletedDays,
   DateInfo,
-  Habit, HabitWithComplete, HabitWithOffset, Occurrences, Streaks,
+  Habit,
+  HabitWithComplete,
+  HabitWithOffset,
+  Occurrences,
+  Streaks,
 } from './types';
 
 // eslint-disable-next-line max-len
@@ -38,10 +42,12 @@ function App() {
   const [dateInfo] = useState<DateInfo>(initDateInfo);
   // eslint-disable-next-line max-len
   const [completedDays, setCompletedDays] = useState<CompletedDays>({ completed: {}, oldest: null });
-  const [occurrences, setOccurrences] = useState<Occurrences>({});
+  const [occurrences, setOccurrences] = useState<Occurrences>({ occurrences: {}, oldest: null });
   const [streaks, setStreaks] = useState<Streaks>({});
   const [habits, setHabits] = useState<Array<Habit>>([]);
   const [habitsWithOffset, setHabitsWithOffset] = useState<Array<HabitWithOffset>>([]);
+
+  console.log(occurrences);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,7 +64,13 @@ function App() {
           },
         }),
         axios.get(`/api/completed-days/${userId}`),
-        axios.get(`/api/occurrences/streaks/${userId}/${todayString}`),
+        axios({
+          method: 'get',
+          url: `/api/occurrences/streaks/${userId}`,
+          params: {
+            today: todayString,
+          },
+        }),
       ]);
       setHabits(responses[0].data);
       setOccurrences(responses[1].data);
@@ -71,7 +83,7 @@ function App() {
 
   const calculateHabitsWithOffset = useCallback(() => {
     const { todayString } = dateInfo;
-    const complete = addCompleteToHabits(habits, occurrences[todayString]);
+    const complete = addCompleteToHabits(habits, occurrences.occurrences[todayString]);
     const offset = addOffsetToHabits(complete);
     setHabitsWithOffset(offset);
   }, [habits, occurrences, dateInfo]);
@@ -82,17 +94,17 @@ function App() {
 
   const toggleHabitComplete = (id: number) => {
     const { todayString } = dateInfo;
-    const newOccurrences = occurrences[todayString] !== undefined
-      ? occurrences[todayString].slice()
+    const newOccurrencesForToday = occurrences.occurrences[todayString] !== undefined
+      ? occurrences.occurrences[todayString].slice()
       : [];
-    const indexOfOccurrence = newOccurrences.indexOf(id);
+    const indexOfOccurrence = newOccurrencesForToday.indexOf(id);
     let occurrenceHttpMethod;
     let completeHttpMethod;
     const incompleteCount = habitsWithOffset.filter((habit) => (
       !habit.complete && habit.selected
     )).length;
     if (indexOfOccurrence === -1) {
-      newOccurrences.push(id);
+      newOccurrencesForToday.push(id);
       occurrenceHttpMethod = 'post';
 
       setStreaks({
@@ -113,7 +125,7 @@ function App() {
         setCompletedDays(newCompletedDays);
       }
     } else {
-      newOccurrences.splice(indexOfOccurrence, 1);
+      newOccurrencesForToday.splice(indexOfOccurrence, 1);
       occurrenceHttpMethod = 'delete';
 
       setStreaks({
@@ -144,7 +156,13 @@ function App() {
       },
     })
       .then(() => (
-        axios.get(`/api/occurrences/streaks/1/${todayString}`)
+        axios({
+          method: 'get',
+          url: '/api/occurrences/streaks/1',
+          params: {
+            today: todayString,
+          },
+        })
       ))
       .then(({ data }) => {
         setStreaks(data);
@@ -160,9 +178,27 @@ function App() {
       });
     }
 
+    let newOldestOccurrence;
+    if (occurrenceHttpMethod === 'post') {
+      if (occurrences.oldest === null) {
+        newOldestOccurrence = todayString;
+      } else {
+        newOldestOccurrence = isDateStringEarlier(todayString, occurrences.oldest)
+          ? todayString
+          : occurrences.oldest;
+      }
+    } else if (occurrences.oldest === todayString && newOccurrencesForToday.length === 0) {
+      newOldestOccurrence = null;
+    } else {
+      newOldestOccurrence = occurrences.oldest;
+    }
+
     setOccurrences({
-      ...occurrences,
-      [todayString]: newOccurrences,
+      occurrences: {
+        ...occurrences.occurrences,
+        [todayString]: newOccurrencesForToday,
+      },
+      oldest: newOldestOccurrence,
     });
   };
 

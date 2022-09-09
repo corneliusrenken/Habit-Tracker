@@ -14,7 +14,10 @@ export type HabitWithOffset = HabitWithComplete & {
 };
 
 export type Occurrences = {
-  [date: string]: Array<number>;
+  occurrences: {
+    [date: string]: Array<number>;
+  };
+  oldest: string | null;
 };
 
 export type CompletedDays = {
