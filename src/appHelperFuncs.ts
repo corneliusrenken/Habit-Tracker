@@ -122,7 +122,7 @@ export const toggleHabitComplete = (habitId: number, states: ToggleHabitComplete
       completeHttpMethod = 'post';
 
       const newCompletedDays: CompletedDays = {
-        oldest: completedDays.oldest || `${todayString}T00:00:00.000Z`,
+        oldest: completedDays.oldest || todayString,
         completed: { ...completedDays.completed, [todayString]: true },
       };
       setCompletedDays(newCompletedDays);
