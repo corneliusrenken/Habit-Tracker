@@ -25,7 +25,7 @@ async function main() {
     await addHabit(user.id, habitNames[3], 3),
   ];
 
-  const seed = '2373103710371037373103710371730173';
+  const seed = '237310371037103737310371037173017323731037103710373731037103717301732373103710371037373103710371730173';
   const today = new Date('2022-09-08T12:00:00Z');
 
   const promises = [];
@@ -34,7 +34,7 @@ async function main() {
     const digit = (Number(seed[i]) % 4) + 1;
     const temp = new Date(today);
     temp.setDate(today.getDate() - i);
-    const dateString = `${temp.getFullYear()}-${(temp.getMonth() + 1).toString().padStart(2, '0')}-${temp.getDate().toString().padStart(2, '0')}`;
+    const dateString = toCustomDateString(temp);
     for (let j = 0; j < digit; j += 1) {
       promises.push(addOccurrence(habits[j].id, `${dateString}T00:00:00Z`));
     }

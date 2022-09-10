@@ -75,3 +75,11 @@ export function isDateStringEarlier(date1: string, date2: string) {
   }
   return false;
 }
+
+export function getDifferenceInDays(date1: string | Date, date2: string | Date) {
+  const d1 = typeof date1 === 'string' ? new Date(date1) : date1;
+  const d2 = typeof date2 === 'string' ? new Date(date2) : date2;
+  const msDiff = Math.abs(d2.getTime() - d1.getTime());
+  const dayDiff = msDiff / (1000 * 60 * 60 * 24);
+  return dayDiff;
+}

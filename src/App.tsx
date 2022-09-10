@@ -3,7 +3,8 @@ import {
   addCompleteToHabits, addOffsetToHabits, initializeData, toggleHabitComplete,
 } from './appHelperFuncs';
 import CheckListView from './checklist-view/ChecklistView';
-import { getDateInfo } from './customDateFuncs';
+import { getDateInfo, toCustomDateString } from './customDateFuncs';
+import HistoryView from './history-view/HistoryView';
 import {
   CompletedDays,
   DateInfo,
@@ -59,6 +60,15 @@ function App() {
       setCompletedDays,
     })
   ), [completedDays, dateInfo, habitsWithOffset, occurrences, streaks]);
+
+  return (
+    <HistoryView
+      dateInfo={dateInfo}
+      from={completedDays.oldest}
+      until={toCustomDateString(dateInfo.weekDates[6])}
+      complete={completedDays.completed}
+    />
+  );
 
   return (
     <div>
