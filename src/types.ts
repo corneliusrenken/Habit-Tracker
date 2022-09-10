@@ -50,3 +50,5 @@ export type Streaks = {
     maximum: number;
   };
 };
+
+export type Views = 'checklist' | 'history';

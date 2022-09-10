@@ -12,11 +12,13 @@ import {
   HabitWithOffset,
   Occurrences,
   Streaks,
+  Views,
 } from './types';
 
 const initDateInfo = getDateInfo(new Date(), 1);
 
 function App() {
+  const [view, setView] = useState<Views>('checklist');
   const [dateInfo] = useState<DateInfo>(initDateInfo);
   // eslint-disable-next-line max-len
   const [completedDays, setCompletedDays] = useState<CompletedDays>({ completed: {}, oldest: null });
@@ -61,25 +63,42 @@ function App() {
     })
   ), [completedDays, dateInfo, habitsWithOffset, occurrences, streaks]);
 
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 't') {
+        setView('checklist');
+        e.preventDefault();
+      }
+      if (e.key === 'h') {
+        setView('history');
+        e.preventDefault();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, []);
+
+  if (view === 'checklist') {
+    return (
+      <div>
+        <CheckListView
+          habits={habitsWithOffset}
+          toggleHabitComplete={toggleHabitCompleteMemo}
+          dateInfo={dateInfo}
+          completedDays={completedDays}
+          streaks={streaks}
+        />
+      </div>
+    );
+  }
+  // from={completedDays.oldest}
   return (
     <HistoryView
       dateInfo={dateInfo}
-      from={completedDays.oldest}
+      from="2021-08-08"
       until={toCustomDateString(dateInfo.weekDates[6])}
       complete={completedDays.completed}
     />
-  );
-
-  return (
-    <div>
-      <CheckListView
-        habits={habitsWithOffset}
-        toggleHabitComplete={toggleHabitCompleteMemo}
-        dateInfo={dateInfo}
-        completedDays={completedDays}
-        streaks={streaks}
-      />
-    </div>
   );
 }
 
