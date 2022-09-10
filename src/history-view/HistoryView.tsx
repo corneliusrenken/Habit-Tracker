@@ -35,6 +35,10 @@ const Header = styled(Spacer)`
   top: 0;
 `;
 
+const Footer = styled(Spacer)`
+  bottom: 0;
+`;
+
 const DateComponent = styled.div`
   height: ${gridHeightInPx}px;
   width: ${gridWidthInPx}px;
@@ -70,8 +74,6 @@ const getArrayOfDates = (from: string | null, until: string, dateInfo: DateInfo)
 
   const dates: Array<Date> = [];
 
-  currentDate.setDate(currentDate.getDate() - 7);
-
   while (currentDate.getTime() >= finalDate.getTime() || dates.length % 7 !== 0) {
     dates.push(new Date(currentDate));
 
@@ -99,7 +101,7 @@ function HistoryView({
     });
   }, [from, until]);
 
-  const daysDisplayed = from ? getDifferenceInDays(from, until) + 1 - 7 : 0;
+  const daysDisplayed = from ? getDifferenceInDays(from, until) + 1 : 7;
   return (
     <HistoryViewContainer>
       <Header
@@ -120,6 +122,9 @@ function HistoryView({
           );
         })}
       </DateContainer>
+      <Footer
+        daysDisplayed={daysDisplayed}
+      />
     </HistoryViewContainer>
   );
 }

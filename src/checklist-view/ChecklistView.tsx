@@ -12,7 +12,7 @@ const ChecklistViewContainer = styled.div`
   width: ${gridWidthInPx * 7}px;
   margin: 0 auto;
   ${({ habitCount }: { habitCount: number }) => `
-    margin-bottom: calc(50vh - ${((habitCount + 2) * gridHeightInPx) / 2}px);
+    margin-top: calc(50vh - ${((habitCount + 2) * gridHeightInPx) / 2}px);
   `}
 `;
 

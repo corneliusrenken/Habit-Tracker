@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import React, { useCallback, useEffect, useState } from 'react';
 import {
   addCompleteToHabits, addOffsetToHabits, initializeData, toggleHabitComplete,
@@ -13,11 +12,13 @@ import {
   HabitWithOffset,
   Occurrences,
   Streaks,
+  Views,
 } from './types';
 
 const initDateInfo = getDateInfo(new Date(), 1);
 
 function App() {
+  const [view, setView] = useState<Views>('checklist');
   const [dateInfo] = useState<DateInfo>(initDateInfo);
   // eslint-disable-next-line max-len
   const [completedDays, setCompletedDays] = useState<CompletedDays>({ completed: {}, oldest: null });
@@ -65,11 +66,11 @@ function App() {
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 't') {
-        console.log('checklist');
+        setView('checklist');
         e.preventDefault();
       }
       if (e.key === 'h') {
-        console.log('history');
+        setView('history');
         e.preventDefault();
       }
     };
@@ -77,22 +78,27 @@ function App() {
     return () => window.removeEventListener('keydown', onKeyDown);
   }, []);
 
+  if (view === 'checklist') {
+    return (
+      <div>
+        <CheckListView
+          habits={habitsWithOffset}
+          toggleHabitComplete={toggleHabitCompleteMemo}
+          dateInfo={dateInfo}
+          completedDays={completedDays}
+          streaks={streaks}
+        />
+      </div>
+    );
+  }
+
   return (
-    <>
-      <HistoryView
-        dateInfo={dateInfo}
-        from={completedDays.oldest}
-        until={toCustomDateString(dateInfo.weekDates[6])}
-        complete={completedDays.completed}
-      />
-      <CheckListView
-        habits={habitsWithOffset}
-        toggleHabitComplete={toggleHabitCompleteMemo}
-        dateInfo={dateInfo}
-        completedDays={completedDays}
-        streaks={streaks}
-      />
-    </>
+    <HistoryView
+      dateInfo={dateInfo}
+      from={completedDays.oldest}
+      until={toCustomDateString(dateInfo.weekDates[6])}
+      complete={completedDays.completed}
+    />
   );
 }
 
