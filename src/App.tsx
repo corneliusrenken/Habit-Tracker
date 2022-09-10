@@ -91,11 +91,11 @@ function App() {
       </div>
     );
   }
-  // from={completedDays.oldest}
+
   return (
     <HistoryView
       dateInfo={dateInfo}
-      from="2021-08-08"
+      from={completedDays.oldest}
       until={toCustomDateString(dateInfo.weekDates[6])}
       complete={completedDays.completed}
     />
