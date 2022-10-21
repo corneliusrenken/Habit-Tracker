@@ -16,6 +16,8 @@ async function main() {
     'read', //  1 streak current, 2 max
     '6h coding challenges', // 4 streak current, 4 max
     'sleep 8 hours', // 0 streak current, 0 max
+    'network', // 0 streak current, 0 max
+    'no phone after bed', // 0 streak current, 0 max
   ];
 
   const habits = [
@@ -23,10 +25,12 @@ async function main() {
     await addHabit(user.id, habitNames[1], 1),
     await addHabit(user.id, habitNames[2], 2),
     await addHabit(user.id, habitNames[3], 3),
+    await addHabit(user.id, habitNames[4], 4),
+    await addHabit(user.id, habitNames[5], 5),
   ];
 
   const seed = '237310371037103737310371037173017323731037103710373731037103717301732373103710371037373103710371730173';
-  const today = new Date('2022-09-08T12:00:00Z');
+  const today = new Date('2022-09-10T12:00:00Z');
 
   const promises = [];
 

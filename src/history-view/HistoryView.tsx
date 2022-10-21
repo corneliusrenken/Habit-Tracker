@@ -15,28 +15,10 @@ const DateContainer = styled.div`
     const lines = Math.ceil(daysDisplayed / 7);
     return `
       height: ${gridHeightInPx * lines}px;
+      margin-bottom: max(50vh - ${(gridHeightInPx * lines) / 2}px, ${gridHeightInPx * 2}px);
+      margin-top: max(50vh - ${(gridHeightInPx * lines) / 2}px, ${gridHeightInPx * 2}px);
     `;
   }}
-`;
-
-const Spacer = styled.div`
-  ${({ daysDisplayed }: { daysDisplayed: number }) => {
-    const lines = Math.ceil(daysDisplayed / 7);
-    return `
-      height: max(50vh - ${(gridHeightInPx * lines) / 2}px, ${gridHeightInPx * 2}px);
-    `;
-  }}
-  width: 100%;
-  background-color: white;
-  position: sticky;
-`;
-
-const Header = styled(Spacer)`
-  top: 0;
-`;
-
-const Footer = styled(Spacer)`
-  bottom: 0;
 `;
 
 const DateComponent = styled.div`
@@ -104,9 +86,6 @@ function HistoryView({
   const daysDisplayed = from ? getDifferenceInDays(from, until) + 1 : 7;
   return (
     <HistoryViewContainer>
-      <Header
-        daysDisplayed={daysDisplayed}
-      />
       <DateContainer
         daysDisplayed={daysDisplayed}
       >
@@ -122,9 +101,6 @@ function HistoryView({
           );
         })}
       </DateContainer>
-      <Footer
-        daysDisplayed={daysDisplayed}
-      />
     </HistoryViewContainer>
   );
 }
