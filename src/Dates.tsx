@@ -1,12 +1,12 @@
 import React, { useEffect, useRef } from 'react';
 import './dates.css';
 
-type DaysProps = {
+type DatesProps = {
   dates: number[];
   todaysIndex: number;
 };
 
-function Days({ dates, todaysIndex }: DaysProps) {
+function Dates({ dates, todaysIndex }: DatesProps) {
   const dateSelector = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -29,4 +29,4 @@ function Days({ dates, todaysIndex }: DaysProps) {
   );
 }
 
-export default Days;
+export default Dates;
