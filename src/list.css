@@ -1,0 +1,29 @@
+.habit-container {
+  position: relative;
+}
+
+.habit {
+  position: absolute;
+  padding-left: var(--left-margin);
+  padding-right: var(--right-margin);
+  height: 50px;
+  width: 350px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.name {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 50px;
+  white-space: nowrap;
+  overflow: hidden;
+  min-width: 0;
+}
+
+.streak {
+  margin-left: 5px;
+}
