@@ -4,3 +4,5 @@ export type Habit = {
   streak: number;
   order: number;
 };
+
+export type View = 'habit' | 'selection' | 'history' | 'focus';

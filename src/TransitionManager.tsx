@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { View } from './globalTypes';
 import './transitionManager.css';
 
 function forceElementReflow(element: HTMLElement, className: string) {
@@ -30,8 +31,6 @@ const viewTypes = {
   focus: 'occurrence',
 };
 
-type View = 'habit' | 'selection' | 'history' | 'focus';
-
 function getDocumentBottom() {
   const { scrollHeight, clientHeight } = document.documentElement;
   return scrollHeight - clientHeight;
@@ -46,8 +45,7 @@ function transition(
   // need to calculate scroll offset before changing the old-margin
   // and new-margin properties as they change the document height
   const { scrollTop } = document.documentElement;
-  let documentBottom = getDocumentBottom();
-  const scrollDstFromBottom = documentBottom - scrollTop;
+  const scrollDstFromBottom = getDocumentBottom() - scrollTop;
   const scrollDstFromTop = scrollTop;
 
   const container = document.getElementById('container');
@@ -73,40 +71,33 @@ function transition(
 
   if (newViewType === 'list') {
     document.documentElement.style.setProperty('--list-height', `${newBodyHeight}px`);
-  } else if (newViewType === 'occurrence') {
+  }
+
+  if (newViewType === 'occurrence') {
     document.documentElement.style.setProperty('--occurrences-height', `${newBodyHeight}px`);
   }
 
   if (oldViewType !== newViewType) {
     if (newViewType === 'occurrence') {
       document.documentElement.style.setProperty('--scroll-offset', `${scrollDstFromTop}px`);
-    }
 
-    if (newViewType === 'list') {
-      document.documentElement.style.setProperty('--scroll-offset', `${scrollDstFromBottom}px`);
-    }
-
-    if (newViewType === 'occurrence') {
       forceElementReflow(occurrences, 'occurrences-list-to-occurrence-start-point');
       forceElementReflow(days, 'days-list-to-occurrence-start-point');
       forceElementReflow(dates, 'dates-list-to-occurrence-start-point');
       forceElementReflow(list, 'list-list-to-occurrence-start-point');
       forceElementReflow(maskTop, 'mask-top-list-to-occurrence-start-point');
       forceElementReflow(maskBottom, 'mask-bottom-list-to-occurrence-start-point');
-
-      documentBottom = getDocumentBottom();
-      window.scrollTo({ top: documentBottom });
     }
 
     if (newViewType === 'list') {
+      document.documentElement.style.setProperty('--scroll-offset', `${scrollDstFromBottom}px`);
+
       forceElementReflow(occurrences, 'occurrences-occurrence-to-list-start-point');
       forceElementReflow(days, 'days-occurrence-to-list-start-point');
       forceElementReflow(dates, 'dates-occurrence-to-list-start-point');
       forceElementReflow(list, 'list-occurrence-to-list-start-point');
       forceElementReflow(maskTop, 'mask-top-occurrence-to-list-start-point');
       forceElementReflow(maskBottom, 'mask-bottom-occurrence-to-list-start-point');
-
-      window.scrollTo({ top: 0 });
     }
 
     container.classList.remove(`container-${oldViewType}-view`);
@@ -124,6 +115,14 @@ function transition(
     list.classList.add(`list-${newViewType}-view`);
     maskTop.classList.add(`mask-top-${newViewType}-view`);
     maskBottom.classList.add(`mask-bottom-${newViewType}-view`);
+
+    if (newViewType === 'occurrence') {
+      window.scrollTo({ top: getDocumentBottom() });
+    }
+
+    if (newViewType === 'list') {
+      window.scrollTo({ top: 0 });
+    }
   }
 
   setTimeout(() => setInTransition(false), 750);
@@ -137,49 +136,53 @@ const keyboardShortcuts: { [shortcutKey: string]: View } = {
 };
 
 type TransitionManagerProps = {
+  view: View;
+  setView: React.Dispatch<React.SetStateAction<View>>;
+  bodyHeight: number;
   dates: JSX.Element;
   days: JSX.Element;
   list: JSX.Element;
 };
 
-function TransitionManager({ dates, days, list }: TransitionManagerProps) {
-  const [currentView, setCurrentView] = useState<View>('habit');
+function TransitionManager({
+  view, setView, bodyHeight, dates, days, list,
+}: TransitionManagerProps) {
+  const [currentView, setCurrentView] = useState<View | undefined>(undefined);
   const [inTransition, setInTransition] = useState(false);
-  const [listLength] = useState(22);
-  const [occurrencesLength] = useState(22);
 
-  // temporary -- temporary -- temporary -- temporary -- temporary -- temporary -- temporary
-
-  // this is an initializer, only needs to happen once, not after every state change
-
-  // temporary -- temporary -- temporary -- temporary -- temporary -- temporary -- temporary
   useEffect(() => {
-    document.documentElement.style.setProperty('--new-margin', getListMargin(listLength * 50));
-    document.documentElement.style.setProperty('--list-height', `${listLength * 50}px`);
-  }, [listLength]);
+    setCurrentView(view);
+  }, [currentView, view]);
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
-      if (Object.prototype.hasOwnProperty.call(keyboardShortcuts, e.key)) {
+      if (!inTransition && Object.prototype.hasOwnProperty.call(keyboardShortcuts, e.key)) {
         e.preventDefault();
         const newView = keyboardShortcuts[e.key];
-        if (!inTransition && currentView !== newView) {
-          setCurrentView(newView);
-          setInTransition(true);
-          const getBodyHeight = {
-            habit: () => listLength * 50,
-            selection: () => listLength * 50,
-            history: () => occurrencesLength * 50,
-            focus: () => 200,
-          };
-          transition(currentView, newView, getBodyHeight[newView](), setInTransition);
-        }
+        setView(newView);
       }
     };
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [inTransition, currentView, listLength, occurrencesLength]);
+  }, [inTransition, setView]);
+
+  useEffect(() => {
+    // initialize
+    if (currentView === undefined) {
+      document.documentElement.style.setProperty('--new-margin', getListMargin(bodyHeight));
+      document.documentElement.style.setProperty('--list-height', `${bodyHeight}px`);
+      return;
+    }
+
+    // when currentView catches up to view, don't transition
+    if (currentView === view) {
+      return;
+    }
+
+    setInTransition(true);
+    transition(currentView, view, bodyHeight, setInTransition);
+  }, [bodyHeight, currentView, view]);
 
   return (
     <div id="container" className="container container-list-view">
