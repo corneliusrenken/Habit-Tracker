@@ -1,0 +1,11 @@
+.dates-container {
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  align-items: center;
+}
+
+.date {
+  width: 50px;
+  text-align: center;
+}

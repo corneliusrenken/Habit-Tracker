@@ -136,7 +136,7 @@ const keyboardShortcuts: { [shortcutKey: string]: View } = {
   f: 'focus',
 };
 
-function TransitionManager() {
+function TransitionManager({ dates }: { dates: JSX.Element }) {
   const [currentView, setCurrentView] = useState<View>('habit');
   const [inTransition, setInTransition] = useState(false);
   const [listLength] = useState(22);
@@ -181,7 +181,9 @@ function TransitionManager() {
       <div id="mask-bottom" className="mask mask-bottom-list-view" />
       <div id="occurrences" className="occurrences occurrences-list-view" />
       <div id="days" className="days days-list-view" />
-      <div id="dates" className="dates dates-list-view" />
+      <div id="dates" className="dates dates-list-view">
+        {dates}
+      </div>
       <div id="list" className="list list-list-view" />
     </div>
   );
