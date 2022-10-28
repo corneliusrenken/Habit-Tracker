@@ -1,5 +1,5 @@
 import React from 'react';
-import { Habit } from './globalTypes';
+import { Habit } from '../../globalTypes';
 import './list.css';
 
 type ListProps = {

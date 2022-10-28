@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View } from './globalTypes';
+import { View } from '../../globalTypes';
 import './transitionManager.css';
 
 function forceElementReflow(element: HTMLElement, className: string) {

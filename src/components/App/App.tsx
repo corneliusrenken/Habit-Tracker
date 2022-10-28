@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import Dates from './Dates';
-import Days from './Days';
-import getTextWidthInPx from './getTextWidthInPx';
-import { Habit, View } from './globalTypes';
-import List from './List';
-import TransitionManager from './TransitionManager';
+import getTextWidthInPx from '../../functions/getTextWidthInPx';
+import { Habit, View } from '../../globalTypes';
+import Dates from '../Dates/Dates';
+import Days from '../Days/Days';
+import List from '../List/List';
+import TransitionManager from '../TransitionManager/TransitionManager';
 
 const habits: Habit[] = [
   {
