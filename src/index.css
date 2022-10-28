@@ -54,3 +54,9 @@ table {
      -moz-box-sizing: border-box;
           box-sizing: border-box;
 }
+
+:root {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+}
