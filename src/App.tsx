@@ -1,7 +1,8 @@
 import React from 'react';
+import TransitionManager from './TransitionManager';
 
 function App() {
-  return (<div>hello world</div>);
+  return (<TransitionManager />);
 }
 
 export default App;
