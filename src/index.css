@@ -59,4 +59,7 @@ table {
   font-family: 'Inter', sans-serif;
   font-size: 15px;
   font-weight: 400;
+
+  -webkit-font-feature-settings: "ss01","cv05","cv07","cv08";
+          font-feature-settings: "ss01","cv05","cv07","cv08";
 }
