@@ -177,8 +177,8 @@ function TransitionManager({ dates, days }: { dates: JSX.Element, days: JSX.Elem
 
   return (
     <div id="container" className="container container-list-view">
-      <div id="mask-top" className="mask mask-top-list-view" />
-      <div id="mask-bottom" className="mask mask-bottom-list-view" />
+      <div id="mask-top" className="mask mask-top mask-top-list-view" />
+      <div id="mask-bottom" className="mask mask-bottom mask-bottom-list-view" />
       <div id="occurrences" className="occurrences occurrences-list-view" />
       <div id="days" className="days days-list-view">
         {days}
