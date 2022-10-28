@@ -1,7 +1,20 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import './dates.css';
 
-function Days({ dates }: { dates: number[] }) {
+type DaysProps = {
+  dates: number[];
+  todaysIndex: number;
+};
+
+function Days({ dates, todaysIndex }: DaysProps) {
+  const dateSelector = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (dateSelector.current) {
+      dateSelector.current.style.setProperty('--todays-index', todaysIndex.toString());
+    }
+  }, [dateSelector, todaysIndex]);
+
   return (
     <div className="dates-container">
       <div className="date">{dates[0]}</div>
@@ -11,6 +24,7 @@ function Days({ dates }: { dates: number[] }) {
       <div className="date">{dates[4]}</div>
       <div className="date">{dates[5]}</div>
       <div className="date">{dates[6]}</div>
+      <div className="date-selector" ref={dateSelector} />
     </div>
   );
 }
