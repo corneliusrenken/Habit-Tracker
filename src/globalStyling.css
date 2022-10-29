@@ -63,3 +63,7 @@ table {
   -webkit-font-feature-settings: "ss01","cv05","cv07","cv08";
           font-feature-settings: "ss01","cv05","cv07","cv08";
 }
+
+.complete {
+  color: rgb(209, 209, 209);
+}

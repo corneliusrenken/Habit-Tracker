@@ -14,12 +14,9 @@
 .occurrences {
   transition: bottom 750ms;
   z-index: 2;
-  /* height: ${({ occurrencesLength }) => `${occurrencesLength * 50}px`}; */
   height: var(--occurrences-height);
   width: 350px;
   left: calc(50vw - 350px / 2);
-  background-color: aquamarine;
-  background-image: linear-gradient(120deg, #fccb90 0%, #d57eeb 100%);
 }
 
 .days {
@@ -28,7 +25,6 @@
   height: 50px;
   width: 350px;
   left: calc(50vw - 350px / 2);
-  background-color: violet;
 }
 
 .dates {
@@ -37,7 +33,6 @@
   height: 50px;
   width: 350px;
   left: calc(50vw - 350px / 2);
-  background-color: orangered;
 }
 
 .list {
@@ -46,8 +41,6 @@
   height: var(--list-height);
   width: 350px;
   left: calc(50vw - 350px / 2);
-  background-color: greenyellow;
-  background-image: linear-gradient(to top, #fbc2eb 0%, #a6c1ee 100%);
 }
 
 .mask {

@@ -139,13 +139,14 @@ type TransitionManagerProps = {
   view: View;
   setView: React.Dispatch<React.SetStateAction<View>>;
   bodyHeight: number;
+  occurrences: JSX.Element;
   dates: JSX.Element;
   days: JSX.Element;
   list: JSX.Element;
 };
 
 function TransitionManager({
-  view, setView, bodyHeight, dates, days, list,
+  view, setView, bodyHeight, occurrences, dates, days, list,
 }: TransitionManagerProps) {
   const [currentView, setCurrentView] = useState<View | undefined>(undefined);
   const [inTransition, setInTransition] = useState(false);
@@ -188,7 +189,9 @@ function TransitionManager({
     <div id="container" className="container container-list-view">
       <div id="mask-top" className="mask mask-top mask-top-list-view" />
       <div id="mask-bottom" className="mask mask-bottom mask-bottom-list-view" />
-      <div id="occurrences" className="occurrences occurrences-list-view" />
+      <div id="occurrences" className="occurrences occurrences-list-view">
+        {occurrences}
+      </div>
       <div id="days" className="days days-list-view">
         {days}
       </div>

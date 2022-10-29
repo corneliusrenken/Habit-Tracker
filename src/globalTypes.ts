@@ -5,4 +5,9 @@ export type Habit = {
   order: number;
 };
 
+export type Occurrence = {
+  date: number;
+  complete: boolean;
+};
+
 export type View = 'habit' | 'selection' | 'history' | 'focus';

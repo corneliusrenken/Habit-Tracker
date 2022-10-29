@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import getTextWidthInPx from '../../functions/getTextWidthInPx';
-import { Habit, View } from '../../globalTypes';
+import { Habit, Occurrence, View } from '../../globalTypes';
 import Dates from '../Dates/Dates';
 import Days from '../Days/Days';
 import List from '../List/List';
+import Occurrences from '../Occurrences/Occurrences';
 import TransitionManager from '../TransitionManager/TransitionManager';
 
 const habits: Habit[] = [
@@ -33,11 +34,42 @@ const habits: Habit[] = [
   },
 ];
 
+const occurrences: Occurrence[] = [
+  { date: 1, complete: true },
+  { date: 2, complete: false },
+  { date: 3, complete: false },
+  { date: 4, complete: true },
+  { date: 5, complete: true },
+  { date: 6, complete: false },
+  { date: 7, complete: false },
+  { date: 8, complete: true },
+  { date: 9, complete: true },
+  { date: 10, complete: false },
+  { date: 11, complete: false },
+  { date: 12, complete: false },
+  { date: 13, complete: false },
+  { date: 14, complete: true },
+  { date: 15, complete: true },
+  { date: 16, complete: true },
+  { date: 17, complete: true },
+  { date: 18, complete: false },
+  { date: 19, complete: true },
+  { date: 20, complete: false },
+  { date: 21, complete: false },
+  { date: 22, complete: true },
+  { date: 23, complete: false },
+  { date: 24, complete: true },
+  { date: 25, complete: true },
+  { date: 26, complete: false },
+  { date: 27, complete: false },
+  { date: 28, complete: false },
+];
+
 // temp for development
 function getBodyHeight(view: View) {
   switch (view) {
-    case 'habit': return 200;
-    case 'history': return 1000;
+    case 'habit': return habits.length * 50;
+    case 'history': return (occurrences.length / 7) * 50;
     case 'focus': return 300;
     case 'selection': return 250;
     default: return 0;
@@ -66,6 +98,7 @@ function App() {
       view={view}
       setView={setView}
       bodyHeight={getBodyHeight(view)}
+      occurrences={<Occurrences occurrences={occurrences} view={view} />}
       dates={<Dates dates={dates} todaysIndex={1} />}
       days={<Days />}
       list={<List habits={habits} />}

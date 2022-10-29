@@ -1,0 +1,24 @@
+.occurrence-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 350px;
+}
+
+.occurrence {
+  width: 50px;
+  text-align: center;
+  opacity: 0;
+  transition-property: opacity;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes fade-out {
+  from { opacity: 1; }
+  to { opacity: 0; }
+}
