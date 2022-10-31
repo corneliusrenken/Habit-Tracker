@@ -27,3 +27,12 @@
 .streak {
   margin-left: 5px;
 }
+
+.selector {
+  position: absolute;
+  height: 8px;
+  width: 8px;
+  border-radius: 50%;
+  background-color: black;
+  left: calc(var(--left-margin) - 15px);
+}
