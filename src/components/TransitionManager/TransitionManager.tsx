@@ -137,7 +137,7 @@ const keyboardShortcuts: { [shortcutKey: string]: View } = {
 
 type TransitionManagerProps = {
   view: View;
-  setView: React.Dispatch<React.SetStateAction<View>>;
+  setView: Function;
   bodyHeight: number;
   occurrences: JSX.Element;
   dates: JSX.Element;

@@ -1,5 +1,6 @@
 .habit-container {
   position: relative;
+  width: 350px;
 }
 
 .habit {
@@ -22,10 +23,11 @@
   white-space: nowrap;
   overflow: hidden;
   min-width: 0;
+  margin-right: 5px;
 }
 
 .streak {
-  margin-left: 5px;
+
 }
 
 .selector {
@@ -34,5 +36,35 @@
   width: 8px;
   border-radius: 50%;
   background-color: black;
-  left: calc(var(--left-margin) - 15px);
+  left: calc(var(--left-margin) - 24px);
+  z-index: 2;
+}
+
+form {
+  position: absolute;
+  width: 100%;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+input {
+  margin-left: calc(var(--left-margin) - 8px);
+  margin-right: calc(var(--right-margin) - 8px);
+  width: calc(100% - var(--left-margin) - var(--right-margin) + 16px);
+  padding: 8px;
+  border: 0;
+}
+
+.horizontal-icons-container {
+  min-width: 100px;
+}
+
+.icon {
+  height: 50px;
+  width: 50px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }

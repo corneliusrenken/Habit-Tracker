@@ -11,3 +11,5 @@ export type Occurrence = {
 };
 
 export type View = 'habit' | 'selection' | 'history' | 'focus';
+
+export type ListView = 'habit' | 'selection';

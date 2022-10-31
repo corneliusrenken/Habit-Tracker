@@ -1,50 +1,81 @@
 import React, { useEffect, useState } from 'react';
-import { Habit } from '../../globalTypes';
+import { Habit, ListView } from '../../globalTypes';
+import HabitListItem from './HabitListItem';
 import './list.css';
 
 type ListProps = {
   habits: Habit[];
+  setHabits: Function;
+  view: ListView;
 };
 
-function List({ habits }: ListProps) {
+function addHabit(name: string, habits: Habit[], setHabits: Function) {
+  const copy = habits.slice();
+  copy.push({
+    // temp id
+    // temp id
+    // temp id
+    id: new Date().getTime(),
+    name,
+    order: copy.length,
+    streak: 0,
+  });
+  setHabits(copy);
+}
+
+function List({ habits, setHabits, view }: ListProps) {
   const [selectorIndex, setSelectorIndex] = useState(0);
+  const [addHabitInput, setAddHabitInput] = useState('');
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (addHabitInput) {
+      addHabit(addHabitInput, habits, setHabits);
+      setAddHabitInput('');
+    }
+  };
 
   useEffect(() => {
     const onKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
         const increment = e.key === 'ArrowUp' ? -1 : 1;
-        const newIndex = Math.min(habits.length - 1, Math.max(0, selectorIndex + increment));
+        // increase max index so user can select the -add habit- form
+        const maxIndex = view === 'habit' ? habits.length - 1 : habits.length;
+        const newIndex = Math.min(maxIndex, Math.max(0, selectorIndex + increment));
         setSelectorIndex(newIndex);
       }
     };
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [selectorIndex, habits.length]);
+  }, [selectorIndex, habits.length, view]);
 
   return (
     <div className="habit-container">
-      {habits.map((habit) => {
-        const {
-          id, name, streak, order,
-        } = habit;
-
-        return (
-          <div
-            key={id}
-            className="habit"
-            style={{ top: `${order * 50}px` }}
-          >
-            <div className="name">{name}</div>
-            <div className="streak">{streak}</div>
-          </div>
-        );
-      })}
       {habits.length > 0 && (
         <div
           className="selector"
           style={{ top: `${22 + selectorIndex * 50}px` }}
         />
+      )}
+
+      {habits.map((habit) => (
+        <HabitListItem
+          key={habit.id}
+          habit={habit}
+          view={view}
+        />
+      ))}
+
+      {view === 'selection' && (
+        <form style={{ top: `${habits.length * 50}px` }} onSubmit={onSubmit}>
+          <input
+            type="text"
+            value={addHabitInput}
+            onChange={(e) => setAddHabitInput(e.target.value)}
+            placeholder="add habit"
+          />
+        </form>
       )}
     </div>
   );

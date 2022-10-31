@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import getTextWidthInPx from '../../functions/getTextWidthInPx';
-import { Habit, Occurrence, View } from '../../globalTypes';
+import {
+  Habit, ListView, Occurrence, View,
+} from '../../globalTypes';
 import Dates from '../Dates/Dates';
 import Days from '../Days/Days';
 import List from '../List/List';
 import Occurrences from '../Occurrences/Occurrences';
 import TransitionManager from '../TransitionManager/TransitionManager';
 
-const habits: Habit[] = [
+const habitsSeed: Habit[] = [
   {
     id: 1,
     name: 'run',
@@ -28,7 +30,7 @@ const habits: Habit[] = [
   },
   {
     id: 4,
-    name: 'very long very long very long very long very long very long very long very long',
+    name: 'listen to music',
     streak: 12123123892713,
     order: 3,
   },
@@ -66,19 +68,28 @@ const occurrences: Occurrence[] = [
 ];
 
 // temp for development
-function getBodyHeight(view: View) {
+function getBodyHeight(view: View, habits: Habit[]) {
   switch (view) {
     case 'habit': return habits.length * 50;
     case 'history': return (occurrences.length / 7) * 50;
     case 'focus': return 300;
-    case 'selection': return 250;
+    case 'selection': return habits.length * 50 + 50;
     default: return 0;
   }
 }
 
 function App() {
+  const [habits, setHabits] = useState<Habit[]>(habitsSeed);
   const [view, setView] = useState<View>('habit');
+  const [latchedListView, setLatchedListView] = useState<ListView>('habit');
   // const [focusId, setFocusId] = useState<number | undefined>(undefined);
+
+  const setViewWrapper = (v: View) => {
+    if (v === 'habit' || v === 'selection') {
+      setLatchedListView(v);
+    }
+    setView(v);
+  };
 
   // these states allow calculating any body height
   // - habit: habit array length
@@ -96,12 +107,12 @@ function App() {
   return (
     <TransitionManager
       view={view}
-      setView={setView}
-      bodyHeight={getBodyHeight(view)}
+      setView={setViewWrapper}
+      bodyHeight={getBodyHeight(view, habits)}
       occurrences={<Occurrences occurrences={occurrences} displayed={view === 'history' || view === 'focus'} />}
       dates={<Dates dates={dates} todaysIndex={1} />}
       days={<Days />}
-      list={<List habits={habits} />}
+      list={<List habits={habits} setHabits={setHabits} view={latchedListView} />}
     />
   );
 }
