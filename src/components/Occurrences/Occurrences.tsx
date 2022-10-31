@@ -1,5 +1,5 @@
 import React from 'react';
-import { Occurrence, View } from '../../globalTypes';
+import { Occurrence } from '../../globalTypes';
 import './occurrences.css';
 
 function getContainerHeight(occurencesLength: number) {
@@ -14,12 +14,10 @@ function getAnimationDelay(row: number, index: number) {
 
 type OccurrencesProps = {
   occurrences: Occurrence[];
-  view: View;
+  displayed: boolean;
 };
 
-function Occurrences({ occurrences, view }: OccurrencesProps) {
-  const displayed = view === 'history' || view === 'focus';
-
+function Occurrences({ occurrences, displayed }: OccurrencesProps) {
   return (
     <div className="occurrence-container" style={{ height: `${getContainerHeight(occurrences.length)}px` }}>
       {occurrences.map(({ date, complete }, index) => {

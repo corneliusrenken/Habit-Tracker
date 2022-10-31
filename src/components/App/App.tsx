@@ -98,7 +98,7 @@ function App() {
       view={view}
       setView={setView}
       bodyHeight={getBodyHeight(view)}
-      occurrences={<Occurrences occurrences={occurrences} view={view} />}
+      occurrences={<Occurrences occurrences={occurrences} displayed={view === 'history' || view === 'focus'} />}
       dates={<Dates dates={dates} todaysIndex={1} />}
       days={<Days />}
       list={<List habits={habits} />}
