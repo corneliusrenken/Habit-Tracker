@@ -23,10 +23,10 @@
   white-space: nowrap;
   overflow: hidden;
   min-width: 0;
-  margin-right: 5px;
 }
 
 .streak {
+  margin-left: 5px;
   margin-right: var(--right-margin);
 }
 
