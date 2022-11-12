@@ -37,7 +37,6 @@
 
 .list {
   transition: top 750ms, opacity 750ms;
-  z-index: 0;
   height: var(--list-height);
   width: 350px;
   left: calc(50vw - 350px / 2);

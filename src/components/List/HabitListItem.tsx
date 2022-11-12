@@ -2,9 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import { Habit, ListView } from '../../globalTypes';
-import {
-  MoreOptionsIcon, MoveIcon, RenameIcon, ShownIcon, TrashIcon,
-} from '../Icons/Icons';
+import Icon from '../Icons/Icons';
 import './list.css';
 
 type HabitListItemProps = {
@@ -30,18 +28,13 @@ function HabitListItem({
     >
       <div className="name">{name}</div>
       {view === 'habit' && <div className="streak">{streak}</div>}
-      {view === 'selection' && (
+      {view === 'selection' && selected && (
         <div
           className="horizontal-icons-container"
-          style={{ opacity: selected ? 1 : 0 }}
         >
-          <div
-            className="icon"
-          >
-            <MoveIcon />
-          </div>
-          <div
-            className={`icon${active ? ' selected' : ''}`}
+          <Icon icon="move" />
+          <Icon
+            icon="more options"
             onClick={() => {
               if (active) {
                 setActiveIndex(undefined);
@@ -49,28 +42,15 @@ function HabitListItem({
                 setActiveIndex(habit.order);
               }
             }}
-          >
-            <MoreOptionsIcon />
-          </div>
+            classes={active ? ['selected'] : undefined}
+          />
         </div>
       )}
       {view === 'selection' && active && (
         <div className="vertical-icons-container">
-          <div
-            className="icon"
-          >
-            <ShownIcon />
-          </div>
-          <div
-            className="icon"
-          >
-            <RenameIcon />
-          </div>
-          <div
-            className="icon"
-          >
-            <TrashIcon />
-          </div>
+          <Icon icon="shown" />
+          <Icon icon="rename" />
+          <Icon icon="trash" />
         </div>
       )}
     </div>

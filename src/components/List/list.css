@@ -14,7 +14,8 @@
 }
 
 .name {
-  padding-left: var(--left-margin);
+  margin-left: var(--left-margin);
+  max-width: calc(350px - var(--left-margin) - var(--right-margin));
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -26,7 +27,7 @@
 }
 
 .streak {
-  padding-right: var(--right-margin);
+  margin-right: var(--right-margin);
 }
 
 .selector {
@@ -56,19 +57,11 @@ input {
 }
 
 .horizontal-icons-container {
-  min-width: fit-content;
+  min-width: 100px;
 }
 
 .vertical-icons-container {
   width: 50px;
   position: absolute;
   right: -50px;
-}
-
-.icon {
-  height: 50px;
-  width: 50px;
-  display: inline-flex;
-  justify-content: center;
-  align-items: center;
 }
