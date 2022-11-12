@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 import React from 'react';
 import { Habit, ListView } from '../../globalTypes';
-import Icon from '../Icons/Icons';
+import Icon from '../Icon/Icon';
 import './list.css';
 
 type HabitListItemProps = {
