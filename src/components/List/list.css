@@ -5,8 +5,6 @@
 
 .habit {
   position: absolute;
-  padding-left: var(--left-margin);
-  padding-right: var(--right-margin);
   height: 50px;
   width: 350px;
   display: flex;
@@ -16,6 +14,7 @@
 }
 
 .name {
+  padding-left: var(--left-margin);
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -27,15 +26,14 @@
 }
 
 .streak {
-
+  padding-right: var(--right-margin);
 }
 
 .selector {
   position: absolute;
-  height: 8px;
-  width: 8px;
-  border-radius: 50%;
-  background-color: black;
+  height: 10px;
+  width: 10px;
+  background-color: rgb(0, 255, 0);
   left: calc(var(--left-margin) - 24px);
   z-index: 2;
 }
@@ -58,7 +56,13 @@ input {
 }
 
 .horizontal-icons-container {
-  min-width: 100px;
+  min-width: fit-content;
+}
+
+.vertical-icons-container {
+  width: 50px;
+  position: absolute;
+  right: -50px;
 }
 
 .icon {

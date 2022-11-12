@@ -64,6 +64,6 @@ table {
           font-feature-settings: "ss01","cv05","cv07","cv08";
 }
 
-.complete {
-  color: rgb(209, 209, 209);
+.complete, .selected {
+  color: rgb(183, 183, 183);
 }

@@ -25,6 +25,7 @@ function addHabit(name: string, habits: Habit[], setHabits: Function) {
 
 function List({ habits, setHabits, view }: ListProps) {
   const [selectorIndex, setSelectorIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState<undefined | number>(undefined);
   const [addHabitInput, setAddHabitInput] = useState('');
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -42,6 +43,7 @@ function List({ habits, setHabits, view }: ListProps) {
         // increase max index so user can select the -add habit- form
         const maxIndex = view === 'habit' ? habits.length - 1 : habits.length;
         const newIndex = Math.min(maxIndex, Math.max(0, selectorIndex + increment));
+        setActiveIndex(undefined);
         setSelectorIndex(newIndex);
       }
     };
@@ -64,6 +66,9 @@ function List({ habits, setHabits, view }: ListProps) {
           key={habit.id}
           habit={habit}
           view={view}
+          selected={habit.order === selectorIndex}
+          active={habit.order === activeIndex}
+          setActiveIndex={setActiveIndex}
         />
       ))}
 
