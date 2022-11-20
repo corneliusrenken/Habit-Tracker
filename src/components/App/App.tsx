@@ -10,30 +10,30 @@ import Occurrences from '../Occurrences/Occurrences';
 import TransitionManager from '../TransitionManager/TransitionManager';
 
 const habitsSeed: Habit[] = [
-  {
-    id: 1,
-    name: 'run',
-    streak: 5,
-    order: 2,
-  },
-  {
-    id: 2,
-    name: 'practice guitar',
-    streak: 12,
-    order: 0,
-  },
-  {
-    id: 3,
-    name: 'verylongveryverylongveryverylongveryverylongveryverylongveryverylongvery',
-    streak: 12123123892713,
-    order: 1,
-  },
-  {
-    id: 4,
-    name: 'listen to music',
-    streak: 12123123892713,
-    order: 3,
-  },
+  // {
+  //   id: 1,
+  //   name: 'run',
+  //   streak: 5,
+  //   order: 2,
+  // },
+  // {
+  //   id: 2,
+  //   name: 'practice guitar',
+  //   streak: 12,
+  //   order: 0,
+  // },
+  // {
+  //   id: 3,
+  //   name: 'verylongveryverylongveryverylongveryverylongveryverylongveryverylongvery',
+  //   streak: 12123123892713,
+  //   order: 1,
+  // },
+  // {
+  //   id: 4,
+  //   name: 'listen to music',
+  //   streak: 12123123892713,
+  //   order: 3,
+  // },
 ];
 
 const occurrences: Occurrence[] = [

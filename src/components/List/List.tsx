@@ -54,7 +54,7 @@ function List({ habits, setHabits, view }: ListProps) {
 
   return (
     <div className="habit-container">
-      {habits.length > 0 && (
+      {(habits.length > 0 || view === 'selection') && (
         <div
           className="selector"
           style={{ top: `${22 + selectorIndex * 50}px` }}
