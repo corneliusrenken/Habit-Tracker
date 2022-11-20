@@ -8,13 +8,16 @@ type Props = {
 };
 
 function ListItemHabitView({ habit }: Props) {
-  const { streak } = habit;
+  const { done, name, streak } = habit;
 
   return (
     <ListItem
       habit={habit}
       content={(
-        <div className="streak">{streak}</div>
+        <>
+          <div className={`name${done ? ' greyed-out' : ''}`}>{name}</div>
+          <div className={`streak${done ? ' greyed-out' : ''}`}>{streak}</div>
+        </>
       )}
     />
   );

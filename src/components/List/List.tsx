@@ -4,6 +4,64 @@ import './list.css';
 import ListHabitView from './ListHabitView';
 import ListSelectionView from './ListSelectionView';
 
+function addHabit(
+  name: string,
+  habits: Habit[],
+  setHabits: React.Dispatch<React.SetStateAction<Habit[]>>,
+) {
+  const copy = JSON.parse(JSON.stringify(habits)) as Habit[];
+  copy.push({
+    id: new Date().getTime(),
+    name,
+    visible: true,
+    done: false,
+    order: habits.length,
+    streak: 0,
+  });
+  setHabits(copy);
+}
+
+function removeHabit(
+  id: number,
+  habits: Habit[],
+  setHabits: React.Dispatch<React.SetStateAction<Habit[]>>,
+) {
+  let copy = JSON.parse(JSON.stringify(habits)) as Habit[];
+  const indexToRemove = copy.findIndex((habit) => habit.id === id);
+  const habitToRemove = habits[indexToRemove];
+  copy = copy.map((habit) => {
+    if (habit.order > habitToRemove.order) {
+      return { ...habit, order: habit.order - 1 };
+    }
+    return habit;
+  });
+  copy.splice(indexToRemove, 1);
+  setHabits(copy);
+}
+
+function modifyHabitProperties(
+  id: number,
+  newProperties: Partial<Omit<Habit, 'id'>>,
+  habits: Habit[],
+  setHabits: React.Dispatch<React.SetStateAction<Habit[]>>,
+) {
+  const copy = JSON.parse(JSON.stringify(habits)) as Habit[];
+  const habitIndex = copy.findIndex((h) => h.id === id);
+  if (habits[habitIndex] === undefined) {
+    throw new Error('no habit with such id exists');
+  }
+  copy[habitIndex] = Object.assign(copy[habitIndex], newProperties);
+  setHabits(copy);
+}
+
+function getHabitAtSelector(selectorIndex: number, habits: Habit[]) {
+  const habit = habits.find((h) => h.order === selectorIndex);
+  if (habit === undefined) {
+    throw new Error('no habit with such id exists');
+  }
+  return habit;
+}
+
 type Props = {
   habits: Habit[];
   setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
@@ -34,13 +92,20 @@ function List({ habits, setHabits, view }: Props) {
         <ListHabitView
           habits={habits}
           selectorIndex={selectorIndex}
-          setHabits={setHabits}
+          getHabitAtSelector={() => getHabitAtSelector(selectorIndex, habits)}
+          modifyHabitProperties={(id: number, newProperties: Partial<Omit<Habit, 'id'>>) => {
+            modifyHabitProperties(id, newProperties, habits, setHabits);
+          }}
         />
       ) : (
         <ListSelectionView
           habits={habits}
           selectorIndex={selectorIndex}
-          setHabits={setHabits}
+          addHabit={(name: string) => addHabit(name, habits, setHabits)}
+          removeHabit={(id: number) => removeHabit(id, habits, setHabits)}
+          modifyHabitProperties={(id: number, newProperties: Partial<Omit<Habit, 'id'>>) => {
+            modifyHabitProperties(id, newProperties, habits, setHabits);
+          }}
         />
       )}
     </div>

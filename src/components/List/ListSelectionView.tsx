@@ -4,32 +4,28 @@ import { Habit } from '../../globalTypes';
 import ListItemSelectionView from './ListItemSelectionView';
 import Selector from './Selector';
 
-function addHabit(name: string, habits: Habit[], setHabits: Function) {
-  const copy = habits.slice();
-  copy.push({
-    // temp id
-    id: new Date().getTime(),
-    name,
-    order: copy.length,
-    streak: 0,
-  });
-  setHabits(copy);
-}
-
 type Props = {
   habits: Habit[];
   selectorIndex: number;
-  setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
+  addHabit: (name: string) => void;
+  removeHabit: (id: number) => void;
+  modifyHabitProperties: (id: number, newProperties: Partial<Omit<Habit, 'id'>>) => void;
 };
 
-function ListSelectionView({ habits, selectorIndex, setHabits }: Props) {
+function ListSelectionView({
+  habits,
+  selectorIndex,
+  addHabit,
+  removeHabit,
+  modifyHabitProperties,
+}: Props) {
   const [activeIndex, setActiveIndex] = useState<undefined | number>(undefined);
   const [addHabitInput, setAddHabitInput] = useState('');
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (addHabitInput) {
-      addHabit(addHabitInput, habits, setHabits);
+      addHabit(addHabitInput);
       setAddHabitInput('');
     }
   };
@@ -44,11 +40,18 @@ function ListSelectionView({ habits, selectorIndex, setHabits }: Props) {
           habit={habit}
           selected={habit.order === selectorIndex}
           active={habit.order === activeIndex}
+          toggleVisible={() => modifyHabitProperties(habit.id, { visible: !habit.visible })}
+          renameHabit={(name: string) => modifyHabitProperties(habit.id, { name })}
+          removeHabit={() => removeHabit(habit.id)}
           setActiveIndex={setActiveIndex}
         />
       ))}
 
-      <form style={{ top: `${habits.length * 50}px` }} onSubmit={onSubmit}>
+      <form
+        onSubmit={onSubmit}
+        className="add-habit-form"
+        style={{ top: `${habits.length * 50}px` }}
+      >
         <input
           type="text"
           value={addHabitInput}

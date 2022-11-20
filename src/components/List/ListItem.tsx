@@ -10,7 +10,9 @@ type Props = {
 };
 
 function ListItem({ habit, content }: Props) {
-  const { id, name, order } = habit;
+  const {
+    id, order,
+  } = habit;
 
   return (
     <div
@@ -18,7 +20,6 @@ function ListItem({ habit, content }: Props) {
       className="list-item"
       style={{ top: `${order * 50}px` }}
     >
-      <div className="name">{name}</div>
       {content}
     </div>
   );

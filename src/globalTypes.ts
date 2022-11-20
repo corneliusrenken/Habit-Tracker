@@ -1,6 +1,8 @@
 export type Habit = {
   id: number;
   name: string;
+  done: boolean;
+  visible: boolean;
   streak: number;
   order: number;
 };
