@@ -5,7 +5,7 @@ import { Habit, ListView } from '../../globalTypes';
 import Icon from '../Icon/Icon';
 import './list.css';
 
-type HabitListItemProps = {
+type Props = {
   habit: Habit;
   view: ListView;
   selected: boolean;
@@ -15,7 +15,7 @@ type HabitListItemProps = {
 
 function HabitListItem({
   habit, view, selected, active, setActiveIndex,
-}: HabitListItemProps) {
+}: Props) {
   const {
     id, name, streak, order,
   } = habit;

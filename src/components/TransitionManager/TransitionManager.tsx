@@ -135,7 +135,7 @@ const keyboardShortcuts: { [shortcutKey: string]: View } = {
   f: 'focus',
 };
 
-type TransitionManagerProps = {
+type Props = {
   view: View;
   setView: Function;
   bodyHeight: number;
@@ -147,7 +147,7 @@ type TransitionManagerProps = {
 
 function TransitionManager({
   view, setView, bodyHeight, occurrences, dates, days, list,
-}: TransitionManagerProps) {
+}: Props) {
   const [currentView, setCurrentView] = useState<View | undefined>(undefined);
   const [inTransition, setInTransition] = useState(false);
 

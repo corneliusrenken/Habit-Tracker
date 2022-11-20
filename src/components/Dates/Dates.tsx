@@ -1,12 +1,12 @@
 import React from 'react';
 import './dates.css';
 
-type DatesProps = {
+type Props = {
   dates: number[];
   todaysIndex: number;
 };
 
-function Dates({ dates, todaysIndex }: DatesProps) {
+function Dates({ dates, todaysIndex }: Props) {
   return (
     <div className="dates-container">
       {dates.map((date) => <div className="date">{date}</div>)}

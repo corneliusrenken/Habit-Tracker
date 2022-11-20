@@ -12,12 +12,12 @@ function getAnimationDelay(row: number, index: number) {
   return 38 * row + 200 * seededRandom[index % seededRandom.length];
 }
 
-type OccurrencesProps = {
+type Props = {
   occurrences: Occurrence[];
   displayed: boolean;
 };
 
-function Occurrences({ occurrences, displayed }: OccurrencesProps) {
+function Occurrences({ occurrences, displayed }: Props) {
   return (
     <div className="occurrence-container" style={{ height: `${getContainerHeight(occurrences.length)}px` }}>
       {occurrences.map(({ date, complete }, index) => {

@@ -3,12 +3,6 @@ import { Habit, ListView } from '../../globalTypes';
 import HabitListItem from './HabitListItem';
 import './list.css';
 
-type ListProps = {
-  habits: Habit[];
-  setHabits: Function;
-  view: ListView;
-};
-
 function addHabit(name: string, habits: Habit[], setHabits: Function) {
   const copy = habits.slice();
   copy.push({
@@ -23,7 +17,13 @@ function addHabit(name: string, habits: Habit[], setHabits: Function) {
   setHabits(copy);
 }
 
-function List({ habits, setHabits, view }: ListProps) {
+type Props = {
+  habits: Habit[];
+  setHabits: Function;
+  view: ListView;
+};
+
+function List({ habits, setHabits, view }: Props) {
   const [selectorIndex, setSelectorIndex] = useState(0);
   const [activeIndex, setActiveIndex] = useState<undefined | number>(undefined);
   const [addHabitInput, setAddHabitInput] = useState('');

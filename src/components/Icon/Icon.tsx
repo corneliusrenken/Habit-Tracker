@@ -17,13 +17,13 @@ const iconPaths = {
   trash: trashPath,
 };
 
-type IconProps = {
+type Props = {
   icon: keyof typeof iconPaths;
   onClick?: Function;
   classes?: string[];
 };
 
-export default function Icon({ icon, onClick, classes }: IconProps) {
+export default function Icon({ icon, onClick, classes }: Props) {
   return (
     <div
       className={`icon${classes ? ` ${classes.join(' ')}` : ''}`}
