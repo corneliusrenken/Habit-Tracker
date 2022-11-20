@@ -6,7 +6,13 @@ function Days() {
 
   return (
     <div className="days-container">
-      {days.map(((day) => <div className="day">{day}</div>))}
+      {days.map(((day) => (
+        <div
+          className="day"
+        >
+          {day}
+        </div>
+      )))}
     </div>
   );
 }

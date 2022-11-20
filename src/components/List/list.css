@@ -1,9 +1,9 @@
-.habit-container {
+.list-container {
   position: relative;
   width: 350px;
 }
 
-.habit {
+.list-item {
   position: absolute;
   height: 50px;
   width: 350px;
