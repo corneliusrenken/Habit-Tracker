@@ -1,12 +1,14 @@
 import React from 'react';
 import './days.css';
 
-function Days() {
-  const days = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+type Props = {
+  weekDays: string[];
+};
 
+function Days({ weekDays }: Props) {
   return (
     <div className="days-container">
-      {days.map(((day) => (
+      {weekDays.map(((day) => (
         <div
           className="day"
         >

@@ -2,14 +2,14 @@ import React from 'react';
 import './dates.css';
 
 type Props = {
-  dates: number[];
+  weekDateStrings: string[];
   todaysIndex: number;
 };
 
-function Dates({ dates, todaysIndex }: Props) {
+function Dates({ weekDateStrings, todaysIndex }: Props) {
   return (
     <div className="dates-container">
-      {dates.map((date) => <div className="date">{date}</div>)}
+      {weekDateStrings.map((dateString) => <div className="date">{Number(dateString.slice(-2))}</div>)}
       <div className="date-selector" style={{ left: `calc(5px + ${todaysIndex} * 50px)` }} />
     </div>
   );

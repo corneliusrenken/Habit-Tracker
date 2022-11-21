@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import getDateObject from '../../functions/getDateObject';
 import getTextWidthInPx from '../../functions/getTextWidthInPx';
 import {
   Habit, ListView, Occurrence, View,
@@ -87,6 +88,8 @@ function getBodyHeight(view: View, habits: Habit[]) {
 }
 
 function App() {
+  const [dateObject] = useState(getDateObject(0));
+  const [displayingYesterday] = useState(false);
   const [habits, setHabits] = useState<Habit[]>(habitsSeed);
   const [view, setView] = useState<View>('habit');
   const [latchedListView, setLatchedListView] = useState<ListView>('habit');
@@ -105,22 +108,54 @@ function App() {
   // - history: occurences length
   // - focus: occurrences[focus id] length
 
-  const [dates] = useState([1, 6, 7, 8, 9, 10, 30]);
-
   useEffect(() => {
-    document.documentElement.style.setProperty('--left-margin', `${(50 - getTextWidthInPx(dates[0], 15)) / 2}px`);
-    document.documentElement.style.setProperty('--right-margin', `${(50 - getTextWidthInPx(dates[6], 15)) / 2}px`);
-  }, [dates]);
+    const firstDate = !displayingYesterday
+      ? dateObject.today.weekDateStrings[0].slice(-2)
+      : dateObject.yesterday.weekDateStrings[0].slice(-2);
+    const lastDate = !displayingYesterday
+      ? dateObject.today.weekDateStrings[6].slice(-2)
+      : dateObject.yesterday.weekDateStrings[6].slice(-2);
+    document.documentElement.style.setProperty('--left-margin', `${(50 - getTextWidthInPx(firstDate, 15)) / 2}px`);
+    document.documentElement.style.setProperty('--right-margin', `${(50 - getTextWidthInPx(lastDate, 15)) / 2}px`);
+  }, [dateObject, displayingYesterday]);
 
   return (
     <TransitionManager
       view={view}
       setView={setViewWrapper}
       bodyHeight={getBodyHeight(view, habits)}
-      occurrences={<Occurrences occurrences={occurrences} displayed={view === 'history' || view === 'focus'} />}
-      dates={<Dates dates={dates} todaysIndex={1} />}
-      days={<Days />}
-      list={<List habits={habits} setHabits={setHabits} view={latchedListView} />}
+      occurrences={(
+        <Occurrences
+          occurrences={occurrences}
+          displayed={view === 'history' || view === 'focus'}
+        />
+      )}
+      dates={(
+        <Dates
+          weekDateStrings={(
+            !displayingYesterday
+              ? dateObject.today.weekDateStrings
+              : dateObject.yesterday.weekDateStrings
+          )}
+          todaysIndex={(
+            !displayingYesterday
+              ? dateObject.today.dayIndex
+              : dateObject.yesterday.dayIndex
+          )}
+        />
+      )}
+      days={(
+        <Days
+          weekDays={dateObject.weekDays}
+        />
+      )}
+      list={(
+        <List
+          habits={habits}
+          setHabits={setHabits}
+          view={latchedListView}
+        />
+      )}
     />
   );
 }
