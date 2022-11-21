@@ -15,3 +15,15 @@ export type Occurrence = {
 export type View = 'habit' | 'selection' | 'history' | 'focus';
 
 export type ListView = 'habit' | 'selection';
+
+type DateObjectDayInfo = {
+  dateString: string,
+  weekDateStrings: string[],
+  dayIndex: number,
+};
+
+export type DateObject = {
+  today: DateObjectDayInfo,
+  yesterday: DateObjectDayInfo,
+  weekDays: string[],
+};
