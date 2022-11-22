@@ -27,3 +27,14 @@ export type DateObject = {
   today: DayObject,
   yesterday: DayObject,
 };
+
+export type OccurrencesApiData = {
+  oldest: {
+    [habitId: string]: string | undefined;
+  };
+  dates: {
+    [dateString: string]: {
+      [habitId: string]: boolean;
+    };
+  };
+};

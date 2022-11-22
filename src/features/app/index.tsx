@@ -1,16 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { getDateFromDateString, getMinimumDateString } from '../common/dateStringFunctions';
 import getDateObject from '../common/getDateObject';
 import getTextWidthInPx from './getTextWidthInPx';
 import {
-  Habit, ListView, Occurrence, View,
+  Habit, ListView, OccurrencesApiData, View,
 } from '../../globalTypes';
 import Dates from '../dates';
 import Days from '../days';
 import List from '../list';
 import Occurrences from '../occurrences';
 import TransitionManager from '../transitionManager';
-import getCustomDateString from '../common/getCustomDateString';
+import getOccurrencesFromApiData from './getOccurrencesFromApiData';
+import getBodyHeight from './getBodyHeight';
 
 const habitsSeed: Habit[] = [
   {
@@ -47,18 +47,7 @@ const habitsSeed: Habit[] = [
   },
 ];
 
-type ApiResult = {
-  oldest: {
-    [habitId: string]: string | undefined;
-  };
-  dates: {
-    [dateString: string]: {
-      [habitId: string]: boolean;
-    };
-  };
-};
-
-const apiResult: ApiResult = {
+const apiResult: OccurrencesApiData = {
   oldest: {
     1: '2022-10-18',
     2: '2022-11-20',
@@ -97,50 +86,6 @@ const apiResult: ApiResult = {
   },
 };
 
-function getOccurrences(focusId: number | undefined, dateStringLastOfWeek: string): Occurrence[] {
-  const occurences: Occurrence[] = [];
-
-  const oldestDateString = focusId === undefined
-    ? getMinimumDateString(Object.values(apiResult.oldest))
-    : apiResult.oldest[focusId];
-
-  const lastDateOfWeek = getDateFromDateString(dateStringLastOfWeek);
-  const oldestDate = oldestDateString === undefined
-    ? undefined
-    : getDateFromDateString(oldestDateString);
-
-  const currentDate = new Date(lastDateOfWeek);
-
-  while (
-    occurences.length < 7
-    || occurences.length % 7 !== 0
-    || (oldestDate !== undefined && currentDate.getTime() >= oldestDate.getTime())
-  ) {
-    const dateString = getCustomDateString(currentDate);
-    let complete = false;
-    if (apiResult.dates[dateString] !== undefined) {
-      complete = focusId === undefined
-        ? Object.values(apiResult.dates[dateString]).every((value) => value === true)
-        : apiResult.dates[dateString][focusId] === true;
-    }
-    const occurence = { date: Number(dateString.slice(-2)), complete };
-    occurences.push(occurence);
-    currentDate.setDate(currentDate.getDate() - 1);
-  }
-
-  return occurences.reverse();
-}
-
-function getBodyHeight(view: View, habits: Habit[], occurrences: Occurrence[]) {
-  switch (view) {
-    case 'habit': return habits.length * 50;
-    case 'history': return (occurrences.length / 7 - 1) * 50;
-    case 'focus': return (occurrences.length / 7 - 1) * 50;
-    case 'selection': return habits.length * 50 + 50;
-    default: return 0;
-  }
-}
-
 function App() {
   const [dateObject] = useState(getDateObject(6));
   const [displayingYesterday] = useState(false);
@@ -161,7 +106,7 @@ function App() {
   ), [dateObject, displayingYesterday]);
 
   const occurrences = useMemo(() => (
-    getOccurrences(focusId, dayObject.weekDateStrings[6])
+    getOccurrencesFromApiData(apiResult, focusId, dayObject.weekDateStrings[6])
   ), [dayObject, focusId]);
 
   const occurrencesComponent = useMemo(() => (
