@@ -1,8 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import { getDateFromDateString, getMinimumDateString } from '../../functions/dateStringFunctions';
+import getCustomDateString from '../../functions/getCustomDateString';
 import getDateObject from '../../functions/getDateObject';
 import getTextWidthInPx from '../../functions/getTextWidthInPx';
 import {
-  Habit, ListView, Occurrence, View,
+  DayObject, Habit, ListView, Occurrence, View,
 } from '../../globalTypes';
 import Dates from '../Dates/Dates';
 import Days from '../Days/Days';
@@ -45,43 +47,95 @@ const habitsSeed: Habit[] = [
   },
 ];
 
-const occurrences: Occurrence[] = [
-  { date: 1, complete: true },
-  { date: 2, complete: false },
-  { date: 3, complete: false },
-  { date: 4, complete: true },
-  { date: 5, complete: true },
-  { date: 6, complete: false },
-  { date: 7, complete: false },
-  { date: 8, complete: true },
-  { date: 9, complete: true },
-  { date: 10, complete: false },
-  { date: 11, complete: false },
-  { date: 12, complete: false },
-  { date: 13, complete: false },
-  { date: 14, complete: true },
-  { date: 15, complete: true },
-  { date: 16, complete: true },
-  { date: 17, complete: true },
-  { date: 18, complete: false },
-  { date: 19, complete: true },
-  { date: 20, complete: false },
-  { date: 21, complete: false },
-  { date: 22, complete: true },
-  { date: 23, complete: false },
-  { date: 24, complete: true },
-  { date: 25, complete: true },
-  { date: 26, complete: false },
-  { date: 27, complete: false },
-  { date: 28, complete: false },
-];
+type ApiResult = {
+  oldest: {
+    [habitId: string]: string | undefined;
+  };
+  dates: {
+    [dateString: string]: {
+      [habitId: string]: boolean;
+    };
+  };
+};
 
-// temp for development
-function getBodyHeight(view: View, habits: Habit[]) {
+const apiResult: ApiResult = {
+  oldest: {
+    1: '2021-11-18',
+    2: '2022-11-20',
+    3: '2022-11-19',
+    4: '2022-11-20',
+  },
+  dates: {
+    '2022-11-18': {
+      1: true,
+      4: false,
+    },
+    '2022-11-19': {
+      1: false,
+      2: false,
+      3: true,
+      4: false,
+    },
+    '2022-11-20': {
+      1: true,
+      2: true,
+      3: true,
+      4: true,
+    },
+    '2022-11-26': {
+      1: true,
+      2: true,
+      3: true,
+      4: true,
+    },
+    '2023-11-26': {
+      1: true,
+      2: true,
+      3: true,
+      4: true,
+    },
+  },
+};
+
+function getOccurrences(focusId: number | undefined, dateStringLastOfWeek: string): Occurrence[] {
+  const occurences: Occurrence[] = [];
+
+  const oldestDateString = focusId === undefined
+    ? getMinimumDateString(Object.values(apiResult.oldest))
+    : apiResult.oldest[focusId];
+
+  const lastDateOfWeek = getDateFromDateString(dateStringLastOfWeek);
+  const oldestDate = oldestDateString === undefined
+    ? undefined
+    : getDateFromDateString(oldestDateString);
+
+  const currentDate = new Date(lastDateOfWeek);
+
+  while (
+    occurences.length < 7
+    || occurences.length % 7 !== 0
+    || (oldestDate !== undefined && currentDate.getTime() >= oldestDate.getTime())
+  ) {
+    const dateString = getCustomDateString(currentDate);
+    let complete = false;
+    if (apiResult.dates[dateString] !== undefined) {
+      complete = focusId === undefined
+        ? Object.values(apiResult.dates[dateString]).every((value) => value === true)
+        : apiResult.dates[dateString][focusId] === true;
+    }
+    const occurence = { date: Number(dateString.slice(-2)), complete };
+    occurences.push(occurence);
+    currentDate.setDate(currentDate.getDate() - 1);
+  }
+
+  return occurences.reverse();
+}
+
+function getBodyHeight(view: View, habits: Habit[], occurrences: Occurrence[]) {
   switch (view) {
     case 'habit': return habits.length * 50;
-    case 'history': return (occurrences.length / 7) * 50;
-    case 'focus': return 300;
+    case 'history': return (occurrences.length / 7 - 1) * 50;
+    case 'focus': return (occurrences.length / 7 - 1) * 50;
     case 'selection': return habits.length * 50 + 50;
     default: return 0;
   }
@@ -93,11 +147,7 @@ function App() {
   const [habits, setHabits] = useState<Habit[]>(habitsSeed);
   const [view, setView] = useState<View>('habit');
   const [latchedListView, setLatchedListView] = useState<ListView>('habit');
-  // const [focusId, setFocusId] = useState<number | undefined>(undefined);
-
-  const dayObject = useMemo(() => (
-    displayingYesterday ? dateObject.yesterday : dateObject.today
-  ), [dateObject, displayingYesterday]);
+  const [focusId] = useState<number | undefined>(2);
 
   const setViewWrapper = (v: View) => {
     if (v === 'habit' || v === 'selection') {
@@ -106,11 +156,13 @@ function App() {
     setView(v);
   };
 
-  // these states allow calculating any body height
-  // - habit: habit array length
-  // - selected: habit array length + 1
-  // - history: occurences length
-  // - focus: occurrences[focus id] length
+  const dayObject: DayObject = useMemo(() => (
+    displayingYesterday ? dateObject.yesterday : dateObject.today
+  ), [dateObject, displayingYesterday]);
+
+  const occurrences: Occurrence[] = useMemo(() => (
+    getOccurrences(focusId, dayObject.weekDateStrings[6])
+  ), [dayObject, focusId]);
 
   useEffect(() => {
     const firstDate = Number(dayObject.weekDateStrings[0].slice(-2));
@@ -123,10 +175,10 @@ function App() {
     <TransitionManager
       view={view}
       setView={setViewWrapper}
-      bodyHeight={getBodyHeight(view, habits)}
+      bodyHeight={getBodyHeight(view, habits, occurrences)}
       occurrences={(
         <Occurrences
-          occurrences={occurrences}
+          occurrences={occurrences.slice(0, occurrences.length - 7)}
           displayed={view === 'history' || view === 'focus'}
         />
       )}
