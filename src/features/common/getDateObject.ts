@@ -1,4 +1,4 @@
-import { DateObject, DayObject } from '../globalTypes';
+import { DateObject, DayObject } from '../../globalTypes';
 import getCustomDateString from './getCustomDateString';
 
 function rotateArray<ArrayType>(array: ArrayType[], rotationAmt: number): ArrayType[] {

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Habit } from '../../globalTypes';
-import Icon from '../Icon/Icon';
+import Icon from '../icon';
 import './list.css';
 import ListItem from './ListItem';
 

@@ -1,16 +1,16 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { getDateFromDateString, getMinimumDateString } from '../../functions/dateStringFunctions';
-import getCustomDateString from '../../functions/getCustomDateString';
-import getDateObject from '../../functions/getDateObject';
-import getTextWidthInPx from '../../functions/getTextWidthInPx';
+import { getDateFromDateString, getMinimumDateString } from '../common/dateStringFunctions';
+import getDateObject from '../common/getDateObject';
+import getTextWidthInPx from './getTextWidthInPx';
 import {
   Habit, ListView, Occurrence, View,
 } from '../../globalTypes';
-import Dates from '../Dates/Dates';
-import Days from '../Days/Days';
-import List from '../List/List';
-import Occurrences from '../Occurrences/Occurrences';
-import TransitionManager from '../TransitionManager/TransitionManager';
+import Dates from '../dates';
+import Days from '../days';
+import List from '../list';
+import Occurrences from '../occurrences';
+import TransitionManager from '../transitionManager';
+import getCustomDateString from '../common/getCustomDateString';
 
 const habitsSeed: Habit[] = [
   {
