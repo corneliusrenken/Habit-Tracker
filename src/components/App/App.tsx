@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import getDateObject from '../../functions/getDateObject';
 import getTextWidthInPx from '../../functions/getTextWidthInPx';
 import {
@@ -88,12 +88,16 @@ function getBodyHeight(view: View, habits: Habit[]) {
 }
 
 function App() {
-  const [dateObject] = useState(getDateObject(0));
+  const [dateObject] = useState(getDateObject(6));
   const [displayingYesterday] = useState(false);
   const [habits, setHabits] = useState<Habit[]>(habitsSeed);
   const [view, setView] = useState<View>('habit');
   const [latchedListView, setLatchedListView] = useState<ListView>('habit');
   // const [focusId, setFocusId] = useState<number | undefined>(undefined);
+
+  const dayObject = useMemo(() => (
+    displayingYesterday ? dateObject.yesterday : dateObject.today
+  ), [dateObject, displayingYesterday]);
 
   const setViewWrapper = (v: View) => {
     if (v === 'habit' || v === 'selection') {
@@ -109,15 +113,11 @@ function App() {
   // - focus: occurrences[focus id] length
 
   useEffect(() => {
-    const firstDate = !displayingYesterday
-      ? dateObject.today.weekDateStrings[0].slice(-2)
-      : dateObject.yesterday.weekDateStrings[0].slice(-2);
-    const lastDate = !displayingYesterday
-      ? dateObject.today.weekDateStrings[6].slice(-2)
-      : dateObject.yesterday.weekDateStrings[6].slice(-2);
+    const firstDate = Number(dayObject.weekDateStrings[0].slice(-2));
+    const lastDate = Number(dayObject.weekDateStrings[6].slice(-2));
     document.documentElement.style.setProperty('--left-margin', `${(50 - getTextWidthInPx(firstDate, 15)) / 2}px`);
     document.documentElement.style.setProperty('--right-margin', `${(50 - getTextWidthInPx(lastDate, 15)) / 2}px`);
-  }, [dateObject, displayingYesterday]);
+  }, [dayObject]);
 
   return (
     <TransitionManager
@@ -132,21 +132,13 @@ function App() {
       )}
       dates={(
         <Dates
-          weekDateStrings={(
-            !displayingYesterday
-              ? dateObject.today.weekDateStrings
-              : dateObject.yesterday.weekDateStrings
-          )}
-          todaysIndex={(
-            !displayingYesterday
-              ? dateObject.today.dayIndex
-              : dateObject.yesterday.dayIndex
-          )}
+          weekDateStrings={dayObject.weekDateStrings}
+          todaysIndex={dayObject.weekDayIndex}
         />
       )}
       days={(
         <Days
-          weekDays={dateObject.weekDays}
+          weekDays={dayObject.weekDays}
         />
       )}
       list={(

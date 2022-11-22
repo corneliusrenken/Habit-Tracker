@@ -16,14 +16,14 @@ export type View = 'habit' | 'selection' | 'history' | 'focus';
 
 export type ListView = 'habit' | 'selection';
 
-type DateObjectDayInfo = {
-  dateString: string,
+export type DayObject = {
+  date: string,
+  weekDayIndex: number,
   weekDateStrings: string[],
-  dayIndex: number,
+  weekDays: string[],
 };
 
 export type DateObject = {
-  today: DateObjectDayInfo,
-  yesterday: DateObjectDayInfo,
-  weekDays: string[],
+  today: DayObject,
+  yesterday: DayObject,
 };

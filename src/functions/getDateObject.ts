@@ -1,43 +1,53 @@
-import { DateObject } from '../globalTypes';
+import { DateObject, DayObject } from '../globalTypes';
 import getCustomDateString from './getCustomDateString';
 
-function getWeekDays(mondayIndex: number) {
-  if (mondayIndex > 6) {
-    throw new Error('index of monday has to be inclusively between 0 and 6');
+function rotateArray<ArrayType>(array: ArrayType[], rotationAmt: number): ArrayType[] {
+  const rotatedArray: ArrayType[] = new Array(array.length);
+  for (let i = 0; i < array.length; i += 1) {
+    rotatedArray[(i + rotationAmt) % array.length] = array[i];
   }
-  let weekDays = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
-  if (mondayIndex !== 0) {
-    weekDays = weekDays.slice(-mondayIndex).concat(weekDays.slice(0, 7 - mondayIndex));
-  }
-  return weekDays;
+  return rotatedArray;
 }
 
-function getDayInfo(date: Date, mondayIndex: number) {
-  let dayIndex = date.getDay();
-  if (mondayIndex !== 1) {
-    dayIndex = (dayIndex + 6 - mondayIndex) % 7;
-  }
-  const weekDateStrings = [];
+function getWeekDayIndex(sundayIndex: number, date: Date): number {
+  let weekDayIndex = date.getDay();
+  weekDayIndex = (weekDayIndex + sundayIndex) % 7;
+  return weekDayIndex;
+}
+
+function getWeekDateStrings(weekDayIndex: number, date: Date): string[] {
+  const weekDateStrings: string[] = [];
   for (let i = 0; i < 7; i += 1) {
-    const temp = new Date(date);
-    temp.setDate(date.getDate() + i - dayIndex);
-    weekDateStrings.push(getCustomDateString(temp));
+    const tempDate = new Date(date);
+    tempDate.setDate(date.getDate() + (i - weekDayIndex));
+    weekDateStrings.push(getCustomDateString(tempDate));
   }
+  return weekDateStrings;
+}
+
+function getWeekDays(sundayIndex: number): string[] {
+  const weekDays = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  return rotateArray(weekDays, sundayIndex);
+}
+
+function getDayObject(sundayIndex: number, date: Date): DayObject {
+  const weekDayIndex = getWeekDayIndex(sundayIndex, date);
   return {
-    dateString: getCustomDateString(date),
-    weekDateStrings,
-    dayIndex,
+    date: getCustomDateString(date),
+    weekDayIndex,
+    weekDateStrings: getWeekDateStrings(weekDayIndex, date),
+    weekDays: getWeekDays(sundayIndex),
   };
 }
 
-export default function getDateObject(mondayIndex: number): DateObject {
-  const now = new Date();
-  const yesterday = new Date(now);
-  yesterday.setDate(now.getDate() - 1);
-
+export default function getDateObject(sundayIndex: number, date = new Date()): DateObject {
+  if (sundayIndex < 0 || sundayIndex > 6) {
+    throw new Error('Sunday index needs to be inclusively between 0 and 6');
+  }
+  const yesterday = new Date(date);
+  yesterday.setDate(date.getDate() - 1);
   return {
-    today: getDayInfo(now, mondayIndex),
-    yesterday: getDayInfo(yesterday, mondayIndex),
-    weekDays: getWeekDays(mondayIndex),
+    today: getDayObject(sundayIndex, date),
+    yesterday: getDayObject(sundayIndex, yesterday),
   };
 }
