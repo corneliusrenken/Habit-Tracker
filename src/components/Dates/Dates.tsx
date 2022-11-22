@@ -1,15 +1,22 @@
 import React from 'react';
+import { Occurrence } from '../../globalTypes';
 import './dates.css';
 
 type Props = {
-  weekDateStrings: string[];
+  occurrences: Occurrence[];
   todaysIndex: number;
 };
 
-function Dates({ weekDateStrings, todaysIndex }: Props) {
+function Dates({ occurrences, todaysIndex }: Props) {
   return (
     <div className="dates-container">
-      {weekDateStrings.map((dateString) => <div className="date">{Number(dateString.slice(-2))}</div>)}
+      {occurrences.slice(occurrences.length - 7).map(({ date, complete }) => (
+        <div
+          className={`date${complete ? ' greyed-out' : ''}`}
+        >
+          {date}
+        </div>
+      ))}
       <div className="date-selector" style={{ left: `calc(5px + ${todaysIndex} * 50px)` }} />
     </div>
   );

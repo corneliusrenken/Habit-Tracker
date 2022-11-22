@@ -60,7 +60,7 @@ type ApiResult = {
 
 const apiResult: ApiResult = {
   oldest: {
-    1: '2021-11-18',
+    1: '2022-10-18',
     2: '2022-11-20',
     3: '2022-11-19',
     4: '2022-11-20',
@@ -82,13 +82,13 @@ const apiResult: ApiResult = {
       3: true,
       4: true,
     },
-    '2022-11-26': {
+    '2022-11-25': {
       1: true,
       2: true,
       3: true,
       4: true,
     },
-    '2023-11-26': {
+    '2022-11-26': {
       1: true,
       2: true,
       3: true,
@@ -147,7 +147,7 @@ function App() {
   const [habits, setHabits] = useState<Habit[]>(habitsSeed);
   const [view, setView] = useState<View>('habit');
   const [latchedListView, setLatchedListView] = useState<ListView>('habit');
-  const [focusId] = useState<number | undefined>(2);
+  const [focusId] = useState<number | undefined>(undefined);
 
   const setViewWrapper = (v: View) => {
     if (v === 'habit' || v === 'selection') {
@@ -178,19 +178,20 @@ function App() {
       bodyHeight={getBodyHeight(view, habits, occurrences)}
       occurrences={(
         <Occurrences
-          occurrences={occurrences.slice(0, occurrences.length - 7)}
+          occurrences={occurrences}
           displayed={view === 'history' || view === 'focus'}
         />
       )}
       dates={(
         <Dates
-          weekDateStrings={dayObject.weekDateStrings}
+          occurrences={occurrences}
           todaysIndex={dayObject.weekDayIndex}
         />
       )}
       days={(
         <Days
           weekDays={dayObject.weekDays}
+          occurrences={occurrences}
         />
       )}
       list={(

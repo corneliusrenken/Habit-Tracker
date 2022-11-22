@@ -19,15 +19,18 @@ type Props = {
 
 function Occurrences({ occurrences, displayed }: Props) {
   return (
-    <div className="occurrence-container" style={{ height: `${getContainerHeight(occurrences.length)}px` }}>
-      {occurrences.map(({ date, complete }, index) => {
+    <div
+      className="occurrence-container"
+      style={{ height: `${getContainerHeight(occurrences.length - 7)}px` }}
+    >
+      {occurrences.slice(0, occurrences.length - 7).map(({ date, complete }, index) => {
         // row for fading out not used atm -- temporary for later development
         const row = displayed
           ? Math.floor((occurrences.length - index - 1) / 7)
           : Math.floor(index / 7);
         return (
           <div
-            className={`occurrence${complete ? ' complete' : ''}`}
+            className={`occurrence${complete ? ' greyed-out' : ''}`}
             style={{
               opacity: displayed ? 1 : 0,
               transitionDuration: '600ms',
