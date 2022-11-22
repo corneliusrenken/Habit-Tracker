@@ -4,7 +4,7 @@ import getCustomDateString from '../../functions/getCustomDateString';
 import getDateObject from '../../functions/getDateObject';
 import getTextWidthInPx from '../../functions/getTextWidthInPx';
 import {
-  DayObject, Habit, ListView, Occurrence, View,
+  Habit, ListView, Occurrence, View,
 } from '../../globalTypes';
 import Dates from '../Dates/Dates';
 import Days from '../Days/Days';
@@ -156,13 +156,42 @@ function App() {
     setView(v);
   };
 
-  const dayObject: DayObject = useMemo(() => (
+  const dayObject = useMemo(() => (
     displayingYesterday ? dateObject.yesterday : dateObject.today
   ), [dateObject, displayingYesterday]);
 
-  const occurrences: Occurrence[] = useMemo(() => (
+  const occurrences = useMemo(() => (
     getOccurrences(focusId, dayObject.weekDateStrings[6])
   ), [dayObject, focusId]);
+
+  const occurrencesComponent = useMemo(() => (
+    <Occurrences
+      occurrences={occurrences}
+      displayed={view === 'history' || view === 'focus'}
+    />
+  ), [occurrences, view]);
+
+  const datesComponent = useMemo(() => (
+    <Dates
+      occurrences={occurrences}
+      todaysIndex={dayObject.weekDayIndex}
+    />
+  ), [occurrences, dayObject]);
+
+  const daysComponent = useMemo(() => (
+    <Days
+      weekDays={dayObject.weekDays}
+      occurrences={occurrences}
+    />
+  ), [dayObject, occurrences]);
+
+  const listComponent = useMemo(() => (
+    <List
+      habits={habits}
+      setHabits={setHabits}
+      view={latchedListView}
+    />
+  ), [habits, latchedListView]);
 
   useEffect(() => {
     const firstDate = Number(dayObject.weekDateStrings[0].slice(-2));
@@ -176,31 +205,10 @@ function App() {
       view={view}
       setView={setViewWrapper}
       bodyHeight={getBodyHeight(view, habits, occurrences)}
-      occurrences={(
-        <Occurrences
-          occurrences={occurrences}
-          displayed={view === 'history' || view === 'focus'}
-        />
-      )}
-      dates={(
-        <Dates
-          occurrences={occurrences}
-          todaysIndex={dayObject.weekDayIndex}
-        />
-      )}
-      days={(
-        <Days
-          weekDays={dayObject.weekDays}
-          occurrences={occurrences}
-        />
-      )}
-      list={(
-        <List
-          habits={habits}
-          setHabits={setHabits}
-          view={latchedListView}
-        />
-      )}
+      occurrences={occurrencesComponent}
+      days={daysComponent}
+      dates={datesComponent}
+      list={listComponent}
     />
   );
 }
