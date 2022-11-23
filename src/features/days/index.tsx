@@ -14,6 +14,7 @@ function Days({ weekDays, occurrences }: Props) {
         const { complete } = occurrences[occurrences.length - 7 + index];
         return (
           <div
+            key={index} // eslint-disable-line react/no-array-index-key
             className={`day${complete ? ' greyed-out' : ''}`}
           >
             {day}

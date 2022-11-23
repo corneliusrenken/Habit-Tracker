@@ -10,8 +10,9 @@ type Props = {
 function Dates({ occurrences, todaysIndex }: Props) {
   return (
     <div className="dates-container">
-      {occurrences.slice(occurrences.length - 7).map(({ date, complete }) => (
+      {occurrences.slice(occurrences.length - 7).map(({ date, complete }, index) => (
         <div
+          key={index} // eslint-disable-line react/no-array-index-key
           className={`date${complete ? ' greyed-out' : ''}`}
         >
           {date}

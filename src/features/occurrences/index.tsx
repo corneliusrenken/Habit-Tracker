@@ -30,6 +30,7 @@ function Occurrences({ occurrences, displayed }: Props) {
           : Math.floor(index / 7);
         return (
           <div
+            key={index} // eslint-disable-line react/no-array-index-key
             className={`occurrence${complete ? ' greyed-out' : ''}`}
             style={{
               opacity: displayed ? 1 : 0,
