@@ -11,5 +11,10 @@ export default function updateOccurrence(habitId: number, dateString: string, co
     data: {
       completed,
     },
+    select: {
+      habit_id: true,
+      date: true,
+      completed: true,
+    },
   });
 }
