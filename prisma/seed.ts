@@ -12,7 +12,7 @@ main()
   })
 
   .catch(async (e) => {
-    console.error(e);
+    console.error(e); // eslint-disable-line no-console
     await prisma.$disconnect();
     process.exit(1);
   });

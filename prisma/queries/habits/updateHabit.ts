@@ -43,6 +43,12 @@ export default async function updateHabit(
         order,
         selected,
       },
+      select: {
+        id: true,
+        name: true,
+        selected: true,
+        order: true,
+      },
     }),
   );
 
@@ -98,5 +104,7 @@ export default async function updateHabit(
     }
   }
 
-  return prisma.$transaction(operations);
+  const transactionResult = await prisma.$transaction(operations);
+
+  return transactionResult[0];
 }

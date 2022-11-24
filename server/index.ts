@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
 import express from 'express';
-import router from './routes';
+import habitRouter from './routes/habits';
 
 const app = express();
 
 app.use(express.json());
 
-app.use('/api', router);
+app.use('/api/habits', habitRouter);
 
 app.listen(7777, () => console.log(`http://localhost:${7777}`));
