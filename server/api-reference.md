@@ -1,11 +1,13 @@
 # Habits
 
----
-
 `get` **/api/habits/users/:userId**
 
 *returns array of user's habits sorted by id*
 
+**Query Parameters:**
+- userId: number
+
+**Returns:**
 ```
 [
     {
@@ -29,6 +31,7 @@
 - name: string `required`
 - dateString: YYYY-MM-DD string `required`
 
+**Returns:**
 ```
 {
     "id": 5,
@@ -44,12 +47,16 @@
 
 *updates and returns updated habit*
 
+**Query Parameters:**
+- userId: number
+
 **Body Properties:**
 - name: string `optional`
 - order: number `optional`
 - selected: boolean `optional`
 - dateString: YYYY-MM-DD string `required only if updating selected property`
 
+**Returns:**
 ```
 {
     "id": 5,
@@ -65,17 +72,20 @@
 
 *deletes habit*
 
----
+**Query Parameters:**
+- userId: number
 
 # Occurrences
-
----
 
 `get` **/api/occurrences/users/:userId**
 
 *returns object of user's occurrences grouped by date*
 *occurrences returned as `{habit id: completed}`*
 
+**Query Parameters:**
+- userId: number
+
+**Returns:**
 ```
 {
   "2022-11-22": {
@@ -94,6 +104,11 @@
 
 *returns object of user's occurrence streaks grouped by habit id*
 
+**Query Parameters:**
+- dateString: YYYY-MM-DD string
+- userId: number
+
+**Returns:**
 ```
 {
   "5": {
@@ -112,6 +127,10 @@
 
 **!!!!** oldest occurrence is null if no true occurrences exist for the given habit
 
+**Query Parameters:**
+- userId: number
+
+**Returns:**
 ```
 {
   "4": null,
@@ -143,6 +162,10 @@ Occurrence Object:
 
 *updates occurrence*
 
+**Query Parameters:**
+- habitId: number
+- dateString: YYYY-MM-DD string
+
 **Body Properties:**
 - completed: boolean `required`
 
@@ -152,4 +175,6 @@ Occurrence Object:
 
 *deletes occurrence*
 
----
+**Query Parameters:**
+- habitId: number
+- dateString: YYYY-MM-DD string
