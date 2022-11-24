@@ -11,9 +11,8 @@ datasource db {
 }
 
 model User {
-  id             Int            @id @default(autoincrement())
-  completed_days CompletedDay[]
-  habits         Habit[]
+  id     Int     @id @default(autoincrement())
+  habits Habit[]
 
   @@map("users")
 }
@@ -23,32 +22,24 @@ model Habit {
   name        String
   selected    Boolean      @default(true)
   order       Int
-  user        User         @relation(fields: [user_id], references: [id])
   user_id     Int
+  user        User         @relation(fields: [user_id], references: [id])
   occurrences Occurrence[]
 
-  @@unique([order, user_id])
+  @@unique([name, user_id])
+  @@unique([user_id, order], map: "unique_order_per_user_id")
+  @@index([user_id])
   @@map("habits")
 }
 
 model Occurrence {
-  id       Int      @id @default(autoincrement())
-  date     DateTime @db.Date
-  habit    Habit    @relation(fields: [habit_id], references: [id], onDelete: Cascade)
-  habit_id Int
+  id        Int      @id @default(autoincrement())
+  date      DateTime @db.Date
+  habit_id  Int
+  completed Boolean
+  habit     Habit    @relation(fields: [habit_id], references: [id], onDelete: Cascade)
 
-  @@index([habit_id])
   @@unique([date, habit_id])
+  @@index([habit_id])
   @@map("occurrences")
-}
-
-model CompletedDay {
-  id      Int      @id @default(autoincrement())
-  date    DateTime @db.Date
-  user    User     @relation(fields: [user_id], references: [id])
-  user_id Int
-
-  @@index([user_id])
-  @@unique([date, user_id])
-  @@map("completed_days")
 }

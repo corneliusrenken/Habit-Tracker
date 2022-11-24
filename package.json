@@ -38,7 +38,7 @@
     }
   },
   "prisma": {
-    "seed": "ts-node db/seed.ts"
+    "seed": "ts-node prisma/seed.ts"
   },
   "browserslist": {
     "production": [
