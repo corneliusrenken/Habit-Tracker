@@ -2,21 +2,68 @@
 
 ## Habits
 
-`get` **/api/habits/:userId**
+`get` **/api/habits/users/:userId**
 
 *returns array of user's habits sorted by id*
 
 ```
 [
     {
-        "id": 1,
-        "name": "go out with dogs",
-        "order": 0,
-        "selected": true
+        "id": 5,
+        "name": "exercise",
+        "selected": true,
+        "order": 2
     },
     ...
 ]
 ```
+
+---
+
+`post` **/api/habits**
+
+*creates and returns created habit*
+
+**Body Properties:**
+- userId: number `required`
+- name: string `required`
+- dateString: YYYY-MM-DD string `required`
+
+```
+{
+    "id": 5,
+    "name": "exercise",
+    "selected": true,
+    "order": 2
+}
+```
+
+---
+
+`patch` **/api/habits/:habitId**
+
+*updates and returns updated habit*
+
+**Body Properties:**
+- name: string `optional`
+- order: number `optional`
+- selected: boolean `optional`
+- dateString: YYYY-MM-DD string `required only if updating selected property`
+
+```
+{
+    "id": 5,
+    "name": "exercise",
+    "selected": true,
+    "order": 2
+}
+```
+
+---
+
+`delete` **/api/habits/:habitId**
+
+*deletes habit*
 
 ## Occurrences
 
