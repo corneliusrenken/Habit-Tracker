@@ -1,6 +1,6 @@
-# Api Reference
+# Habits
 
-## Habits
+---
 
 `get` **/api/habits/users/:userId**
 
@@ -65,35 +65,57 @@
 
 *deletes habit*
 
-## Occurrences
+---
 
-`get` **/api/occurrences/:userId**
+# Occurrences
 
-*returns object containing user's occurrences and the oldest date with an occurrence*
+---
 
-***caution**: filtering the result with the from/until query parameters will also cause the oldest property to represent the oldest occurrence **within** that selection*
+`get` **/api/occurrences/users/:userId**
 
-**Optional Query Parameters:**
-- from: YYYY-MM-DD (inclusive boundary)
-- until: YYYY-MM-DD (inclusive boundary)
+*returns object of user's occurrences grouped by date*
+*occurrences returned as `{habit id: completed}`*
 
 ```
 {
-    "occurrences": {
-        "2022-06-01": [
-            1,
-            2,
-            3,
-            4
-        ],
-        "2022-06-02": [
-            1,
-            2,
-            4
-        ],
-        ...
-    },
-    "oldest": "2022-06-01"
+  "2022-11-22": {
+    "5": true
+  },
+  "2022-11-23": {
+    "5": false
+  },
+  ...
+}
+```
+
+---
+
+`get` **/api/occurrences/streaks/:dateString/users/:userId**
+
+*returns object of user's occurrence streaks grouped by habit id*
+
+```
+{
+  "5": {
+    "current": 0,
+    "maximum": 6
+  },
+  ...
+}
+```
+
+---
+
+`get` **/api/occurrences/oldest/users/:userId**
+
+*returns object of user's oldest **true** occurrences grouped by habit id*
+
+**!!!!** oldest occurrence is null if no true occurrences exist for the given habit
+
+```
+{
+  "4": null,
+  "5": "2022-11-22",
 }
 ```
 
@@ -101,76 +123,33 @@
 
 `post` **/api/occurrences**
 
-*add an occurrence entry for a given date and habit id*
+*creates one or multiple occurrences*
 
 **Body Properties:**
-- habitId: number (bound to user so don't need user id)
-- date: YYYY-MM-DD
+- occurrences: array of occurrence objects `required`
 
----
-
-`delete` **/api/occurrences**
-
-*delete an occurrence entry for a given date and habit id*
-
-**Body Properties:**
-- habitId: number (bound to user so don't need user id)
-- date: YYYY-MM-DD
-
----
-
-`get` **/api/occurrences/streaks/:userId**
-
-*returns object containing current and maximum streak for user's habit ids*
-
-**Query Parameters:**
-- today: YYYY-MM-DD (to calculate current streak)
-
+Occurrence Object:
 ```
-{
-    "1": {
-        "current": 0,
-        "maximum": 102
-    },
-    ...
-}
-```
-
-## Completed Days
-
-
-`get` **/api/completed-days/:userId**
-
-*returns object containing completed days and oldest completed day*
-
-```
-{
-    "completed": {
-        "2022-09-09": true,
-        "2022-09-08": true,
-        "2022-09-07": true,
-        ...
-    },
-    "oldest": "2022-06-01"
-}
+  {
+    habitId: number -- required
+    completed: boolean -- required
+    dateString: YYYY-MM-DD string -- required
+  }
 ```
 
 ---
 
-`post` **/api/completed-days**
+`patch` **/api/occurrences/:habitId/:dateString**
 
-*add a completed day entry for a given date and user*
+*updates occurrence*
 
 **Body Properties:**
-- userId: number
-- date: YYYY-MM-DD
+- completed: boolean `required`
 
 ---
 
-`delete` **/api/completed-days**
+`delete` **/api/occurrences/:habitId/:dateString**
 
-*remove a completed day entry for a given date and user*
+*deletes occurrence*
 
-**Body Properties:**
-- userId: number
-- date: YYYY-MM-DD
+---
