@@ -3,6 +3,7 @@
 `get` **/api/users/:userId/initialize/:dateString**
 
 *if no occurrences exist for today (first time logging in today) not-completed occurrences are added for all habits that were selected the last time the user logged on*
+
 *then returns user's habits, occurrences grouped by date, occurrence streaks, and oldest completed occurrence dates*
 
 **!!!!** if this is the first time logging on / no previous occurrences exist, the occurrences property will still contain a key with the current date, containing no habit ids
