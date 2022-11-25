@@ -1,14 +1,11 @@
 import { Habit } from '@prisma/client';
 import prisma from '../prismaClient';
-import addOccurrences from '../occurrences/addOccurrences';
-import removeOccurrence from '../occurrences/removeOccurrence';
 
 export default async function updateHabit(
   habitId: number,
   data: Partial<Omit<Habit, 'id' | 'user_id'>>,
-  dateString: string,
 ) {
-  let { name, selected, order } = data;
+  let { name, order } = data;
 
   const habitPreUpdate = await prisma.habit.findUnique({
     where: {
@@ -18,7 +15,6 @@ export default async function updateHabit(
       user_id: true,
       name: true,
       order: true,
-      selected: true,
     },
   });
 
@@ -29,7 +25,6 @@ export default async function updateHabit(
   const userId = habitPreUpdate.user_id;
   name = habitPreUpdate.name !== name ? name : undefined;
   order = habitPreUpdate.order !== order ? order : undefined;
-  selected = habitPreUpdate.selected !== selected ? selected : undefined;
 
   const operations = [];
 
@@ -41,12 +36,10 @@ export default async function updateHabit(
       data: {
         name,
         order,
-        selected,
       },
       select: {
         id: true,
         name: true,
-        selected: true,
         order: true,
       },
     }),
@@ -91,16 +84,6 @@ export default async function updateHabit(
           },
         }),
       );
-    }
-  }
-
-  if (selected !== undefined) {
-    // when changing to true -- need to add false occurrence for current date
-    if (selected === true) {
-      operations.push(addOccurrences([{ habitId, dateString, completed: false }]));
-    // when changing to false -- need to remove occurrence for current date
-    } else {
-      operations.push(removeOccurrence(habitId, dateString));
     }
   }
 

@@ -13,7 +13,6 @@
     {
         "id": 5,
         "name": "exercise",
-        "selected": true,
         "order": 2
     },
     ...
@@ -24,7 +23,7 @@
 
 `post` **/api/habits**
 
-*creates and returns created habit*
+*creates and returns created habit & creates a false occurrence at the dateString*
 
 **Body Properties:**
 - userId: number `required`
@@ -36,7 +35,6 @@
 {
     "id": 5,
     "name": "exercise",
-    "selected": true,
     "order": 2
 }
 ```
@@ -53,15 +51,12 @@
 **Body Properties:**
 - name: string `optional`
 - order: number `optional`
-- selected: boolean `optional`
-- dateString: YYYY-MM-DD string `required only if updating selected property`
 
 **Returns:**
 ```
 {
     "id": 5,
     "name": "exercise",
-    "selected": true,
     "order": 2
 }
 ```

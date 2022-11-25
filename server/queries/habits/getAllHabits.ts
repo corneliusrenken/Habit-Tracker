@@ -11,7 +11,6 @@ export default function getAllHabits(userId: number) {
     select: {
       id: true,
       name: true,
-      selected: true,
       order: true,
     },
   });

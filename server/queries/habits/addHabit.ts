@@ -26,7 +26,6 @@ export default async function addHabit(
     select: {
       id: true,
       name: true,
-      selected: true,
       order: true,
     },
   });

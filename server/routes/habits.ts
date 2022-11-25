@@ -43,23 +43,15 @@ router.delete('/:habitId', async (req, res) => {
 
 router.patch('/:habitId', async (req, res) => {
   const { habitId } = req.params;
-  const {
-    name, order, selected, dateString,
-  } = req.body;
+  const { name, order } = req.body;
 
   const updateInfo = {
     name,
     order,
-    selected,
   };
 
-  if (selected !== undefined && dateString === undefined) {
-    res.status(400).send('Provide date string when updating selected property');
-    return;
-  }
-
   try {
-    const updatedHabit = await updateHabit(Number(habitId), updateInfo, dateString);
+    const updatedHabit = await updateHabit(Number(habitId), updateInfo);
 
     res.status(200).json(updatedHabit);
   } catch (error) {
