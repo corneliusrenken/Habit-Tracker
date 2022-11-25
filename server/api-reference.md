@@ -1,3 +1,46 @@
+# Common
+
+`get` **/api/users/:userId/initialize/:dateString**
+
+*if no occurrences exist for today (first time logging in today) not-completed occurrences are added for all habits that were selected the last time the user logged on*
+*then returns user's habits, occurrences grouped by date, occurrence streaks, and oldest completed occurrence dates*
+
+**!!!!** if this is the first time logging on / no previous occurrences exist, the occurrences property will still contain a key with the current date, containing no habit ids
+
+**!!!!** oldest occurrence is null if no completed occurrences exist for the given habit
+
+**Returns:**
+```
+{
+  "habits": [
+    {
+      "id": 5,
+      "name": "exercise",
+      "order": 2
+    },
+    ...
+  ],
+  "occurrences": {
+    "2022-11-22": {
+      "5": true,
+      ...
+    },
+    ...
+  },
+  "streaks": {
+    "5": {
+      "current": 0,
+      "maximum": 1
+    },
+    ...
+  },
+  "oldestOccurrences": {
+    "5": "2021-04-10",
+    ...
+  }
+}
+```
+
 # Habits
 
 `get` **/api/habits/users/:userId**
@@ -23,7 +66,7 @@
 
 `post` **/api/habits**
 
-*creates and returns created habit & creates a false occurrence at the dateString*
+*creates and returns created habit & creates a not-completed occurrence at the dateString*
 
 **Body Properties:**
 - userId: number `required`
@@ -118,9 +161,9 @@
 
 `get` **/api/occurrences/oldest/users/:userId**
 
-*returns object of user's oldest **true** occurrences grouped by habit id*
+*returns object of user's oldest completed occurrences grouped by habit id*
 
-**!!!!** oldest occurrence is null if no true occurrences exist for the given habit
+**!!!!** oldest occurrence is null if no completed occurrences exist for the given habit
 
 **Query Parameters:**
 - userId: number
