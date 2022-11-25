@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import {
   addHabit, getAllHabits, removeHabit, updateHabit,
-} from '../../prisma/queries/habits';
+} from '../queries/habits';
 
 const router = Router();
 

@@ -6,7 +6,7 @@ import {
   getOldestTrueOccurrences,
   removeOccurrence,
   updateOccurrence,
-} from '../../prisma/queries/occurrences';
+} from '../queries/occurrences';
 
 const router = Router();
 
