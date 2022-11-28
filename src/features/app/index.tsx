@@ -13,8 +13,6 @@ import getSelectedOccurrences from './getSelectedOccurrences';
 import getBodyHeight from './getBodyHeight';
 import initialize from './initialize';
 
-let initialized = false;
-
 function App() {
   const [dateObject] = useState(getDateObject(6));
   const [displayingYesterday] = useState(false);
@@ -38,11 +36,8 @@ function App() {
   ), [dateObject, displayingYesterday]);
 
   useEffect(() => {
-    if (!initialized) {
-      initialized = true;
-      initialize(1, dayObject.dateString, { setHabits, setOccurrenceData, setStreaks });
-    }
-  }, [dayObject.dateString]);
+    initialize(1, dateObject.today.dateString, { setHabits, setOccurrenceData, setStreaks });
+  }, [dateObject]);
 
   const selectedOccurrences = useMemo(() => (
     occurrenceData !== undefined
