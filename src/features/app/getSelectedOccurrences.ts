@@ -28,9 +28,12 @@ export default function getSelectedOccurrences(
     const dateString = getCustomDateString(currentDate);
     let done = false;
     if (occurrenceData.dates[dateString] !== undefined) {
-      done = focusId === undefined
-        ? Object.values(occurrenceData.dates[dateString]).every((value) => value === true)
-        : occurrenceData.dates[dateString][focusId] === true;
+      const occurrenceValues = Object.values(occurrenceData.dates[dateString]);
+      if (occurrenceValues.length !== 0) {
+        done = focusId === undefined
+          ? occurrenceValues.every((value) => value === true)
+          : occurrenceData.dates[dateString][focusId] === true;
+      }
     }
     const occurence = { date: Number(dateString.slice(-2)), done };
     occurences.push(occurence);
