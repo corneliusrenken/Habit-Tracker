@@ -37,7 +37,7 @@ export default function SelectionList({
         <SelectionListItem
           name={name}
           move={onMouseDown}
-          selected={todaysOccurrences[id]}
+          selected={todaysOccurrences[id] !== undefined}
         />
       )
     ),

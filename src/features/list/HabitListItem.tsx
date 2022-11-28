@@ -3,12 +3,12 @@ import React from 'react';
 type Props = {
   name: string;
   streak: number;
-  done: boolean;
+  completed: boolean;
 };
 
-export default function HabitListItem({ name, streak, done }: Props) {
+export default function HabitListItem({ name, streak, completed }: Props) {
   let containerClassName = 'list-item';
-  if (done) containerClassName += ' greyed-out';
+  if (!completed) containerClassName += ' greyed-out';
 
   return (
     <div className={containerClassName}>

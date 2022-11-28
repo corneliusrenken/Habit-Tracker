@@ -14,14 +14,14 @@ export default function HabitList({ habits, streaks, todaysOccurrences }: Props)
   return (
     <div>
       {habits.map(({ name, id }) => {
-        const done = todaysOccurrences[id];
+        const completed = todaysOccurrences[id];
 
         return (
           <HabitListItem
             key={id}
             name={name}
             streak={streaks[id].current}
-            done={done}
+            completed={completed}
           />
         );
       })}
