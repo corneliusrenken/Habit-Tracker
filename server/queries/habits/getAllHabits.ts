@@ -6,7 +6,7 @@ export default function getAllHabits(userId: number) {
       user_id: userId,
     },
     orderBy: {
-      id: 'asc',
+      order: 'asc',
     },
     select: {
       id: true,

@@ -46,7 +46,7 @@
 
 `get` **/api/habits/users/:userId**
 
-*returns array of user's habits sorted by id*
+*returns array of user's habits sorted by order*
 
 **Query Parameters:**
 - userId: number
