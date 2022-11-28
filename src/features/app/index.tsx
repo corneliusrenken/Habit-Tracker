@@ -2,55 +2,43 @@ import React, { useEffect, useMemo, useState } from 'react';
 import getDateObject from '../common/getDateObject';
 import getTextWidthInPx from './getTextWidthInPx';
 import {
-  Habit, ListView, OccurrencesApiData, View,
+  Habit, ListView, OccurrenceData, Streaks, View,
 } from '../../globalTypes';
 import Dates from '../dates';
 import Days from '../days';
 import List from '../list';
 import Occurrences from '../occurrences';
 import TransitionManager from '../transitionManager';
-import getOccurrencesFromApiData from './getOccurrencesFromApiData';
+import getSelectedOccurrences from './getSelectedOccurrences';
 import getBodyHeight from './getBodyHeight';
 
 const habitsSeed: Habit[] = [
   {
-    id: 1,
-    name: 'run',
-    done: false,
-    visible: true,
-    streak: 5,
-    order: 2,
-  },
-  {
     id: 2,
     name: 'practice guitar',
-    done: false,
-    visible: true,
-    streak: 12,
     order: 0,
   },
   {
     id: 3,
     name: 'verylongveryverylongveryverylongveryverylongveryverylongveryverylongvery',
-    done: false,
-    visible: true,
-    streak: 12123123892713,
     order: 1,
+  },
+  {
+    id: 1,
+    name: 'run',
+    order: 2,
   },
   {
     id: 4,
     name: 'listen to music',
-    done: false,
-    visible: true,
-    streak: 12123123892713,
     order: 3,
   },
 ];
 
-const apiResult: OccurrencesApiData = {
+const occurrenceDataSeed: OccurrenceData = {
   oldest: {
     1: '2022-10-18',
-    2: '2022-11-20',
+    2: null,
     3: '2022-11-19',
     4: '2022-11-20',
   },
@@ -83,16 +71,32 @@ const apiResult: OccurrencesApiData = {
       3: true,
       4: true,
     },
+    '2022-11-28': {
+      // 1: true,
+      2: true,
+      3: false,
+      4: true,
+    },
   },
+};
+
+const streaksSeed: Streaks = {
+  1: { current: 1, maximum: 5 },
+  2: { current: 33, maximum: 5 },
+  3: { current: 123, maximum: 5 },
+  4: { current: 5, maximum: 5 },
 };
 
 function App() {
   const [dateObject] = useState(getDateObject(6));
   const [displayingYesterday] = useState(false);
-  const [habits, setHabits] = useState<Habit[]>(habitsSeed);
   const [view, setView] = useState<View>('habit');
   const [latchedListView, setLatchedListView] = useState<ListView>('habit');
   const [focusId] = useState<number | undefined>(undefined);
+
+  const [habits, setHabits] = useState<Habit[]>(habitsSeed);
+  const [occurrenceData] = useState<OccurrenceData>(occurrenceDataSeed);
+  const [streaks] = useState<Streaks>(streaksSeed);
 
   const setViewWrapper = (v: View) => {
     if (v === 'habit' || v === 'selection') {
@@ -105,38 +109,40 @@ function App() {
     displayingYesterday ? dateObject.yesterday : dateObject.today
   ), [dateObject, displayingYesterday]);
 
-  const occurrences = useMemo(() => (
-    getOccurrencesFromApiData(apiResult, focusId, dayObject.weekDateStrings[6])
-  ), [dayObject, focusId]);
+  const selectedOccurrences = useMemo(() => (
+    getSelectedOccurrences(occurrenceData, focusId, dayObject.weekDateStrings[6])
+  ), [occurrenceData, dayObject, focusId]);
 
   const occurrencesComponent = useMemo(() => (
     <Occurrences
-      occurrences={occurrences}
       displayed={view === 'history' || view === 'focus'}
+      selectedOccurrences={selectedOccurrences}
     />
-  ), [occurrences, view]);
+  ), [view, selectedOccurrences]);
 
   const datesComponent = useMemo(() => (
     <Dates
-      occurrences={occurrences}
       todaysIndex={dayObject.weekDayIndex}
+      selectedOccurrences={selectedOccurrences}
     />
-  ), [occurrences, dayObject]);
+  ), [dayObject, selectedOccurrences]);
 
   const daysComponent = useMemo(() => (
     <Days
       weekDays={dayObject.weekDays}
-      occurrences={occurrences}
+      selectedOccurrences={selectedOccurrences}
     />
-  ), [dayObject, occurrences]);
+  ), [dayObject, selectedOccurrences]);
 
   const listComponent = useMemo(() => (
     <List
       habits={habits}
+      streaks={streaks}
       setHabits={setHabits}
+      todaysOccurrences={occurrenceData.dates[dayObject.date] || []}
       view={latchedListView}
     />
-  ), [habits, latchedListView]);
+  ), [dayObject.date, habits, latchedListView, occurrenceData.dates, streaks]);
 
   useEffect(() => {
     const firstDate = Number(dayObject.weekDateStrings[0].slice(-2));
@@ -149,7 +155,7 @@ function App() {
     <TransitionManager
       view={view}
       setView={setViewWrapper}
-      bodyHeight={getBodyHeight(view, habits, occurrences)}
+      bodyHeight={getBodyHeight(view, habits, selectedOccurrences)}
       occurrences={occurrencesComponent}
       days={daysComponent}
       dates={datesComponent}

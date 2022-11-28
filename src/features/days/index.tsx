@@ -1,21 +1,24 @@
 import React from 'react';
-import { Occurrence } from '../../globalTypes';
+import { SelectedOccurrence } from '../../globalTypes';
 import './days.css';
 
 type Props = {
   weekDays: string[];
-  occurrences: Occurrence[];
+  selectedOccurrences: SelectedOccurrence[];
 };
 
-function Days({ weekDays, occurrences }: Props) {
+function Days({ weekDays, selectedOccurrences }: Props) {
   return (
     <div className="days-container">
       {weekDays.map(((day, index) => {
-        const { complete } = occurrences[occurrences.length - 7 + index];
+        const { done } = selectedOccurrences[selectedOccurrences.length - 7 + index];
+        let className = 'day';
+        if (done) className += ' greyed-out';
+
         return (
           <div
             key={index} // eslint-disable-line react/no-array-index-key
-            className={`day${complete ? ' greyed-out' : ''}`}
+            className={className}
           >
             {day}
           </div>

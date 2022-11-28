@@ -1,23 +1,28 @@
 import React from 'react';
-import { Occurrence } from '../../globalTypes';
+import { SelectedOccurrence } from '../../globalTypes';
 import './dates.css';
 
 type Props = {
-  occurrences: Occurrence[];
+  selectedOccurrences: SelectedOccurrence[];
   todaysIndex: number;
 };
 
-function Dates({ occurrences, todaysIndex }: Props) {
+function Dates({ selectedOccurrences, todaysIndex }: Props) {
   return (
     <div className="dates-container">
-      {occurrences.slice(occurrences.length - 7).map(({ date, complete }, index) => (
-        <div
-          key={index} // eslint-disable-line react/no-array-index-key
-          className={`date${complete ? ' greyed-out' : ''}`}
-        >
-          {date}
-        </div>
-      ))}
+      {selectedOccurrences.slice(selectedOccurrences.length - 7).map(({ date, done }, index) => {
+        let className = 'date';
+        if (done) className += ' greyed-out';
+
+        return (
+          <div
+            key={index} // eslint-disable-line react/no-array-index-key
+            className={className}
+          >
+            {date}
+          </div>
+        );
+      })}
       <div className="date-selector" style={{ left: `calc(5px + ${todaysIndex} * 50px)` }} />
     </div>
   );

@@ -4,7 +4,6 @@
 }
 
 .list-item {
-  position: absolute;
   height: 50px;
   width: 350px;
   display: flex;

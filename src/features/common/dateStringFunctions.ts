@@ -36,26 +36,26 @@ export function isDateStringLessThan(dateString1: string, dateString2: string): 
 // console.log(isDateStringLessThan('2022-10-21', '2022-11-21') === true);
 // console.log(isDateStringLessThan('2022-11-20', '2022-11-21') === true);
 
-export function getMinimumDateString(dateStrings: (string | undefined)[]): string | undefined {
+export function getMinimumDateString(dateStrings: (string | null)[]): string | null {
   return dateStrings.reduce((minimum, dateString) => {
-    if (minimum === undefined) return dateString;
-    if (dateString === undefined) return minimum;
+    if (minimum === null) return dateString;
+    if (dateString === null) return minimum;
     if (isDateStringLessThan(dateString, minimum)) return dateString;
     return minimum;
-  }, undefined);
+  }, null);
 }
 
 // console.log(getMinimumDateString([]));
 
 // console.log(getMinimumDateString([
-//   undefined,
+//   null,
 //   '2022-11-21',
-//   undefined,
+//   null,
 // ]) === '2022-11-21');
 
 // console.log(getMinimumDateString([
 //   '2022-11-21',
-//   undefined,
+//   null,
 // ]) === '2022-11-21');
 
 // console.log(getMinimumDateString([
@@ -64,11 +64,11 @@ export function getMinimumDateString(dateStrings: (string | undefined)[]): strin
 // ]) === '2022-11-20');
 
 // console.log(getMinimumDateString([
-//   undefined,
+//   null,
 //   '2022-11-21',
-//   undefined,
-//   undefined,
+//   null,
+//   null,
 //   '2022-10-20',
 //   '2021-10-20',
-//   undefined,
+//   null,
 // ]) === '2021-10-20');

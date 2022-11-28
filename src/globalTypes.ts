@@ -1,15 +1,30 @@
 export type Habit = {
   id: number;
   name: string;
-  done: boolean;
-  visible: boolean;
-  streak: number;
   order: number;
 };
 
-export type Occurrence = {
+export type OccurrenceData = {
+  oldest: {
+    [habitId: string]: string | null;
+  };
+  dates: {
+    [dateString: string]: {
+      [habitId: string]: boolean;
+    };
+  };
+};
+
+export type Streaks = {
+  [habitId: string]: {
+    current: number;
+    maximum: number;
+  };
+};
+
+export type SelectedOccurrence = {
   date: number;
-  complete: boolean;
+  done: boolean;
 };
 
 export type View = 'habit' | 'selection' | 'history' | 'focus';
@@ -26,15 +41,4 @@ export type DayObject = {
 export type DateObject = {
   today: DayObject,
   yesterday: DayObject,
-};
-
-export type OccurrencesApiData = {
-  oldest: {
-    [habitId: string]: string | undefined;
-  };
-  dates: {
-    [dateString: string]: {
-      [habitId: string]: boolean;
-    };
-  };
 };

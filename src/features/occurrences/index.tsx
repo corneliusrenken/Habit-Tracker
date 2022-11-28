@@ -1,5 +1,5 @@
 import React from 'react';
-import { Occurrence } from '../../globalTypes';
+import { SelectedOccurrence } from '../../globalTypes';
 import './occurrences.css';
 
 function getContainerHeight(occurencesLength: number) {
@@ -13,25 +13,29 @@ function getAnimationDelay(row: number, index: number) {
 }
 
 type Props = {
-  occurrences: Occurrence[];
+  selectedOccurrences: SelectedOccurrence[];
   displayed: boolean;
 };
 
-function Occurrences({ occurrences, displayed }: Props) {
+function Occurrences({ selectedOccurrences, displayed }: Props) {
   return (
     <div
       className="occurrence-container"
-      style={{ height: `${getContainerHeight(occurrences.length - 7)}px` }}
+      style={{ height: `${getContainerHeight(selectedOccurrences.length - 7)}px` }}
     >
-      {occurrences.slice(0, occurrences.length - 7).map(({ date, complete }, index) => {
+      {selectedOccurrences.slice(0, selectedOccurrences.length - 7).map(({ date, done }, index) => {
         // row for fading out not used atm -- temporary for later development
         const row = displayed
-          ? Math.floor((occurrences.length - index - 1) / 7)
+          ? Math.floor((selectedOccurrences.length - index - 1) / 7)
           : Math.floor(index / 7);
+
+        let className = 'occurrence';
+        if (done) className += ' greyed-out';
+
         return (
           <div
             key={index} // eslint-disable-line react/no-array-index-key
-            className={`occurrence${complete ? ' greyed-out' : ''}`}
+            className={className}
             style={{
               opacity: displayed ? 1 : 0,
               transitionDuration: '600ms',
