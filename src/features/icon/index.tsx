@@ -19,15 +19,20 @@ const iconPaths = {
 
 type Props = {
   icon: keyof typeof iconPaths;
-  onClick?: Function;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+  onMouseDown?: React.MouseEventHandler<HTMLButtonElement>;
   classes?: string[];
 };
 
-export default function Icon({ icon, onClick, classes }: Props) {
+export default function Icon({
+  icon, onClick, onMouseDown, classes,
+}: Props) {
   return (
-    <div
+    <button
+      type="button"
       className={`icon${classes ? ` ${classes.join(' ')}` : ''}`}
       onClick={onClick ? (e) => onClick(e) : undefined}
+      onMouseDown={onMouseDown ? (e) => onMouseDown(e) : undefined}
     >
       <svg
         width="15"
@@ -43,11 +48,12 @@ export default function Icon({ icon, onClick, classes }: Props) {
           clipRule="evenodd"
         />
       </svg>
-    </div>
+    </button>
   );
 }
 
 Icon.defaultProps = {
   onClick: undefined,
+  onMouseDown: undefined,
   classes: undefined,
 };
