@@ -11,7 +11,7 @@ type States = {
 
 type InitializeRequestData = {
   habits: Habit[];
-  occurrences: OccurrencesByDate;
+  occurrencesByDate: OccurrencesByDate;
   oldestOccurrences: OldestOccurrences;
   streaks: Streaks;
 };
@@ -27,7 +27,7 @@ export default async function initialize(userId: number, dateString: string, sta
 
     setHabits(data.habits);
     setOccurrenceData({
-      dates: data.occurrences,
+      dates: data.occurrencesByDate,
       oldest: data.oldestOccurrences,
     });
     setStreaks(data.streaks);

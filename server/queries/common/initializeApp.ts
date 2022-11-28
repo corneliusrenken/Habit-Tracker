@@ -3,13 +3,13 @@ import { getAllHabits } from '../habits';
 import { getOccurrencesByDate, getOccurrenceStreaks, getOldestTrueOccurrences } from '../occurrences';
 
 export default async function initializeApp(userId: number, dateString: string) {
-  const occurrences = await getOccurrencesByDate(userId);
+  const occurrencesByDate = await getOccurrencesByDate(userId);
   const streaks = await getOccurrenceStreaks(userId, dateString);
   const oldestOccurrences = await getOldestTrueOccurrences(userId);
   const habits = await getAllHabits(userId);
 
-  if (occurrences[dateString] === undefined) {
-    occurrences[dateString] = {};
+  if (occurrencesByDate[dateString] === undefined) {
+    occurrencesByDate[dateString] = {};
 
     const lastDateQueryResult: { max_date: string }[] = await prisma.$queryRaw`
       SELECT
@@ -32,8 +32,10 @@ export default async function initializeApp(userId: number, dateString: string) 
      * show up in the list, but are not marked done
      */
     if (lastDate !== null) {
-      const habitIdsFromLastDate = Object.keys(occurrences[lastDate]).map(Number);
-      habitIdsFromLastDate.forEach((habitId) => { occurrences[dateString][habitId] = false; });
+      const habitIdsFromLastDate = Object.keys(occurrencesByDate[lastDate]).map(Number);
+      habitIdsFromLastDate.forEach((habitId) => {
+        occurrencesByDate[dateString][habitId] = false;
+      });
       await prisma.occurrence.createMany({
         data: habitIdsFromLastDate.map((habitId) => ({
           habit_id: habitId,
@@ -46,7 +48,7 @@ export default async function initializeApp(userId: number, dateString: string) 
 
   return {
     habits,
-    occurrences,
+    occurrencesByDate,
     streaks,
     oldestOccurrences,
   };

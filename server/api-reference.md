@@ -21,7 +21,7 @@
     },
     ...
   ],
-  "occurrences": {
+  "occurrencesByDate": {
     "2022-11-22": {
       "5": true,
       ...
