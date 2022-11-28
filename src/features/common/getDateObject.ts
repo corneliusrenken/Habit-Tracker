@@ -33,7 +33,7 @@ function getWeekDays(sundayIndex: number): string[] {
 function getDayObject(sundayIndex: number, date: Date): DayObject {
   const weekDayIndex = getWeekDayIndex(sundayIndex, date);
   return {
-    date: getCustomDateString(date),
+    dateString: getCustomDateString(date),
     weekDayIndex,
     weekDateStrings: getWeekDateStrings(weekDayIndex, date),
     weekDays: getWeekDays(sundayIndex),
