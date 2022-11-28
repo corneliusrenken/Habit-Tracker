@@ -7,7 +7,7 @@ import './list.css';
 type Props = {
   habits: Habit[];
   streaks: Streaks;
-  setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
+  setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
   todaysOccurrences: {
     [habitId: string]: boolean;
   };

@@ -4,15 +4,19 @@ export type Habit = {
   order: number;
 };
 
+export type OldestOccurrences = {
+  [habitId: string]: string | null;
+};
+
+export type OccurrencesByDate = {
+  [dateString: string]: {
+    [habitId: string]: boolean;
+  };
+};
+
 export type OccurrenceData = {
-  oldest: {
-    [habitId: string]: string | null;
-  };
-  dates: {
-    [dateString: string]: {
-      [habitId: string]: boolean;
-    };
-  };
+  oldest: OldestOccurrences;
+  dates: OccurrencesByDate;
 };
 
 export type Streaks = {
@@ -32,7 +36,7 @@ export type View = 'habit' | 'selection' | 'history' | 'focus';
 export type ListView = 'habit' | 'selection';
 
 export type DayObject = {
-  date: string,
+  dateString: string,
   weekDayIndex: number,
   weekDateStrings: string[],
   weekDays: string[],

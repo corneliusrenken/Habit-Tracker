@@ -8,7 +8,7 @@ type Props = {
   todaysOccurrences: {
     [habitId: string]: boolean;
   };
-  setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
+  setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
 };
 
 type ElementConstructor = {
