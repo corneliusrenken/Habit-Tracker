@@ -18,7 +18,7 @@ let initialized = false;
 function App() {
   const [dateObject] = useState(getDateObject(6));
   const [displayingYesterday] = useState(false);
-  const [view, setView] = useState<View>('habit');
+  const [view, _setView] = useState<View>('habit'); // eslint-disable-line @typescript-eslint/naming-convention
   const [latchedListView, setLatchedListView] = useState<ListView>('habit');
   const [focusId] = useState<number | undefined>(undefined);
 
@@ -30,7 +30,7 @@ function App() {
     if (v === 'habit' || v === 'selection') {
       setLatchedListView(v);
     }
-    setView(v);
+    _setView(v);
   };
 
   const dayObject = useMemo(() => (
