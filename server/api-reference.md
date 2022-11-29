@@ -90,7 +90,7 @@
 *updates and returns updated habit*
 
 **Query Parameters:**
-- userId: number
+- habitId: number
 
 **Body Properties:**
 - name: string `optional`
@@ -112,7 +112,7 @@
 *deletes habit*
 
 **Query Parameters:**
-- userId: number
+- habitId: number
 
 # Occurrences
 
