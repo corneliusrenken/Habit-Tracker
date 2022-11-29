@@ -3,13 +3,13 @@ import Icon from '../icon';
 
 type Props = {
   name: string;
-  selected: boolean;
+  visible: boolean;
   move: React.MouseEventHandler<HTMLButtonElement>;
 };
 
-export default function SelectionListItem({ name, selected, move }: Props) {
+export default function SelectionListItem({ name, visible, move }: Props) {
   let nameClassName = 'name';
-  if (!selected) nameClassName += ' greyed-out';
+  if (!visible) nameClassName += ' greyed-out';
 
   return (
     <div className="list-item">
