@@ -9,6 +9,7 @@ type Props = {
     [habitId: string]: boolean;
   };
   selectedIndex: number;
+  setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   apiFunctions: ApiFunctions;
 };
 
@@ -19,7 +20,7 @@ type ElementConstructor = {
 };
 
 export default function SelectionList({
-  habits, todaysOccurrences, selectedIndex, apiFunctions,
+  habits, todaysOccurrences, selectedIndex, apiFunctions, setInInput,
 }: Props) {
   const [habitInput, setHabitInput] = useState('');
 
@@ -70,6 +71,8 @@ export default function SelectionList({
           type="text"
           placeholder="add habit"
           value={habitInput}
+          onFocus={() => setInInput(true)}
+          onBlur={() => setInInput(false)}
           onChange={(e) => setHabitInput(e.target.value)}
         />
       </form>

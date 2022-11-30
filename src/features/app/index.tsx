@@ -26,6 +26,8 @@ function App() {
   const [latchedListView, setLatchedListView] = useState<ListView>('habit');
   const [focusId] = useState<number | undefined>(undefined);
   const [selectedIndex, _setSelectedIndex] = useState(0); // eslint-disable-line @typescript-eslint/naming-convention, max-len
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [inInput, setInInput] = useState(false);
 
   const [habits, setHabits] = useState<Habit[]>();
   const [occurrenceData, setOccurrenceData] = useState<OccurrenceData>();
@@ -100,6 +102,7 @@ function App() {
           todaysOccurrences={occurrenceData.dates[dayObject.dateString]}
           view={latchedListView}
           selectedIndex={selectedIndex}
+          setInInput={setInInput}
           apiFunctions={{
             addHabit: (name: string) => {
               addHabit(userId, name, dateObject.today.dateString, {

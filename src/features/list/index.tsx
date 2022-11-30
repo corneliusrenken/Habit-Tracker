@@ -14,11 +14,12 @@ type Props = {
   };
   view: ListView;
   selectedIndex: number;
+  setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   apiFunctions: ApiFunctions;
 };
 
 export default function List({
-  habits, streaks, todaysOccurrences, view, apiFunctions, selectedIndex,
+  habits, streaks, todaysOccurrences, view, apiFunctions, selectedIndex, setInInput,
 }: Props) {
   return (
     <div>
@@ -35,6 +36,7 @@ export default function List({
           habits={habits}
           todaysOccurrences={todaysOccurrences}
           selectedIndex={selectedIndex}
+          setInInput={setInInput}
           apiFunctions={apiFunctions}
         />
       )}
