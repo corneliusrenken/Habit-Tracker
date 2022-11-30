@@ -13,7 +13,7 @@ type States = {
 export default async function addHabit(
   userId: number,
   name: string,
-  dateString: string,
+  todaysDateString: string,
   states: States,
 ) {
   const {
@@ -28,7 +28,7 @@ export default async function addHabit(
     data: {
       userId,
       name,
-      dateString,
+      dateString: todaysDateString,
     },
   });
 
@@ -45,11 +45,14 @@ export default async function addHabit(
   };
 
   const newOccurrenceData: OccurrenceData = {
-    ...occurrenceData,
+    oldest: {
+      ...occurrenceData.oldest,
+      [createdHabit.id]: null,
+    },
     dates: {
       ...occurrenceData.dates,
-      [dateString]: {
-        ...occurrenceData.dates[dateString],
+      [todaysDateString]: {
+        ...occurrenceData.dates[todaysDateString],
         [createdHabit.id]: false,
       },
     },
