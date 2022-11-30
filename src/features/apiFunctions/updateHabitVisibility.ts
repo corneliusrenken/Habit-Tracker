@@ -1,7 +1,10 @@
 import axios from 'axios';
-import { OccurrenceData } from '../../globalTypes';
+import { OccurrenceData, Streaks } from '../../globalTypes';
+import recalculateStreak from './recalculateStreak';
 
 type States = {
+  streaks: Streaks;
+  setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
   occurrenceData: OccurrenceData | undefined;
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
 };
@@ -9,14 +12,19 @@ type States = {
 export default function updateHabitVisibility(
   habitId: number,
   visible: boolean,
-  dateString: string,
+  todayDateString: string,
   states: States,
 ) {
-  const { occurrenceData, setOccurrenceData } = states;
+  const {
+    streaks, setStreaks, occurrenceData, setOccurrenceData,
+  } = states;
 
-  if (!occurrenceData) throw new Error('states should not be undefined');
+  if (!streaks || !occurrenceData) throw new Error('states should not be undefined');
 
-  const occurrencesToday = { ...occurrenceData.dates[dateString] };
+  const newTodaysOccurrencesToday = { ...occurrenceData.dates[todayDateString] };
+
+  const oldOldestOccurrence = occurrenceData.oldest[habitId];
+  let newOldestOccurrence: string | null = oldOldestOccurrence;
 
   if (visible) {
     axios({
@@ -24,26 +32,45 @@ export default function updateHabitVisibility(
       url: '/api/occurrences',
       data: {
         occurrences: [
-          { habitId, completed: false, dateString },
+          { habitId, completed: false, dateString: todayDateString },
         ],
       },
     });
-    occurrencesToday[habitId] = false;
+
+    newTodaysOccurrencesToday[habitId] = false;
   } else {
     axios({
       method: 'delete',
-      url: `/api/occurrences/${habitId}/${dateString}`,
+      url: `/api/occurrences/${habitId}/${todayDateString}`,
     });
-    delete occurrencesToday[habitId];
+
+    if (newTodaysOccurrencesToday[habitId] === true) {
+      if (oldOldestOccurrence === todayDateString) {
+        newOldestOccurrence = null;
+      }
+    }
+
+    delete newTodaysOccurrencesToday[habitId];
   }
 
   const newOccurrenceData: OccurrenceData = {
-    ...occurrenceData,
+    oldest: {
+      ...occurrenceData.oldest,
+      [habitId]: newOldestOccurrence,
+    },
     dates: {
       ...occurrenceData.dates,
-      [dateString]: occurrencesToday,
+      [todayDateString]: newTodaysOccurrencesToday,
     },
   };
 
+  const newStreak = recalculateStreak(habitId, todayDateString, newOccurrenceData);
+
+  const newStreaks: Streaks = {
+    ...streaks,
+    [habitId]: newStreak,
+  };
+
+  setStreaks(newStreaks);
   setOccurrenceData(newOccurrenceData);
 }

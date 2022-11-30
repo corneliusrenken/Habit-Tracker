@@ -115,6 +115,8 @@ function App() {
             },
             updateHabitVisibility: (habitId: number, visible: boolean) => {
               updateHabitVisibility(habitId, visible, dateObject.today.dateString, {
+                streaks,
+                setStreaks,
                 occurrenceData,
                 setOccurrenceData,
               });
