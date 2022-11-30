@@ -46,3 +46,12 @@ export type DateObject = {
   today: DayObject,
   yesterday: DayObject,
 };
+
+export type ApiFunctions = {
+  addHabit: (name: string) => void;
+  removeHabit: (habitId: number) => void;
+  renameHabit: (habitId: number, name: string) => void
+  updateHabitCompleted: (habitId: number, completed: boolean) => void;
+  updateHabitOrder: (habitId: number, newOrder: number) => void;
+  updateHabitVisibility: (habitId: number, visible: boolean) => void;
+};

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Habit } from '../../globalTypes';
+import { ApiFunctions, Habit } from '../../globalTypes';
 import ReorderableList from './ReorderableList';
 import SelectionListItem from './SelectionListItem';
 
@@ -8,7 +8,7 @@ type Props = {
   todaysOccurrences: {
     [habitId: string]: boolean;
   };
-  setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
+  apiFunctions: ApiFunctions;
 };
 
 type ElementConstructor = {
@@ -18,15 +18,21 @@ type ElementConstructor = {
 };
 
 export default function SelectionList({
-  habits, todaysOccurrences, setHabits,
+  habits, todaysOccurrences, apiFunctions,
 }: Props) {
   const [habitInput, setHabitInput] = useState('');
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (habitInput) {
-      // addHabit(habitInput);
+    const trimmedHabitInput = habitInput.trim();
+    const isUnique = habits.find(({ name }) => name === trimmedHabitInput) === undefined;
+    if (trimmedHabitInput && isUnique) {
+      apiFunctions.addHabit(trimmedHabitInput);
       setHabitInput('');
+    } else if (!trimmedHabitInput) {
+      console.error('popup: need a non empty string'); // eslint-disable-line no-console
+    } else {
+      console.error('popup: a habit with this name already exists'); // eslint-disable-line no-console
     }
   };
 
@@ -49,12 +55,8 @@ export default function SelectionList({
         elementConstructors={elementConstructors}
         height={50}
         width={350}
-        onIndexChange={(newIndicesById) => {
-          setHabits(
-            habits
-              .map((habit) => ({ ...habit, order: newIndicesById[habit.id] }))
-              .sort((a, b) => a.order - b.order),
-          );
+        onIndexChange={(newIndicesById, changedId) => {
+          apiFunctions.updateHabitOrder(changedId, newIndicesById[changedId]);
         }}
       />
       <form

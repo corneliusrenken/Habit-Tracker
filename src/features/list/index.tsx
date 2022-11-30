@@ -1,5 +1,7 @@
 import React from 'react';
-import { Habit, ListView, Streaks } from '../../globalTypes';
+import {
+  ApiFunctions, Habit, ListView, Streaks,
+} from '../../globalTypes';
 import HabitList from './HabitList';
 import SelectionList from './SelectionList';
 import './list.css';
@@ -7,15 +9,15 @@ import './list.css';
 type Props = {
   habits: Habit[];
   streaks: Streaks;
-  setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
   todaysOccurrences: {
     [habitId: string]: boolean;
   };
   view: ListView;
+  apiFunctions: ApiFunctions;
 };
 
 export default function List({
-  habits, streaks, setHabits, todaysOccurrences, view,
+  habits, streaks, todaysOccurrences, view, apiFunctions,
 }: Props) {
   return (
     <div>
@@ -24,12 +26,13 @@ export default function List({
           habits={habits.filter(({ id }) => todaysOccurrences[id] !== undefined)}
           streaks={streaks}
           todaysOccurrences={todaysOccurrences}
+          apiFunctions={apiFunctions}
         />
       ) : (
         <SelectionList
           habits={habits}
           todaysOccurrences={todaysOccurrences}
-          setHabits={setHabits}
+          apiFunctions={apiFunctions}
         />
       )}
     </div>

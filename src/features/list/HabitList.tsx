@@ -1,5 +1,5 @@
 import React from 'react';
-import { Habit, Streaks } from '../../globalTypes';
+import { ApiFunctions, Habit, Streaks } from '../../globalTypes';
 import HabitListItem from './HabitListItem';
 
 type Props = {
@@ -8,9 +8,13 @@ type Props = {
   todaysOccurrences: {
     [habitId: string]: boolean;
   };
+  apiFunctions: ApiFunctions;
 };
 
-export default function HabitList({ habits, streaks, todaysOccurrences }: Props) {
+export default function HabitList({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  habits, streaks, todaysOccurrences, apiFunctions,
+}: Props) {
   return (
     <div>
       {habits.map(({ name, id }) => {
@@ -22,6 +26,7 @@ export default function HabitList({ habits, streaks, todaysOccurrences }: Props)
             name={name}
             streak={streaks[id].current}
             completed={completed}
+            toggleCompleted={() => apiFunctions.updateHabitCompleted(id, !completed)}
           />
         );
       })}

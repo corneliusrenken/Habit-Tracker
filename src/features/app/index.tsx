@@ -12,8 +12,12 @@ import TransitionManager from '../transitionManager';
 import getSelectedOccurrences from './getSelectedOccurrences';
 import getBodyHeight from './getBodyHeight';
 import initialize from './initialize';
+import {
+  addHabit, removeHabit, renameHabit, updateHabitCompleted, updateHabitOrder, updateHabitVisibility,
+} from '../apiFunctions';
 
 function App() {
+  const userId = 1;
   const [dateObject] = useState(getDateObject(6));
   const [displayingYesterday] = useState(false);
   const [view, _setView] = useState<View>('habit'); // eslint-disable-line @typescript-eslint/naming-convention
@@ -36,7 +40,7 @@ function App() {
   ), [dateObject, displayingYesterday]);
 
   useEffect(() => {
-    initialize(1, dateObject.today.dateString, { setHabits, setOccurrenceData, setStreaks });
+    initialize(userId, dateObject.today.dateString, { setHabits, setOccurrenceData, setStreaks });
   }, [dateObject]);
 
   const selectedOccurrences = useMemo(() => (
@@ -81,9 +85,39 @@ function App() {
         <List
           habits={habits}
           streaks={streaks}
-          setHabits={setHabits}
-          todaysOccurrences={occurrenceData.dates[dayObject.dateString] || []}
+          todaysOccurrences={occurrenceData.dates[dayObject.dateString]}
           view={latchedListView}
+          apiFunctions={{
+            addHabit: (name: string) => {
+              addHabit(userId, name, dateObject.today.dateString, {
+                habits,
+                setHabits,
+                occurrenceData,
+                setOccurrenceData,
+                streaks,
+                setStreaks,
+              });
+            },
+            removeHabit: (habitId: number) => { removeHabit(habitId, { habits, setHabits }); },
+            renameHabit: (habitId: number, name: string) => {
+              renameHabit(habitId, name, { habits, setHabits });
+            },
+            updateHabitCompleted: (habitId: number, completed: boolean) => {
+              updateHabitCompleted(habitId, completed, dayObject.dateString, {
+                occurrenceData,
+                setOccurrenceData,
+              });
+            },
+            updateHabitOrder: (habitId: number, newOrder: number) => {
+              updateHabitOrder(habitId, newOrder, { habits, setHabits });
+            },
+            updateHabitVisibility: (habitId: number, visible: boolean) => {
+              updateHabitVisibility(habitId, visible, dateObject.today.dateString, {
+                occurrenceData,
+                setOccurrenceData,
+              });
+            },
+          }}
         />
       )}
     />
