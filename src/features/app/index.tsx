@@ -103,7 +103,9 @@ function App() {
               renameHabit(habitId, name, { habits, setHabits });
             },
             updateHabitCompleted: (habitId: number, completed: boolean) => {
-              updateHabitCompleted(habitId, completed, dayObject.dateString, {
+              updateHabitCompleted(habitId, completed, dayObject.dateString, displayingYesterday, {
+                streaks,
+                setStreaks,
                 occurrenceData,
                 setOccurrenceData,
               });
