@@ -13,11 +13,12 @@ type Props = {
     [habitId: string]: boolean;
   };
   view: ListView;
+  selectedIndex: number;
   apiFunctions: ApiFunctions;
 };
 
 export default function List({
-  habits, streaks, todaysOccurrences, view, apiFunctions,
+  habits, streaks, todaysOccurrences, view, apiFunctions, selectedIndex,
 }: Props) {
   return (
     <div>
@@ -26,12 +27,14 @@ export default function List({
           habits={habits.filter(({ id }) => todaysOccurrences[id] !== undefined)}
           streaks={streaks}
           todaysOccurrences={todaysOccurrences}
+          selectedIndex={selectedIndex}
           apiFunctions={apiFunctions}
         />
       ) : (
         <SelectionList
           habits={habits}
           todaysOccurrences={todaysOccurrences}
+          selectedIndex={selectedIndex}
           apiFunctions={apiFunctions}
         />
       )}

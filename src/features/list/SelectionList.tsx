@@ -8,6 +8,7 @@ type Props = {
   todaysOccurrences: {
     [habitId: string]: boolean;
   };
+  selectedIndex: number;
   apiFunctions: ApiFunctions;
 };
 
@@ -18,7 +19,7 @@ type ElementConstructor = {
 };
 
 export default function SelectionList({
-  habits, todaysOccurrences, apiFunctions,
+  habits, todaysOccurrences, selectedIndex, apiFunctions,
 }: Props) {
   const [habitInput, setHabitInput] = useState('');
 
@@ -36,7 +37,7 @@ export default function SelectionList({
     }
   };
 
-  const elementConstructors: ElementConstructor[] = habits.map(({ id, name }) => ({
+  const elementConstructors: ElementConstructor[] = habits.map(({ id, name }, index) => ({
     id,
     elementConstructor: (onMouseDown: React.MouseEventHandler<HTMLButtonElement>) => (
       () => (
@@ -44,6 +45,7 @@ export default function SelectionList({
           name={name}
           move={onMouseDown}
           visible={todaysOccurrences[id] !== undefined}
+          selected={selectedIndex === index}
         />
       )
     ),
