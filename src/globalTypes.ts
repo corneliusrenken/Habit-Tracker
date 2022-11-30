@@ -31,7 +31,7 @@ export type SelectedOccurrence = {
   done: boolean;
 };
 
-export type View = 'habit' | 'selection' | 'history' | 'focus';
+export type View = 'habit' | 'selection' | 'history';
 
 export type ListView = 'habit' | 'selection';
 

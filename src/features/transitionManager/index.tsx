@@ -132,7 +132,6 @@ const keyboardShortcuts: { [shortcutKey: string]: View } = {
   t: 'habit',
   s: 'selection',
   h: 'history',
-  f: 'focus',
 };
 
 type Props = {

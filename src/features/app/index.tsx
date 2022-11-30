@@ -79,7 +79,7 @@ function App() {
       bodyHeight={getBodyHeight(view, habits, selectedOccurrences)}
       occurrences={(
         <Occurrences
-          displayed={view === 'history' || view === 'focus'}
+          displayed={view === 'history'}
           selectedOccurrences={selectedOccurrences}
         />
       )}

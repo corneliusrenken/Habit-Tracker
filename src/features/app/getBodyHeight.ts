@@ -7,9 +7,8 @@ export default function getBodyHeight(
 ) {
   switch (view) {
     case 'habit': return habits.length * 50;
-    case 'history': return (selectedOccurrences.length / 7 - 1) * 50;
-    case 'focus': return (selectedOccurrences.length / 7 - 1) * 50;
     case 'selection': return habits.length * 50 + 50;
+    case 'history': return (selectedOccurrences.length / 7 - 1) * 50;
     default: return 0;
   }
 }
