@@ -128,44 +128,24 @@ function transition(
   setTimeout(() => setInTransition(false), 750);
 }
 
-const keyboardShortcuts: { [shortcutKey: string]: View } = {
-  t: 'habit',
-  s: 'selection',
-  h: 'history',
-};
-
 type Props = {
   view: View;
-  setView: Function;
   bodyHeight: number;
   occurrences: JSX.Element;
   dates: JSX.Element;
   days: JSX.Element;
   list: JSX.Element;
+  setInTransition: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 function TransitionManager({
-  view, setView, bodyHeight, occurrences, dates, days, list,
+  view, bodyHeight, occurrences, dates, days, list, setInTransition,
 }: Props) {
   const [currentView, setCurrentView] = useState<View | undefined>(undefined);
-  const [inTransition, setInTransition] = useState(false);
 
   useEffect(() => {
     setCurrentView(view);
-  }, [currentView, view]);
-
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (!inTransition && Object.prototype.hasOwnProperty.call(keyboardShortcuts, e.key)) {
-        e.preventDefault();
-        const newView = keyboardShortcuts[e.key];
-        setView(newView);
-      }
-    };
-
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [inTransition, setView]);
+  }, [view]);
 
   useEffect(() => {
     // initialize
@@ -182,7 +162,7 @@ function TransitionManager({
 
     setInTransition(true);
     transition(currentView, view, bodyHeight, setInTransition);
-  }, [bodyHeight, currentView, view]);
+  }, [bodyHeight, currentView, setInTransition, view]);
 
   return (
     <div id="container" className="container container-list-view">

@@ -17,17 +17,18 @@ import initialize from './initialize';
 import {
   addHabit, removeHabit, renameHabit, updateHabitCompleted, updateHabitOrder, updateHabitVisibility,
 } from '../apiFunctions';
+import shortcutManager from './shortcutManager';
 
 function App() {
   const userId = 1;
   const [dateObject] = useState(getDateObject(6));
-  const [displayingYesterday] = useState(false);
+  const [displayingYesterday, setDisplayingYesterday] = useState(false);
   const [view, _setView] = useState<View>('habit'); // eslint-disable-line @typescript-eslint/naming-convention, max-len
   const [latchedListView, setLatchedListView] = useState<ListView>('habit');
-  const [focusId] = useState<number | undefined>(undefined);
+  const [focusId, setFocusId] = useState<number | undefined>(undefined);
   const [selectedIndex, _setSelectedIndex] = useState(0); // eslint-disable-line @typescript-eslint/naming-convention, max-len
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [inInput, setInInput] = useState(false);
+  const [inTransition, setInTransition] = useState(false);
 
   const [habits, setHabits] = useState<Habit[]>();
   const [occurrenceData, setOccurrenceData] = useState<OccurrenceData>();
@@ -41,13 +42,32 @@ function App() {
     _setView(v);
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const setSelectedIndex = useCallback((newIndex: number) => {
     if (habits === undefined) throw new Error('setSelectedIndex should not be called before habits are initialized');
 
     const maxIndex = view === 'selection' ? habits.length : habits.length - 1;
     _setSelectedIndex(Math.max(0, Math.min(newIndex, maxIndex)));
   }, [view, habits]);
+
+  useEffect(() => {
+    if (!habits) return;
+
+    const onKeyDown = (e: KeyboardEvent) => shortcutManager(e, {
+      inTransition,
+      displayingYesterday,
+      habits,
+      inInput,
+      selectedIndex,
+      setDisplayingYesterday,
+      setFocusId,
+      setSelectedIndex,
+      setView,
+      view,
+    });
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown); // eslint-disable-line consistent-return, max-len
+  }, [displayingYesterday, habits, inInput, inTransition, selectedIndex, setSelectedIndex, view]);
 
   const dayObject = useMemo(() => (
     displayingYesterday ? dateObject.yesterday : dateObject.today
@@ -74,8 +94,8 @@ function App() {
 
   return (
     <TransitionManager
+      setInTransition={setInTransition}
       view={view}
-      setView={setView}
       bodyHeight={getBodyHeight(view, habits, selectedOccurrences)}
       occurrences={(
         <Occurrences
