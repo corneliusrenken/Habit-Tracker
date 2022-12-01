@@ -33,7 +33,7 @@ export default function updateHabitOrder(
 
   const orderDifference = newOrder - oldOrder;
 
-  const newHabits: Habit[] = new Array(habits.length);
+  let newHabits: Habit[] = new Array(habits.length);
 
   habits.forEach((habit) => {
     const { order } = habit;
@@ -48,6 +48,8 @@ export default function updateHabitOrder(
       newHabits[order] = habit;
     }
   });
+
+  newHabits = newHabits.map((habit, index) => ({ ...habit, order: index }));
 
   setHabits(newHabits);
 }
