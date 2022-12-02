@@ -34,6 +34,10 @@ function App() {
   const [occurrenceData, setOccurrenceData] = useState<OccurrenceData>();
   const [streaks, setStreaks] = useState<Streaks>();
 
+  const dayObject = useMemo(() => (
+    displayingYesterday ? dateObject.yesterday : dateObject.today
+  ), [dateObject, displayingYesterday]);
+
   const setView = (v: View) => {
     if (v === 'habit' || v === 'selection') {
       setListView(v);
@@ -42,12 +46,17 @@ function App() {
     _setView(v);
   };
 
-  const setSelectedIndex = useCallback((newIndex: number) => {
-    if (habits === undefined) throw new Error('setSelectedIndex should not be called before habits are initialized');
+  const selectedHabits = useMemo(() => {
+    if (!habits || !occurrenceData?.dates) return [];
+    return listView === 'habit'
+      ? habits.filter(({ id }) => occurrenceData.dates[dayObject.dateString][id] !== undefined)
+      : habits;
+  }, [dayObject.dateString, habits, listView, occurrenceData?.dates]);
 
-    const maxIndex = view === 'selection' ? habits.length : habits.length - 1;
+  const setSelectedIndex = useCallback((newIndex: number) => {
+    const maxIndex = view === 'selection' ? selectedHabits.length : selectedHabits.length - 1;
     _setSelectedIndex(Math.max(0, Math.min(newIndex, maxIndex)));
-  }, [view, habits]);
+  }, [view, selectedHabits]);
 
   useEffect(() => {
     if (!habits) return;
@@ -75,10 +84,6 @@ function App() {
     setSelectedIndex,
     view,
   ]);
-
-  const dayObject = useMemo(() => (
-    displayingYesterday ? dateObject.yesterday : dateObject.today
-  ), [dateObject, displayingYesterday]);
 
   useEffect(() => {
     initialize(userId, dateObject.today.dateString, { setHabits, setOccurrenceData, setStreaks });
@@ -124,7 +129,7 @@ function App() {
       )}
       list={(
         <List
-          habits={habits}
+          selectedHabits={selectedHabits}
           streaks={streaks}
           todaysOccurrences={occurrenceData.dates[dayObject.dateString]}
           listView={listView}

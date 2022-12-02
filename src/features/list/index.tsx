@@ -7,7 +7,7 @@ import SelectionList from './SelectionList';
 import './list.css';
 
 type Props = {
-  habits: Habit[];
+  selectedHabits: Habit[];
   streaks: Streaks;
   todaysOccurrences: {
     [habitId: string]: boolean;
@@ -20,7 +20,7 @@ type Props = {
 };
 
 export default function List({
-  habits,
+  selectedHabits,
   streaks,
   todaysOccurrences,
   listView,
@@ -33,7 +33,7 @@ export default function List({
     <div>
       {listView === 'habit' ? (
         <HabitList
-          habits={habits.filter(({ id }) => todaysOccurrences[id] !== undefined)}
+          habits={selectedHabits}
           streaks={streaks}
           todaysOccurrences={todaysOccurrences}
           selectedIndex={selectedIndex}
@@ -41,7 +41,7 @@ export default function List({
         />
       ) : (
         <SelectionList
-          habits={habits}
+          habits={selectedHabits}
           todaysOccurrences={todaysOccurrences}
           selectedIndex={selectedIndex}
           setSelectedIndex={setSelectedIndex}
