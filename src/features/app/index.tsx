@@ -24,7 +24,7 @@ function App() {
   const [dateObject] = useState(getDateObject(6));
   const [displayingYesterday, setDisplayingYesterday] = useState(false);
   const [view, _setView] = useState<View>('habit'); // eslint-disable-line @typescript-eslint/naming-convention, max-len
-  const [latchedListView, setLatchedListView] = useState<ListView>('habit');
+  const [listView, setListView] = useState<ListView>('habit');
   const [focusId, setFocusId] = useState<number | undefined>(undefined);
   const [selectedIndex, _setSelectedIndex] = useState(0); // eslint-disable-line @typescript-eslint/naming-convention, max-len
   const [inInput, setInInput] = useState(false);
@@ -36,7 +36,7 @@ function App() {
 
   const setView = (v: View) => {
     if (v === 'habit' || v === 'selection') {
-      setLatchedListView(v);
+      setListView(v);
     }
 
     _setView(v);
@@ -67,7 +67,14 @@ function App() {
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown); // eslint-disable-line consistent-return, max-len
-  }, [displayingYesterday, habits, inInput, inTransition, selectedIndex, setSelectedIndex, view]);
+  }, [displayingYesterday,
+    habits,
+    inInput,
+    inTransition,
+    selectedIndex,
+    setSelectedIndex,
+    view,
+  ]);
 
   const dayObject = useMemo(() => (
     displayingYesterday ? dateObject.yesterday : dateObject.today
@@ -120,8 +127,9 @@ function App() {
           habits={habits}
           streaks={streaks}
           todaysOccurrences={occurrenceData.dates[dayObject.dateString]}
-          view={latchedListView}
+          listView={listView}
           selectedIndex={selectedIndex}
+          setSelectedIndex={setSelectedIndex}
           setInInput={setInInput}
           apiFunctions={{
             addHabit: (name: string) => {

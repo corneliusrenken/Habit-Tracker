@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ApiFunctions, Habit } from '../../globalTypes';
 import ReorderableList from './ReorderableList';
 import SelectionListItem from './SelectionListItem';
@@ -9,6 +9,7 @@ type Props = {
     [habitId: string]: boolean;
   };
   selectedIndex: number;
+  setSelectedIndex: (newIndex: number) => void;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   apiFunctions: ApiFunctions;
 };
@@ -20,9 +21,33 @@ type ElementConstructor = {
 };
 
 export default function SelectionList({
-  habits, todaysOccurrences, selectedIndex, apiFunctions, setInInput,
+  habits, todaysOccurrences, selectedIndex, setSelectedIndex, apiFunctions, setInInput,
 }: Props) {
   const [habitInput, setHabitInput] = useState('');
+  const habitInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (selectedIndex === habits.length) {
+      habitInputRef.current?.focus();
+    } else {
+      habitInputRef.current?.blur();
+    }
+  }, [selectedIndex, habits.length]);
+
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        setSelectedIndex(selectedIndex - 1);
+      }
+    };
+
+    if (selectedIndex === habits.length) {
+      window.addEventListener('keydown', onKeyDown);
+      return () => window.removeEventListener('keydown', onKeyDown);
+    }
+  }, [habits.length, selectedIndex, setSelectedIndex]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -68,11 +93,16 @@ export default function SelectionList({
         onSubmit={onSubmit}
       >
         <input
+          ref={habitInputRef}
           type="text"
           placeholder="add habit"
           value={habitInput}
-          onFocus={() => setInInput(true)}
-          onBlur={() => setInInput(false)}
+          onFocus={() => {
+            setInInput(true);
+          }}
+          onBlur={() => {
+            setInInput(false);
+          }}
           onChange={(e) => setHabitInput(e.target.value)}
         />
       </form>

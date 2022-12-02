@@ -12,18 +12,26 @@ type Props = {
   todaysOccurrences: {
     [habitId: string]: boolean;
   };
-  view: ListView;
+  listView: ListView;
   selectedIndex: number;
+  setSelectedIndex: (newIndex: number) => void;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   apiFunctions: ApiFunctions;
 };
 
 export default function List({
-  habits, streaks, todaysOccurrences, view, apiFunctions, selectedIndex, setInInput,
+  habits,
+  streaks,
+  todaysOccurrences,
+  listView,
+  apiFunctions,
+  selectedIndex,
+  setSelectedIndex,
+  setInInput,
 }: Props) {
   return (
     <div>
-      {view === 'habit' ? (
+      {listView === 'habit' ? (
         <HabitList
           habits={habits.filter(({ id }) => todaysOccurrences[id] !== undefined)}
           streaks={streaks}
@@ -36,6 +44,7 @@ export default function List({
           habits={habits}
           todaysOccurrences={todaysOccurrences}
           selectedIndex={selectedIndex}
+          setSelectedIndex={setSelectedIndex}
           setInInput={setInInput}
           apiFunctions={apiFunctions}
         />
