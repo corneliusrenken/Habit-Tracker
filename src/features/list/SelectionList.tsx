@@ -99,9 +99,11 @@ export default function SelectionList({
           value={habitInput}
           onFocus={() => {
             setInInput(true);
+            setSelectedIndex(habits.length);
           }}
           onBlur={() => {
             setInInput(false);
+            setSelectedIndex(habits.length - 1);
           }}
           onChange={(e) => setHabitInput(e.target.value)}
         />
