@@ -7,7 +7,8 @@ import { addOccurrences } from '../queries/occurrences';
 const prisma = new PrismaClient();
 
 const seedStartDateString = '2022-11-01';
-const todayDateString = '2022-12-01';
+const todayDateString = getCustomDateString(new Date());
+console.log('today:', todayDateString); // eslint-disable-line no-console
 
 async function main() {
   await prisma.user.create({ data: { id: 1 } });
@@ -24,7 +25,7 @@ async function main() {
 
   const occurrencesToAdd = [];
 
-  while (currentDate.getTime() <= dateToday.getTime()) {
+  while (currentDate.getTime() < dateToday.getTime()) {
     const currentDayString = getCustomDateString(currentDate);
     let habitsToAdd = Math.floor(Math.random() * 5);
     const habitsToPick = habits.slice();
