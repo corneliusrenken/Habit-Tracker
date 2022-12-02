@@ -4,6 +4,7 @@ import { Habit } from '../../globalTypes';
 type States = {
   habits: Habit[] | undefined;
   setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
+  setSelectedIndex: (newIndex: number) => void;
 };
 
 export default function updateHabitOrder(
@@ -11,7 +12,7 @@ export default function updateHabitOrder(
   newOrder: number,
   states: States,
 ) {
-  const { habits, setHabits } = states;
+  const { habits, setHabits, setSelectedIndex } = states;
 
   if (!habits) throw new Error('states should not be undefined');
 
@@ -52,4 +53,5 @@ export default function updateHabitOrder(
   newHabits = newHabits.map((habit, index) => ({ ...habit, order: index }));
 
   setHabits(newHabits);
+  setSelectedIndex(newOrder);
 }

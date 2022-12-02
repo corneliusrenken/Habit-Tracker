@@ -172,7 +172,7 @@ function App() {
               });
             },
             updateHabitOrder: (habitId: number, newOrder: number) => {
-              updateHabitOrder(habitId, newOrder, { habits, setHabits });
+              updateHabitOrder(habitId, newOrder, { habits, setHabits, setSelectedIndex });
             },
             updateHabitVisibility: (habitId: number, visible: boolean) => {
               updateHabitVisibility(habitId, visible, dateObject.today.dateString, {
