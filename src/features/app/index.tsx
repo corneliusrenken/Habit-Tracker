@@ -18,6 +18,7 @@ import {
   addHabit, removeHabit, renameHabit, updateHabitCompleted, updateHabitOrder, updateHabitVisibility,
 } from '../apiFunctions';
 import shortcutManager from './shortcutManager';
+import getYesterdaysStreaks from './getYesterdaysStreaks';
 
 function App() {
   const userId = 1;
@@ -105,6 +106,14 @@ function App() {
     document.documentElement.style.setProperty('--right-margin', `${(50 - getTextWidthInPx(lastDate, 15)) / 2}px`);
   }, [dayObject]);
 
+  const currentStreaks = useMemo(() => {
+    if (!occurrenceData || !streaks) return {};
+
+    return !displayingYesterday
+      ? streaks
+      : getYesterdaysStreaks(dateObject.today.dateString, { occurrenceData, streaks });
+  }, [dateObject.today.dateString, displayingYesterday, occurrenceData, streaks]);
+
   if (!habits || !occurrenceData || !streaks) return null;
 
   return (
@@ -133,7 +142,7 @@ function App() {
       list={(
         <List
           selectedHabits={selectedHabits}
-          streaks={streaks}
+          streaks={currentStreaks}
           todaysOccurrences={occurrenceData.dates[dayObject.dateString]}
           listView={listView}
           selectedIndex={selectedIndex}
