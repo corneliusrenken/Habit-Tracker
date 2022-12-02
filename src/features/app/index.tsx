@@ -48,8 +48,11 @@ function App() {
 
   const selectedHabits = useMemo(() => {
     if (!habits || !occurrenceData?.dates) return [];
+
+    const dayOccurrences = occurrenceData.dates[dayObject.dateString] || {};
+
     return listView === 'habit'
-      ? habits.filter(({ id }) => occurrenceData.dates[dayObject.dateString][id] !== undefined)
+      ? habits.filter(({ id }) => dayOccurrences[id] !== undefined)
       : habits;
   }, [dayObject.dateString, habits, listView, occurrenceData?.dates]);
 
