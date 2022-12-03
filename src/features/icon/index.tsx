@@ -20,15 +20,16 @@ type Props = {
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   onMouseDown?: React.MouseEventHandler<HTMLButtonElement>;
   classes?: string[];
-  disabled?: boolean;
+  hidden?: boolean;
 };
 
 export default function Icon({
-  icon, onClick, onMouseDown, classes, disabled,
+  icon, onClick, onMouseDown, classes, hidden,
 }: Props) {
+  if (hidden) return <div className="hidden-icon" />;
+
   return (
     <button
-      disabled={disabled}
       type="button"
       className={`icon${classes ? ` ${classes.join(' ')}` : ''}`}
       onClick={onClick ? (e) => onClick(e) : undefined}
@@ -56,5 +57,5 @@ Icon.defaultProps = {
   onClick: undefined,
   onMouseDown: undefined,
   classes: undefined,
-  disabled: false,
+  hidden: false,
 };

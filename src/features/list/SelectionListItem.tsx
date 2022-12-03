@@ -16,8 +16,8 @@ export default function SelectionListItem({
 
   return (
     <div className="list-item">
-      <div className={nameClassName} style={selected ? { color: 'red' } : undefined}>{name}</div>
-      <Icon icon="move" onMouseDown={move} />
+      <div className={nameClassName} style={selected ? { color: 'red' } : undefined}>{name.padStart(200, 'a')}</div>
+      <Icon icon="move" onMouseDown={move} hidden={!selected} />
     </div>
   );
 }
