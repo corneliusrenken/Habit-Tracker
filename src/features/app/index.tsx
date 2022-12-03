@@ -63,33 +63,6 @@ function App() {
   }, [view, selectedHabits]);
 
   useEffect(() => {
-    if (!habits) return;
-
-    const onKeyDown = (e: KeyboardEvent) => shortcutManager(e, {
-      inTransition,
-      displayingYesterday,
-      habits,
-      inInput,
-      selectedIndex,
-      setDisplayingYesterday,
-      setFocusId,
-      setSelectedIndex,
-      setView,
-      view,
-    });
-
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown); // eslint-disable-line consistent-return, max-len
-  }, [displayingYesterday,
-    habits,
-    inInput,
-    inTransition,
-    selectedIndex,
-    setSelectedIndex,
-    view,
-  ]);
-
-  useEffect(() => {
     initialize(userId, dateObject.today.dateString, { setHabits, setOccurrenceData, setStreaks });
   }, [dateObject]);
 
@@ -114,32 +87,31 @@ function App() {
       : getYesterdaysStreaks(dateObject.today.dateString, { occurrenceData, streaks });
   }, [dateObject.today.dateString, displayingYesterday, occurrenceData, streaks]);
 
-  if (!habits || !occurrenceData || !streaks) return null;
+  const occurrencesComponent = useMemo(() => (
+    <Occurrences
+      displayed={view === 'history'}
+      selectedOccurrences={selectedOccurrences}
+    />
+  ), [selectedOccurrences, view]);
 
-  return (
-    <TransitionManager
-      setInTransition={setInTransition}
-      view={view}
-      bodyHeight={getBodyHeight(view, habits, selectedOccurrences)}
-      occurrences={(
-        <Occurrences
-          displayed={view === 'history'}
-          selectedOccurrences={selectedOccurrences}
-        />
-      )}
-      days={(
-        <Days
-          weekDays={dayObject.weekDays}
-          selectedOccurrences={selectedOccurrences}
-        />
-      )}
-      dates={(
-        <Dates
-          todaysIndex={dayObject.weekDayIndex}
-          selectedOccurrences={selectedOccurrences}
-        />
-      )}
-      list={(
+  const daysComponent = useMemo(() => (
+    <Days
+      weekDays={dayObject.weekDays}
+      selectedOccurrences={selectedOccurrences}
+    />
+  ), [dayObject.weekDays, selectedOccurrences]);
+
+  const datesComponent = useMemo(() => (
+    <Dates
+      todaysIndex={dayObject.weekDayIndex}
+      selectedOccurrences={selectedOccurrences}
+    />
+  ), [dayObject.weekDayIndex, selectedOccurrences]);
+
+  const listComponent = useMemo(() => (
+    !occurrenceData || !habits || !streaks
+      ? <div />
+      : (
         <List
           selectedHabits={selectedHabits}
           streaks={currentStreaks}
@@ -184,7 +156,74 @@ function App() {
             },
           }}
         />
-      )}
+      )
+  ), [
+    currentStreaks,
+    dateObject.today.dateString,
+    dayObject.dateString,
+    displayingYesterday,
+    habits, listView,
+    occurrenceData,
+    selectedHabits,
+    selectedIndex,
+    setSelectedIndex,
+    streaks,
+  ]);
+
+  useEffect(() => {
+    if (!habits || !occurrenceData) return;
+
+    const onKeyDown = (e: KeyboardEvent) => shortcutManager(e, {
+      inInput,
+      selectedIndex,
+      habits,
+      selectedHabits,
+      view,
+      displayingYesterday,
+      setView,
+      setDisplayingYesterday,
+      setSelectedIndex,
+      setFocusId,
+      inTransition,
+      dayObject,
+      occurrenceData,
+      updateHabitCompleted: (habitId: number, completed: boolean) => {
+        updateHabitCompleted(habitId, completed, dayObject.dateString, displayingYesterday, {
+          streaks,
+          setStreaks,
+          occurrenceData,
+          setOccurrenceData,
+        });
+      },
+    });
+
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown); // eslint-disable-line consistent-return, max-len
+  }, [
+    dayObject,
+    displayingYesterday,
+    habits,
+    inInput,
+    inTransition,
+    occurrenceData,
+    selectedHabits,
+    selectedIndex,
+    setSelectedIndex,
+    streaks,
+    view,
+  ]);
+
+  if (!habits || !occurrenceData || !streaks) return null;
+
+  return (
+    <TransitionManager
+      setInTransition={setInTransition}
+      view={view}
+      bodyHeight={getBodyHeight(view, habits, selectedOccurrences)}
+      occurrences={occurrencesComponent}
+      days={daysComponent}
+      dates={datesComponent}
+      list={listComponent}
     />
   );
 }

@@ -1,9 +1,12 @@
-import { Habit, View } from '../../globalTypes';
+import {
+  DayObject, Habit, OccurrenceData, View,
+} from '../../globalTypes';
 
 type States = {
   inInput: boolean;
   selectedIndex: number;
   habits: Habit[];
+  selectedHabits: Habit[];
   view: View;
   displayingYesterday: boolean;
   setView: (v: View) => void;
@@ -11,6 +14,9 @@ type States = {
   setSelectedIndex: (newIndex: number) => void;
   setFocusId: React.Dispatch<React.SetStateAction<number | undefined>>;
   inTransition: boolean;
+  dayObject: DayObject;
+  occurrenceData: OccurrenceData;
+  updateHabitCompleted: (habitId: number, completed: boolean) => void;
 };
 
 export default function shortcutManager(e: KeyboardEvent, states: States) {
@@ -18,6 +24,7 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
     inInput,
     selectedIndex,
     habits,
+    selectedHabits,
     view,
     displayingYesterday,
     setView,
@@ -25,6 +32,9 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
     setSelectedIndex,
     setFocusId,
     inTransition,
+    dayObject,
+    occurrenceData,
+    updateHabitCompleted,
   } = states;
   const { key } = e;
 
@@ -57,10 +67,13 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
       setFocusId(undefined);
     },
     focus: () => {
+      if (selectedHabits.length === 0) return;
+      const selectedHabit = selectedHabits.find(({ order }) => order === selectedIndex);
+      if (!selectedHabit) throw new Error('no habit found at selected index');
       e.preventDefault();
       setView('history');
       setDisplayingYesterday(false);
-      setFocusId(habits.find(({ order }) => order === selectedIndex)?.id);
+      setFocusId(selectedHabit.id);
     },
     incrementSelectedIndex: () => {
       e.preventDefault();
@@ -74,14 +87,26 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
       e.preventDefault();
       setSelectedIndex(habits.length);
     },
+    updateHabitCompleted: () => {
+      e.preventDefault();
+      if (selectedHabits.length === 0) return;
+      const selectedHabit = selectedHabits.find(({ order }) => order === selectedIndex);
+      if (!selectedHabit) throw new Error('no habit found at selected index');
+      const currentCompletedState = occurrenceData.dates[dayObject.dateString][selectedHabit.id];
+      updateHabitCompleted(selectedHabit.id, !currentCompletedState);
+    },
   };
 
-  if (!inTransition && !inInput && key === 't' && (displayingYesterday !== false || view !== 'habit')) shortcuts.today();
-  if (!inTransition && !inInput && key === 'y' && (displayingYesterday !== true || view !== 'habit')) shortcuts.yesterday();
-  if (!inTransition && !inInput && key === 's' && view !== 'selection') shortcuts.selection();
-  if (!inTransition && !inInput && key === 'h' && view !== 'history') shortcuts.history();
-  if (!inTransition && !inInput && key === 'f' && view !== 'history') shortcuts.focus();
   if (key === 'ArrowDown' && view !== 'history') shortcuts.incrementSelectedIndex();
   if (key === 'ArrowUp' && view !== 'history') shortcuts.decrementSelectedIndex();
-  if (!inInput && key === 'c' && view === 'selection') shortcuts.createHabit();
+
+  if (!inInput) {
+    if (key === 't' && !inTransition && (displayingYesterday !== false || view !== 'habit')) shortcuts.today();
+    if (key === 'y' && !inTransition && (displayingYesterday !== true || view !== 'habit')) shortcuts.yesterday();
+    if (key === 's' && !inTransition && view !== 'selection') shortcuts.selection();
+    if (key === 'h' && !inTransition && view !== 'history') shortcuts.history();
+    if (key === 'f' && !inTransition && view !== 'history') shortcuts.focus();
+    if (key === 'Enter') shortcuts.updateHabitCompleted();
+    if (key === 'c' && view === 'selection') shortcuts.createHabit();
+  }
 }
