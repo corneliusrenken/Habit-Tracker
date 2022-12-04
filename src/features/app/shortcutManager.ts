@@ -18,6 +18,7 @@ type States = {
   occurrenceData: OccurrenceData;
   updateHabitCompleted: (habitId: number, completed: boolean) => void;
   updateHabitVisibility: (habitId: number, visible: boolean) => void;
+  removeHabit: (habitId: number) => void;
 };
 
 export default function shortcutManager(e: KeyboardEvent, states: States) {
@@ -37,6 +38,7 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
     occurrenceData,
     updateHabitCompleted,
     updateHabitVisibility,
+    removeHabit,
   } = states;
   const { key } = e;
 
@@ -102,10 +104,17 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
       if (selectedHabits.length === 0) return;
       const selectedHabit = selectedHabits.find((habit, index) => index === selectedIndex);
       if (!selectedHabit) throw new Error('no habit found at selected index');
-      // this should not really be dayobject, but day obect, have a look later
+      // this should not really be dayobject, but date obect, have a look later
       // eslint-disable-next-line max-len
       const currentVisibility = occurrenceData.dates[dayObject.dateString][selectedHabit.id] !== undefined;
       updateHabitVisibility(selectedHabit.id, !currentVisibility);
+    },
+    removeHabit: () => {
+      e.preventDefault();
+      if (selectedHabits.length === 0) return;
+      const selectedHabit = selectedHabits.find((habit, index) => index === selectedIndex);
+      if (!selectedHabit) throw new Error('no habit found at selected index');
+      removeHabit(selectedHabit.id);
     },
   };
 
@@ -121,5 +130,6 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
     if (key === 'Enter' && view === 'habit') shortcuts.updateHabitCompleted();
     if (key === 'c' && view === 'selection') shortcuts.createHabit();
     if (key === 'v' && view === 'selection') shortcuts.updateHabitVisibility();
+    if (key === 'Backspace' && view === 'selection') shortcuts.removeHabit();
   }
 }

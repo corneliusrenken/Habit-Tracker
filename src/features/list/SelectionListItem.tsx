@@ -7,10 +7,11 @@ type Props = {
   move: React.MouseEventHandler<HTMLButtonElement>;
   selected: boolean;
   toggleVisibility: () => void;
+  removeHabit: () => void;
 };
 
 export default function SelectionListItem({
-  name, visible, move, selected, toggleVisibility,
+  name, visible, move, selected, toggleVisibility, removeHabit,
 }: Props) {
   let containerClassName = 'list-item';
   if (selected) containerClassName += ' list-item-selected';
@@ -26,7 +27,7 @@ export default function SelectionListItem({
           onClick={toggleVisibility}
           hidden={!selected}
         />
-        <Icon icon="trash" hidden={!selected} />
+        <Icon icon="trash" onClick={removeHabit} hidden={!selected} />
         <Icon icon="move" onMouseDown={move} hidden={!selected} />
       </div>
     </div>

@@ -75,6 +75,7 @@ export default function SelectionList({
           visible={visible}
           selected={selectedIndex === index}
           toggleVisibility={() => apiFunctions.updateHabitVisibility(id, !visible)}
+          removeHabit={() => apiFunctions.removeHabit(id)}
         />
       );
     },

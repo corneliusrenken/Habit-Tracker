@@ -131,7 +131,14 @@ function App() {
                 setStreaks,
               });
             },
-            removeHabit: (habitId: number) => { removeHabit(habitId, { habits, setHabits }); },
+            removeHabit: (habitId: number) => {
+              removeHabit(habitId, {
+                habits,
+                setHabits,
+                selectedIndex,
+                setSelectedIndex,
+              });
+            },
             renameHabit: (habitId: number, name: string) => {
               renameHabit(habitId, name, { habits, setHabits });
             },
@@ -202,6 +209,14 @@ function App() {
           setStreaks,
           occurrenceData,
           setOccurrenceData,
+        });
+      },
+      removeHabit: (habitId: number) => {
+        removeHabit(habitId, {
+          habits,
+          setHabits,
+          selectedIndex,
+          setSelectedIndex,
         });
       },
     });
