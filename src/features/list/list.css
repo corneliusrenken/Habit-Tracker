@@ -13,10 +13,6 @@
   position: relative;
 }
 
-.list-item.greyed-out::after {
-  background-color: var(--grey);
-}
-
 .list-item::after {
   transition: width 0.25s;
   content: '';
@@ -24,11 +20,15 @@
   width: 0px;
   height: 1px;
   background-color: rgb(0, 0, 0);;
-  right: calc(350px - var(--left-margin) + 10px);
+  right: calc(350px - var(--left-margin) + 8px);
 }
 
 .list-item-selected::after {
   width: 26px;
+}
+
+.list-item.greyed-out::after {
+  background-color: var(--grey);
 }
 
 .name {
@@ -45,17 +45,7 @@
 }
 
 .streak {
-  margin-left: 10px;
-  margin-right: var(--right-margin);
-}
-
-.selector {
-  position: absolute;
-  height: 10px;
-  width: 10px;
-  background-color: rgb(0, 255, 0);
-  left: calc(var(--left-margin) - 26px);
-  z-index: 2;
+  margin: 0 var(--right-margin);
 }
 
 form {
@@ -76,14 +66,4 @@ input {
   width: calc(100% - var(--left-margin) - var(--right-margin) + 16px);
   padding: 8px;
   border: 0;
-}
-
-.horizontal-icons-container {
-  min-width: 100px;
-}
-
-.vertical-icons-container {
-  width: 50px;
-  position: absolute;
-  right: -50px;
 }
