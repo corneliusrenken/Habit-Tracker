@@ -106,7 +106,7 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
     if (key === 's' && !inTransition && view !== 'selection') shortcuts.selection();
     if (key === 'h' && !inTransition && view !== 'history') shortcuts.history();
     if (key === 'f' && !inTransition && view !== 'history') shortcuts.focus();
-    if (key === 'Enter') shortcuts.updateHabitCompleted();
+    if (key === 'Enter' && view === 'habit') shortcuts.updateHabitCompleted();
     if (key === 'c' && view === 'selection') shortcuts.createHabit();
   }
 }
