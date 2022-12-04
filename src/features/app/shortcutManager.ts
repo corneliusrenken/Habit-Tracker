@@ -68,7 +68,7 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
     },
     focus: () => {
       if (selectedHabits.length === 0) return;
-      const selectedHabit = selectedHabits.find(({ order }) => order === selectedIndex);
+      const selectedHabit = selectedHabits.find((habit, index) => index === selectedIndex);
       if (!selectedHabit) throw new Error('no habit found at selected index');
       e.preventDefault();
       setView('history');
@@ -90,7 +90,7 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
     updateHabitCompleted: () => {
       e.preventDefault();
       if (selectedHabits.length === 0) return;
-      const selectedHabit = selectedHabits.find(({ order }) => order === selectedIndex);
+      const selectedHabit = selectedHabits.find((habit, index) => index === selectedIndex);
       if (!selectedHabit) throw new Error('no habit found at selected index');
       const currentCompletedState = occurrenceData.dates[dayObject.dateString][selectedHabit.id];
       updateHabitCompleted(selectedHabit.id, !currentCompletedState);
