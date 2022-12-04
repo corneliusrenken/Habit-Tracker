@@ -1,7 +1,7 @@
 import React from 'react';
 import './icon.css';
 import {
-  hiddenPath, moreOptionsPath, movePath, renamePath, shownPath, trashPath,
+  hiddenPath, moreOptionsPath, movePath, renamePath, visiblePath, trashPath,
 } from './iconPaths';
 
 // https://icons.radix-ui.com/
@@ -9,7 +9,7 @@ import {
 const iconPaths = {
   move: movePath,
   'more options': moreOptionsPath,
-  shown: shownPath,
+  visible: visiblePath,
   hidden: hiddenPath,
   rename: renamePath,
   trash: trashPath,
