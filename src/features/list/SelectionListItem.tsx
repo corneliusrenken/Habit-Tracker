@@ -14,9 +14,12 @@ export default function SelectionListItem({
   let nameClassName = 'name';
   if (!visible) nameClassName += ' greyed-out';
 
+  let containerClassName = 'list-item';
+  if (selected) containerClassName += ' list-item-selected';
+
   return (
-    <div className="list-item">
-      <div className={nameClassName} style={selected ? { color: 'red' } : undefined}>{name.padStart(200, 'a')}</div>
+    <div className={containerClassName}>
+      <div className={nameClassName}>{name}</div>
       <Icon icon="move" onMouseDown={move} hidden={!selected} />
     </div>
   );
