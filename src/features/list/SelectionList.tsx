@@ -65,16 +65,19 @@ export default function SelectionList({
 
   const elementConstructors: ElementConstructor[] = habits.map(({ id, name }, index) => ({
     id,
-    elementConstructor: (onMouseDown: React.MouseEventHandler<HTMLButtonElement>) => (
-      () => (
+    elementConstructor: (onMouseDown: React.MouseEventHandler<HTMLButtonElement>) => {
+      const visible = todaysOccurrences[id] !== undefined;
+
+      return () => (
         <SelectionListItem
           name={name}
           move={onMouseDown}
-          visible={todaysOccurrences[id] !== undefined}
+          visible={visible}
           selected={selectedIndex === index}
+          toggleVisibility={() => apiFunctions.updateHabitVisibility(id, !visible)}
         />
-      )
-    ),
+      );
+    },
   }));
 
   return (

@@ -162,7 +162,8 @@ function App() {
     dateObject.today.dateString,
     dayObject.dateString,
     displayingYesterday,
-    habits, listView,
+    habits,
+    listView,
     occurrenceData,
     selectedHabits,
     selectedIndex,
@@ -171,7 +172,7 @@ function App() {
   ]);
 
   useEffect(() => {
-    if (!habits || !occurrenceData) return;
+    if (!habits || !occurrenceData || !streaks) return;
 
     const onKeyDown = (e: KeyboardEvent) => shortcutManager(e, {
       inInput,
@@ -195,6 +196,14 @@ function App() {
           setOccurrenceData,
         });
       },
+      updateHabitVisibility: (habitId: number, visible: boolean) => {
+        updateHabitVisibility(habitId, visible, dateObject.today.dateString, {
+          streaks,
+          setStreaks,
+          occurrenceData,
+          setOccurrenceData,
+        });
+      },
     });
 
     window.addEventListener('keydown', onKeyDown);
@@ -211,6 +220,7 @@ function App() {
     setSelectedIndex,
     streaks,
     view,
+    dateObject.today.dateString,
   ]);
 
   if (!habits || !occurrenceData || !streaks) return null;

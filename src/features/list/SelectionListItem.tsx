@@ -6,21 +6,29 @@ type Props = {
   visible: boolean;
   move: React.MouseEventHandler<HTMLButtonElement>;
   selected: boolean;
+  toggleVisibility: () => void;
 };
 
 export default function SelectionListItem({
-  name, visible, move, selected,
+  name, visible, move, selected, toggleVisibility,
 }: Props) {
-  let nameClassName = 'name';
-  if (!visible) nameClassName += ' greyed-out';
-
   let containerClassName = 'list-item';
   if (selected) containerClassName += ' list-item-selected';
 
   return (
     <div className={containerClassName}>
-      <div className={nameClassName}>{name}</div>
-      <Icon icon="move" onMouseDown={move} hidden={!selected} />
+      <div className="name">{name}</div>
+      <div className="horizontal-icon-list">
+        <Icon icon="rename" hidden={!selected} />
+        <Icon
+          icon={visible ? 'visible' : 'hidden'}
+          classes={!visible ? ['greyed-out'] : undefined}
+          onClick={toggleVisibility}
+          hidden={!selected}
+        />
+        <Icon icon="trash" hidden={!selected} />
+        <Icon icon="move" onMouseDown={move} hidden={!selected} />
+      </div>
     </div>
   );
 }

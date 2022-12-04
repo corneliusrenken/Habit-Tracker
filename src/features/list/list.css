@@ -67,3 +67,7 @@ input {
   padding: 8px;
   border: 0;
 }
+
+.horizontal-icon-list {
+  min-width: fit-content;
+}
