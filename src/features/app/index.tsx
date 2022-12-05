@@ -24,10 +24,10 @@ function App() {
   const userId = 1;
   const [dateObject] = useState(getDateObject(6));
   const [displayingYesterday, setDisplayingYesterday] = useState(false);
-  const [view, _setView] = useState<View>('habit'); // eslint-disable-line @typescript-eslint/naming-convention, max-len
+  const [view, _setView] = useState<View>('habit');
   const [listView, setListView] = useState<ListView>('habit');
   const [focusId, setFocusId] = useState<number | undefined>(undefined);
-  const [selectedIndex, _setSelectedIndex] = useState(0); // eslint-disable-line @typescript-eslint/naming-convention, max-len
+  const [selectedIndex, _setSelectedIndex] = useState(0);
   const [inInput, setInInput] = useState(false);
   const [inTransition, setInTransition] = useState(false);
 
