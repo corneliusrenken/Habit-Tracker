@@ -24,6 +24,7 @@ type States = {
   occurrenceData: OccurrenceData | undefined;
   selectedIndex: number;
   setSelectedIndex: (newIndex: number) => void;
+  inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   apiFunctions: ApiFunctions | undefined;
 };
@@ -39,6 +40,7 @@ export default function useMemoizedComponents(states: States) {
     occurrenceData,
     selectedIndex,
     setSelectedIndex,
+    inInput,
     setInInput,
     apiFunctions,
   } = states;
@@ -74,6 +76,7 @@ export default function useMemoizedComponents(states: States) {
           listView={listView}
           selectedIndex={selectedIndex}
           setSelectedIndex={setSelectedIndex}
+          inInput={inInput}
           setInInput={setInInput}
           apiFunctions={apiFunctions}
         />
@@ -87,6 +90,7 @@ export default function useMemoizedComponents(states: States) {
     occurrenceData,
     selectedHabits,
     selectedIndex,
+    inInput,
     setInInput,
     setSelectedIndex,
   ]);

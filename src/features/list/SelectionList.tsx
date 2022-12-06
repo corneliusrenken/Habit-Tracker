@@ -10,8 +10,9 @@ type Props = {
   };
   selectedIndex: number;
   setSelectedIndex: (newIndex: number) => void;
-  setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   apiFunctions: ApiFunctions;
+  inInput: boolean;
+  setInInput: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 type ElementConstructor = {
@@ -21,7 +22,7 @@ type ElementConstructor = {
 };
 
 export default function SelectionList({
-  habits, todaysOccurrences, selectedIndex, setSelectedIndex, apiFunctions, setInInput,
+  habits, todaysOccurrences, selectedIndex, setSelectedIndex, apiFunctions, inInput, setInInput,
 }: Props) {
   const [habitInput, setHabitInput] = useState('');
   const habitInputRef = useRef<HTMLInputElement>(null);
@@ -33,21 +34,6 @@ export default function SelectionList({
       habitInputRef.current?.blur();
     }
   }, [selectedIndex, habits.length]);
-
-  // eslint-disable-next-line consistent-return
-  useEffect(() => {
-    const onKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        setSelectedIndex(selectedIndex - 1);
-      }
-    };
-
-    if (selectedIndex === habits.length) {
-      window.addEventListener('keydown', onKeyDown);
-      return () => window.removeEventListener('keydown', onKeyDown);
-    }
-  }, [habits.length, selectedIndex, setSelectedIndex]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -76,6 +62,8 @@ export default function SelectionList({
           selected={selectedIndex === index}
           toggleVisibility={() => apiFunctions.updateHabitVisibility(id, !visible)}
           removeHabit={() => apiFunctions.removeHabit(id)}
+          inInput={inInput}
+          setInInput={setInInput}
         />
       );
     },
@@ -92,7 +80,6 @@ export default function SelectionList({
         }}
       />
       <form
-        className="add-habit-form"
         style={{ top: `${habits.length * 50}px` }}
         onSubmit={onSubmit}
       >

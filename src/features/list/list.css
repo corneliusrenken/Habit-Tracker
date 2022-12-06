@@ -56,10 +56,6 @@ form {
   align-items: center;
 }
 
-.add-habit-form {
-  position: absolute;
-}
-
 input {
   margin-left: calc(var(--left-margin) - 8px);
   margin-right: calc(var(--right-margin) - 8px);

@@ -3,8 +3,20 @@ import {
   DayObject, Habit, OccurrenceData, View,
 } from '../../globalTypes';
 
+function noModifierKeysPressed(e: KeyboardEvent) {
+  return (
+    e.getModifierState('Alt') === false
+    && e.getModifierState('AltGraph') === false
+    && e.getModifierState('Control') === false
+    && e.getModifierState('Meta') === false
+    && e.getModifierState('OS') === false
+    && e.getModifierState('Shift') === false
+  );
+}
+
 type States = {
   inInput: boolean;
+  setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   selectedIndex: number;
   habits: Habit[];
   selectedHabits: Habit[];
@@ -23,6 +35,7 @@ type States = {
 export default function shortcutManager(e: KeyboardEvent, states: States) {
   const {
     inInput,
+    setInInput,
     selectedIndex,
     habits,
     selectedHabits,
@@ -78,10 +91,12 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
     },
     incrementSelectedIndex: () => {
       e.preventDefault();
+      setInInput(false);
       setSelectedIndex(selectedIndex + 1);
     },
     decrementSelectedIndex: () => {
       e.preventDefault();
+      setInInput(false);
       setSelectedIndex(selectedIndex - 1);
     },
     createHabit: () => {
@@ -113,20 +128,42 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
       if (!selectedHabit) throw new Error('no habit found at selected index');
       apiFunctions.removeHabit(selectedHabit.id);
     },
+    renameHabit: () => {
+      e.preventDefault();
+      setInInput(true);
+    },
+    escapeCreateInput: () => {
+      e.preventDefault();
+      setInInput(false);
+      setSelectedIndex(selectedIndex - 1);
+    },
+    escapeRenameHabit: () => {
+      e.preventDefault();
+      setInInput(false);
+    },
   };
 
   if (key === 'ArrowDown' && view !== 'history') shortcuts.incrementSelectedIndex();
   if (key === 'ArrowUp' && view !== 'history') shortcuts.decrementSelectedIndex();
 
   if (!inInput) {
-    if (key === 't' && !inTransition && (displayingYesterday !== false || view !== 'habit')) shortcuts.today();
-    if (key === 'y' && !inTransition && (displayingYesterday !== true || view !== 'habit')) shortcuts.yesterday();
-    if (key === 's' && !inTransition && view !== 'selection') shortcuts.selection();
-    if (key === 'h' && !inTransition && view !== 'history') shortcuts.history();
-    if (key === 'f' && !inTransition && view !== 'history') shortcuts.focus();
-    if (key === 'Enter' && view === 'habit') shortcuts.updateHabitCompleted();
-    if (key === 'c' && view === 'selection') shortcuts.createHabit();
-    if (key === 'v' && view === 'selection') shortcuts.updateHabitVisibility();
-    if (key === 'Backspace' && view === 'selection') shortcuts.removeHabit();
+    if (noModifierKeysPressed(e)) {
+      if (key === 't' && !inTransition && (displayingYesterday !== false || view !== 'habit')) shortcuts.today();
+      if (key === 'y' && !inTransition && (displayingYesterday !== true || view !== 'habit')) shortcuts.yesterday();
+      if (key === 's' && !inTransition && view !== 'selection') shortcuts.selection();
+      if (key === 'h' && !inTransition && view !== 'history') shortcuts.history();
+      if (key === 'f' && !inTransition && view !== 'history') shortcuts.focus();
+      if (key === 'Enter' && view === 'habit') shortcuts.updateHabitCompleted();
+      if (key === 'c' && view === 'selection') shortcuts.createHabit();
+      if (key === 'v' && view === 'selection') shortcuts.updateHabitVisibility();
+      if (key === 'Backspace' && view === 'selection') shortcuts.removeHabit();
+      if (key === 'r' && view === 'selection' && selectedIndex !== habits.length) shortcuts.renameHabit();
+    }
+  } else {
+    // can refactor this later once all keyboard shortcuts are there
+    if (noModifierKeysPressed(e)) { // eslint-disable-line no-lonely-if
+      if (key === 'Escape' && view === 'selection' && selectedIndex === habits.length) shortcuts.escapeCreateInput();
+      if (key === 'Escape' && view === 'selection' && selectedIndex !== habits.length) shortcuts.escapeRenameHabit();
+    }
   }
 }

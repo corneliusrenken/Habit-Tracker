@@ -11,6 +11,7 @@
 }
 
 .hidden-icon {
+  display: inline;
   height: 50px;
   min-width: 50px;
 }

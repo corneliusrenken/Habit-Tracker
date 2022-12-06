@@ -105,6 +105,7 @@ function App() {
     selectedHabits,
     selectedIndex,
     selectedOccurrences,
+    inInput,
     setInInput,
     setSelectedIndex,
     view,
@@ -115,6 +116,7 @@ function App() {
 
     const onKeyDown = (e: KeyboardEvent) => shortcutManager(e, {
       inInput,
+      setInInput,
       selectedIndex,
       habits,
       selectedHabits,

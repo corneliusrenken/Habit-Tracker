@@ -15,6 +15,7 @@ type Props = {
   listView: ListView;
   selectedIndex: number;
   setSelectedIndex: (newIndex: number) => void;
+  inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   apiFunctions: ApiFunctions;
 };
@@ -27,6 +28,7 @@ export default function List({
   apiFunctions,
   selectedIndex,
   setSelectedIndex,
+  inInput,
   setInInput,
 }: Props) {
   return (
@@ -45,6 +47,7 @@ export default function List({
           todaysOccurrences={todaysOccurrences}
           selectedIndex={selectedIndex}
           setSelectedIndex={setSelectedIndex}
+          inInput={inInput}
           setInInput={setInInput}
           apiFunctions={apiFunctions}
         />
