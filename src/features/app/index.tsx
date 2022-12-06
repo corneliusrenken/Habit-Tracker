@@ -5,14 +5,12 @@ import {
   Habit, ListView, OccurrenceData, Streaks, View,
 } from '../../globalTypes';
 import TransitionManager from '../transitionManager';
-import getSelectedOccurrences from './getSelectedOccurrences';
 import getBodyHeight from './getBodyHeight';
 import initialize from './initialize';
 import shortcutManager from './shortcutManager';
-import getYesterdaysStreaks from './getYesterdaysStreaks';
 import useApiFunctions from '../apiFunctions/useApiFunctions';
 import useMemoizedComponents from './useMemoizedComponents';
-import getSelectedHabits from './getSelectedHabits';
+import useSelectedData from './useSelectedData';
 
 function App() {
   const userId = 1;
@@ -56,26 +54,16 @@ function App() {
     document.documentElement.style.setProperty('--right-margin', `${(50 - getTextWidthInPx(lastDate, 15)) / 2}px`);
   }, [dayObject]);
 
-  const selectedHabits = useMemo(() => getSelectedHabits({
-    habits,
-    occurrenceData,
+  const selectedData = useSelectedData({
+    dateObject,
     dayObject,
+    displayingYesterday,
+    focusId,
+    habits,
     listView,
-  }), [dayObject, habits, listView, occurrenceData]);
-
-  const selectedOccurrences = useMemo(() => (
-    occurrenceData !== undefined
-      ? getSelectedOccurrences(occurrenceData, focusId, dayObject.weekDateStrings[6])
-      : []
-  ), [occurrenceData, dayObject, focusId]);
-
-  const currentStreaks = useMemo(() => {
-    if (!occurrenceData || !streaks) return {};
-
-    return !displayingYesterday
-      ? streaks
-      : getYesterdaysStreaks(dateObject.today.dateString, { occurrenceData, streaks });
-  }, [dateObject.today.dateString, displayingYesterday, occurrenceData, streaks]);
+    occurrenceData,
+    streaks,
+  });
 
   const apiFunctions = useApiFunctions({
     userId,
@@ -94,13 +82,13 @@ function App() {
 
   const components = useMemoizedComponents({
     apiFunctions,
-    currentStreaks,
+    selectedStreaks: selectedData.streaks,
     dayObject,
     listView,
     occurrenceData,
-    selectedHabits,
+    selectedHabits: selectedData.habits,
     selectedIndex,
-    selectedOccurrences,
+    selectedOccurrences: selectedData.occurrences,
     inInput,
     setInInput,
     setSelectedIndex,
@@ -116,7 +104,7 @@ function App() {
       setInInput,
       selectedIndex,
       habits,
-      selectedHabits,
+      selectedHabits: selectedData.habits,
       view,
       displayingYesterday,
       setView,
@@ -140,9 +128,8 @@ function App() {
     inInput,
     inTransition,
     occurrenceData,
-    selectedHabits,
+    selectedData.habits,
     selectedIndex,
-    setSelectedIndex,
     streaks,
     view,
   ]);
@@ -153,7 +140,7 @@ function App() {
     <TransitionManager
       setInTransition={setInTransition}
       view={view}
-      bodyHeight={getBodyHeight(view, habits, selectedOccurrences)}
+      bodyHeight={getBodyHeight(view, habits, selectedData.occurrences)}
       occurrences={components.occurrences}
       days={components.days}
       dates={components.dates}

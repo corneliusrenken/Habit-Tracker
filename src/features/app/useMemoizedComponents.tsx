@@ -20,7 +20,7 @@ type States = {
   dayObject: DayObject;
   selectedHabits: Habit[];
   selectedOccurrences: SelectedOccurrence[];
-  currentStreaks: Streaks;
+  selectedStreaks: Streaks;
   occurrenceData: OccurrenceData | undefined;
   selectedIndex: number | null;
   setSelectedIndex: (newIndex: number | null) => void;
@@ -36,7 +36,7 @@ export default function useMemoizedComponents(states: States) {
     dayObject,
     selectedHabits,
     selectedOccurrences,
-    currentStreaks,
+    selectedStreaks,
     occurrenceData,
     selectedIndex,
     setSelectedIndex,
@@ -71,7 +71,7 @@ export default function useMemoizedComponents(states: States) {
       ? (
         <List
           selectedHabits={selectedHabits}
-          streaks={currentStreaks}
+          streaks={selectedStreaks}
           todaysOccurrences={occurrenceData.dates[dayObject.dateString]}
           listView={listView}
           selectedIndex={selectedIndex}
@@ -84,7 +84,7 @@ export default function useMemoizedComponents(states: States) {
       : <div />
   ), [
     apiFunctions,
-    currentStreaks,
+    selectedStreaks,
     dayObject.dateString,
     listView,
     occurrenceData,

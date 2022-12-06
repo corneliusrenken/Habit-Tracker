@@ -1,19 +1,25 @@
-import { SelectedOccurrence, OccurrenceData } from '../../globalTypes';
+import { SelectedOccurrence, OccurrenceData, DayObject } from '../../globalTypes';
 import { getDateFromDateString, getMinimumDateString } from '../common/dateStringFunctions';
 import getCustomDateString from '../common/getCustomDateString';
 
-export default function getSelectedOccurrences(
-  occurrenceData: OccurrenceData,
+type States = {
+  occurrenceData: OccurrenceData | undefined,
   focusId: number | undefined,
-  dateStringLastOfWeek: string,
-) {
+  dayObject: DayObject,
+};
+
+export default function getSelectedOccurrences(states: States) {
+  const { occurrenceData, focusId, dayObject } = states;
+
+  if (!occurrenceData) return [];
+
   const occurences: SelectedOccurrence[] = [];
 
   const oldestDateString = focusId === undefined
     ? getMinimumDateString(Object.values(occurrenceData.oldest))
     : occurrenceData.oldest[focusId];
 
-  const lastDateOfWeek = getDateFromDateString(dateStringLastOfWeek);
+  const lastDateOfWeek = getDateFromDateString(dayObject.weekDateStrings[6]);
   const oldestDate = oldestDateString === null
     ? null
     : getDateFromDateString(oldestDateString);
