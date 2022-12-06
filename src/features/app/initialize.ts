@@ -1,9 +1,10 @@
 import axios from 'axios';
 import {
-  Habit, OccurrenceData, OccurrencesByDate, OldestOccurrences, Streaks,
+  Habit, OccurrenceData, OccurrencesByDate, OldestOccurrences, Streaks, View,
 } from '../../globalTypes';
 
 type States = {
+  setView: (v: View) => void;
   setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
   setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
@@ -16,14 +17,25 @@ type InitializeRequestData = {
   streaks: Streaks;
 };
 
-export default async function initialize(userId: number, dateString: string, states: States) {
-  const { setHabits, setOccurrenceData, setStreaks } = states;
+export default async function initialize(userId: number, todayDateString: string, states: States) {
+  const {
+    setView, setHabits, setOccurrenceData, setStreaks,
+  } = states;
 
   try {
     const { data }: { data: InitializeRequestData } = await axios({
       method: 'get',
-      url: `/api/users/${userId}/initialize/${dateString}`,
+      url: `/api/users/${userId}/initialize/${todayDateString}`,
     });
+
+    const todaysOccurrences = data.occurrencesByDate[todayDateString];
+    const visibleHabitCount = Object.keys(todaysOccurrences).length;
+
+    if (visibleHabitCount === 0) {
+      setView('selection');
+    } else {
+      setView('habit');
+    }
 
     setHabits(data.habits);
     setOccurrenceData({

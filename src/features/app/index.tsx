@@ -29,8 +29,21 @@ function App() {
   const [occurrenceData, setOccurrenceData] = useState<OccurrenceData>();
   const [streaks, setStreaks] = useState<Streaks>();
 
+  const setView = (v: View) => {
+    if (v === 'habit' || v === 'selection') {
+      _setListView(v);
+    }
+
+    _setView(v);
+  };
+
   useEffect(() => {
-    initialize(userId, dateObject.today.dateString, { setHabits, setOccurrenceData, setStreaks });
+    initialize(userId, dateObject.today.dateString, {
+      setView,
+      setHabits,
+      setOccurrenceData,
+      setStreaks,
+    });
   }, [dateObject]);
 
   const dayObject = useMemo(() => (
@@ -43,14 +56,6 @@ function App() {
     document.documentElement.style.setProperty('--left-margin', `${(50 - getTextWidthInPx(firstDate, 15)) / 2}px`);
     document.documentElement.style.setProperty('--right-margin', `${(50 - getTextWidthInPx(lastDate, 15)) / 2}px`);
   }, [dayObject]);
-
-  const setView = (v: View) => {
-    if (v === 'habit' || v === 'selection') {
-      _setListView(v);
-    }
-
-    _setView(v);
-  };
 
   const selectedHabits = useMemo(() => {
     if (!habits || !occurrenceData?.dates) return [];
