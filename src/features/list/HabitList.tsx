@@ -8,7 +8,7 @@ type Props = {
   todaysOccurrences: {
     [habitId: string]: boolean;
   };
-  selectedIndex: number;
+  selectedIndex: number | null;
   apiFunctions: ApiFunctions;
 };
 

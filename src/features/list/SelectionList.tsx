@@ -8,8 +8,8 @@ type Props = {
   todaysOccurrences: {
     [habitId: string]: boolean;
   };
-  selectedIndex: number;
-  setSelectedIndex: (newIndex: number) => void;
+  selectedIndex: number | null;
+  setSelectedIndex: (newIndex: number | null) => void;
   apiFunctions: ApiFunctions;
   inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
@@ -94,7 +94,11 @@ export default function SelectionList({
           }}
           onBlur={() => {
             setInInput(false);
-            setSelectedIndex(habits.length - 1);
+            if (habits.length === 0) {
+              setSelectedIndex(null);
+            } else {
+              setSelectedIndex(habits.length - 1);
+            }
           }}
           onChange={(e) => setHabitInput(e.target.value)}
         />

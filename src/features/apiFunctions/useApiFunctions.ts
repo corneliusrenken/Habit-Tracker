@@ -26,8 +26,8 @@ type States = {
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
   streaks: Streaks | undefined;
   setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
-  selectedIndex: number;
-  setSelectedIndex: (newIndex: number) => void;
+  selectedIndex: number | null;
+  setSelectedIndex: (newIndex: number | null) => void;
 };
 
 export default function useApiFunctions(states: States): ApiFunctions | undefined {

@@ -1,6 +1,4 @@
-import React, {
-  useCallback, useEffect, useMemo, useState,
-} from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import getDateObject from '../common/getDateObject';
 import getTextWidthInPx from './getTextWidthInPx';
 import {
@@ -14,6 +12,7 @@ import shortcutManager from './shortcutManager';
 import getYesterdaysStreaks from './getYesterdaysStreaks';
 import useApiFunctions from '../apiFunctions/useApiFunctions';
 import useMemoizedComponents from './useMemoizedComponents';
+import getSelectedHabits from './getSelectedHabits';
 
 function App() {
   const userId = 1;
@@ -22,7 +21,7 @@ function App() {
   const [view, _setView] = useState<View>('habit');
   const [listView, _setListView] = useState<ListView>('habit');
   const [focusId, setFocusId] = useState<number | undefined>(undefined);
-  const [selectedIndex, _setSelectedIndex] = useState(0);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
   const [inInput, setInInput] = useState(false);
   const [inTransition, setInTransition] = useState(false);
   const [habits, setHabits] = useState<Habit[]>();
@@ -57,20 +56,12 @@ function App() {
     document.documentElement.style.setProperty('--right-margin', `${(50 - getTextWidthInPx(lastDate, 15)) / 2}px`);
   }, [dayObject]);
 
-  const selectedHabits = useMemo(() => {
-    if (!habits || !occurrenceData?.dates) return [];
-
-    const dayOccurrences = occurrenceData.dates[dayObject.dateString] || {};
-
-    return listView === 'habit'
-      ? habits.filter(({ id }) => dayOccurrences[id] !== undefined)
-      : habits;
-  }, [dayObject.dateString, habits, listView, occurrenceData?.dates]);
-
-  const setSelectedIndex = useCallback((newIndex: number) => {
-    const maxIndex = view === 'selection' ? selectedHabits.length : selectedHabits.length - 1;
-    _setSelectedIndex(Math.max(0, Math.min(newIndex, maxIndex)));
-  }, [view, selectedHabits]);
+  const selectedHabits = useMemo(() => getSelectedHabits({
+    habits,
+    occurrenceData,
+    dayObject,
+    listView,
+  }), [dayObject, habits, listView, occurrenceData]);
 
   const selectedOccurrences = useMemo(() => (
     occurrenceData !== undefined
@@ -120,6 +111,7 @@ function App() {
     if (!habits || !occurrenceData || !streaks || !apiFunctions) return;
 
     const onKeyDown = (e: KeyboardEvent) => shortcutManager(e, {
+      dateObject,
       inInput,
       setInInput,
       selectedIndex,
@@ -141,6 +133,7 @@ function App() {
     return () => window.removeEventListener('keydown', onKeyDown); // eslint-disable-line consistent-return, max-len
   }, [
     apiFunctions,
+    dateObject,
     dayObject,
     displayingYesterday,
     habits,

@@ -4,7 +4,7 @@ import { Habit } from '../../globalTypes';
 type States = {
   habits: Habit[] | undefined;
   setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
-  setSelectedIndex: (newIndex: number) => void;
+  setSelectedIndex: (newIndex: number | null) => void;
 };
 
 export default function updateHabitOrder(

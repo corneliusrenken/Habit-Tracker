@@ -1,7 +1,12 @@
 import {
   ApiFunctions,
-  DayObject, Habit, OccurrenceData, View,
+  DateObject,
+  DayObject,
+  Habit,
+  OccurrenceData,
+  View,
 } from '../../globalTypes';
+import getSelectedHabits from './getSelectedHabits';
 
 function noModifierKeysPressed(e: KeyboardEvent) {
   return (
@@ -15,16 +20,17 @@ function noModifierKeysPressed(e: KeyboardEvent) {
 }
 
 type States = {
+  dateObject: DateObject;
   inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedIndex: number;
+  selectedIndex: number | null;
   habits: Habit[];
   selectedHabits: Habit[];
   view: View;
   displayingYesterday: boolean;
   setView: (v: View) => void;
   setDisplayingYesterday: React.Dispatch<React.SetStateAction<boolean>>;
-  setSelectedIndex: (newIndex: number) => void;
+  setSelectedIndex: (newIndex: number | null) => void;
   setFocusId: React.Dispatch<React.SetStateAction<number | undefined>>;
   inTransition: boolean;
   dayObject: DayObject;
@@ -34,6 +40,7 @@ type States = {
 
 export default function shortcutManager(e: KeyboardEvent, states: States) {
   const {
+    dateObject,
     inInput,
     setInInput,
     selectedIndex,
@@ -57,14 +64,34 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
       e.preventDefault();
       setView('habit');
       setDisplayingYesterday(false);
-      setSelectedIndex(0);
+      const newSelectedHabits = getSelectedHabits({
+        dayObject: dateObject.today,
+        habits,
+        occurrenceData,
+        listView: 'habit',
+      });
+      if (newSelectedHabits.length === 0) {
+        setSelectedIndex(null);
+      } else {
+        setSelectedIndex(0);
+      }
       setFocusId(undefined);
     },
     yesterday: () => {
       e.preventDefault();
       setView('habit');
       setDisplayingYesterday(true);
-      setSelectedIndex(0);
+      const newSelectedHabits = getSelectedHabits({
+        dayObject: dateObject.yesterday,
+        habits,
+        occurrenceData,
+        listView: 'habit',
+      });
+      if (newSelectedHabits.length === 0) {
+        setSelectedIndex(null);
+      } else {
+        setSelectedIndex(0);
+      }
       setFocusId(undefined);
     },
     selection: () => {
@@ -92,12 +119,37 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
     incrementSelectedIndex: () => {
       e.preventDefault();
       setInInput(false);
-      setSelectedIndex(selectedIndex + 1);
+
+      if (habits.length === 0 && view === 'selection') {
+        if (selectedIndex === null) {
+          setSelectedIndex(0);
+          return;
+        }
+        setSelectedIndex(null);
+        return;
+      }
+
+      const maxIndex = view === 'habit' ? selectedHabits.length - 1 : selectedHabits.length;
+      const newIndex = selectedIndex === null ? null
+        : Math.min(selectedIndex + 1, maxIndex);
+      setSelectedIndex(newIndex);
     },
     decrementSelectedIndex: () => {
       e.preventDefault();
       setInInput(false);
-      setSelectedIndex(selectedIndex - 1);
+
+      if (habits.length === 0 && view === 'selection') {
+        if (selectedIndex === null) {
+          setSelectedIndex(0);
+          return;
+        }
+        setSelectedIndex(null);
+        return;
+      }
+
+      const newIndex = selectedIndex === null ? null
+        : Math.max(selectedIndex - 1, 0);
+      setSelectedIndex(newIndex);
     },
     createHabit: () => {
       e.preventDefault();
@@ -135,7 +187,11 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
     escapeCreateInput: () => {
       e.preventDefault();
       setInInput(false);
-      setSelectedIndex(selectedIndex - 1);
+      if (habits.length === 0) {
+        setSelectedIndex(null);
+      } else {
+        setSelectedIndex(habits.length - 1);
+      }
     },
     escapeRenameHabit: () => {
       e.preventDefault();

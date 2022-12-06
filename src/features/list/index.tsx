@@ -13,8 +13,8 @@ type Props = {
     [habitId: string]: boolean;
   };
   listView: ListView;
-  selectedIndex: number;
-  setSelectedIndex: (newIndex: number) => void;
+  selectedIndex: number | null;
+  setSelectedIndex: (newIndex: number | null) => void;
   inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   apiFunctions: ApiFunctions;

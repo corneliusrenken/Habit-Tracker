@@ -4,8 +4,8 @@ import { Habit } from '../../globalTypes';
 type States = {
   habits: Habit[] | undefined;
   setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
-  selectedIndex: number;
-  setSelectedIndex: (newIndex: number) => void;
+  selectedIndex: number | null;
+  setSelectedIndex: (newIndex: number | null) => void;
 };
 
 export default function removeHabit(
@@ -15,6 +15,8 @@ export default function removeHabit(
   const {
     habits, setHabits, selectedIndex, setSelectedIndex,
   } = states;
+
+  if (selectedIndex === null) return;
 
   if (!habits) throw new Error('states should not be undefined');
 
@@ -26,5 +28,7 @@ export default function removeHabit(
   const newHabits: Habit[] = habits.filter(({ id }) => id !== habitId);
 
   setHabits(newHabits);
-  setSelectedIndex(selectedIndex - 1);
+  const newSelectedIndex = newHabits.length === 0 ? null
+    : selectedIndex - 1;
+  setSelectedIndex(newSelectedIndex);
 }
