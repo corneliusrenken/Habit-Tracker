@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Habit } from '../../globalTypes';
 import Icon from '../icon';
 
 type Props = {
@@ -8,12 +9,23 @@ type Props = {
   selected: boolean;
   toggleVisibility: () => void;
   removeHabit: () => void;
+  renameHabit: (newName: string) => void;
   inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
+  habits: Habit[];
 };
 
 export default function SelectionListItem({
-  name, visible, move, selected, toggleVisibility, removeHabit, inInput, setInInput,
+  name,
+  visible,
+  move,
+  selected,
+  toggleVisibility,
+  removeHabit,
+  renameHabit,
+  inInput,
+  setInInput,
+  habits,
 }: Props) {
   const [renameInput, setRenameInput] = useState('');
   const [isRenameButtonDisabled, setIsRenameButtonDisabled] = useState(false);
@@ -23,12 +35,28 @@ export default function SelectionListItem({
   let containerClassName = 'list-item';
   if (selected) containerClassName += ' list-item-selected';
 
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const trimmedRenameInput = renameInput.trim();
+    const isUnique = habits.find((habit) => habit.name === trimmedRenameInput) === undefined;
+    if (trimmedRenameInput && isUnique) {
+      renameHabit(trimmedRenameInput);
+      setInInput(false);
+    } else if (!trimmedRenameInput) {
+      console.error('popup: need a non empty string'); // eslint-disable-line no-console
+    } else {
+      console.error('popup: a habit with this name already exists'); // eslint-disable-line no-console
+    }
+  };
+
   return (
     <div className={containerClassName}>
       {!beingRenamed ? (
         <div className="name">{name}</div>
       ) : (
-        <form>
+        <form
+          onSubmit={onSubmit}
+        >
           <input
             autoFocus // eslint-disable-line jsx-a11y/no-autofocus
             onFocus={() => {

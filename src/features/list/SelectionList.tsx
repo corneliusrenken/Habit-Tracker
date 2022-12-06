@@ -62,8 +62,10 @@ export default function SelectionList({
           selected={selectedIndex === index}
           toggleVisibility={() => apiFunctions.updateHabitVisibility(id, !visible)}
           removeHabit={() => apiFunctions.removeHabit(id)}
+          renameHabit={(newName: string) => apiFunctions.renameHabit(id, newName)}
           inInput={inInput}
           setInInput={setInInput}
+          habits={habits}
         />
       );
     },
