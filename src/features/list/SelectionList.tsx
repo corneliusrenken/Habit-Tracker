@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { ApiFunctions, Habit } from '../../globalTypes';
+import isValidHabitName from './isValidHabitName';
 import ReorderableList from './ReorderableList';
 import SelectionListItem from './SelectionListItem';
 
@@ -35,20 +36,6 @@ export default function SelectionList({
     }
   }, [selectedIndex, habits.length]);
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const trimmedHabitInput = habitInput.trim();
-    const isUnique = habits.find(({ name }) => name === trimmedHabitInput) === undefined;
-    if (trimmedHabitInput && isUnique) {
-      apiFunctions.addHabit(trimmedHabitInput);
-      setHabitInput('');
-    } else if (!trimmedHabitInput) {
-      console.error('popup: need a non empty string'); // eslint-disable-line no-console
-    } else {
-      console.error('popup: a habit with this name already exists'); // eslint-disable-line no-console
-    }
-  };
-
   const elementConstructors: ElementConstructor[] = habits.map(({ id, name }, index) => ({
     id,
     elementConstructor: (onMouseDown: React.MouseEventHandler<HTMLButtonElement>) => {
@@ -62,7 +49,9 @@ export default function SelectionList({
           selected={selectedIndex === index}
           toggleVisibility={() => apiFunctions.updateHabitVisibility(id, !visible)}
           removeHabit={() => apiFunctions.removeHabit(id)}
-          renameHabit={(newName: string) => apiFunctions.renameHabit(id, newName)}
+          renameHabit={(newName: string) => {
+            apiFunctions.renameHabit(id, newName);
+          }}
           inInput={inInput}
           setInInput={setInInput}
           habits={habits}
@@ -83,7 +72,17 @@ export default function SelectionList({
       />
       <form
         style={{ top: `${habits.length * 50}px` }}
-        onSubmit={onSubmit}
+        onSubmit={(e) => {
+          e.preventDefault();
+          const trimmedHabitInput = habitInput.trim();
+          const validation = isValidHabitName(trimmedHabitInput, { habits });
+          if (validation === true) {
+            apiFunctions.addHabit(trimmedHabitInput);
+            setHabitInput('');
+          } else {
+            console.error(validation); // eslint-disable-line no-console
+          }
+        }}
       >
         <input
           ref={habitInputRef}

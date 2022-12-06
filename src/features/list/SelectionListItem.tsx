@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Habit } from '../../globalTypes';
 import Icon from '../icon';
+import isValidHabitName from './isValidHabitName';
 
 type Props = {
   name: string;
@@ -35,27 +36,28 @@ export default function SelectionListItem({
   let containerClassName = 'list-item';
   if (selected) containerClassName += ' list-item-selected';
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const trimmedRenameInput = renameInput.trim();
-    const isUnique = habits.find((habit) => habit.name === trimmedRenameInput) === undefined;
-    if (trimmedRenameInput && isUnique) {
-      renameHabit(trimmedRenameInput);
-      setInInput(false);
-    } else if (!trimmedRenameInput) {
-      console.error('popup: need a non empty string'); // eslint-disable-line no-console
-    } else {
-      console.error('popup: a habit with this name already exists'); // eslint-disable-line no-console
-    }
-  };
-
   return (
     <div className={containerClassName}>
       {!beingRenamed ? (
         <div className="name">{name}</div>
       ) : (
         <form
-          onSubmit={onSubmit}
+          onSubmit={(e) => {
+            e.preventDefault();
+            if (renameInput === name) {
+              setInInput(false);
+              return;
+            }
+
+            const trimmedRenameInput = renameInput.trim();
+            const validation = isValidHabitName(trimmedRenameInput, { habits });
+            if (validation === true) {
+              renameHabit(trimmedRenameInput);
+              setInInput(false);
+            } else {
+              console.error(validation); // eslint-disable-line no-console
+            }
+          }}
         >
           <input
             autoFocus // eslint-disable-line jsx-a11y/no-autofocus
@@ -90,8 +92,16 @@ export default function SelectionListItem({
             }
           }}
         />
-        <Icon icon="trash" onClick={removeHabit} hidden={!selected} />
-        <Icon icon="move" onMouseDown={move} hidden={!selected} />
+        <Icon
+          icon="trash"
+          onClick={removeHabit}
+          hidden={!selected}
+        />
+        <Icon
+          icon="move"
+          onMouseDown={move}
+          hidden={!selected}
+        />
         <Icon
           icon={visible ? 'visible' : 'hidden'}
           classes={!visible ? ['greyed-out'] : undefined}

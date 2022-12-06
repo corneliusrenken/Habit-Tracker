@@ -13,7 +13,6 @@ type Props = {
 };
 
 export default function HabitList({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   habits, streaks, todaysOccurrences, selectedIndex, apiFunctions,
 }: Props) {
   return (
