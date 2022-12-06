@@ -28,7 +28,6 @@ export default function removeHabit(
   const newHabits: Habit[] = habits.filter(({ id }) => id !== habitId);
 
   setHabits(newHabits);
-  const newSelectedIndex = newHabits.length === 0 ? null
-    : selectedIndex - 1;
-  setSelectedIndex(newSelectedIndex);
+  // will always be able to set selected index to non null value as at least habit form will exist
+  setSelectedIndex(Math.max(selectedIndex - 1, 0));
 }
