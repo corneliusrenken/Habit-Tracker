@@ -7,7 +7,7 @@ export function recordDependencies(dependenciesObject: any) {
   dependencyHistory.push(dependenciesObject);
   // this is mainly there to ensure you turned off strict mode and
   // are accurately comparing dependencies
-  console.log(dependencyHistory.length);
+  console.log(dependencyHistory.length); // eslint-disable-line no-console
 
   if (dependencyHistory.length > 1) {
     const prevDependencies = dependencyHistory[dependencyHistory.length - 2];
@@ -26,6 +26,6 @@ export function recordDependencies(dependenciesObject: any) {
       }
     });
 
-    console.log('changed properties:', changedProperties);
+    console.log('changed properties:', changedProperties); // eslint-disable-line no-console
   }
 }
