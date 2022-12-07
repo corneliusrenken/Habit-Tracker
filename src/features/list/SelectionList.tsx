@@ -1,8 +1,14 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 import { ApiFunctions, Habit } from '../../globalTypes';
-import isValidHabitName from './isValidHabitName';
+import AddHabitForm from './AddHabitForm';
 import ReorderableList from './ReorderableList';
 import SelectionListItem from './SelectionListItem';
+
+type ElementConstructor = {
+  id: number;
+  // eslint-disable-next-line max-len
+  elementConstructor: (onMouseDown: React.MouseEventHandler<HTMLButtonElement>) => () => JSX.Element;
+};
 
 type Props = {
   habits: Habit[];
@@ -16,26 +22,9 @@ type Props = {
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-type ElementConstructor = {
-  id: number;
-  // eslint-disable-next-line max-len
-  elementConstructor: (onMouseDown: React.MouseEventHandler<HTMLButtonElement>) => () => JSX.Element;
-};
-
 export default function SelectionList({
   habits, todaysOccurrences, selectedIndex, setSelectedIndex, apiFunctions, inInput, setInInput,
 }: Props) {
-  const [habitInput, setHabitInput] = useState('');
-  const habitInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    if (selectedIndex === habits.length) {
-      habitInputRef.current?.focus();
-    } else {
-      habitInputRef.current?.blur();
-    }
-  }, [selectedIndex, habits.length]);
-
   const elementConstructors: ElementConstructor[] = habits.map(({ id, name }, index) => ({
     id,
     elementConstructor: (onMouseDown: React.MouseEventHandler<HTMLButtonElement>) => {
@@ -70,40 +59,13 @@ export default function SelectionList({
           apiFunctions.updateHabitOrder(changedId, newIndicesById[changedId]);
         }}
       />
-      <form
-        style={{ top: `${habits.length * 50}px` }}
-        onSubmit={(e) => {
-          e.preventDefault();
-          const trimmedHabitInput = habitInput.trim();
-          const validation = isValidHabitName(trimmedHabitInput, { habits });
-          if (validation === true) {
-            apiFunctions.addHabit(trimmedHabitInput);
-            setHabitInput('');
-          } else {
-            console.error(validation); // eslint-disable-line no-console
-          }
-        }}
-      >
-        <input
-          ref={habitInputRef}
-          type="text"
-          placeholder="add habit"
-          value={habitInput}
-          onFocus={() => {
-            setInInput(true);
-            setSelectedIndex(habits.length);
-          }}
-          onBlur={() => {
-            setInInput(false);
-            if (habits.length === 0) {
-              setSelectedIndex(null);
-            } else {
-              setSelectedIndex(habits.length - 1);
-            }
-          }}
-          onChange={(e) => setHabitInput(e.target.value)}
-        />
-      </form>
+      <AddHabitForm
+        habits={habits}
+        selectedIndex={selectedIndex}
+        setSelectedIndex={setSelectedIndex}
+        apiFunctions={apiFunctions}
+        setInInput={setInInput}
+      />
     </>
   );
 }
