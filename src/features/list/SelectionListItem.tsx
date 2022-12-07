@@ -44,12 +44,13 @@ export default function SelectionListItem({
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            if (renameInput === name) {
+            const trimmedRenameInput = renameInput.trim();
+
+            if (trimmedRenameInput === name) {
               setInInput(false);
               return;
             }
 
-            const trimmedRenameInput = renameInput.trim();
             const validation = isValidHabitName(trimmedRenameInput, { habits });
             if (validation === true) {
               renameHabit(trimmedRenameInput);
