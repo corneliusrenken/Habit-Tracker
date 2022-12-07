@@ -1,5 +1,4 @@
 import {
-  ApiFunctions,
   DateObject,
   DayObject,
   Habit,
@@ -35,7 +34,9 @@ type States = {
   inTransition: boolean;
   dayObject: DayObject;
   occurrenceData: OccurrenceData;
-  apiFunctions: ApiFunctions;
+  removeHabit: (habitId: number) => void;
+  updateHabitCompleted: (habitId: number, completed: boolean) => void;
+  updateHabitVisibility: (habitId: number, visible: boolean) => void;
 };
 
 export default function shortcutManager(e: KeyboardEvent, states: States) {
@@ -55,7 +56,9 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
     inTransition,
     dayObject,
     occurrenceData,
-    apiFunctions,
+    removeHabit,
+    updateHabitCompleted,
+    updateHabitVisibility,
   } = states;
   const { key } = e;
 
@@ -161,7 +164,7 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
       const selectedHabit = selectedHabits.find((habit, index) => index === selectedIndex);
       if (!selectedHabit) throw new Error('no habit found at selected index');
       const currentCompletedState = occurrenceData.dates[dayObject.dateString][selectedHabit.id];
-      apiFunctions.updateHabitCompleted(selectedHabit.id, !currentCompletedState);
+      updateHabitCompleted(selectedHabit.id, !currentCompletedState);
     },
     updateHabitVisibility: () => {
       e.preventDefault();
@@ -171,14 +174,14 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
       // this should not really be dayobject, but date obect, have a look later
       // eslint-disable-next-line max-len
       const currentVisibility = occurrenceData.dates[dayObject.dateString][selectedHabit.id] !== undefined;
-      apiFunctions.updateHabitVisibility(selectedHabit.id, !currentVisibility);
+      updateHabitVisibility(selectedHabit.id, !currentVisibility);
     },
     removeHabit: () => {
       e.preventDefault();
       if (selectedHabits.length === 0) return;
       const selectedHabit = selectedHabits.find((habit, index) => index === selectedIndex);
       if (!selectedHabit) throw new Error('no habit found at selected index');
-      apiFunctions.removeHabit(selectedHabit.id);
+      removeHabit(selectedHabit.id);
     },
     renameHabit: () => {
       e.preventDefault();

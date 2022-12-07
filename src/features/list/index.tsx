@@ -1,7 +1,5 @@
 import React from 'react';
-import {
-  ApiFunctions, Habit, ListView, Streaks,
-} from '../../globalTypes';
+import { Habit, ListView, Streaks } from '../../globalTypes';
 import HabitList from './HabitList';
 import SelectionList from './SelectionList';
 import './list.css';
@@ -17,7 +15,12 @@ type Props = {
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
-  apiFunctions: ApiFunctions;
+  addHabit: (name: string) => void;
+  removeHabit: (habitId: number) => void;
+  renameHabit: (habitId: number, name: string) => void;
+  updateHabitCompleted: (habitId: number, completed: boolean) => void;
+  updateHabitOrder: (habitId: number, newOrder: number) => void;
+  updateHabitVisibility: (habitId: number, visible: boolean) => void;
 };
 
 export default function List({
@@ -25,11 +28,16 @@ export default function List({
   streaks,
   todaysOccurrences,
   listView,
-  apiFunctions,
   selectedIndex,
   setSelectedIndex,
   inInput,
   setInInput,
+  addHabit,
+  removeHabit,
+  renameHabit,
+  updateHabitCompleted,
+  updateHabitOrder,
+  updateHabitVisibility,
 }: Props) {
   return (
     <div>
@@ -39,7 +47,7 @@ export default function List({
           streaks={streaks}
           todaysOccurrences={todaysOccurrences}
           selectedIndex={selectedIndex}
-          apiFunctions={apiFunctions}
+          updateHabitCompleted={updateHabitCompleted}
         />
       ) : (
         <SelectionList
@@ -49,7 +57,11 @@ export default function List({
           setSelectedIndex={setSelectedIndex}
           inInput={inInput}
           setInInput={setInInput}
-          apiFunctions={apiFunctions}
+          addHabit={addHabit}
+          removeHabit={removeHabit}
+          renameHabit={renameHabit}
+          updateHabitOrder={updateHabitOrder}
+          updateHabitVisibility={updateHabitVisibility}
         />
       )}
     </div>

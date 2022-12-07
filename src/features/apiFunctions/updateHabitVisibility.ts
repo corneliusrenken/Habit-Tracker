@@ -3,7 +3,7 @@ import { OccurrenceData, Streaks } from '../../globalTypes';
 import recalculateStreak from './recalculateStreak';
 
 type States = {
-  streaks: Streaks;
+  streaks: Streaks | undefined;
   setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
   occurrenceData: OccurrenceData | undefined;
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;

@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import {
   addHabit,
   removeHabit,
@@ -12,7 +13,6 @@ import {
   DayObject,
   OccurrenceData,
   Streaks,
-  ApiFunctions,
 } from '../../globalTypes';
 
 type States = {
@@ -30,7 +30,7 @@ type States = {
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
-export default function useApiFunctions(states: States): ApiFunctions | undefined {
+export default function useApiFunctions(states: States) {
   const {
     userId,
     dateObject,
@@ -46,48 +46,92 @@ export default function useApiFunctions(states: States): ApiFunctions | undefine
     setSelectedIndex,
   } = states;
 
-  if (!habits || !occurrenceData || !streaks) return undefined;
+  const addHabitMemo = useCallback((name: string) => (
+    addHabit(userId, name, dateObject.today.dateString, {
+      habits,
+      setHabits,
+      occurrenceData,
+      setOccurrenceData,
+      streaks,
+      setStreaks,
+    })
+  ), [
+    dateObject.today.dateString,
+    habits,
+    occurrenceData,
+    setHabits,
+    setOccurrenceData,
+    setStreaks,
+    streaks,
+    userId,
+  ]);
+
+  const removeHabitMemo = useCallback((habitId: number) => (
+    removeHabit(habitId, {
+      habits,
+      setHabits,
+      selectedIndex,
+      setSelectedIndex,
+    })
+  ), [
+    habits,
+    selectedIndex,
+    setHabits,
+    setSelectedIndex,
+  ]);
+
+  const renameHabitMemo = useCallback((habitId: number, name: string) => (
+    renameHabit(habitId, name, { habits, setHabits })
+  ), [
+    habits,
+    setHabits,
+  ]);
+
+  const updateHabitCompletedMemo = useCallback((habitId: number, completed: boolean) => (
+    updateHabitCompleted(habitId, completed, dayObject.dateString, displayingYesterday, {
+      streaks,
+      setStreaks,
+      occurrenceData,
+      setOccurrenceData,
+    })
+  ), [
+    dayObject.dateString,
+    displayingYesterday,
+    occurrenceData,
+    setOccurrenceData,
+    setStreaks,
+    streaks,
+  ]);
+
+  const updateHabitOrderMemo = useCallback((habitId: number, newOrder: number) => (
+    updateHabitOrder(habitId, newOrder, { habits, setHabits, setSelectedIndex })
+  ), [
+    habits,
+    setHabits,
+    setSelectedIndex,
+  ]);
+
+  const updateHabitVisibilityMemo = useCallback((habitId: number, visible: boolean) => (
+    updateHabitVisibility(habitId, visible, dateObject.today.dateString, {
+      streaks,
+      setStreaks,
+      occurrenceData,
+      setOccurrenceData,
+    })
+  ), [
+    dateObject.today.dateString,
+    occurrenceData,
+    setOccurrenceData,
+    setStreaks,
+    streaks,
+  ]);
 
   return {
-    addHabit: (name: string) => {
-      addHabit(userId, name, dateObject.today.dateString, {
-        habits,
-        setHabits,
-        occurrenceData,
-        setOccurrenceData,
-        streaks,
-        setStreaks,
-      });
-    },
-    removeHabit: (habitId: number) => {
-      removeHabit(habitId, {
-        habits,
-        setHabits,
-        selectedIndex,
-        setSelectedIndex,
-      });
-    },
-    renameHabit: (habitId: number, name: string) => {
-      renameHabit(habitId, name, { habits, setHabits });
-    },
-    updateHabitCompleted: (habitId: number, completed: boolean) => {
-      updateHabitCompleted(habitId, completed, dayObject.dateString, displayingYesterday, {
-        streaks,
-        setStreaks,
-        occurrenceData,
-        setOccurrenceData,
-      });
-    },
-    updateHabitOrder: (habitId: number, newOrder: number) => {
-      updateHabitOrder(habitId, newOrder, { habits, setHabits, setSelectedIndex });
-    },
-    updateHabitVisibility: (habitId: number, visible: boolean) => {
-      updateHabitVisibility(habitId, visible, dateObject.today.dateString, {
-        streaks,
-        setStreaks,
-        occurrenceData,
-        setOccurrenceData,
-      });
-    },
+    addHabit: addHabitMemo,
+    removeHabit: removeHabitMemo,
+    renameHabit: renameHabitMemo,
+    updateHabitCompleted: updateHabitCompletedMemo,
+    updateHabitOrder: updateHabitOrderMemo,
+    updateHabitVisibility: updateHabitVisibilityMemo,
   };
 }

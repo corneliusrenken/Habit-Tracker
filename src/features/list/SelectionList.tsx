@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiFunctions, Habit } from '../../globalTypes';
+import { Habit } from '../../globalTypes';
 import AddHabitForm from './AddHabitForm';
 import ReorderableList from './ReorderableList';
 import SelectionListItem from './SelectionListItem';
@@ -17,13 +17,27 @@ type Props = {
   };
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  apiFunctions: ApiFunctions;
   inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
+  addHabit: (name: string) => void;
+  removeHabit: (habitId: number) => void;
+  renameHabit: (habitId: number, name: string) => void;
+  updateHabitOrder: (habitId: number, newOrder: number) => void;
+  updateHabitVisibility: (habitId: number, visible: boolean) => void;
 };
 
 export default function SelectionList({
-  habits, todaysOccurrences, selectedIndex, setSelectedIndex, apiFunctions, inInput, setInInput,
+  habits,
+  todaysOccurrences,
+  selectedIndex,
+  setSelectedIndex,
+  inInput,
+  setInInput,
+  addHabit,
+  removeHabit,
+  renameHabit,
+  updateHabitOrder,
+  updateHabitVisibility,
 }: Props) {
   const elementConstructors: ElementConstructor[] = habits.map(({ id, name }, index) => ({
     id,
@@ -36,10 +50,10 @@ export default function SelectionList({
           move={onMouseDown}
           visible={visible}
           selected={selectedIndex === index}
-          toggleVisibility={() => apiFunctions.updateHabitVisibility(id, !visible)}
-          removeHabit={() => apiFunctions.removeHabit(id)}
+          toggleVisibility={() => updateHabitVisibility(id, !visible)}
+          removeHabit={() => removeHabit(id)}
           renameHabit={(newName: string) => {
-            apiFunctions.renameHabit(id, newName);
+            renameHabit(id, newName);
           }}
           inInput={inInput}
           setInInput={setInInput}
@@ -56,14 +70,14 @@ export default function SelectionList({
         height={50}
         width={350}
         onIndexChange={(newIndicesById, changedId) => {
-          apiFunctions.updateHabitOrder(changedId, newIndicesById[changedId]);
+          updateHabitOrder(changedId, newIndicesById[changedId]);
         }}
       />
       <AddHabitForm
         habits={habits}
         selectedIndex={selectedIndex}
         setSelectedIndex={setSelectedIndex}
-        apiFunctions={apiFunctions}
+        addHabit={addHabit}
         setInInput={setInInput}
       />
     </>

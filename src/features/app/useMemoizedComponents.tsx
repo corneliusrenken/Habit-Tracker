@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import {
-  ApiFunctions,
   DayObject,
   SelectedOccurrence,
   View,
@@ -26,7 +25,12 @@ type States = {
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
-  apiFunctions: ApiFunctions | undefined;
+  addHabit: (name: string) => void;
+  removeHabit: (habitId: number) => void;
+  renameHabit: (habitId: number, name: string) => void;
+  updateHabitCompleted: (habitId: number, completed: boolean) => void;
+  updateHabitOrder: (habitId: number, newOrder: number) => void;
+  updateHabitVisibility: (habitId: number, visible: boolean) => void;
 };
 
 export default function useMemoizedComponents(states: States) {
@@ -42,7 +46,12 @@ export default function useMemoizedComponents(states: States) {
     setSelectedIndex,
     inInput,
     setInInput,
-    apiFunctions,
+    addHabit,
+    removeHabit,
+    renameHabit,
+    updateHabitCompleted,
+    updateHabitOrder,
+    updateHabitVisibility,
   } = states;
 
   const occurrences = useMemo(() => (
@@ -67,7 +76,7 @@ export default function useMemoizedComponents(states: States) {
   ), [dayObject.weekDayIndex, selectedOccurrences]);
 
   const list = useMemo(() => (
-    apiFunctions !== undefined && occurrenceData !== undefined
+    occurrenceData !== undefined
       ? (
         <List
           selectedHabits={selectedHabits}
@@ -78,12 +87,16 @@ export default function useMemoizedComponents(states: States) {
           setSelectedIndex={setSelectedIndex}
           inInput={inInput}
           setInInput={setInInput}
-          apiFunctions={apiFunctions}
+          addHabit={addHabit}
+          removeHabit={removeHabit}
+          renameHabit={renameHabit}
+          updateHabitCompleted={updateHabitCompleted}
+          updateHabitOrder={updateHabitOrder}
+          updateHabitVisibility={updateHabitVisibility}
         />
       )
       : <div />
   ), [
-    apiFunctions,
     selectedStreaks,
     dayObject.dateString,
     listView,
@@ -93,6 +106,12 @@ export default function useMemoizedComponents(states: States) {
     inInput,
     setInInput,
     setSelectedIndex,
+    addHabit,
+    removeHabit,
+    renameHabit,
+    updateHabitCompleted,
+    updateHabitOrder,
+    updateHabitVisibility,
   ]);
 
   return {

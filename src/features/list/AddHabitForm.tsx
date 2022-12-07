@@ -1,17 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ApiFunctions, Habit } from '../../globalTypes';
+import { Habit } from '../../globalTypes';
 import isValidHabitName from './isValidHabitName';
 
 type Props = {
   habits: Habit[];
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  apiFunctions: ApiFunctions;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
+  addHabit: (name: string) => void;
 };
 
 export default function AddHabitForm({
-  habits, selectedIndex, setSelectedIndex, apiFunctions, setInInput,
+  habits, selectedIndex, setSelectedIndex, addHabit, setInInput,
 }: Props) {
   const [habitInput, setHabitInput] = useState('');
   const habitInputRef = useRef<HTMLInputElement>(null);
@@ -32,7 +32,7 @@ export default function AddHabitForm({
         const trimmedHabitInput = habitInput.trim();
         const validation = isValidHabitName(trimmedHabitInput, { habits });
         if (validation === true) {
-          apiFunctions.addHabit(trimmedHabitInput);
+          addHabit(trimmedHabitInput);
           setHabitInput('');
         } else {
           console.error(validation); // eslint-disable-line no-console

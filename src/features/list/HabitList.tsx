@@ -1,5 +1,5 @@
 import React from 'react';
-import { ApiFunctions, Habit, Streaks } from '../../globalTypes';
+import { Habit, Streaks } from '../../globalTypes';
 import HabitListItem from './HabitListItem';
 
 type Props = {
@@ -9,11 +9,11 @@ type Props = {
     [habitId: string]: boolean;
   };
   selectedIndex: number | null;
-  apiFunctions: ApiFunctions;
+  updateHabitCompleted: (habitId: number, completed: boolean) => void;
 };
 
 export default function HabitList({
-  habits, streaks, todaysOccurrences, selectedIndex, apiFunctions,
+  habits, streaks, todaysOccurrences, selectedIndex, updateHabitCompleted,
 }: Props) {
   return (
     <div>
@@ -28,7 +28,7 @@ export default function HabitList({
             streak={streaks[id].current}
             completed={completed}
             selected={selected}
-            toggleCompleted={() => apiFunctions.updateHabitCompleted(id, !completed)}
+            toggleCompleted={() => updateHabitCompleted(id, !completed)}
           />
         );
       })}

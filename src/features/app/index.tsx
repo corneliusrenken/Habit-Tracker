@@ -61,7 +61,14 @@ export default function App() {
     streaks,
   });
 
-  const apiFunctions = useApiFunctions({
+  const {
+    addHabit,
+    removeHabit,
+    renameHabit,
+    updateHabitCompleted,
+    updateHabitOrder,
+    updateHabitVisibility,
+  } = useApiFunctions({
     userId,
     dateObject,
     dayObject,
@@ -77,7 +84,6 @@ export default function App() {
   });
 
   const components = useMemoizedComponents({
-    apiFunctions,
     selectedStreaks: selectedData.streaks,
     dayObject,
     listView: listViewRef.current,
@@ -89,10 +95,15 @@ export default function App() {
     setInInput,
     setSelectedIndex,
     view,
+    addHabit,
+    removeHabit,
+    renameHabit,
+    updateHabitCompleted,
+    updateHabitOrder,
+    updateHabitVisibility,
   });
 
   useShortcutManager({
-    apiFunctions,
     dateObject,
     dayObject,
     displayingYesterday,
@@ -108,6 +119,9 @@ export default function App() {
     setDisplayingYesterday,
     setSelectedIndex,
     setFocusId,
+    removeHabit,
+    updateHabitCompleted,
+    updateHabitVisibility,
   });
 
   if (!habits || !occurrenceData || !streaks) return null;

@@ -1,11 +1,10 @@
 import { useEffect } from 'react';
 import {
-  ApiFunctions, DateObject, DayObject, Habit, OccurrenceData, View,
+  DateObject, DayObject, Habit, OccurrenceData, View,
 } from '../../globalTypes';
 import shortcutManager from './shortcutManager';
 
 type States = {
-  apiFunctions: ApiFunctions | undefined;
   dateObject: DateObject;
   dayObject: DayObject;
   displayingYesterday: boolean;
@@ -21,11 +20,13 @@ type States = {
   setDisplayingYesterday: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setFocusId: React.Dispatch<React.SetStateAction<number | undefined>>;
+  removeHabit: (habitId: number) => void;
+  updateHabitCompleted: (habitId: number, completed: boolean) => void;
+  updateHabitVisibility: (habitId: number, visible: boolean) => void;
 };
 
 export default function useShortcutManager(states: States) {
   const {
-    apiFunctions,
     dateObject,
     dayObject,
     displayingYesterday,
@@ -41,13 +42,15 @@ export default function useShortcutManager(states: States) {
     setDisplayingYesterday,
     setSelectedIndex,
     setFocusId,
+    removeHabit,
+    updateHabitCompleted,
+    updateHabitVisibility,
   } = states;
 
   useEffect(() => {
-    if (!habits || !occurrenceData || !apiFunctions) return;
+    if (!habits || !occurrenceData) return;
 
     const onKeyDown = (e: KeyboardEvent) => shortcutManager(e, {
-      apiFunctions,
       dateObject,
       dayObject,
       displayingYesterday,
@@ -63,12 +66,14 @@ export default function useShortcutManager(states: States) {
       setDisplayingYesterday,
       setSelectedIndex,
       setFocusId,
+      removeHabit,
+      updateHabitCompleted,
+      updateHabitVisibility,
     });
 
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown); // eslint-disable-line consistent-return, max-len
   }, [
-    apiFunctions,
     dateObject,
     dayObject,
     displayingYesterday,
@@ -84,5 +89,8 @@ export default function useShortcutManager(states: States) {
     setDisplayingYesterday,
     setSelectedIndex,
     setFocusId,
+    removeHabit,
+    updateHabitCompleted,
+    updateHabitVisibility,
   ]);
 }
