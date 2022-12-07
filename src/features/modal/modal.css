@@ -1,0 +1,45 @@
+.modal-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+  z-index: 99;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fade-in-background 500ms forwards;
+}
+
+@keyframes fade-in-background {
+  from {
+    background-color: rgba(0, 0, 0, 0);
+    backdrop-filter: blur(0);
+  }
+
+  to {
+    background-color: rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+  }
+}
+
+.modal-container {
+  position: fixed;
+  z-index: 99;
+  opacity: 0;
+  padding: 16px;
+  border-radius: 8px;
+  background-color: white;
+  animation: scale-up-container 300ms forwards 200ms;
+}
+
+@keyframes scale-up-container {
+  from {
+    transform: scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+  }
+}
