@@ -4,7 +4,7 @@ import {
 } from '../../globalTypes';
 
 type States = {
-  setView: (v: View) => void;
+  setView: React.Dispatch<React.SetStateAction<View>>;
   setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
   setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;

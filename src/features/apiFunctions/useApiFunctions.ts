@@ -27,7 +27,7 @@ type States = {
   streaks: Streaks | undefined;
   setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
   selectedIndex: number | null;
-  setSelectedIndex: (newIndex: number | null) => void;
+  setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
 export default function useApiFunctions(states: States): ApiFunctions | undefined {

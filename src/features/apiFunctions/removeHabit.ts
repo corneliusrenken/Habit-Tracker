@@ -5,7 +5,7 @@ type States = {
   habits: Habit[] | undefined;
   setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
   selectedIndex: number | null;
-  setSelectedIndex: (newIndex: number | null) => void;
+  setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
 export default function removeHabit(

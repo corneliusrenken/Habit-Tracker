@@ -28,7 +28,7 @@ type States = {
   selectedHabits: Habit[];
   view: View;
   displayingYesterday: boolean;
-  setView: (v: View) => void;
+  setView: React.Dispatch<React.SetStateAction<View>>;
   setDisplayingYesterday: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedIndex: (newIndex: number | null) => void;
   setFocusId: React.Dispatch<React.SetStateAction<number | undefined>>;

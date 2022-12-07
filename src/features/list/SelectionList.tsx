@@ -10,7 +10,7 @@ type Props = {
     [habitId: string]: boolean;
   };
   selectedIndex: number | null;
-  setSelectedIndex: (newIndex: number | null) => void;
+  setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   apiFunctions: ApiFunctions;
   inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;

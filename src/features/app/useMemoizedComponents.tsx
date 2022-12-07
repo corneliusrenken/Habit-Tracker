@@ -23,7 +23,7 @@ type States = {
   selectedStreaks: Streaks;
   occurrenceData: OccurrenceData | undefined;
   selectedIndex: number | null;
-  setSelectedIndex: (newIndex: number | null) => void;
+  setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   apiFunctions: ApiFunctions | undefined;

@@ -14,7 +14,7 @@ type Props = {
   };
   listView: ListView;
   selectedIndex: number | null;
-  setSelectedIndex: (newIndex: number | null) => void;
+  setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   apiFunctions: ApiFunctions;

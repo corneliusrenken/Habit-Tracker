@@ -1,4 +1,6 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, {
+  useEffect, useMemo, useRef, useState,
+} from 'react';
 import getDateObject from '../common/getDateObject';
 import getTextWidthInPx from './getTextWidthInPx';
 import {
@@ -7,17 +9,16 @@ import {
 import TransitionManager from '../transitionManager';
 import getBodyHeight from './getBodyHeight';
 import initialize from './initialize';
-import shortcutManager from './shortcutManager';
 import useApiFunctions from '../apiFunctions/useApiFunctions';
 import useMemoizedComponents from './useMemoizedComponents';
 import useSelectedData from './useSelectedData';
+import useShortcutManager from './useShortcutManager';
 
 function App() {
   const userId = 1;
   const [dateObject] = useState(getDateObject(6));
   const [displayingYesterday, setDisplayingYesterday] = useState(false);
-  const [view, _setView] = useState<View>('habit');
-  const [listView, _setListView] = useState<ListView>('habit');
+  const [view, setView] = useState<View>('habit');
   const [focusId, setFocusId] = useState<number | undefined>(undefined);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
   const [inInput, setInInput] = useState(false);
@@ -26,13 +27,8 @@ function App() {
   const [occurrenceData, setOccurrenceData] = useState<OccurrenceData>();
   const [streaks, setStreaks] = useState<Streaks>();
 
-  const setView = (v: View) => {
-    if (v === 'habit' || v === 'selection') {
-      _setListView(v);
-    }
-
-    _setView(v);
-  };
+  const listViewRef = useRef<ListView>('habit');
+  if (view === 'habit' || view === 'selection') listViewRef.current = view;
 
   useEffect(() => {
     initialize(userId, dateObject.today.dateString, {
@@ -60,7 +56,7 @@ function App() {
     displayingYesterday,
     focusId,
     habits,
-    listView,
+    listView: listViewRef.current,
     occurrenceData,
     streaks,
   });
@@ -84,7 +80,7 @@ function App() {
     apiFunctions,
     selectedStreaks: selectedData.streaks,
     dayObject,
-    listView,
+    listView: listViewRef.current,
     occurrenceData,
     selectedHabits: selectedData.habits,
     selectedIndex,
@@ -95,31 +91,7 @@ function App() {
     view,
   });
 
-  useEffect(() => {
-    if (!habits || !occurrenceData || !streaks || !apiFunctions) return;
-
-    const onKeyDown = (e: KeyboardEvent) => shortcutManager(e, {
-      dateObject,
-      inInput,
-      setInInput,
-      selectedIndex,
-      habits,
-      selectedHabits: selectedData.habits,
-      view,
-      displayingYesterday,
-      setView,
-      setDisplayingYesterday,
-      setSelectedIndex,
-      setFocusId,
-      inTransition,
-      dayObject,
-      occurrenceData,
-      apiFunctions,
-    });
-
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown); // eslint-disable-line consistent-return, max-len
-  }, [
+  useShortcutManager({
     apiFunctions,
     dateObject,
     dayObject,
@@ -128,11 +100,15 @@ function App() {
     inInput,
     inTransition,
     occurrenceData,
-    selectedData.habits,
+    selectedHabits: selectedData.habits,
     selectedIndex,
-    streaks,
     view,
-  ]);
+    setInInput,
+    setView,
+    setDisplayingYesterday,
+    setSelectedIndex,
+    setFocusId,
+  });
 
   if (!habits || !occurrenceData || !streaks) return null;
 
