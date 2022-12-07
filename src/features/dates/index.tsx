@@ -7,7 +7,7 @@ type Props = {
   todaysIndex: number;
 };
 
-function Dates({ selectedOccurrences, todaysIndex }: Props) {
+export default function Dates({ selectedOccurrences, todaysIndex }: Props) {
   return (
     <div className="dates-container">
       {selectedOccurrences.slice(selectedOccurrences.length - 7).map(({ date, done }, index) => {
@@ -27,5 +27,3 @@ function Dates({ selectedOccurrences, todaysIndex }: Props) {
     </div>
   );
 }
-
-export default Dates;

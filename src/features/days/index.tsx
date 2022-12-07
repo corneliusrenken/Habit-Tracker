@@ -7,7 +7,7 @@ type Props = {
   selectedOccurrences: SelectedOccurrence[];
 };
 
-function Days({ weekDays, selectedOccurrences }: Props) {
+export default function Days({ weekDays, selectedOccurrences }: Props) {
   return (
     <div className="days-container">
       {weekDays.map(((day, index) => {
@@ -27,5 +27,3 @@ function Days({ weekDays, selectedOccurrences }: Props) {
     </div>
   );
 }
-
-export default Days;

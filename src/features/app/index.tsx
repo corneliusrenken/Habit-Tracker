@@ -14,7 +14,7 @@ import useMemoizedComponents from './useMemoizedComponents';
 import useSelectedData from './useSelectedData';
 import useShortcutManager from './useShortcutManager';
 
-function App() {
+export default function App() {
   const userId = 1;
   const [dateObject] = useState(getDateObject(6));
   const [displayingYesterday, setDisplayingYesterday] = useState(false);
@@ -124,5 +124,3 @@ function App() {
     />
   );
 }
-
-export default App;

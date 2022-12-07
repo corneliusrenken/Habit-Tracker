@@ -138,7 +138,7 @@ type Props = {
   setInTransition: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-function TransitionManager({
+export default function TransitionManager({
   view, bodyHeight, occurrences, dates, days, list, setInTransition,
 }: Props) {
   const [currentView, setCurrentView] = useState<View | undefined>(undefined);
@@ -183,5 +183,3 @@ function TransitionManager({
     </div>
   );
 }
-
-export default TransitionManager;

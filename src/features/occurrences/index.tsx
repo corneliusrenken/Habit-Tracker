@@ -17,7 +17,7 @@ type Props = {
   displayed: boolean;
 };
 
-function Occurrences({ selectedOccurrences, displayed }: Props) {
+export default function Occurrences({ selectedOccurrences, displayed }: Props) {
   return (
     <div
       className="occurrence-container"
@@ -49,5 +49,3 @@ function Occurrences({ selectedOccurrences, displayed }: Props) {
     </div>
   );
 }
-
-export default Occurrences;
