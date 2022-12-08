@@ -20,6 +20,7 @@ type States = {
   setDisplayingYesterday: React.Dispatch<React.SetStateAction<boolean>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setFocusId: React.Dispatch<React.SetStateAction<number | undefined>>;
+  reorderingList: boolean;
   removeHabit: (habitId: number) => void;
   updateHabitCompleted: (habitId: number, completed: boolean) => void;
   updateHabitVisibility: (habitId: number, visible: boolean) => void;
@@ -42,6 +43,7 @@ export default function useShortcutManager(states: States) {
     setDisplayingYesterday,
     setSelectedIndex,
     setFocusId,
+    reorderingList,
     removeHabit,
     updateHabitCompleted,
     updateHabitVisibility,
@@ -66,6 +68,7 @@ export default function useShortcutManager(states: States) {
       setDisplayingYesterday,
       setSelectedIndex,
       setFocusId,
+      reorderingList,
       removeHabit,
       updateHabitCompleted,
       updateHabitVisibility,
@@ -89,6 +92,7 @@ export default function useShortcutManager(states: States) {
     setDisplayingYesterday,
     setSelectedIndex,
     setFocusId,
+    reorderingList,
     removeHabit,
     updateHabitCompleted,
     updateHabitVisibility,

@@ -34,6 +34,7 @@ type States = {
   inTransition: boolean;
   dayObject: DayObject;
   occurrenceData: OccurrenceData;
+  reorderingList: boolean;
   removeHabit: (habitId: number) => void;
   updateHabitCompleted: (habitId: number, completed: boolean) => void;
   updateHabitVisibility: (habitId: number, visible: boolean) => void;
@@ -56,6 +57,7 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
     inTransition,
     dayObject,
     occurrenceData,
+    reorderingList,
     removeHabit,
     updateHabitCompleted,
     updateHabitVisibility,
@@ -202,27 +204,29 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
     },
   };
 
-  if (key === 'ArrowDown' && view !== 'history') shortcuts.incrementSelectedIndex();
-  if (key === 'ArrowUp' && view !== 'history') shortcuts.decrementSelectedIndex();
-
-  if (!inInput) {
-    if (noModifierKeysPressed(e)) {
-      if (key === 't' && !inTransition && (displayingYesterday !== false || view !== 'habit')) shortcuts.today();
-      if (key === 'y' && !inTransition && (displayingYesterday !== true || view !== 'habit')) shortcuts.yesterday();
-      if (key === 's' && !inTransition && view !== 'selection') shortcuts.selection();
-      if (key === 'h' && !inTransition && view !== 'history') shortcuts.history();
-      if (key === 'f' && !inTransition && view !== 'history') shortcuts.focus();
-      if (key === 'Enter' && view === 'habit') shortcuts.updateHabitCompleted();
-      if (key === 'c' && view === 'selection') shortcuts.createHabit();
-      if (key === 'v' && view === 'selection') shortcuts.updateHabitVisibility();
-      if (key === 'Backspace' && view === 'selection') shortcuts.removeHabit();
-      if (key === 'r' && view === 'selection' && selectedIndex !== habits.length) shortcuts.renameHabit();
-    }
-  } else {
-    // can refactor this later once all keyboard shortcuts are there
-    if (noModifierKeysPressed(e)) { // eslint-disable-line no-lonely-if
-      if (key === 'Escape' && view === 'selection' && selectedIndex === habits.length) shortcuts.escapeCreateInput();
-      if (key === 'Escape' && view === 'selection' && selectedIndex !== habits.length) shortcuts.escapeRenameHabit();
+  // this could return out at the very top, keeping it nested for readability rn
+  if (!reorderingList) {
+    if (key === 'ArrowDown' && view !== 'history') shortcuts.incrementSelectedIndex();
+    if (key === 'ArrowUp' && view !== 'history') shortcuts.decrementSelectedIndex();
+    if (!inInput) {
+      if (noModifierKeysPressed(e)) {
+        if (key === 't' && !inTransition && (displayingYesterday !== false || view !== 'habit')) shortcuts.today();
+        if (key === 'y' && !inTransition && (displayingYesterday !== true || view !== 'habit')) shortcuts.yesterday();
+        if (key === 's' && !inTransition && view !== 'selection') shortcuts.selection();
+        if (key === 'h' && !inTransition && view !== 'history') shortcuts.history();
+        if (key === 'f' && !inTransition && view !== 'history') shortcuts.focus();
+        if (key === 'Enter' && view === 'habit') shortcuts.updateHabitCompleted();
+        if (key === 'c' && view === 'selection') shortcuts.createHabit();
+        if (key === 'v' && view === 'selection') shortcuts.updateHabitVisibility();
+        if (key === 'Backspace' && view === 'selection') shortcuts.removeHabit();
+        if (key === 'r' && view === 'selection' && selectedIndex !== habits.length) shortcuts.renameHabit();
+      }
+    } else {
+      // can refactor this later once all keyboard shortcuts are there
+      if (noModifierKeysPressed(e)) { // eslint-disable-line no-lonely-if
+        if (key === 'Escape' && view === 'selection' && selectedIndex === habits.length) shortcuts.escapeCreateInput();
+        if (key === 'Escape' && view === 'selection' && selectedIndex !== habits.length) shortcuts.escapeRenameHabit();
+      }
     }
   }
 }

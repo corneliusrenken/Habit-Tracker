@@ -22,6 +22,7 @@ export default function App() {
   const [focusId, setFocusId] = useState<number | undefined>(undefined);
   const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
   const [inInput, setInInput] = useState(false);
+  const [reorderingList, setReorderingList] = useState(false);
   const [inTransition, setInTransition] = useState(false);
   const [habits, setHabits] = useState<Habit[]>();
   const [occurrenceData, setOccurrenceData] = useState<OccurrenceData>();
@@ -94,6 +95,7 @@ export default function App() {
     inInput,
     setInInput,
     setSelectedIndex,
+    setReorderingList,
     view,
     addHabit,
     removeHabit,
@@ -119,6 +121,7 @@ export default function App() {
     setDisplayingYesterday,
     setSelectedIndex,
     setFocusId,
+    reorderingList,
     removeHabit,
     updateHabitCompleted,
     updateHabitVisibility,

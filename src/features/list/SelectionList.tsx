@@ -19,6 +19,7 @@ type Props = {
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
+  setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
   addHabit: (name: string) => void;
   removeHabit: (habitId: number) => void;
   renameHabit: (habitId: number, name: string) => void;
@@ -33,6 +34,7 @@ export default function SelectionList({
   setSelectedIndex,
   inInput,
   setInInput,
+  setReorderingList,
   addHabit,
   removeHabit,
   renameHabit,
@@ -47,7 +49,10 @@ export default function SelectionList({
       return () => (
         <SelectionListItem
           name={name}
-          move={onMouseDown}
+          move={(e) => {
+            onMouseDown(e);
+            setReorderingList(true);
+          }}
           visible={visible}
           selected={selectedIndex === index}
           toggleVisibility={() => updateHabitVisibility(id, !visible)}
@@ -71,6 +76,7 @@ export default function SelectionList({
         width={350}
         onIndexChange={(newIndicesById, changedId) => {
           updateHabitOrder(changedId, newIndicesById[changedId]);
+          setReorderingList(false);
         }}
       />
       <AddHabitForm

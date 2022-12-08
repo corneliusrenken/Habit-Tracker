@@ -25,6 +25,7 @@ type States = {
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
+  setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
   addHabit: (name: string) => void;
   removeHabit: (habitId: number) => void;
   renameHabit: (habitId: number, name: string) => void;
@@ -46,6 +47,7 @@ export default function useMemoizedComponents(states: States) {
     setSelectedIndex,
     inInput,
     setInInput,
+    setReorderingList,
     addHabit,
     removeHabit,
     renameHabit,
@@ -87,6 +89,7 @@ export default function useMemoizedComponents(states: States) {
           setSelectedIndex={setSelectedIndex}
           inInput={inInput}
           setInInput={setInInput}
+          setReorderingList={setReorderingList}
           addHabit={addHabit}
           removeHabit={removeHabit}
           renameHabit={renameHabit}
@@ -105,6 +108,7 @@ export default function useMemoizedComponents(states: States) {
     selectedIndex,
     inInput,
     setInInput,
+    setReorderingList,
     setSelectedIndex,
     addHabit,
     removeHabit,
