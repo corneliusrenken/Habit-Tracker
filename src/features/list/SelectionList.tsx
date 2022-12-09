@@ -78,6 +78,7 @@ export default function SelectionList({
           updateHabitOrder(changedId, newIndicesById[changedId]);
           setReorderingList(false);
         }}
+        clampMovement
       />
       <AddHabitForm
         habits={habits}

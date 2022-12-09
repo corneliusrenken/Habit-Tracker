@@ -38,6 +38,7 @@ type Props = {
   transition?: string;
   activeClass?: string;
   inactiveClass?: string;
+  clampMovement?: boolean;
 };
 
 export default function ReorderableList({
@@ -48,6 +49,7 @@ export default function ReorderableList({
   transition,
   activeClass,
   inactiveClass,
+  clampMovement,
 }: Props) {
   const [startingMouseOffsetY, setStartingMouseOffsetY] = useState(0);
   const [mouseOffsetY, setMouseOffsetY] = useState(0);
@@ -153,9 +155,20 @@ export default function ReorderableList({
         const scrollOffset = window.scrollY - startingScrollOffset;
 
         if (reordering) {
-          top = reorderId === id
-            ? `${elementRestingPosition + mouseOffsetY + scrollOffset}px`
-            : `${elementCurrentIndices[id] * 50}px`;
+          if (clampMovement) {
+            const minPos = listTop;
+            const maxPos = listTop + 50 * (elementConstructors.length - 1);
+            top = reorderId === id
+              ? `${Math.min(
+                maxPos,
+                Math.max(elementRestingPosition + mouseOffsetY + scrollOffset, minPos),
+              )}px`
+              : `${elementCurrentIndices[id] * 50}px`;
+          } else {
+            top = reorderId === id
+              ? `${elementRestingPosition + mouseOffsetY + scrollOffset}px`
+              : `${elementCurrentIndices[id] * 50}px`;
+          }
         }
 
         let className = '';
@@ -190,4 +203,5 @@ ReorderableList.defaultProps = {
   transition: '',
   activeClass: '',
   inactiveClass: '',
+  clampMovement: false,
 };
