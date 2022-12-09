@@ -7,7 +7,7 @@ type Props = {
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
-  addHabit: (name: string) => void;
+  addHabit: (name: string) => Promise<void>;
 };
 
 export default function AddHabitForm({
@@ -27,12 +27,12 @@ export default function AddHabitForm({
   return (
     <form
       style={{ top: `${habits.length * 50}px` }}
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
         const trimmedHabitInput = habitInput.trim();
         const validation = isValidHabitName(trimmedHabitInput, { habits });
         if (validation === true) {
-          addHabit(trimmedHabitInput);
+          await addHabit(trimmedHabitInput);
           setHabitInput('');
         } else {
           console.error(validation); // eslint-disable-line no-console

@@ -20,7 +20,7 @@ type Props = {
   inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
-  addHabit: (name: string) => void;
+  addHabit: (name: string) => Promise<void>;
   removeHabit: (habitId: number) => void;
   renameHabit: (habitId: number, name: string) => void;
   updateHabitOrder: (habitId: number, newOrder: number) => void;
