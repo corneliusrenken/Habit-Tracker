@@ -1,5 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+export type ElementConstructor = {
+  id: number;
+  elementConstructor: (onMouseDown: React.MouseEventHandler<HTMLButtonElement>) => JSX.Element;
+};
+
 function calculateNewIndices(
   oldIndex: number,
   newIndex: number,
@@ -27,11 +32,7 @@ function calculateNewIndices(
 type ElementIndices = { [id: string]: number };
 
 type Props = {
-  elementConstructors: {
-    id: number;
-    // eslint-disable-next-line max-len
-    elementConstructor: (onMouseDown: React.MouseEventHandler<HTMLButtonElement>) => () => JSX.Element;
-  }[];
+  elementConstructors: ElementConstructor[];
   height: number;
   width: number;
   onIndexChange: (newIndicesById: ElementIndices, changedId: number) => any;
@@ -191,7 +192,7 @@ export default function ReorderableList({
             }}
             className={className || undefined}
           >
-            {elementConstructor((e) => { onMouseDown(e, id); })()}
+            {elementConstructor((e) => { onMouseDown(e, id); })}
           </div>
         );
       })}

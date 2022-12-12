@@ -2,13 +2,7 @@ import React from 'react';
 import { Habit } from '../../globalTypes';
 import AddHabitForm from './AddHabitForm';
 import ReorderableList from './ReorderableList';
-import SelectionListItem from './SelectionListItem';
-
-type ElementConstructor = {
-  id: number;
-  // eslint-disable-next-line max-len
-  elementConstructor: (onMouseDown: React.MouseEventHandler<HTMLButtonElement>) => () => JSX.Element;
-};
+import useMemoizedSelectionListItemConstructors from './useMemoizedSelectionListItemConstructors';
 
 type Props = {
   habits: Habit[];
@@ -43,33 +37,19 @@ export default function SelectionList({
   updateHabitOrder,
   updateHabitVisibility,
 }: Props) {
-  const elementConstructors: ElementConstructor[] = habits.map(({ id, name }, index) => ({
-    id,
-    elementConstructor: (onMouseDown: React.MouseEventHandler<HTMLButtonElement>) => {
-      const visible = todaysOccurrences[id] !== undefined;
-
-      return () => (
-        <SelectionListItem
-          name={name}
-          move={(e) => {
-            onMouseDown(e);
-            setReorderingList(true);
-          }}
-          visible={visible}
-          selected={selectedIndex === index}
-          select={reorderingList || inInput ? undefined : () => setSelectedIndex(index)}
-          toggleVisibility={() => updateHabitVisibility(id, !visible)}
-          removeHabit={() => removeHabit(id)}
-          renameHabit={(newName: string) => {
-            renameHabit(id, newName);
-          }}
-          inInput={inInput}
-          setInInput={setInInput}
-          habits={habits}
-        />
-      );
-    },
-  }));
+  const elementConstructors = useMemoizedSelectionListItemConstructors({
+    habits,
+    todaysOccurrences,
+    selectedIndex,
+    setSelectedIndex,
+    inInput,
+    setInInput,
+    reorderingList,
+    setReorderingList,
+    removeHabit,
+    renameHabit,
+    updateHabitVisibility,
+  });
 
   return (
     <>
