@@ -17,6 +17,7 @@ const iconPaths = {
 
 type Props = {
   icon: keyof typeof iconPaths;
+  allowTabTraversal: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   onMouseDown?: React.MouseEventHandler<HTMLButtonElement>;
   classes?: string[];
@@ -24,12 +25,13 @@ type Props = {
 };
 
 export default function Icon({
-  icon, onClick, onMouseDown, classes, hidden,
+  icon, allowTabTraversal, onClick, onMouseDown, classes, hidden,
 }: Props) {
   if (hidden) return <div className="hidden-icon" />;
 
   return (
     <button
+      tabIndex={allowTabTraversal ? undefined : -1}
       type="button"
       className={`icon${classes ? ` ${classes.join(' ')}` : ''}`}
       onClick={onClick ? (e) => onClick(e) : undefined}

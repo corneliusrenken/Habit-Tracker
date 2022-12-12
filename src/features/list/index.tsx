@@ -5,6 +5,7 @@ import SelectionList from './SelectionList';
 import './list.css';
 
 type Props = {
+  allowTabTraversal: boolean;
   selectedHabits: Habit[];
   streaks: Streaks;
   todaysOccurrences: {
@@ -26,6 +27,7 @@ type Props = {
 };
 
 export default function List({
+  allowTabTraversal,
   selectedHabits,
   streaks,
   todaysOccurrences,
@@ -56,6 +58,7 @@ export default function List({
         />
       ) : (
         <SelectionList
+          allowTabTraversal={allowTabTraversal}
           habits={selectedHabits}
           todaysOccurrences={todaysOccurrences}
           selectedIndex={selectedIndex}

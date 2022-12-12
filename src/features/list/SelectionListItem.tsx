@@ -4,6 +4,7 @@ import Icon from '../icon';
 import isValidHabitName from './isValidHabitName';
 
 type Props = {
+  allowTabTraversal: boolean;
   name: string;
   visible: boolean;
   move: React.MouseEventHandler<HTMLButtonElement>;
@@ -18,6 +19,7 @@ type Props = {
 };
 
 export default function SelectionListItem({
+  allowTabTraversal,
   name,
   visible,
   move,
@@ -84,6 +86,7 @@ export default function SelectionListItem({
       <div className="horizontal-icon-list">
         <Icon
           icon="rename"
+          allowTabTraversal={allowTabTraversal}
           classes={beingRenamed ? ['greyed-out'] : undefined}
           hidden={!selected}
           onMouseDown={(e) => {
@@ -97,16 +100,19 @@ export default function SelectionListItem({
         />
         <Icon
           icon="trash"
+          allowTabTraversal={allowTabTraversal}
           onClick={removeHabit}
           hidden={!selected}
         />
         <Icon
           icon="move"
+          allowTabTraversal={allowTabTraversal}
           onMouseDown={move}
           hidden={!selected}
         />
         <Icon
           icon={visible ? 'visible' : 'hidden'}
+          allowTabTraversal={allowTabTraversal}
           classes={!visible ? ['greyed-out'] : undefined}
           onClick={toggleVisibility}
         />

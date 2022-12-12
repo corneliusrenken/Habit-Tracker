@@ -13,6 +13,7 @@ import useApiFunctions from '../apiFunctions/useApiFunctions';
 import useMemoizedComponents from './useMemoizedComponents';
 import useSelectedData from './useSelectedData';
 import useShortcutManager from './useShortcutManager';
+import Modal from '../modal';
 
 export default function App() {
   const userId = 1;
@@ -24,6 +25,7 @@ export default function App() {
   const [inInput, setInInput] = useState(false);
   const [reorderingList, setReorderingList] = useState(false);
   const [inTransition, setInTransition] = useState(false);
+  const [modalContent, setModalContent] = useState<JSX.Element | undefined>(undefined);
   const [habits, setHabits] = useState<Habit[]>();
   const [occurrenceData, setOccurrenceData] = useState<OccurrenceData>();
   const [streaks, setStreaks] = useState<Streaks>();
@@ -82,6 +84,7 @@ export default function App() {
     setStreaks,
     selectedIndex,
     setSelectedIndex,
+    setModalContent,
   });
 
   const components = useMemoizedComponents({
@@ -98,6 +101,7 @@ export default function App() {
     reorderingList,
     setReorderingList,
     view,
+    modalContent,
     addHabit,
     removeHabit,
     renameHabit,
@@ -131,14 +135,21 @@ export default function App() {
   if (!habits || !occurrenceData || !streaks) return null;
 
   return (
-    <TransitionManager
-      setInTransition={setInTransition}
-      view={view}
-      bodyHeight={getBodyHeight(view, habits, selectedData.occurrences)}
-      occurrences={components.occurrences}
-      days={components.days}
-      dates={components.dates}
-      list={components.list}
-    />
+    <>
+      {modalContent && (
+        <Modal
+          content={modalContent}
+        />
+      )}
+      <TransitionManager
+        setInTransition={setInTransition}
+        view={view}
+        bodyHeight={getBodyHeight(view, habits, selectedData.occurrences)}
+        occurrences={components.occurrences}
+        days={components.days}
+        dates={components.dates}
+        list={components.list}
+      />
+    </>
   );
 }

@@ -4,6 +4,7 @@ import { ElementConstructor } from './ReorderableList';
 import SelectionListItem from './SelectionListItem';
 
 type States = {
+  allowTabTraversal: boolean;
   habits: Habit[];
   todaysOccurrences: {
     [habitId: string]: boolean;
@@ -22,6 +23,7 @@ type States = {
 export default function useMemoizedSelectionListItemConstructors(states: States) {
   return useMemo<ElementConstructor[]>(() => {
     const {
+      allowTabTraversal,
       habits,
       todaysOccurrences,
       selectedIndex,
@@ -42,6 +44,7 @@ export default function useMemoizedSelectionListItemConstructors(states: States)
 
         return (
           <SelectionListItem
+            allowTabTraversal={allowTabTraversal}
             name={name}
             move={(e) => {
               onMouseDown(e);

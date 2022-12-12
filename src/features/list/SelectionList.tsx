@@ -5,6 +5,7 @@ import ReorderableList from './ReorderableList';
 import useMemoizedSelectionListItemConstructors from './useMemoizedSelectionListItemConstructors';
 
 type Props = {
+  allowTabTraversal: boolean;
   habits: Habit[];
   todaysOccurrences: {
     [habitId: string]: boolean;
@@ -23,6 +24,7 @@ type Props = {
 };
 
 export default function SelectionList({
+  allowTabTraversal,
   habits,
   todaysOccurrences,
   selectedIndex,
@@ -38,6 +40,7 @@ export default function SelectionList({
   updateHabitVisibility,
 }: Props) {
   const elementConstructors = useMemoizedSelectionListItemConstructors({
+    allowTabTraversal,
     habits,
     todaysOccurrences,
     selectedIndex,
@@ -65,6 +68,7 @@ export default function SelectionList({
         activeClass="list-item-being-reordered"
       />
       <AddHabitForm
+        allowTabTraversal={allowTabTraversal}
         habits={habits}
         selectedIndex={selectedIndex}
         setSelectedIndex={setSelectedIndex}

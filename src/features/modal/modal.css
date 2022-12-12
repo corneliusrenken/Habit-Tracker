@@ -31,7 +31,9 @@
   padding: 16px;
   border-radius: 8px;
   background-color: white;
-  animation: scale-up-container 300ms forwards 200ms;
+  animation: scale-up-container 300ms forwards 50ms;
+
+  box-shadow: 0px 100px 191px rgba(0, 0, 0, 0.09), 0px 37.7577px 57.5809px rgba(0, 0, 0, 0.0454868), 0px 20.3472px 23.9162px rgba(0, 0, 0, 0.0327005), 0px 9.56937px 8.65001px rgba(0, 0, 0, 0.0249797);
 }
 
 @keyframes scale-up-container {
