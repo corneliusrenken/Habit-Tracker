@@ -33,6 +33,10 @@
   background-color: var(--grey);
 }
 
+.list-item-being-reordered {
+  z-index: 99;
+}
+
 .name {
   margin-left: var(--left-margin);
   max-width: calc(350px - var(--left-margin) - var(--right-margin));

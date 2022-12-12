@@ -15,6 +15,7 @@ type Props = {
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
+  reorderingList: boolean;
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
   addHabit: (name: string) => Promise<void>;
   removeHabit: (habitId: number) => void;
@@ -33,6 +34,7 @@ export default function List({
   setSelectedIndex,
   inInput,
   setInInput,
+  reorderingList,
   setReorderingList,
   addHabit,
   removeHabit,
@@ -49,6 +51,7 @@ export default function List({
           streaks={streaks}
           todaysOccurrences={todaysOccurrences}
           selectedIndex={selectedIndex}
+          setSelectedIndex={setSelectedIndex}
           updateHabitCompleted={updateHabitCompleted}
         />
       ) : (
@@ -59,6 +62,7 @@ export default function List({
           setSelectedIndex={setSelectedIndex}
           inInput={inInput}
           setInInput={setInInput}
+          reorderingList={reorderingList}
           setReorderingList={setReorderingList}
           addHabit={addHabit}
           removeHabit={removeHabit}

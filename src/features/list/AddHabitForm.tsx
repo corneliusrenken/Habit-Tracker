@@ -50,6 +50,7 @@ export default function AddHabitForm({
         }}
         onBlur={() => {
           setInInput(false);
+          setHabitInput('');
           if (habits.length === 0) {
             setSelectedIndex(null);
           } else {

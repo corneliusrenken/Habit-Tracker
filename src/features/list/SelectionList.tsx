@@ -19,6 +19,7 @@ type Props = {
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
+  reorderingList: boolean;
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
   addHabit: (name: string) => Promise<void>;
   removeHabit: (habitId: number) => void;
@@ -34,6 +35,7 @@ export default function SelectionList({
   setSelectedIndex,
   inInput,
   setInInput,
+  reorderingList,
   setReorderingList,
   addHabit,
   removeHabit,
@@ -55,6 +57,7 @@ export default function SelectionList({
           }}
           visible={visible}
           selected={selectedIndex === index}
+          select={reorderingList || inInput ? undefined : () => setSelectedIndex(index)}
           toggleVisibility={() => updateHabitVisibility(id, !visible)}
           removeHabit={() => removeHabit(id)}
           renameHabit={(newName: string) => {
@@ -79,6 +82,7 @@ export default function SelectionList({
           setReorderingList(false);
         }}
         clampMovement
+        activeClass="list-item-being-reordered"
       />
       <AddHabitForm
         habits={habits}

@@ -95,6 +95,7 @@ export default function App() {
     inInput,
     setInInput,
     setSelectedIndex,
+    reorderingList,
     setReorderingList,
     view,
     addHabit,

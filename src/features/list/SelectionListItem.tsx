@@ -8,6 +8,7 @@ type Props = {
   visible: boolean;
   move: React.MouseEventHandler<HTMLButtonElement>;
   selected: boolean;
+  select: undefined | (() => void);
   toggleVisibility: () => void;
   removeHabit: () => void;
   renameHabit: (newName: string) => void;
@@ -21,6 +22,7 @@ export default function SelectionListItem({
   visible,
   move,
   selected,
+  select,
   toggleVisibility,
   removeHabit,
   renameHabit,
@@ -37,7 +39,7 @@ export default function SelectionListItem({
   if (selected) containerClassName += ' list-item-selected';
 
   return (
-    <div className={containerClassName}>
+    <div className={containerClassName} onMouseEnter={select}>
       {!beingRenamed ? (
         <div className="name">{name}</div>
       ) : (

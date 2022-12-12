@@ -9,11 +9,12 @@ type Props = {
     [habitId: string]: boolean;
   };
   selectedIndex: number | null;
+  setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   updateHabitCompleted: (habitId: number, completed: boolean) => void;
 };
 
 export default function HabitList({
-  habits, streaks, todaysOccurrences, selectedIndex, updateHabitCompleted,
+  habits, streaks, todaysOccurrences, selectedIndex, setSelectedIndex, updateHabitCompleted,
 }: Props) {
   return (
     <div>
@@ -28,6 +29,7 @@ export default function HabitList({
             streak={streaks[id].current}
             completed={completed}
             selected={selected}
+            select={() => setSelectedIndex(index)}
             toggleCompleted={() => updateHabitCompleted(id, !completed)}
           />
         );
