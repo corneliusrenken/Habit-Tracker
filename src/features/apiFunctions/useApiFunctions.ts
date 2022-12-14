@@ -13,6 +13,7 @@ import {
   DayObject,
   OccurrenceData,
   Streaks,
+  ModalContentGenerator,
 } from '../../globalTypes';
 
 type States = {
@@ -28,7 +29,7 @@ type States = {
   setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  setModalContent: React.Dispatch<React.SetStateAction<JSX.Element | undefined>>;
+  setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
 };
 
 export default function useApiFunctions(states: States) {
@@ -45,7 +46,7 @@ export default function useApiFunctions(states: States) {
     setStreaks,
     selectedIndex,
     setSelectedIndex,
-    setModalContent,
+    setModalContentGenerator,
   } = states;
 
   const addHabitMemo = useCallback((name: string) => (
@@ -74,14 +75,14 @@ export default function useApiFunctions(states: States) {
       setHabits,
       selectedIndex,
       setSelectedIndex,
-      setModalContent,
+      setModalContentGenerator,
     })
   ), [
     habits,
     selectedIndex,
     setHabits,
     setSelectedIndex,
-    setModalContent,
+    setModalContentGenerator,
   ]);
 
   const renameHabitMemo = useCallback((habitId: number, name: string) => (

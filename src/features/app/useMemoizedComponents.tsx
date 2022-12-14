@@ -7,6 +7,7 @@ import {
   Habit,
   ListView,
   OccurrenceData,
+  ModalContentGenerator,
 } from '../../globalTypes';
 import Dates from '../dates';
 import Days from '../days';
@@ -27,7 +28,7 @@ type States = {
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   reorderingList: boolean;
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
-  modalContent: JSX.Element | undefined;
+  modalContentGenerator: ModalContentGenerator | undefined;
   addHabit: (name: string) => Promise<void>;
   removeHabit: (habitId: number) => void;
   renameHabit: (habitId: number, name: string) => void;
@@ -51,7 +52,7 @@ export default function useMemoizedComponents(states: States) {
     setInInput,
     reorderingList,
     setReorderingList,
-    modalContent,
+    modalContentGenerator,
     addHabit,
     removeHabit,
     renameHabit,
@@ -85,7 +86,7 @@ export default function useMemoizedComponents(states: States) {
     occurrenceData !== undefined
       ? (
         <List
-          allowTabTraversal={modalContent === undefined}
+          allowTabTraversal={modalContentGenerator === undefined}
           selectedHabits={selectedHabits}
           streaks={selectedStreaks}
           todaysOccurrences={occurrenceData.dates[dayObject.dateString]}
@@ -106,7 +107,7 @@ export default function useMemoizedComponents(states: States) {
       )
       : <div />
   ), [
-    modalContent,
+    modalContentGenerator,
     selectedStreaks,
     dayObject.dateString,
     listView,

@@ -46,3 +46,5 @@ export type DateObject = {
   today: DayObject,
   yesterday: DayObject,
 };
+
+export type ModalContentGenerator = (allowTabTraversal: boolean) => JSX.Element;

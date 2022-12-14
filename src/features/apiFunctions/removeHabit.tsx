@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import axios from 'axios';
-import { Habit } from '../../globalTypes';
+import { Habit, ModalContentGenerator } from '../../globalTypes';
 import HabitRemovalConfirmation from '../HabitRemovalConfirmation';
 
 type States = {
@@ -8,7 +9,7 @@ type States = {
   setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  setModalContent: React.Dispatch<React.SetStateAction<JSX.Element | undefined>>;
+  setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
 };
 
 export default function removeHabit(
@@ -16,7 +17,7 @@ export default function removeHabit(
   states: States,
 ) {
   const {
-    habits, setHabits, selectedIndex, setSelectedIndex, setModalContent,
+    habits, setHabits, selectedIndex, setSelectedIndex, setModalContentGenerator,
   } = states;
 
   if (selectedIndex === null) return;
@@ -27,23 +28,31 @@ export default function removeHabit(
 
   if (!habitToRemove) throw new Error('no habit at given id');
 
-  setModalContent((
-    <HabitRemovalConfirmation
-      habitName={habitToRemove.name}
-      onCancel={() => setModalContent(undefined)}
-      onConfirm={() => {
-        axios({
-          method: 'delete',
-          url: `/api/habits/${habitId}`,
-        });
+  // eslint-disable-next-line arrow-body-style
+  const modalContentGenerator = (allowTabTraversal: boolean) => {
+    return (
+      <HabitRemovalConfirmation
+        habitName={habitToRemove.name}
+        allowTabTraversal={allowTabTraversal}
+        setModalContentGenerator={setModalContentGenerator}
+        onConfirm={() => {
+          axios({
+            method: 'delete',
+            url: `/api/habits/${habitId}`,
+          });
 
-        const newHabits: Habit[] = habits.filter(({ id }) => id !== habitId);
+          const newHabits: Habit[] = habits.filter(({ id }) => id !== habitId);
 
-        setModalContent(undefined);
-        setHabits(newHabits);
-        // will always be able to set selected index to non null value in seleciton view
-        setSelectedIndex(Math.max(selectedIndex - 1, 0));
-      }}
-    />
-  ));
+          setModalContentGenerator(undefined);
+          setHabits(newHabits);
+          // will always be able to set selected index to non null value in seleciton view
+          setSelectedIndex(Math.max(selectedIndex - 1, 0));
+        }}
+      />
+    );
+  };
+
+  // https://medium.com/swlh/how-to-store-a-function-with-the-usestate-hook-in-react-8a88dd4eede1
+  // (passing a function into a state setter auto-populates passes the inital state as first arg)
+  setModalContentGenerator(() => modalContentGenerator);
 }

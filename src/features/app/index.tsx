@@ -4,7 +4,12 @@ import React, {
 import getDateObject from '../common/getDateObject';
 import getTextWidthInPx from './getTextWidthInPx';
 import {
-  Habit, ListView, OccurrenceData, Streaks, View,
+  Habit,
+  ListView,
+  ModalContentGenerator,
+  OccurrenceData,
+  Streaks,
+  View,
 } from '../../globalTypes';
 import TransitionManager from '../transitionManager';
 import getBodyHeight from './getBodyHeight';
@@ -25,7 +30,8 @@ export default function App() {
   const [inInput, setInInput] = useState(false);
   const [reorderingList, setReorderingList] = useState(false);
   const [inTransition, setInTransition] = useState(false);
-  const [modalContent, setModalContent] = useState<JSX.Element | undefined>(undefined);
+  // eslint-disable-next-line max-len
+  const [modalContentGenerator, setModalContentGenerator] = useState<ModalContentGenerator | undefined>(undefined);
   const [habits, setHabits] = useState<Habit[]>();
   const [occurrenceData, setOccurrenceData] = useState<OccurrenceData>();
   const [streaks, setStreaks] = useState<Streaks>();
@@ -84,7 +90,7 @@ export default function App() {
     setStreaks,
     selectedIndex,
     setSelectedIndex,
-    setModalContent,
+    setModalContentGenerator,
   });
 
   const components = useMemoizedComponents({
@@ -101,7 +107,7 @@ export default function App() {
     reorderingList,
     setReorderingList,
     view,
-    modalContent,
+    modalContentGenerator,
     addHabit,
     removeHabit,
     renameHabit,
@@ -136,11 +142,10 @@ export default function App() {
 
   return (
     <>
-      {modalContent && (
-        <Modal
-          content={modalContent}
-        />
-      )}
+      <Modal
+        modalContentGenerator={modalContentGenerator}
+        setModalContentGenerator={setModalContentGenerator}
+      />
       <TransitionManager
         setInTransition={setInTransition}
         view={view}

@@ -1,22 +1,20 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import { ModalContentGenerator } from '../../globalTypes';
 import './habitRemovalConfirmation.css';
 
 type Props = {
   habitName: string;
-  onCancel: () => void;
+  allowTabTraversal: boolean;
   onConfirm: () => void;
+  setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
 };
 
 export default function HabitRemovalConfirmation({
   habitName,
-  onCancel,
+  allowTabTraversal,
   onConfirm,
+  setModalContentGenerator,
 }: Props) {
-  useEffect(() => {
-    // https://github.com/Microsoft/TypeScript/issues/5901#issuecomment-431649653
-    if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
-  }, []);
-
   return (
     <div className="habit-removal-confirmation-container">
       <div>
@@ -30,8 +28,20 @@ export default function HabitRemovalConfirmation({
         Doing so will irretrievably remove all related data.
       </div>
       <div className="habit-removal-confirmation-button-container">
-        <button type="button" onClick={onCancel}>Cancel</button>
-        <button type="button" onClick={onConfirm}>Delete habit</button>
+        <button
+          tabIndex={allowTabTraversal ? undefined : -1}
+          type="button"
+          onClick={() => setModalContentGenerator(undefined)}
+        >
+          Cancel
+        </button>
+        <button
+          tabIndex={allowTabTraversal ? undefined : -1}
+          type="button"
+          onClick={onConfirm}
+        >
+          Delete habit
+        </button>
       </div>
     </div>
   );
