@@ -26,11 +26,8 @@ type States = {
   habits: Habit[];
   selectedHabits: Habit[];
   view: View;
-  displayingYesterday: boolean;
-  setView: React.Dispatch<React.SetStateAction<View>>;
-  setDisplayingYesterday: React.Dispatch<React.SetStateAction<boolean>>;
+  setView: (newView: View) => void;
   setSelectedIndex: (newIndex: number | null) => void;
-  setFocusId: React.Dispatch<React.SetStateAction<number | undefined>>;
   inTransition: boolean;
   dayObject: DayObject;
   occurrenceData: OccurrenceData;
@@ -49,11 +46,8 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
     habits,
     selectedHabits,
     view,
-    displayingYesterday,
     setView,
-    setDisplayingYesterday,
     setSelectedIndex,
-    setFocusId,
     inTransition,
     dayObject,
     occurrenceData,
@@ -67,65 +61,55 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
   const shortcuts = {
     today: () => {
       e.preventDefault();
-      setView('habit');
-      setDisplayingYesterday(false);
+      setView({ name: 'today' });
       const newSelectedHabits = getSelectedHabits({
-        dayObject: dateObject.today,
+        dateObject,
         habits,
         occurrenceData,
-        listView: 'habit',
+        latchedListView: { name: 'today' },
       });
       if (newSelectedHabits.length === 0) {
         setSelectedIndex(null);
       } else {
         setSelectedIndex(0);
       }
-      setFocusId(undefined);
     },
     yesterday: () => {
       e.preventDefault();
-      setView('habit');
-      setDisplayingYesterday(true);
+      setView({ name: 'yesterday' });
       const newSelectedHabits = getSelectedHabits({
-        dayObject: dateObject.yesterday,
+        dateObject,
         habits,
         occurrenceData,
-        listView: 'habit',
+        latchedListView: { name: 'yesterday' },
       });
       if (newSelectedHabits.length === 0) {
         setSelectedIndex(null);
       } else {
         setSelectedIndex(0);
       }
-      setFocusId(undefined);
     },
     selection: () => {
       e.preventDefault();
-      setView('selection');
-      setDisplayingYesterday(false);
+      setView({ name: 'selection' });
       setSelectedIndex(0);
-      setFocusId(undefined);
     },
     history: () => {
       e.preventDefault();
-      setView('history');
-      setDisplayingYesterday(false);
-      setFocusId(undefined);
+      setView({ name: 'history' });
     },
     focus: () => {
       e.preventDefault();
       if (selectedHabits.length === 0) return;
       const selectedHabit = selectedHabits.find((habit, index) => index === selectedIndex);
       if (!selectedHabit) throw new Error('no habit found at selected index');
-      setView('history');
-      setDisplayingYesterday(false);
-      setFocusId(selectedHabit.id);
+      setView({ name: 'focus', focusId: selectedHabit.id });
     },
     incrementSelectedIndex: () => {
       e.preventDefault();
       setInInput(false);
 
-      if (habits.length === 0 && view === 'selection') {
+      if (habits.length === 0 && view.name === 'selection') {
         if (selectedIndex === null) {
           setSelectedIndex(0);
           return;
@@ -134,7 +118,7 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
         return;
       }
 
-      const maxIndex = view === 'habit' ? selectedHabits.length - 1 : selectedHabits.length;
+      const maxIndex = view.name === 'today' || view.name === 'yesterday' ? selectedHabits.length - 1 : selectedHabits.length;
       const newIndex = selectedIndex === null ? null
         : Math.min(selectedIndex + 1, maxIndex);
       setSelectedIndex(newIndex);
@@ -143,7 +127,7 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
       e.preventDefault();
       setInInput(false);
 
-      if (habits.length === 0 && view === 'selection') {
+      if (habits.length === 0 && view.name === 'selection') {
         if (selectedIndex === null) {
           setSelectedIndex(0);
           return;
@@ -206,26 +190,26 @@ export default function shortcutManager(e: KeyboardEvent, states: States) {
 
   // this could return out at the very top, keeping it nested for readability rn
   if (!reorderingList) {
-    if (key === 'ArrowDown' && view !== 'history') shortcuts.incrementSelectedIndex();
-    if (key === 'ArrowUp' && view !== 'history') shortcuts.decrementSelectedIndex();
+    if (key === 'ArrowDown' && (view.name === 'today' || view.name === 'yesterday' || view.name === 'selection')) shortcuts.incrementSelectedIndex();
+    if (key === 'ArrowUp' && (view.name === 'today' || view.name === 'yesterday' || view.name === 'selection')) shortcuts.decrementSelectedIndex();
     if (!inInput) {
       if (noModifierKeysPressed(e)) {
-        if (key === 't' && !inTransition && (displayingYesterday !== false || view !== 'habit')) shortcuts.today();
-        if (key === 'y' && !inTransition && (displayingYesterday !== true || view !== 'habit')) shortcuts.yesterday();
-        if (key === 's' && !inTransition && view !== 'selection') shortcuts.selection();
-        if (key === 'h' && !inTransition && view !== 'history') shortcuts.history();
-        if (key === 'f' && !inTransition && view !== 'history') shortcuts.focus();
-        if (key === 'Enter' && view === 'habit') shortcuts.updateHabitCompleted();
-        if (key === 'c' && view === 'selection') shortcuts.createHabit();
-        if (key === 'v' && view === 'selection') shortcuts.updateHabitVisibility();
-        if (key === 'Backspace' && view === 'selection') shortcuts.removeHabit();
-        if (key === 'r' && view === 'selection' && selectedIndex !== habits.length) shortcuts.renameHabit();
+        if (key === 't' && !inTransition && view.name !== 'today') shortcuts.today();
+        if (key === 'y' && !inTransition && view.name !== 'yesterday') shortcuts.yesterday();
+        if (key === 's' && !inTransition && view.name !== 'selection') shortcuts.selection();
+        if (key === 'h' && !inTransition && view.name !== 'history') shortcuts.history();
+        if (key === 'f' && !inTransition && (view.name === 'today' || view.name === 'yesterday' || view.name === 'selection')) shortcuts.focus();
+        if (key === 'Enter' && (view.name === 'today' || view.name === 'yesterday')) shortcuts.updateHabitCompleted();
+        if (key === 'c' && view.name === 'selection') shortcuts.createHabit();
+        if (key === 'v' && view.name === 'selection') shortcuts.updateHabitVisibility();
+        if (key === 'Backspace' && view.name === 'selection') shortcuts.removeHabit();
+        if (key === 'r' && view.name === 'selection' && selectedIndex !== habits.length) shortcuts.renameHabit();
       }
     } else {
       // can refactor this later once all keyboard shortcuts are there
       if (noModifierKeysPressed(e)) { // eslint-disable-line no-lonely-if
-        if (key === 'Escape' && view === 'selection' && selectedIndex === habits.length) shortcuts.escapeCreateInput();
-        if (key === 'Escape' && view === 'selection' && selectedIndex !== habits.length) shortcuts.escapeRenameHabit();
+        if (key === 'Escape' && view.name === 'selection' && selectedIndex === habits.length) shortcuts.escapeCreateInput();
+        if (key === 'Escape' && view.name === 'selection' && selectedIndex !== habits.length) shortcuts.escapeRenameHabit();
       }
     }
   }

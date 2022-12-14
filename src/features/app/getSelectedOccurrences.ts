@@ -1,25 +1,31 @@
-import { SelectedOccurrence, OccurrenceData, DayObject } from '../../globalTypes';
+import {
+  SelectedOccurrence, OccurrenceData, DateObject, OccurrenceView,
+} from '../../globalTypes';
 import { getDateFromDateString, getMinimumDateString } from '../common/dateStringFunctions';
 import getCustomDateString from '../common/getCustomDateString';
 
 type States = {
   occurrenceData: OccurrenceData | undefined,
-  focusId: number | undefined,
-  dayObject: DayObject,
+  dateObject: DateObject,
+  latchedOccurrenceView: OccurrenceView,
 };
 
 export default function getSelectedOccurrences(states: States) {
-  const { occurrenceData, focusId, dayObject } = states;
+  const {
+    occurrenceData,
+    dateObject,
+    latchedOccurrenceView,
+  } = states;
 
   if (!occurrenceData) return [];
 
   const occurences: SelectedOccurrence[] = [];
 
-  const oldestDateString = focusId === undefined
+  const oldestDateString = latchedOccurrenceView.name === 'history'
     ? getMinimumDateString(Object.values(occurrenceData.oldest))
-    : occurrenceData.oldest[focusId];
+    : occurrenceData.oldest[latchedOccurrenceView.focusId];
 
-  const lastDateOfWeek = getDateFromDateString(dayObject.weekDateStrings[6]);
+  const lastDateOfWeek = getDateFromDateString(dateObject.today.weekDateStrings[6]);
   const oldestDate = oldestDateString === null
     ? null
     : getDateFromDateString(oldestDateString);
@@ -36,9 +42,9 @@ export default function getSelectedOccurrences(states: States) {
     if (occurrenceData.dates[dateString] !== undefined) {
       const occurrenceValues = Object.values(occurrenceData.dates[dateString]);
       if (occurrenceValues.length !== 0) {
-        done = focusId === undefined
+        done = latchedOccurrenceView.name === 'history'
           ? occurrenceValues.every((value) => value === true)
-          : occurrenceData.dates[dateString][focusId] === true;
+          : occurrenceData.dates[dateString][latchedOccurrenceView.focusId] === true;
       }
     }
     const occurence = { date: Number(dateString.slice(-2)), done };

@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
 import {
   DateObject,
-  DayObject,
   Habit,
-  ListView,
   OccurrenceData,
   Streaks,
+  ListView,
+  OccurrenceView,
 } from '../../globalTypes';
 import getSelectedHabits from './getSelectedHabits';
 import getSelectedOccurrences from './getSelectedOccurrences';
@@ -16,10 +16,8 @@ type States = {
   occurrenceData: OccurrenceData | undefined;
   streaks: Streaks | undefined;
   dateObject: DateObject;
-  dayObject: DayObject;
-  displayingYesterday: boolean;
-  listView: ListView;
-  focusId: number | undefined;
+  latchedListView: ListView;
+  latchedOccurrenceView: OccurrenceView;
 };
 
 export default function useSelectedData(states: States) {
@@ -28,31 +26,29 @@ export default function useSelectedData(states: States) {
     occurrenceData,
     streaks,
     dateObject,
-    dayObject,
-    displayingYesterday,
-    listView,
-    focusId,
+    latchedListView,
+    latchedOccurrenceView,
   } = states;
 
   const selectedHabits = useMemo(() => getSelectedHabits({
     habits,
     occurrenceData,
-    dayObject,
-    listView,
-  }), [dayObject, habits, listView, occurrenceData]);
+    dateObject,
+    latchedListView,
+  }), [dateObject, habits, latchedListView, occurrenceData]);
 
   const selectedOccurrences = useMemo(() => getSelectedOccurrences({
     occurrenceData,
-    focusId,
-    dayObject,
-  }), [occurrenceData, dayObject, focusId]);
+    dateObject,
+    latchedOccurrenceView,
+  }), [dateObject, latchedOccurrenceView, occurrenceData]);
 
   const selectedStreaks = useMemo(() => getSelectedStreaks({
     dateObject,
-    displayingYesterday,
+    latchedListView,
     occurrenceData,
     streaks,
-  }), [dateObject, displayingYesterday, occurrenceData, streaks]);
+  }), [dateObject, latchedListView, occurrenceData, streaks]);
 
   return {
     habits: selectedHabits,

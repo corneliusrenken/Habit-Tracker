@@ -4,7 +4,7 @@ import {
 } from '../../globalTypes';
 
 type States = {
-  setView: React.Dispatch<React.SetStateAction<View>>;
+  setView: (newView: View) => void;
   setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
   setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
@@ -32,9 +32,9 @@ export default async function initialize(userId: number, todayDateString: string
     const visibleHabitCount = Object.keys(todaysOccurrences).length;
 
     if (visibleHabitCount === 0) {
-      setView('selection');
+      setView({ name: 'selection' });
     } else {
-      setView('habit');
+      setView({ name: 'today' });
     }
 
     setHabits(data.habits);

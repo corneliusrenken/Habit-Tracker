@@ -7,7 +7,6 @@ import shortcutManager from './shortcutManager';
 type States = {
   dateObject: DateObject;
   dayObject: DayObject;
-  displayingYesterday: boolean;
   habits: Habit[] | undefined;
   inInput: boolean;
   inTransition: boolean;
@@ -16,10 +15,8 @@ type States = {
   selectedIndex: number | null;
   view: View;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
-  setView: React.Dispatch<React.SetStateAction<View>>;
-  setDisplayingYesterday: React.Dispatch<React.SetStateAction<boolean>>;
+  setView: (newView: View) => void;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  setFocusId: React.Dispatch<React.SetStateAction<number | undefined>>;
   reorderingList: boolean;
   removeHabit: (habitId: number) => void;
   updateHabitCompleted: (habitId: number, completed: boolean) => void;
@@ -30,7 +27,6 @@ export default function useShortcutManager(states: States) {
   const {
     dateObject,
     dayObject,
-    displayingYesterday,
     habits,
     inInput,
     inTransition,
@@ -40,9 +36,7 @@ export default function useShortcutManager(states: States) {
     view,
     setInInput,
     setView,
-    setDisplayingYesterday,
     setSelectedIndex,
-    setFocusId,
     reorderingList,
     removeHabit,
     updateHabitCompleted,
@@ -55,7 +49,6 @@ export default function useShortcutManager(states: States) {
     const onKeyDown = (e: KeyboardEvent) => shortcutManager(e, {
       dateObject,
       dayObject,
-      displayingYesterday,
       habits,
       inInput,
       inTransition,
@@ -65,9 +58,7 @@ export default function useShortcutManager(states: States) {
       view,
       setInInput,
       setView,
-      setDisplayingYesterday,
       setSelectedIndex,
-      setFocusId,
       reorderingList,
       removeHabit,
       updateHabitCompleted,
@@ -79,7 +70,6 @@ export default function useShortcutManager(states: States) {
   }, [
     dateObject,
     dayObject,
-    displayingYesterday,
     habits,
     inInput,
     inTransition,
@@ -89,9 +79,7 @@ export default function useShortcutManager(states: States) {
     view,
     setInInput,
     setView,
-    setDisplayingYesterday,
     setSelectedIndex,
-    setFocusId,
     reorderingList,
     removeHabit,
     updateHabitCompleted,

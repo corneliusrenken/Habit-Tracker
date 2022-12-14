@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useMemo, useRef, useState,
+  useEffect, useMemo, useState,
 } from 'react';
 import getDateObject from '../common/getDateObject';
 import getTextWidthInPx from './getTextWidthInPx';
@@ -8,6 +8,7 @@ import {
   ListView,
   ModalContentGenerator,
   OccurrenceData,
+  OccurrenceView,
   Streaks,
   View,
 } from '../../globalTypes';
@@ -23,9 +24,9 @@ import Modal from '../modal';
 export default function App() {
   const userId = 1;
   const [dateObject] = useState(getDateObject(6));
-  const [displayingYesterday, setDisplayingYesterday] = useState(false);
-  const [view, setView] = useState<View>('habit');
-  const [focusId, setFocusId] = useState<number | undefined>(undefined);
+  const [view, _setView] = useState<View>({ name: 'today' });
+  const [latchedListView, setLatchedListView] = useState<ListView>({ name: 'today' });
+  const [latchedOccurrenceView, setLatchedOccurrenceView] = useState<OccurrenceView>({ name: 'history' });
   const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
   const [inInput, setInInput] = useState(false);
   const [reorderingList, setReorderingList] = useState(false);
@@ -36,8 +37,14 @@ export default function App() {
   const [occurrenceData, setOccurrenceData] = useState<OccurrenceData>();
   const [streaks, setStreaks] = useState<Streaks>();
 
-  const listViewRef = useRef<ListView>('habit');
-  if (view === 'habit' || view === 'selection') listViewRef.current = view;
+  const setView = (newView: View) => {
+    if (newView.name === 'today' || newView.name === 'yesterday' || newView.name === 'selection') {
+      setLatchedListView(newView);
+    } else {
+      setLatchedOccurrenceView(newView);
+    }
+    _setView(newView);
+  };
 
   useEffect(() => {
     initialize(userId, dateObject.today.dateString, {
@@ -49,8 +56,8 @@ export default function App() {
   }, [dateObject]);
 
   const dayObject = useMemo(() => (
-    displayingYesterday ? dateObject.yesterday : dateObject.today
-  ), [dateObject, displayingYesterday]);
+    latchedListView.name === 'yesterday' ? dateObject.yesterday : dateObject.today
+  ), [dateObject, latchedListView]);
 
   useEffect(() => {
     const firstDate = Number(dayObject.weekDateStrings[0].slice(-2));
@@ -61,13 +68,11 @@ export default function App() {
 
   const selectedData = useSelectedData({
     dateObject,
-    dayObject,
-    displayingYesterday,
-    focusId,
     habits,
-    listView: listViewRef.current,
     occurrenceData,
     streaks,
+    latchedListView,
+    latchedOccurrenceView,
   });
 
   const {
@@ -81,7 +86,7 @@ export default function App() {
     userId,
     dateObject,
     dayObject,
-    displayingYesterday,
+    latchedListView,
     habits,
     setHabits,
     occurrenceData,
@@ -96,7 +101,7 @@ export default function App() {
   const components = useMemoizedComponents({
     selectedStreaks: selectedData.streaks,
     dayObject,
-    listView: listViewRef.current,
+    latchedListView,
     occurrenceData,
     selectedHabits: selectedData.habits,
     selectedIndex,
@@ -119,7 +124,6 @@ export default function App() {
   useShortcutManager({
     dateObject,
     dayObject,
-    displayingYesterday,
     habits,
     inInput,
     inTransition,
@@ -129,9 +133,7 @@ export default function App() {
     view,
     setInInput,
     setView,
-    setDisplayingYesterday,
     setSelectedIndex,
-    setFocusId,
     reorderingList,
     removeHabit,
     updateHabitCompleted,

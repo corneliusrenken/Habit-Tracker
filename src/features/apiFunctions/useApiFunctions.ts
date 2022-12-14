@@ -14,13 +14,14 @@ import {
   OccurrenceData,
   Streaks,
   ModalContentGenerator,
+  ListView,
 } from '../../globalTypes';
 
 type States = {
   userId: number;
   dateObject: DateObject;
   dayObject: DayObject;
-  displayingYesterday: boolean;
+  latchedListView: ListView;
   habits: Habit[] | undefined;
   setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
   occurrenceData: OccurrenceData | undefined;
@@ -37,7 +38,7 @@ export default function useApiFunctions(states: States) {
     userId,
     dateObject,
     dayObject,
-    displayingYesterday,
+    latchedListView,
     habits,
     setHabits,
     occurrenceData,
@@ -93,7 +94,7 @@ export default function useApiFunctions(states: States) {
   ]);
 
   const updateHabitCompletedMemo = useCallback((habitId: number, completed: boolean) => (
-    updateHabitCompleted(habitId, completed, dayObject.dateString, displayingYesterday, {
+    updateHabitCompleted(habitId, completed, dayObject.dateString, latchedListView.name === 'yesterday', {
       streaks,
       setStreaks,
       occurrenceData,
@@ -101,7 +102,7 @@ export default function useApiFunctions(states: States) {
     })
   ), [
     dayObject.dateString,
-    displayingYesterday,
+    latchedListView,
     occurrenceData,
     setOccurrenceData,
     setStreaks,

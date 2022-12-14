@@ -25,7 +25,8 @@ const getOccurrenceMargin = (occurrenceHeightInPx: number) => `max(
 )`;
 
 const viewTypes = {
-  habit: 'list',
+  today: 'list',
+  yesterday: 'list',
   selection: 'list',
   history: 'occurrence',
   focus: 'occurrence',
@@ -60,8 +61,8 @@ function transition(
     throw new Error('DOM missing vital element');
   }
 
-  const oldViewType = viewTypes[oldView];
-  const newViewType = viewTypes[newView];
+  const oldViewType = viewTypes[oldView.name];
+  const newViewType = viewTypes[newView.name];
   const newMargin = newViewType === 'list'
     ? getListMargin(newBodyHeight)
     : getOccurrenceMargin(newBodyHeight);

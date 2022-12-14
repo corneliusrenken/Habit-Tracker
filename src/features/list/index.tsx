@@ -11,7 +11,7 @@ type Props = {
   todaysOccurrences: {
     [habitId: string]: boolean;
   };
-  listView: ListView;
+  latchedListView: ListView;
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   inInput: boolean;
@@ -31,7 +31,7 @@ export default function List({
   selectedHabits,
   streaks,
   todaysOccurrences,
-  listView,
+  latchedListView,
   selectedIndex,
   setSelectedIndex,
   inInput,
@@ -47,7 +47,7 @@ export default function List({
 }: Props) {
   return (
     <div>
-      {listView === 'habit' ? (
+      {latchedListView.name !== 'selection' ? (
         <HabitList
           habits={selectedHabits}
           streaks={streaks}

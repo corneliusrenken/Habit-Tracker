@@ -16,7 +16,7 @@ import Occurrences from '../occurrences';
 
 type States = {
   view: View;
-  listView: ListView;
+  latchedListView: ListView;
   dayObject: DayObject;
   selectedHabits: Habit[];
   selectedOccurrences: SelectedOccurrence[];
@@ -40,7 +40,7 @@ type States = {
 export default function useMemoizedComponents(states: States) {
   const {
     view,
-    listView,
+    latchedListView,
     dayObject,
     selectedHabits,
     selectedOccurrences,
@@ -63,7 +63,7 @@ export default function useMemoizedComponents(states: States) {
 
   const occurrences = useMemo(() => (
     <Occurrences
-      displayed={view === 'history'}
+      displayed={view.name === 'history' || view.name === 'focus'}
       selectedOccurrences={selectedOccurrences}
     />
   ), [selectedOccurrences, view]);
@@ -90,7 +90,7 @@ export default function useMemoizedComponents(states: States) {
           selectedHabits={selectedHabits}
           streaks={selectedStreaks}
           todaysOccurrences={occurrenceData.dates[dayObject.dateString]}
-          listView={listView}
+          latchedListView={latchedListView}
           selectedIndex={selectedIndex}
           setSelectedIndex={setSelectedIndex}
           inInput={inInput}
@@ -110,7 +110,7 @@ export default function useMemoizedComponents(states: States) {
     modalContentGenerator,
     selectedStreaks,
     dayObject.dateString,
-    listView,
+    latchedListView,
     occurrenceData,
     selectedHabits,
     selectedIndex,

@@ -31,9 +31,18 @@ export type SelectedOccurrence = {
   done: boolean;
 };
 
-export type View = 'habit' | 'selection' | 'history';
+export type View = { name: 'today' }
+| { name: 'yesterday' }
+| { name: 'selection' }
+| { name: 'history' }
+| { name: 'focus'; focusId: number; };
 
-export type ListView = 'habit' | 'selection';
+export type ListView = { name: 'today' }
+| { name: 'yesterday' }
+| { name: 'selection' };
+
+export type OccurrenceView = { name: 'history' }
+| { name: 'focus'; focusId: number; };
 
 export type DayObject = {
   dateString: string,
