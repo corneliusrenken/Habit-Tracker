@@ -23,7 +23,9 @@ import Modal from '../modal';
 
 export default function App() {
   const userId = 1;
-  const [dateObject] = useState(getDateObject(6));
+  // https://medium.com/swlh/how-to-store-a-function-with-the-usestate-hook-in-react-8a88dd4eede1
+  // using a function in useState makes it's initializer only run once instead of on every cycle
+  const [dateObject] = useState(() => getDateObject(6));
   const [view, _setView] = useState<View>({ name: 'today' });
   const [latchedListView, setLatchedListView] = useState<ListView>({ name: 'today' });
   const [latchedOccurrenceView, setLatchedOccurrenceView] = useState<OccurrenceView>({ name: 'history' });
