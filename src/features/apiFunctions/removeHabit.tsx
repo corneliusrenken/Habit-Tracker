@@ -2,7 +2,7 @@
 import React from 'react';
 import axios from 'axios';
 import { Habit, ModalContentGenerator } from '../../globalTypes';
-import HabitRemovalConfirmation from '../HabitRemovalConfirmation';
+import HabitRemovalConfirmationModalContent from '../habitRemovalConfirmationModalContent';
 
 type States = {
   habits: Habit[] | undefined;
@@ -31,7 +31,7 @@ export default function removeHabit(
   // eslint-disable-next-line arrow-body-style
   const modalContentGenerator = (allowTabTraversal: boolean) => {
     return (
-      <HabitRemovalConfirmation
+      <HabitRemovalConfirmationModalContent
         habitName={habitToRemove.name}
         allowTabTraversal={allowTabTraversal}
         setModalContentGenerator={setModalContentGenerator}
@@ -46,7 +46,7 @@ export default function removeHabit(
           setModalContentGenerator(undefined);
           setHabits(newHabits);
           // will always be able to set selected index to non null value in seleciton view
-          setSelectedIndex(Math.max(selectedIndex - 1, 0));
+          setSelectedIndex(Math.min(selectedIndex, newHabits.length));
         }}
       />
     );

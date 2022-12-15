@@ -1,15 +1,15 @@
 import React from 'react';
 import { ModalContentGenerator } from '../../globalTypes';
-import './habitRemovalConfirmation.css';
+import './habitRemovalConfirmationModalContent.css';
 
 type Props = {
   habitName: string;
   allowTabTraversal: boolean;
-  onConfirm: () => void;
+  onConfirm: Function;
   setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
 };
 
-export default function HabitRemovalConfirmation({
+export default function HabitRemovalConfirmationModalContent({
   habitName,
   allowTabTraversal,
   onConfirm,
@@ -38,7 +38,7 @@ export default function HabitRemovalConfirmation({
         <button
           tabIndex={allowTabTraversal ? undefined : -1}
           type="button"
-          onClick={onConfirm}
+          onClick={() => onConfirm()}
         >
           Delete habit
         </button>
