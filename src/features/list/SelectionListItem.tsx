@@ -106,6 +106,7 @@ export default function SelectionListItem({
         />
         <Icon
           icon="move"
+          classes={['move-icon']}
           allowTabTraversal={allowTabTraversal}
           onMouseDown={move}
           hidden={!selected}

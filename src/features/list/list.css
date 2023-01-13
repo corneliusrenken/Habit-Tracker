@@ -37,6 +37,10 @@
   z-index: 99;
 }
 
+.list-item-being-reordered .move-icon {
+  color: var(--grey);
+}
+
 .name {
   margin-left: var(--left-margin);
   max-width: calc(350px - var(--left-margin) - var(--right-margin));
