@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   DateObject, Habit, OccurrenceData, View,
 } from '../../../globalTypes';
@@ -38,8 +39,8 @@ export default function transitionToView(viewName: View['name'], states: States)
   }
 
   if (viewName === 'selection') {
-    setSelectedIndex(0);
     setView({ name: 'selection' });
+    if (selectedIndex === null) setSelectedIndex(0);
     return;
   }
 
@@ -50,11 +51,11 @@ export default function transitionToView(viewName: View['name'], states: States)
     latchedListView: { name: viewName },
   });
 
-  if (newSelectedHabits.length === 0) {
-    setSelectedIndex(null);
-  } else {
-    setSelectedIndex(0);
-  }
+  setSelectedIndex((lastSelectedIndex) => {
+    if (newSelectedHabits.length === 0) return null;
+    if (lastSelectedIndex === null) return 0;
+    return Math.min(newSelectedHabits.length - 1, lastSelectedIndex);
+  });
 
   setView({ name: viewName });
 }
