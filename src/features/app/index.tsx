@@ -18,8 +18,8 @@ import initialize from './initialize';
 import useApiFunctions from '../apiFunctions/useApiFunctions';
 import useMemoizedComponents from './useMemoizedComponents';
 import useSelectedData from './useSelectedData';
-import useShortcutManager from './useShortcutManager';
 import Modal from '../modal';
+import useShortcutManager from '../shortcutManager/useShortcutManager';
 
 export default function App() {
   const userId = 1;
