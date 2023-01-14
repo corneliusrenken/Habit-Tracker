@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Habit } from '../../globalTypes';
 import Icon from '../icon';
 import isValidHabitName from './isValidHabitName';
@@ -32,10 +32,17 @@ export default function SelectionListItem({
   setInInput,
   habits,
 }: Props) {
-  const [renameInput, setRenameInput] = useState('');
-  const [isRenameButtonDisabled, setIsRenameButtonDisabled] = useState(false);
+  const [renameInput, setRenameInput] = useState(name);
 
   const beingRenamed = selected && inInput;
+
+  useEffect(() => {
+    if (!beingRenamed) setRenameInput(name);
+  }, [beingRenamed, name]);
+
+  const ignoreNextMouseUp = useRef(false);
+
+  const inputRef = useRef<HTMLInputElement>(null);
 
   let containerClassName = 'list-item';
   if (selected) containerClassName += ' list-item-selected';
@@ -65,18 +72,11 @@ export default function SelectionListItem({
           }}
         >
           <input
+            ref={inputRef}
             autoFocus // eslint-disable-line jsx-a11y/no-autofocus
-            onFocus={() => {
-              setRenameInput(name);
-              setIsRenameButtonDisabled(true);
-            }}
-            onBlur={() => {
+            onBlur={(e) => {
+              e.preventDefault();
               setInInput(false);
-              const onMouseUp = () => {
-                setTimeout(() => setIsRenameButtonDisabled(false), 0);
-                window.removeEventListener('mouseup', onMouseUp);
-              };
-              window.addEventListener('mouseup', onMouseUp);
             }}
             value={renameInput}
             onChange={(e) => setRenameInput(e.target.value)}
@@ -87,16 +87,22 @@ export default function SelectionListItem({
         <Icon
           icon="rename"
           allowTabTraversal={allowTabTraversal}
-          classes={beingRenamed ? ['greyed-out'] : undefined}
-          hidden={!selected}
-          onMouseDown={(e) => {
-            e.stopPropagation();
-          }}
-          onClick={() => {
-            if (!isRenameButtonDisabled) {
-              setInInput(true);
+          onMouseDown={() => {
+            const onMouseUp = () => {
+              setTimeout(() => { ignoreNextMouseUp.current = false; }, 0);
+              window.removeEventListener('mouseup', onMouseUp);
+            };
+
+            if (beingRenamed) {
+              ignoreNextMouseUp.current = true;
+              window.addEventListener('mouseup', onMouseUp);
             }
           }}
+          onClick={() => {
+            if (!inInput && !ignoreNextMouseUp.current) setInInput(true);
+          }}
+          classes={beingRenamed ? ['greyed-out'] : undefined}
+          hidden={!selected}
         />
         <Icon
           icon="trash"
