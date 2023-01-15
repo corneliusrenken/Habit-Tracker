@@ -11,9 +11,6 @@
   border: 0;
 }
 
-.hidden-icon {
-  display: inline;
-  margin: 8px;
-  height: 34px;
-  min-width: 34px;
+.icon.hidden {
+  display: none;
 }

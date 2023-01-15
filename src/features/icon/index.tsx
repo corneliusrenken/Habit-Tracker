@@ -27,13 +27,17 @@ type Props = {
 export default function Icon({
   icon, allowTabTraversal, onClick, onMouseDown, classes, hidden,
 }: Props) {
-  if (hidden) return <div className="hidden-icon" />;
+  let className = 'icon';
+
+  if (classes && classes.length > 0) className += ` ${classes.join(' ')}`;
+
+  if (hidden) className += ' hidden';
 
   return (
     <button
       tabIndex={allowTabTraversal ? undefined : -1}
       type="button"
-      className={`icon${classes ? ` ${classes.join(' ')}` : ''}`}
+      className={className}
       onClick={onClick ? (e) => onClick(e) : undefined}
       onMouseDown={onMouseDown ? (e) => onMouseDown(e) : undefined}
     >
