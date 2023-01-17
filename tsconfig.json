@@ -21,8 +21,8 @@
     "jsx": "react-jsx"
   },
   "include": [
-    "prisma",
     "server",
+    "server-sqlite",
     "src"
   ]
 }
