@@ -2,6 +2,7 @@ import Database from 'better-sqlite3';
 import createTables from '../../server-sqlite/database/queries/createTables';
 import addHabit from '../../server-sqlite/database/queries/habits/addHabit';
 import getHabits from '../../server-sqlite/database/queries/habits/getHabits';
+import { dropUniqueOrderIndexIx, setUniqueOrderIndexIx } from '../../server-sqlite/database/queries/manageUniqueOrderIndexIx';
 import { verifyOrderIndices } from './helperFunctions';
 
 let db: Database.Database;
@@ -49,11 +50,10 @@ test('returns habits in ascending \'order_index\' order', () => {
   `);
 
   const shuffleOrderIndices = db.transaction(() => {
-    db.pragma('ignore_check_constraints = ON');
-    manuallyChangeOrderIndex.run(null, 'sleep');
+    dropUniqueOrderIndexIx(db);
     manuallyChangeOrderIndex.run(2, 'exercise');
     manuallyChangeOrderIndex.run(0, 'sleep');
-    db.pragma('ignore_check_constraints = OFF');
+    setUniqueOrderIndexIx(db);
   });
 
   shuffleOrderIndices();
