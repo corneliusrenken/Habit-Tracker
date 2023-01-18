@@ -2,6 +2,7 @@ import Database from 'better-sqlite3';
 import createTables from '../../server-sqlite/database/queries/createTables';
 import addHabit from '../../server-sqlite/database/queries/habits/addHabit';
 import getHabits from '../../server-sqlite/database/queries/habits/getHabits';
+import { verifyOrderIndices } from './helperFunctions';
 
 let db: Database.Database;
 
@@ -39,11 +40,7 @@ test('returns habits in ascending \'order_index\' order', () => {
   addHabit(db, 'read', '2023-01-17');
   addHabit(db, 'sleep', '2023-01-17');
 
-  let habits = getHabits(db);
-  // order_index will always range from 0 -> habits.length - 1
-  habits.forEach(({ order_index }, index) => {
-    expect(order_index).toBe(index);
-  });
+  verifyOrderIndices(db);
 
   const manuallyChangeOrderIndex = db.prepare(`
     UPDATE habits
@@ -61,9 +58,5 @@ test('returns habits in ascending \'order_index\' order', () => {
 
   shuffleOrderIndices();
 
-  habits = getHabits(db);
-  // order_index will always range from 0 -> habits.length - 1
-  habits.forEach(({ order_index }, index) => {
-    expect(order_index).toBe(index);
-  });
+  verifyOrderIndices(db);
 });
