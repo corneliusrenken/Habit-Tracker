@@ -15,12 +15,15 @@ export default function addHabit(database: Database, name: string, date: string)
   }
 
   const addHabitStmt = database.prepare(`
-    INSERT INTO habits (name, order_in_list) VALUES
-      (?, (SELECT count(id) FROM habits)) RETURNING id, name, order_in_list
+    INSERT INTO habits (name, order_in_list)
+    VALUES
+      (?, (SELECT count(id) FROM habits))
+    RETURNING id, name, order_in_list
   `);
 
   const addOccurrenceStmt = database.prepare(`
-    INSERT INTO occurrences (habit_id, day_id) VALUES
+    INSERT INTO occurrences (habit_id, day_id)
+    VALUES
       (?, ?)
   `);
 
