@@ -21,17 +21,17 @@ const addDay = (date: string) => {
   return addDayStmt.run(date).lastInsertRowid;
 };
 
-test('if the days table doesn\'t contain an entry with the date passed into the addHabit function, the function should throw an error accordingly', () => {
+test('if the days table doesn\'t contain an entry with the date passed into the addHabit function, the function should throw an error', () => {
   expect(() => addHabit(db, 'exercise', '2023-01-17')).toThrow('Error: No day entry exists with the passed date');
 });
 
-test('adding a habit with a pre-existing name will throw an error accordingly', () => {
+test('adding a habit with a pre-existing name will throw an error', () => {
   addDay('2023-01-17');
   expect(() => addHabit(db, 'exercise', '2023-01-17')).not.toThrow();
   expect(() => addHabit(db, 'exercise', '2023-01-17')).toThrow('UNIQUE constraint failed: habits.name');
 });
 
-test('added a habit with an invalid name will throw an error accordingly', () => {
+test('added a habit with an invalid name will throw an error', () => {
   addDay('2023-01-17');
   expect(() => addHabit(db, '', '2023-01-17')).toThrow('CHECK constraint failed: name NOT IN (\'\')');
 });
