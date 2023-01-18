@@ -1,14 +1,14 @@
 import { Database } from 'better-sqlite3';
-import { dropUniqueOrderIndexIx, setUniqueOrderIndexIx } from '../manageUniqueOrderIndexIx';
+import { dropUniqueOrderInListIndex, setUniqueOrderInListIndex } from '../manageUniqueOrderInListIndex';
 
 type UpdateInfo = ({
   name: string;
 }) | ({
-  orderIndex: number;
+  orderInList: number;
 });
 
 export default function updateHabit(database: Database, habitId: number, updateInfo: UpdateInfo) {
-  const getHabitByIdStmt = database.prepare('SELECT name, order_index FROM habits WHERE id = ?');
+  const getHabitByIdStmt = database.prepare('SELECT name, order_in_list FROM habits WHERE id = ?');
 
   const habitPreUpdate = getHabitByIdStmt.get(habitId);
 
@@ -17,7 +17,7 @@ export default function updateHabit(database: Database, habitId: number, updateI
   }
 
   if (('name' in updateInfo && habitPreUpdate.name === updateInfo.name)
-  || ('orderIndex' in updateInfo && habitPreUpdate.order_index === updateInfo.orderIndex)) {
+  || ('orderInList' in updateInfo && habitPreUpdate.order_in_list === updateInfo.orderInList)) {
     return;
   }
 
@@ -30,32 +30,32 @@ export default function updateHabit(database: Database, habitId: number, updateI
   const getHabitCountStmt = database.prepare('SELECT count(id) AS count FROM habits');
   const habitCount = getHabitCountStmt.get().count;
 
-  if (updateInfo.orderIndex < 0 || updateInfo.orderIndex >= habitCount) {
-    throw new Error('Error: Order index is out of range. The value needs to inclusively be between 0 and the count of all habits - 1');
+  if (updateInfo.orderInList < 0 || updateInfo.orderInList >= habitCount) {
+    throw new Error('Error: Order in list is out of range. The value needs to inclusively be between 0 and the count of all habits - 1');
   }
 
-  const shiftDirection = Math.sign(updateInfo.orderIndex - habitPreUpdate.order_index) as 1 | -1;
+  const shiftDirection = Math.sign(updateInfo.orderInList - habitPreUpdate.order_in_list) as 1 | -1;
 
-  const shiftOtherHabitOrderIndicesStmt = shiftDirection === 1
+  const shiftOtherOrderInListValuesStmt = shiftDirection === 1
     ? database.prepare(`
       UPDATE habits
-      SET order_index = order_index - 1
-      WHERE order_index > ? AND order_index <= ?
+      SET order_in_list = order_in_list - 1
+      WHERE order_in_list > ? AND order_in_list <= ?
     `)
     : database.prepare(`
       UPDATE habits
-      SET order_index = order_index + 1
-      WHERE order_index < ? AND order_index >= ?
+      SET order_in_list = order_in_list + 1
+      WHERE order_in_list < ? AND order_in_list >= ?
     `);
 
-  const setUpdatedOrderIndexStmt = database.prepare('UPDATE habits SET order_index = ? WHERE id = ?');
+  const setUpdatedOrderInListStmt = database.prepare('UPDATE habits SET order_in_list = ? WHERE id = ?');
 
-  const reorderOrderIndices = database.transaction(() => {
-    dropUniqueOrderIndexIx(database);
-    shiftOtherHabitOrderIndicesStmt.run(habitPreUpdate.order_index, updateInfo.orderIndex);
-    setUpdatedOrderIndexStmt.run(updateInfo.orderIndex, habitId);
-    setUniqueOrderIndexIx(database);
+  const reorderOrderInListValues = database.transaction(() => {
+    dropUniqueOrderInListIndex(database);
+    shiftOtherOrderInListValuesStmt.run(habitPreUpdate.order_in_list, updateInfo.orderInList);
+    setUpdatedOrderInListStmt.run(updateInfo.orderInList, habitId);
+    setUniqueOrderInListIndex(database);
   });
 
-  reorderOrderIndices();
+  reorderOrderInListValues();
 }

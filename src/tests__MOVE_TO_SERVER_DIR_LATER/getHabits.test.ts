@@ -2,8 +2,8 @@ import Database from 'better-sqlite3';
 import createTables from '../../server-sqlite/database/queries/createTables';
 import addHabit from '../../server-sqlite/database/queries/habits/addHabit';
 import getHabits from '../../server-sqlite/database/queries/habits/getHabits';
-import { dropUniqueOrderIndexIx, setUniqueOrderIndexIx } from '../../server-sqlite/database/queries/manageUniqueOrderIndexIx';
-import { verifyOrderIndices } from './helperFunctions';
+import { dropUniqueOrderInListIndex, setUniqueOrderInListIndex } from '../../server-sqlite/database/queries/manageUniqueOrderInListIndex';
+import { verifyOrderInListValues } from './helperFunctions';
 
 let db: Database.Database;
 
@@ -24,7 +24,7 @@ test('returns an empty array if no  habits exist', () => {
   expect(habits.length).toBe(0);
 });
 
-test('returns an array of objects, each containing the habit\'s id, name, and order_index', () => {
+test('returns an array of objects, each containing the habit\'s id, name, and order_in_list', () => {
   addHabit(db, 'exercise', '2023-01-17');
   addHabit(db, 'read', '2023-01-17');
   addHabit(db, 'sleep', '2023-01-17');
@@ -32,31 +32,31 @@ test('returns an array of objects, each containing the habit\'s id, name, and or
   habits.forEach((habit) => {
     expect(habit).toHaveProperty('id');
     expect(habit).toHaveProperty('name');
-    expect(habit).toHaveProperty('order_index');
+    expect(habit).toHaveProperty('order_in_list');
   });
 });
 
-test('returns habits in ascending \'order_index\' order', () => {
+test('returns habits in ascending \'order_in_list\' order', () => {
   addHabit(db, 'exercise', '2023-01-17');
   addHabit(db, 'read', '2023-01-17');
   addHabit(db, 'sleep', '2023-01-17');
 
-  verifyOrderIndices(db);
+  verifyOrderInListValues(db);
 
-  const manuallyChangeOrderIndex = db.prepare(`
+  const manuallyChangeOrderInList = db.prepare(`
     UPDATE habits
-    SET order_index = ?
+    SET order_in_list = ?
     WHERE name = ?
   `);
 
   const shuffleOrderIndices = db.transaction(() => {
-    dropUniqueOrderIndexIx(db);
-    manuallyChangeOrderIndex.run(2, 'exercise');
-    manuallyChangeOrderIndex.run(0, 'sleep');
-    setUniqueOrderIndexIx(db);
+    dropUniqueOrderInListIndex(db);
+    manuallyChangeOrderInList.run(2, 'exercise');
+    manuallyChangeOrderInList.run(0, 'sleep');
+    setUniqueOrderInListIndex(db);
   });
 
   shuffleOrderIndices();
 
-  verifyOrderIndices(db);
+  verifyOrderInListValues(db);
 });

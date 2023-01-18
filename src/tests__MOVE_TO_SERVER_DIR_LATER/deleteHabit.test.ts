@@ -38,38 +38,38 @@ test('occurrences referencing the deleted habit should now reference null', () =
   expect(occurrenceHabitIdAfterDelete).toBe(null);
 });
 
-describe('habit\'s order indices stay in an uninterrupted range from 0 -> habits length - 1 after a habit deletion, shifting down to close gaps', () => {
+describe('habit\'s order in list values stay in an uninterrupted range from 0 -> habits length - 1 after a habit deletion, shifting down to close gaps', () => {
   let readHabitId: number;
   let sleepHabitId: number;
-  let getHabitOrderIndexByIdStmt: Statement<any[]>;
+  let getHabitOrderInListByIdStmt: Statement<any[]>;
 
   beforeEach(() => {
     readHabitId = addHabit(db, 'read', '2023-01-17').id;
     sleepHabitId = addHabit(db, 'sleep', '2023-01-17').id;
-    getHabitOrderIndexByIdStmt = db.prepare('SELECT order_index FROM habits WHERE id = ?');
+    getHabitOrderInListByIdStmt = db.prepare('SELECT order_in_list FROM habits WHERE id = ?');
   });
 
-  test('habit with the minimum order index is deleted', () => {
+  test('habit with the minimum order in list is deleted', () => {
     deleteHabit(db, exerciseHabitId);
-    const readOrderIndex = getHabitOrderIndexByIdStmt.get(readHabitId).order_index;
-    expect(readOrderIndex).toBe(0);
-    const sleepOrderIndex = getHabitOrderIndexByIdStmt.get(sleepHabitId).order_index;
-    expect(sleepOrderIndex).toBe(1);
+    const readOrderInList = getHabitOrderInListByIdStmt.get(readHabitId).order_in_list;
+    expect(readOrderInList).toBe(0);
+    const sleepOrderInList = getHabitOrderInListByIdStmt.get(sleepHabitId).order_in_list;
+    expect(sleepOrderInList).toBe(1);
   });
 
-  test('habit with an order index in between max and min is deleted', () => {
+  test('habit with an order in list in between max and min is deleted', () => {
     deleteHabit(db, readHabitId);
-    const exerciseOrderIndex = getHabitOrderIndexByIdStmt.get(exerciseHabitId).order_index;
-    expect(exerciseOrderIndex).toBe(0);
-    const sleepOrderIndex = getHabitOrderIndexByIdStmt.get(sleepHabitId).order_index;
-    expect(sleepOrderIndex).toBe(1);
+    const exerciseOrderInList = getHabitOrderInListByIdStmt.get(exerciseHabitId).order_in_list;
+    expect(exerciseOrderInList).toBe(0);
+    const sleepOrderInList = getHabitOrderInListByIdStmt.get(sleepHabitId).order_in_list;
+    expect(sleepOrderInList).toBe(1);
   });
 
-  test('habit with the maximum order index is deleted', () => {
+  test('habit with the maximum order in list is deleted', () => {
     deleteHabit(db, sleepHabitId);
-    const exerciseOrderIndex = getHabitOrderIndexByIdStmt.get(exerciseHabitId).order_index;
-    expect(exerciseOrderIndex).toBe(0);
-    const readOrderIndex = getHabitOrderIndexByIdStmt.get(readHabitId).order_index;
-    expect(readOrderIndex).toBe(1);
+    const exerciseOrderInList = getHabitOrderInListByIdStmt.get(exerciseHabitId).order_in_list;
+    expect(exerciseOrderInList).toBe(0);
+    const readOrderInList = getHabitOrderInListByIdStmt.get(readHabitId).order_in_list;
+    expect(readOrderInList).toBe(1);
   });
 });

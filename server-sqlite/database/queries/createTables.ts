@@ -1,20 +1,20 @@
 import { Database } from 'better-sqlite3';
-import { setUniqueOrderIndexIx } from './manageUniqueOrderIndexIx';
+import { setUniqueOrderInListIndex } from './manageUniqueOrderInListIndex';
 
 export default function createTables(database: Database) {
   const createHabitsTableStmt = database.prepare(`
     CREATE TABLE IF NOT EXISTS habits (
       id INTEGER PRIMARY KEY,
       name TEXT UNIQUE NOT NULL CHECK (name NOT IN ('')),
-      order_index INTEGER NOT NULL
+      order_in_list INTEGER NOT NULL
     )
   `);
 
   createHabitsTableStmt.run();
 
-  // use a seperate index so that it can be dropped when updating order_indices
-  // which creates overlapping order_index values during the process
-  setUniqueOrderIndexIx(database);
+  // use an index instead of a constraint so that it can be dropped when updating order_in_list
+  // which temporarily creates overlapping values during the update process
+  setUniqueOrderInListIndex(database);
 
   const createDaysTableStmt = database.prepare(`
     CREATE TABLE IF NOT EXISTS days (
