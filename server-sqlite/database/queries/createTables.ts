@@ -14,7 +14,7 @@ export default function createTables(database: Database) {
   const createDaysTableStmt = database.prepare(`
     CREATE TABLE IF NOT EXISTS days (
       id INTEGER PRIMARY KEY,
-      date TEXT UNIQUE NOT NULL
+      date TEXT UNIQUE NOT NULL CHECK (date IS strftime('%Y-%m-%d', date))
     )
   `);
 
