@@ -1,11 +1,13 @@
 import { Database } from 'better-sqlite3';
 
 export default function createTables(database: Database) {
+  // order_index can only be null to allow for order_index swapping or reorganizing
+  // when swapping, can use pragma to skip check
   const createHabitsTableStmt = database.prepare(`
     CREATE TABLE IF NOT EXISTS habits (
       id INTEGER PRIMARY KEY,
       name TEXT UNIQUE NOT NULL CHECK (name NOT IN ('')),
-      order_index INTEGER UNIQUE NOT NULL
+      order_index INTEGER UNIQUE CHECK (order_index IS NOT NULL)
     )
   `);
 
