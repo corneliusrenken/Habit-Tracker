@@ -1,4 +1,5 @@
 import { Database } from 'better-sqlite3';
+import { dropUniqueOrderIndexIx, setUniqueOrderIndexIx } from '../manageUniqueOrderIndexIx';
 
 export default function deleteHabit(database: Database, habitId: number) {
   const getHabitByIdStmt = database.prepare('SELECT order_index FROM habits WHERE id = ?');
@@ -19,7 +20,9 @@ export default function deleteHabit(database: Database, habitId: number) {
 
   const deleteHabitAndFixOrderIndices = database.transaction(() => {
     deleteHabitStmt.run(habitId);
+    dropUniqueOrderIndexIx(database);
     fixOrderIndicesStmt.run(habitToDelete.order_index);
+    setUniqueOrderIndexIx(database);
   });
 
   deleteHabitAndFixOrderIndices();
