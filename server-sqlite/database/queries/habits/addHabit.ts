@@ -24,13 +24,13 @@ export default function addHabit(database: Database, name: string, date: string)
       (?, ?)
   `);
 
-  const transaction = database.transaction(() => {
+  const addHabitAndOccurrenceTransaction = database.transaction(() => {
     const habit = addHabitStmt.get(name);
     addOccurrenceStmt.run(habit.id, day.id);
     return habit;
   });
 
-  const addedHabit = transaction();
+  const addedHabit = addHabitAndOccurrenceTransaction();
 
   return addedHabit;
 }
