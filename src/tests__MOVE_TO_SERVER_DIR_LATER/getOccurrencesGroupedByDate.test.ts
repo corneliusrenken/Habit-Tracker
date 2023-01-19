@@ -11,6 +11,7 @@ let readHabitId: number;
 beforeEach(() => {
   db = new Database(':memory:');
   createTables(db);
+  // can't use addHabit here as that automatically creates an occurrence for the day
   const addOnlyHabitStmt = db.prepare('INSERT INTO habits (name, order_in_list) VALUES (?, ?)');
   exerciseHabitId = Number(addOnlyHabitStmt.run('exercise', 0).lastInsertRowid);
   readHabitId = Number(addOnlyHabitStmt.run('read', 1).lastInsertRowid);
