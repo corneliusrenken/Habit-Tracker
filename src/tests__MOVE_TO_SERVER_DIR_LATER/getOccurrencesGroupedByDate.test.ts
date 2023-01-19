@@ -25,7 +25,7 @@ afterEach(() => {
 
 test('returns an empty object if no occurrences exist', () => {
   const occurrences = getOccurrencesGroupedByDate(db);
-  expect(Object.keys(occurrences).length).toBe(0);
+  expect(occurrences).toEqual({});
 });
 
 test('returns a single occurrence correctly', () => {
