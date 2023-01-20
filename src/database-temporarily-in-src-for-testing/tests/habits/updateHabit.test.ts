@@ -1,8 +1,6 @@
 import Database from 'better-sqlite3';
-import createTables from '../../server-sqlite/database/queries/createTables';
-import addHabit from '../../server-sqlite/database/queries/habits/addHabit';
-import updateHabit from '../../server-sqlite/database/queries/habits/updateHabit';
-import { verifyOrderInListValues } from './helperFunctions';
+import { addHabit, createTables, updateHabit } from '../../queries';
+import { verifyOrderInListValues } from '../helperFunctions';
 
 let db: Database.Database;
 let originalHabit: {

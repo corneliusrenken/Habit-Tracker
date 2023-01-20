@@ -1,5 +1,5 @@
 import { Database } from 'better-sqlite3';
-import { setUniqueOrderInListIndex } from './manageUniqueOrderInListIndex';
+import setUniqueOrderInListIndex from './setUniqueOrderInListIndex';
 
 export default function createTables(database: Database) {
   const createHabitsTableStmt = database.prepare(`

@@ -1,5 +1,6 @@
 import { Database } from 'better-sqlite3';
-import { dropUniqueOrderInListIndex, setUniqueOrderInListIndex } from '../manageUniqueOrderInListIndex';
+import dropUniqueOrderInListIndex from '../common/dropUniqueOrderInListIndex';
+import setUniqueOrderInListIndex from '../common/setUniqueOrderInListIndex';
 
 export default function deleteHabit(database: Database, habitId: number) {
   const getHabitByIdStmt = database.prepare('SELECT order_in_list FROM habits WHERE id = ?');

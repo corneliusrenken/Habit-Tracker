@@ -1,9 +1,12 @@
 import Database from 'better-sqlite3';
-import createTables from '../../server-sqlite/database/queries/createTables';
-import addHabit from '../../server-sqlite/database/queries/habits/addHabit';
-import getHabits from '../../server-sqlite/database/queries/habits/getHabits';
-import { dropUniqueOrderInListIndex, setUniqueOrderInListIndex } from '../../server-sqlite/database/queries/manageUniqueOrderInListIndex';
-import { verifyOrderInListValues } from './helperFunctions';
+import {
+  addHabit,
+  createTables,
+  dropUniqueOrderInListIndex,
+  getHabits,
+  setUniqueOrderInListIndex,
+} from '../../queries';
+import { verifyOrderInListValues } from '../helperFunctions';
 
 let db: Database.Database;
 

@@ -22,7 +22,7 @@
   },
   "include": [
     "server",
-    "server-sqlite",
+    "database",
     "src"
   ]
 }

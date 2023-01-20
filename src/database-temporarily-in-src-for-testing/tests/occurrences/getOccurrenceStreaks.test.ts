@@ -1,9 +1,11 @@
 import Database from 'better-sqlite3';
-import createTables from '../../server-sqlite/database/queries/createTables';
-import addDay from '../../server-sqlite/database/queries/days/addDay';
-import addOccurrences from '../../server-sqlite/database/queries/occurrences/addOccurrences';
-import getOccurrenceStreaks from '../../server-sqlite/database/queries/occurrences/getOccurrenceStreaks';
-import updateOccurrence from '../../server-sqlite/database/queries/occurrences/updateOccurrence';
+import {
+  addDay,
+  addOccurrences,
+  createTables,
+  getOccurrenceStreaks,
+  updateOccurrence,
+} from '../../queries';
 
 let db: Database.Database;
 let exerciseHabitId: number;

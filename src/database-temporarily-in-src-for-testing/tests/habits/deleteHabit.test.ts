@@ -1,7 +1,5 @@
 import Database, { Statement } from 'better-sqlite3';
-import createTables from '../../server-sqlite/database/queries/createTables';
-import addHabit from '../../server-sqlite/database/queries/habits/addHabit';
-import deleteHabit from '../../server-sqlite/database/queries/habits/deleteHabit';
+import { addHabit, createTables, deleteHabit } from '../../queries';
 
 let db: Database.Database;
 let exerciseHabitId: number;

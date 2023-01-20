@@ -1,5 +1,5 @@
 import { Database } from 'better-sqlite3';
-import getHabits from '../../server-sqlite/database/queries/habits/getHabits';
+import { getHabits } from '../queries';
 
 // eslint-disable-next-line import/prefer-default-export
 export function verifyOrderInListValues(database: Database, expectedNameOrder?: string[]) {

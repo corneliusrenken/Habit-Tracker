@@ -1,5 +1,6 @@
 import { Database } from 'better-sqlite3';
-import { dropUniqueOrderInListIndex, setUniqueOrderInListIndex } from '../manageUniqueOrderInListIndex';
+import dropUniqueOrderInListIndex from '../common/dropUniqueOrderInListIndex';
+import setUniqueOrderInListIndex from '../common/setUniqueOrderInListIndex';
 
 type UpdateData = ({
   name: string;

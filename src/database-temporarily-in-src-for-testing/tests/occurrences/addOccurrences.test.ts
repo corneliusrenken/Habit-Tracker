@@ -1,6 +1,5 @@
 import Database from 'better-sqlite3';
-import createTables from '../../server-sqlite/database/queries/createTables';
-import addOccurrences from '../../server-sqlite/database/queries/occurrences/addOccurrences';
+import { addOccurrences, createTables } from '../../queries';
 
 let db: Database.Database;
 let dayId: number;

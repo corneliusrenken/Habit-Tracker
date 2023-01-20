@@ -1,6 +1,5 @@
 import Database from 'better-sqlite3';
-import createTables from '../../server-sqlite/database/queries/createTables';
-import addHabit from '../../server-sqlite/database/queries/habits/addHabit';
+import { addHabit, createTables } from '../../queries';
 
 let db: Database.Database;
 
