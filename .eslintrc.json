@@ -25,6 +25,7 @@
     "webpack.plugins.ts",
     "webpack.renderer.config.ts",
     "webpack.rules.ts",
+    "jest.config.ts",
     "create_react_app_version/*"
   ]
 }
