@@ -57,10 +57,10 @@ test('doesn\'t throw when the changed value is the same as the original', () => 
 });
 
 test('throws an error if the occurrence to update does not exist, even if the updated value is the same as the original', () => {
-  expect(() => updateOccurrence(db, exerciseHabitId, '2023-01-18', { complete: false })).toThrow('Error: No occurrence exists for the given habit id / date');
-  expect(() => updateOccurrence(db, exerciseHabitId, '2023-01-18', { visible: true })).toThrow('Error: No occurrence exists for the given habit id / date');
-  expect(() => updateOccurrence(db, 123, '2023-01-19', { complete: false })).toThrow('Error: No occurrence exists for the given habit id / date');
-  expect(() => updateOccurrence(db, 123, '2023-01-19', { visible: true })).toThrow('Error: No occurrence exists for the given habit id / date');
+  expect(() => updateOccurrence(db, exerciseHabitId, '2023-01-18', { complete: false })).toThrow('Error: No occurrence matches the given habit id / date');
+  expect(() => updateOccurrence(db, exerciseHabitId, '2023-01-18', { visible: true })).toThrow('Error: No occurrence matches the given habit id / date');
+  expect(() => updateOccurrence(db, 123, '2023-01-19', { complete: false })).toThrow('Error: No occurrence matches the given habit id / date');
+  expect(() => updateOccurrence(db, 123, '2023-01-19', { visible: true })).toThrow('Error: No occurrence matches the given habit id / date');
 });
 
 test('updates the occurrence\'s complete value, and only the complete value', () => {
