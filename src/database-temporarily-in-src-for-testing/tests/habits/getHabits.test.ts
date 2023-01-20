@@ -4,6 +4,7 @@ import {
   createTables,
   dropUniqueOrderInListIndex,
   getHabits,
+  openDatabase,
   setUniqueOrderInListIndex,
 } from '../../queries';
 import { verifyOrderInListValues } from '../helperFunctions';
@@ -11,7 +12,7 @@ import { verifyOrderInListValues } from '../helperFunctions';
 let db: Database.Database;
 
 beforeEach(() => {
-  db = new Database(':memory:');
+  db = openDatabase(':memory:');
   createTables(db);
   const addDayStmt = db.prepare('INSERT INTO days (date) VALUES (?)');
   addDayStmt.run('2023-01-17');

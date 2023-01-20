@@ -1,5 +1,10 @@
 import Database from 'better-sqlite3';
-import { addHabit, createTables, updateHabit } from '../../queries';
+import {
+  addHabit,
+  createTables,
+  openDatabase,
+  updateHabit,
+} from '../../queries';
 import { verifyOrderInListValues } from '../helperFunctions';
 
 let db: Database.Database;
@@ -10,7 +15,7 @@ let originalHabit: {
 };
 
 beforeEach(() => {
-  db = new Database(':memory:');
+  db = openDatabase(':memory:');
   createTables(db);
   const addDayStmt = db.prepare('INSERT INTO days (date) VALUES (?)');
   addDayStmt.run('2023-01-17');

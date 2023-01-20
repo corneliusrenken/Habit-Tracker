@@ -1,5 +1,5 @@
 import Database from 'better-sqlite3';
-import { addOccurrences, createTables } from '../../queries';
+import { addOccurrences, createTables, openDatabase } from '../../queries';
 
 let db: Database.Database;
 let dayId: number;
@@ -8,7 +8,7 @@ let readHabitId: number;
 let sleepHabitId: number;
 
 beforeEach(() => {
-  db = new Database(':memory:');
+  db = openDatabase(':memory:');
   createTables(db);
   const addDayStmt = db.prepare('INSERT INTO days (date) VALUES (?)');
   dayId = Number(addDayStmt.run('2023-01-17').lastInsertRowid);

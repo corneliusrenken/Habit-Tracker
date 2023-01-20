@@ -1,11 +1,16 @@
 import Database, { Statement } from 'better-sqlite3';
-import { addHabit, createTables, deleteHabit } from '../../queries';
+import {
+  addHabit,
+  createTables,
+  deleteHabit,
+  openDatabase,
+} from '../../queries';
 
 let db: Database.Database;
 let exerciseHabitId: number;
 
 beforeEach(() => {
-  db = new Database(':memory:');
+  db = openDatabase(':memory:');
   createTables(db);
   const addDayStmt = db.prepare('INSERT INTO days (date) VALUES (?)');
   addDayStmt.run('2023-01-17');

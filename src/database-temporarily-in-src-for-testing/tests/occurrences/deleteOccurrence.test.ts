@@ -6,13 +6,14 @@ import {
   createTables,
   deleteOccurrence,
   getOccurrencesGroupedByDate,
+  openDatabase,
 } from '../../queries';
 
 let db: Database.Database;
 let exerciseHabitId: number;
 
 beforeEach(() => {
-  db = new Database(':memory:');
+  db = openDatabase(':memory:');
   createTables(db);
   addDay(db, '2023-01-19');
   // creates an occurrence on 2023-01-19

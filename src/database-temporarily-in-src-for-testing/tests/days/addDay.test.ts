@@ -1,10 +1,10 @@
 import Database from 'better-sqlite3';
-import { addDay, createTables } from '../../queries';
+import { addDay, createTables, openDatabase } from '../../queries';
 
 let db: Database.Database;
 
 beforeEach(() => {
-  db = new Database(':memory:');
+  db = openDatabase(':memory:');
   createTables(db);
 });
 

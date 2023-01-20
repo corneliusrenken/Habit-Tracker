@@ -4,6 +4,7 @@ import {
   addOccurrences,
   createTables,
   getOldestVisibleOccurrenceDates,
+  openDatabase,
   updateOccurrence,
 } from '../../queries';
 
@@ -11,7 +12,7 @@ let db: Database.Database;
 let exerciseHabitId: number;
 
 beforeEach(() => {
-  db = new Database(':memory:');
+  db = openDatabase(':memory:');
   createTables(db);
   // can't use addHabit here as that automatically creates an occurrence for the day
   const addOnlyHabitStmt = db.prepare('INSERT INTO habits (name, order_in_list) VALUES (?, ?)');

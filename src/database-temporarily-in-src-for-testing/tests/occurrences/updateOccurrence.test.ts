@@ -3,6 +3,7 @@ import {
   addDay,
   addHabit,
   createTables,
+  openDatabase,
   updateOccurrence,
 } from '../../queries';
 
@@ -35,7 +36,7 @@ const getSingleOccurrence = (database: Database.Database, habitId: number, date:
 };
 
 beforeEach(() => {
-  db = new Database(':memory:');
+  db = openDatabase(':memory:');
   createTables(db);
   addDay(db, occurrenceDate);
   exerciseHabitId = addHabit(db, 'exercise', occurrenceDate).id;
