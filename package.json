@@ -20,7 +20,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "server": "npx nodemon server-sqlite/index.ts",
+    "server": "npx nodemon server/index.ts",
     "seed": "npx prisma migrate reset",
     "build": "react-scripts build",
     "test": "react-scripts test",

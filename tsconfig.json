@@ -22,7 +22,6 @@
   },
   "include": [
     "server",
-    "database",
     "src"
   ]
 }
