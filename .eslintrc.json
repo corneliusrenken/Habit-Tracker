@@ -10,7 +10,21 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:import/recommended",
     "plugin:import/electron",
-    "plugin:import/typescript"
+    "plugin:import/typescript",
+    "airbnb",
+    "airbnb/hooks",
+    "airbnb-typescript"
   ],
-  "parser": "@typescript-eslint/parser"
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "ignorePatterns": [
+    "forge.config.ts",
+    "webpack.main.config.ts",
+    "webpack.plugins.ts",
+    "webpack.renderer.config.ts",
+    "webpack.rules.ts",
+    "create_react_app_version/*"
+  ]
 }
