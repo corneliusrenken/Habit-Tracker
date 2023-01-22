@@ -44,7 +44,7 @@ test('occurrences referencing the deleted habit should now reference null', () =
 describe('habit\'s order in list values stay in an uninterrupted range from 0 -> habits length - 1 after a habit deletion, shifting down to close gaps', () => {
   let readHabitId: number;
   let sleepHabitId: number;
-  let getHabitOrderInListByIdStmt: Statement<any[]>;
+  let getHabitOrderInListByIdStmt: Statement<any[]>; // eslint-disable-line @typescript-eslint/no-explicit-any, max-len
 
   beforeEach(() => {
     readHabitId = addHabit(db, 'read', '2023-01-17').id;
