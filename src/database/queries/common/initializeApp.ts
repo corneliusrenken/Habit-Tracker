@@ -40,7 +40,7 @@ export default function initializeApp(database: Database, date: string) {
         date,
       ));
       habitIdsWithVisibleOccurrencesOnPrevDate.forEach((id) => {
-        occurrencesGroupedByDate[date][id] = { visible: 1, complete: 0 };
+        occurrencesGroupedByDate[date][id] = { visible: true, complete: false };
       });
     }
 

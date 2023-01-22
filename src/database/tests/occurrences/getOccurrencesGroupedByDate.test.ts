@@ -38,8 +38,8 @@ test('returns a single occurrence correctly', () => {
   expect(occurrences).toEqual({
     '2023-01-17': {
       [exerciseHabitId]: {
-        complete: 0,
-        visible: 1,
+        complete: false,
+        visible: true,
       },
     },
   });
@@ -53,12 +53,12 @@ test('returns multiple occurrences on the same date correctly', () => {
   expect(occurrences).toEqual({
     '2023-01-17': {
       [exerciseHabitId]: {
-        complete: 0,
-        visible: 1,
+        complete: false,
+        visible: true,
       },
       [readHabitId]: {
-        complete: 0,
-        visible: 1,
+        complete: false,
+        visible: true,
       },
     },
   });
@@ -72,14 +72,14 @@ test('returns multiple occurrences on the different dates correctly', () => {
   expect(occurrences).toEqual({
     '2023-01-17': {
       [exerciseHabitId]: {
-        complete: 0,
-        visible: 1,
+        complete: false,
+        visible: true,
       },
     },
     '2023-01-18': {
       [readHabitId]: {
-        complete: 0,
-        visible: 1,
+        complete: false,
+        visible: true,
       },
     },
   });

@@ -3,8 +3,8 @@ import { Database } from 'better-sqlite3';
 export default function getOccurrencesGroupedByDate(database: Database): {
   [date: string]: {
     [habitId: string]: {
-      visible: 1 | 0;
-      complete: 1 | 0;
+      visible: boolean;
+      complete: boolean;
     };
   };
 } {
@@ -20,5 +20,20 @@ export default function getOccurrencesGroupedByDate(database: Database): {
     FROM occurrences_grouped_by_dates
   `);
 
-  return JSON.parse(getOccurrencesGroupedByDateStmt.get().dates);
+  const occurrencesGroupedByDate = JSON.parse(getOccurrencesGroupedByDateStmt.get().dates);
+
+  // transform 1 / 0 values into true / false
+  const dates = Object.keys(occurrencesGroupedByDate);
+
+  dates.forEach((date) => {
+    const habitIds = Object.keys(occurrencesGroupedByDate[date]);
+
+    habitIds.forEach((habitId) => {
+      const { visible, complete } = occurrencesGroupedByDate[date][habitId];
+      occurrencesGroupedByDate[date][habitId].visible = Boolean(visible);
+      occurrencesGroupedByDate[date][habitId].complete = Boolean(complete);
+    });
+  });
+
+  return occurrencesGroupedByDate;
 }

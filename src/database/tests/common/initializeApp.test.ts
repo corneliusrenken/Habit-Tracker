@@ -97,14 +97,14 @@ describe('if the date passed into the function doesn\'t already have a correspon
       ],
       occurrencesGroupedByDate: {
         '2023-01-20': {
-          1: { visible: 1, complete: 0 },
-          2: { visible: 1, complete: 1 },
-          3: { visible: 0, complete: 1 },
-          4: { visible: 0, complete: 0 },
+          1: { visible: true, complete: false },
+          2: { visible: true, complete: true },
+          3: { visible: false, complete: true },
+          4: { visible: false, complete: false },
         },
         '2023-01-21': {
-          1: { visible: 1, complete: 0 },
-          2: { visible: 1, complete: 0 },
+          1: { visible: true, complete: false },
+          2: { visible: true, complete: false },
         },
       },
       streaks: {
@@ -135,10 +135,10 @@ describe('if the date passed into the function already has a corresponding day e
       ],
       occurrencesGroupedByDate: {
         '2023-01-20': {
-          1: { visible: 1, complete: 0 },
-          2: { visible: 1, complete: 1 },
-          3: { visible: 0, complete: 1 },
-          4: { visible: 0, complete: 0 },
+          1: { visible: true, complete: false },
+          2: { visible: true, complete: true },
+          3: { visible: false, complete: true },
+          4: { visible: false, complete: false },
         },
       },
       streaks: {
