@@ -3,7 +3,7 @@ import { Database } from 'better-sqlite3';
 /**
  * @param date "YYYY-MM-DD"
  */
-export default function addOccurrences(database: Database, date: string, habitIds: number[]) {
+export default function addOccurrences(database: Database, habitIds: number[], date: string) {
   if (habitIds.length === 0) return;
 
   const insertOccurrencesStmt = database.prepare(`

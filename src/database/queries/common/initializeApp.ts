@@ -36,8 +36,8 @@ export default function initializeApp(database: Database, date: string) {
 
       functionsToRunInTransaction.push(() => addOccurrences(
         database,
-        date,
         habitIdsWithVisibleOccurrencesOnPrevDate,
+        date,
       ));
       habitIdsWithVisibleOccurrencesOnPrevDate.forEach((id) => {
         occurrencesGroupedByDate[date][id] = { visible: 1, complete: 0 };

@@ -3,7 +3,7 @@ import { Database } from 'better-sqlite3';
 /**
  * @param date "YYYY-MM-DD"
  */
-export default function deleteOccurrence(database: Database, date: string, habitId: number) {
+export default function deleteOccurrence(database: Database, habitId: number, date: string) {
   const getOccurrenceStmt = database.prepare(`
     SELECT occurrences.id
     FROM occurrences

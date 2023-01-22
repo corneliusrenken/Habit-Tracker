@@ -32,7 +32,7 @@ test('returns an empty object if no occurrences exist', () => {
 });
 
 test('returns a single occurrence correctly', () => {
-  addOccurrences(db, '2023-01-17', [exerciseHabitId]);
+  addOccurrences(db, [exerciseHabitId], '2023-01-17');
 
   const occurrences = getOccurrencesGroupedByDate(db);
   expect(occurrences).toEqual({
@@ -46,8 +46,8 @@ test('returns a single occurrence correctly', () => {
 });
 
 test('returns multiple occurrences on the same date correctly', () => {
-  addOccurrences(db, '2023-01-17', [exerciseHabitId]);
-  addOccurrences(db, '2023-01-17', [readHabitId]);
+  addOccurrences(db, [exerciseHabitId], '2023-01-17');
+  addOccurrences(db, [readHabitId], '2023-01-17');
 
   const occurrences = getOccurrencesGroupedByDate(db);
   expect(occurrences).toEqual({
@@ -65,8 +65,8 @@ test('returns multiple occurrences on the same date correctly', () => {
 });
 
 test('returns multiple occurrences on the different dates correctly', () => {
-  addOccurrences(db, '2023-01-17', [exerciseHabitId]);
-  addOccurrences(db, '2023-01-18', [readHabitId]);
+  addOccurrences(db, [exerciseHabitId], '2023-01-17');
+  addOccurrences(db, [readHabitId], '2023-01-18');
 
   const occurrences = getOccurrencesGroupedByDate(db);
   expect(occurrences).toEqual({

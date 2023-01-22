@@ -38,7 +38,7 @@ test('habit\'s oldest occurrence value is null if a habit has no related occurre
 });
 
 test('habit\'s oldest occurrence value is all related occurrences are not visible', () => {
-  addOccurrences(db, '2023-01-17', [exerciseHabitId]);
+  addOccurrences(db, [exerciseHabitId], '2023-01-17');
 
   let occurrences = getOldestVisibleOccurrenceDates(db);
   expect(occurrences[exerciseHabitId]).toBe('2023-01-17');
@@ -49,20 +49,20 @@ test('habit\'s oldest occurrence value is all related occurrences are not visibl
 });
 
 test('returns the oldest occurrence for a habit with a single visible occurrence', () => {
-  addOccurrences(db, '2023-01-17', [exerciseHabitId]);
+  addOccurrences(db, [exerciseHabitId], '2023-01-17');
   const occurrences = getOldestVisibleOccurrenceDates(db);
   expect(occurrences[exerciseHabitId]).toBe('2023-01-17');
 });
 
 test('returns the oldest occurrence for a habit with a multiple visible occurrences', () => {
-  addOccurrences(db, '2023-01-18', [exerciseHabitId]);
-  addOccurrences(db, '2023-01-19', [exerciseHabitId]);
+  addOccurrences(db, [exerciseHabitId], '2023-01-18');
+  addOccurrences(db, [exerciseHabitId], '2023-01-19');
   const occurrences = getOldestVisibleOccurrenceDates(db);
   expect(occurrences[exerciseHabitId]).toBe('2023-01-18');
 });
 
 test('both complete or incomplete occurrences count as an oldest occurrence', () => {
-  addOccurrences(db, '2023-01-17', [exerciseHabitId]);
+  addOccurrences(db, [exerciseHabitId], '2023-01-17');
 
   updateOccurrence(db, exerciseHabitId, '2023-01-17', { complete: true });
   let occurrences = getOldestVisibleOccurrenceDates(db);
@@ -78,9 +78,9 @@ test('returns oldest occurrences for multiple habits', () => {
   const readHabitId = Number(addOnlyHabitStmt.run('read', 1).lastInsertRowid);
   const sleepHabitId = Number(addOnlyHabitStmt.run('sleep', 2).lastInsertRowid);
 
-  addOccurrences(db, '2023-01-19', [exerciseHabitId]);
-  addOccurrences(db, '2023-01-17', [readHabitId]);
-  addOccurrences(db, '2023-01-19', [readHabitId]);
+  addOccurrences(db, [exerciseHabitId], '2023-01-19');
+  addOccurrences(db, [readHabitId], '2023-01-17');
+  addOccurrences(db, [readHabitId], '2023-01-19');
 
   const occurrences = getOldestVisibleOccurrenceDates(db);
   expect(occurrences).toEqual({

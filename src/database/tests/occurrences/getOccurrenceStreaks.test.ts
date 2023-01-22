@@ -37,7 +37,7 @@ test('returns an empty object if no habits exist', () => {
 
 test('ignores occurrences that happened after the passed date', () => {
   addDay(db, '2024-01-19');
-  addOccurrences(db, '2024-01-19', [exerciseHabitId]);
+  addOccurrences(db, [exerciseHabitId], '2024-01-19');
   updateOccurrence(db, exerciseHabitId, '2024-01-19', { complete: true });
 
   let occurrences = getOccurrenceStreaks(db, '2023-01-19');
@@ -54,7 +54,7 @@ test('ignores occurrences that happened after the passed date', () => {
 });
 
 test('ignores occurrences that are not visible', () => {
-  addOccurrences(db, '2023-01-19', [exerciseHabitId]);
+  addOccurrences(db, [exerciseHabitId], '2023-01-19');
   updateOccurrence(db, exerciseHabitId, '2023-01-19', { complete: true });
 
   let occurrences = getOccurrenceStreaks(db, '2023-01-19');
@@ -75,30 +75,30 @@ describe('maximum streak', () => {
   });
 
   test('ignores incomplete occurrences when calculating maximum streak', () => {
-    addOccurrences(db, '2023-01-19', [exerciseHabitId]);
+    addOccurrences(db, [exerciseHabitId], '2023-01-19');
     const occurrences = getOccurrenceStreaks(db, '2023-01-19');
     expect(occurrences[exerciseHabitId].maximum).toBe(0);
   });
 
   test('returns the correct maximum streak if it\'s the current streak', () => {
-    addOccurrences(db, '2023-01-18', [exerciseHabitId]);
+    addOccurrences(db, [exerciseHabitId], '2023-01-18');
     updateOccurrence(db, exerciseHabitId, '2023-01-18', { complete: true });
     let occurrences = getOccurrenceStreaks(db, '2023-01-19');
     expect(occurrences[exerciseHabitId].maximum).toBe(1);
 
-    addOccurrences(db, '2023-01-19', [exerciseHabitId]);
+    addOccurrences(db, [exerciseHabitId], '2023-01-19');
     updateOccurrence(db, exerciseHabitId, '2023-01-19', { complete: true });
     occurrences = getOccurrenceStreaks(db, '2023-01-19');
     expect(occurrences[exerciseHabitId].maximum).toBe(2);
   });
 
   test('returns the correct maximum streak when a shorter one occurred previously', () => {
-    addOccurrences(db, '2023-01-01', [exerciseHabitId]);
-    addOccurrences(db, '2023-01-02', [exerciseHabitId]);
+    addOccurrences(db, [exerciseHabitId], '2023-01-01');
+    addOccurrences(db, [exerciseHabitId], '2023-01-02');
 
-    addOccurrences(db, '2023-01-17', [exerciseHabitId]);
-    addOccurrences(db, '2023-01-18', [exerciseHabitId]);
-    addOccurrences(db, '2023-01-19', [exerciseHabitId]);
+    addOccurrences(db, [exerciseHabitId], '2023-01-17');
+    addOccurrences(db, [exerciseHabitId], '2023-01-18');
+    addOccurrences(db, [exerciseHabitId], '2023-01-19');
 
     updateOccurrence(db, exerciseHabitId, '2023-01-01', { complete: true });
     updateOccurrence(db, exerciseHabitId, '2023-01-02', { complete: true });
@@ -112,12 +112,12 @@ describe('maximum streak', () => {
   });
 
   test('returns the correct maximum streak when a shorter one occurred after', () => {
-    addOccurrences(db, '2023-01-01', [exerciseHabitId]);
-    addOccurrences(db, '2023-01-02', [exerciseHabitId]);
-    addOccurrences(db, '2023-01-03', [exerciseHabitId]);
+    addOccurrences(db, [exerciseHabitId], '2023-01-01');
+    addOccurrences(db, [exerciseHabitId], '2023-01-02');
+    addOccurrences(db, [exerciseHabitId], '2023-01-03');
 
-    addOccurrences(db, '2023-01-18', [exerciseHabitId]);
-    addOccurrences(db, '2023-01-19', [exerciseHabitId]);
+    addOccurrences(db, [exerciseHabitId], '2023-01-18');
+    addOccurrences(db, [exerciseHabitId], '2023-01-19');
 
     updateOccurrence(db, exerciseHabitId, '2023-01-01', { complete: true });
     updateOccurrence(db, exerciseHabitId, '2023-01-02', { complete: true });
@@ -138,30 +138,30 @@ describe('current streak', () => {
   });
 
   test('a current streak can end on the day before the passed date, as it\'s still possible to continue the streak', () => {
-    addOccurrences(db, '2023-01-18', [exerciseHabitId]);
+    addOccurrences(db, [exerciseHabitId], '2023-01-18');
     updateOccurrence(db, exerciseHabitId, '2023-01-18', { complete: true });
     const occurrences = getOccurrenceStreaks(db, '2023-01-19');
     expect(occurrences[exerciseHabitId].current).toBe(1);
   });
 
   test('a current streak can end on the passed date', () => {
-    addOccurrences(db, '2023-01-19', [exerciseHabitId]);
+    addOccurrences(db, [exerciseHabitId], '2023-01-19');
     updateOccurrence(db, exerciseHabitId, '2023-01-19', { complete: true });
     const occurrences = getOccurrenceStreaks(db, '2023-01-19');
     expect(occurrences[exerciseHabitId].current).toBe(1);
   });
 
   test('ignores streaks that did not end on or 1 day before the passed date', () => {
-    addOccurrences(db, '2023-01-17', [exerciseHabitId]);
+    addOccurrences(db, [exerciseHabitId], '2023-01-17');
     updateOccurrence(db, exerciseHabitId, '2023-01-17', { complete: true });
     const occurrences = getOccurrenceStreaks(db, '2023-01-19');
     expect(occurrences[exerciseHabitId].current).toBe(0);
   });
 
   test('ignores incomplete occurrences when calculating current streak', () => {
-    addOccurrences(db, '2023-01-17', [exerciseHabitId]);
-    addOccurrences(db, '2023-01-18', [exerciseHabitId]);
-    addOccurrences(db, '2023-01-19', [exerciseHabitId]);
+    addOccurrences(db, [exerciseHabitId], '2023-01-17');
+    addOccurrences(db, [exerciseHabitId], '2023-01-18');
+    addOccurrences(db, [exerciseHabitId], '2023-01-19');
     let occurrences = getOccurrenceStreaks(db, '2023-01-19');
     expect(occurrences[exerciseHabitId].current).toBe(0);
 
@@ -184,22 +184,22 @@ test('produces the correct data when getting streaks for 2 habits', () => {
   const readHabitId = Number(addOnlyHabitStmt.run('read', 1).lastInsertRowid);
   const sleepHabitId = Number(addOnlyHabitStmt.run('sleep', 2).lastInsertRowid);
 
-  addOccurrences(db, '2023-01-01', [exerciseHabitId]);
+  addOccurrences(db, [exerciseHabitId], '2023-01-01');
   updateOccurrence(db, exerciseHabitId, '2023-01-01', { complete: true });
-  addOccurrences(db, '2023-01-02', [exerciseHabitId]);
+  addOccurrences(db, [exerciseHabitId], '2023-01-02');
   updateOccurrence(db, exerciseHabitId, '2023-01-02', { complete: true });
-  addOccurrences(db, '2023-01-03', [exerciseHabitId]);
+  addOccurrences(db, [exerciseHabitId], '2023-01-03');
   updateOccurrence(db, exerciseHabitId, '2023-01-03', { complete: true });
-  addOccurrences(db, '2023-01-18', [exerciseHabitId]);
+  addOccurrences(db, [exerciseHabitId], '2023-01-18');
   updateOccurrence(db, exerciseHabitId, '2023-01-18', { complete: true });
-  addOccurrences(db, '2023-01-19', [exerciseHabitId]);
+  addOccurrences(db, [exerciseHabitId], '2023-01-19');
   updateOccurrence(db, exerciseHabitId, '2023-01-19', { complete: true });
 
   addDay(db, '2022-01-31');
   addDay(db, '2022-02-01');
-  addOccurrences(db, '2022-01-31', [readHabitId]);
+  addOccurrences(db, [readHabitId], '2022-01-31');
   updateOccurrence(db, readHabitId, '2022-01-31', { complete: true });
-  addOccurrences(db, '2022-02-01', [readHabitId]);
+  addOccurrences(db, [readHabitId], '2022-02-01');
   updateOccurrence(db, readHabitId, '2022-02-01', { complete: true });
 
   const occurrences = getOccurrenceStreaks(db, '2023-01-19');
