@@ -1,5 +1,6 @@
 import createTables from './common/createTables';
 import dropUniqueOrderInListIndex from './common/dropUniqueOrderInListIndex';
+import initializeApp from './common/initializeApp';
 import openDatabase from './common/openDatabase';
 import setUniqueOrderInListIndex from './common/setUniqueOrderInListIndex';
 import addDay from './days/addDay';
@@ -17,6 +18,7 @@ import updateOccurrence from './occurrences/updateOccurrence';
 export {
   createTables,
   dropUniqueOrderInListIndex,
+  initializeApp,
   openDatabase,
   setUniqueOrderInListIndex,
   addDay,
