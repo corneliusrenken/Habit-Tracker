@@ -11,7 +11,7 @@ let db: Database.Database;
 let originalHabit: {
   id: number;
   name: string;
-  order_in_list: number;
+  orderInList: number;
 };
 
 beforeEach(() => {
@@ -55,7 +55,7 @@ describe('updating name', () => {
     const updatedHabit = getHabitByIdStmt.get(originalHabit.id);
 
     expect(updatedHabit.name).toBe('read');
-    expect(updatedHabit.order_in_list).toBe(originalHabit.order_in_list);
+    expect(updatedHabit.order_in_list).toBe(originalHabit.orderInList);
   });
 });
 

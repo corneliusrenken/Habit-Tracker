@@ -6,7 +6,7 @@ import { Database } from 'better-sqlite3';
 export default function addHabit(database: Database, name: string, date: string): {
   id: number;
   name: string;
-  order_in_list: number;
+  orderInList: number;
 } {
   const getDayStmt = database.prepare('SELECT id FROM days WHERE date = ?');
   const day = getDayStmt.get(date);
@@ -18,7 +18,7 @@ export default function addHabit(database: Database, name: string, date: string)
     INSERT INTO habits (name, order_in_list)
     VALUES
       (?, (SELECT count(id) FROM habits))
-    RETURNING id, name, order_in_list
+    RETURNING id, name, order_in_list AS orderInList
   `);
 
   const addOccurrenceStmt = database.prepare(`

@@ -67,7 +67,7 @@ test('adding a habit returns an object with data that matches the data in the da
   const habitInDb = getHabitsStmt.get();
   expect(habit.id).toBe(habitInDb.id);
   expect(habit.name).toBe(habitInDb.name);
-  expect(habit.order_in_list).toBe(habitInDb.order_in_list);
+  expect(habit.orderInList).toBe(habitInDb.order_in_list);
 });
 
 test('a new habit will automatically get an order_in_list assigned, equal to how many habits existed before adding the new habit', () => {
@@ -75,9 +75,9 @@ test('a new habit will automatically get an order_in_list assigned, equal to how
   const exerciseHabit = addHabit(db, 'exercise', '2023-01-17');
   const readHabit = addHabit(db, 'run', '2023-01-17');
   const sleepHabit = addHabit(db, 'sleep', '2023-01-17');
-  expect(exerciseHabit.order_in_list).toBe(0);
-  expect(readHabit.order_in_list).toBe(1);
-  expect(sleepHabit.order_in_list).toBe(2);
+  expect(exerciseHabit.orderInList).toBe(0);
+  expect(readHabit.orderInList).toBe(1);
+  expect(sleepHabit.orderInList).toBe(2);
 });
 
 test('when adding a habit, a visible, but incomplete occurrence is created for that habit on the date that was passed into the addHabit function', () => {

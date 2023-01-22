@@ -28,7 +28,7 @@ test('returns an empty array if no  habits exist', () => {
   expect(habits.length).toBe(0);
 });
 
-test('returns an array of objects, each containing the habit\'s id, name, and order_in_list', () => {
+test('returns an array of objects, each containing the habit\'s id, name, and orderInList', () => {
   addHabit(db, 'exercise', '2023-01-17');
   addHabit(db, 'read', '2023-01-17');
   addHabit(db, 'sleep', '2023-01-17');
@@ -36,11 +36,11 @@ test('returns an array of objects, each containing the habit\'s id, name, and or
   habits.forEach((habit) => {
     expect(habit).toHaveProperty('id');
     expect(habit).toHaveProperty('name');
-    expect(habit).toHaveProperty('order_in_list');
+    expect(habit).toHaveProperty('orderInList');
   });
 });
 
-test('returns habits in ascending \'order_in_list\' order', () => {
+test('returns habits in ascending \'orderInList\' order', () => {
   addHabit(db, 'exercise', '2023-01-17');
   addHabit(db, 'read', '2023-01-17');
   addHabit(db, 'sleep', '2023-01-17');
