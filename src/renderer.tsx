@@ -26,8 +26,17 @@
  * ```
  */
 
-import './index.css';
-import './App';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './globalStyling.css';
+import App from './features/app';
 
-// eslint-disable-next-line no-console
-console.log('👋 This message is being logged by "renderer.js", included via webpack');
+const root = ReactDOM.createRoot(
+  document.getElementById('root') as HTMLElement,
+);
+
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+);
