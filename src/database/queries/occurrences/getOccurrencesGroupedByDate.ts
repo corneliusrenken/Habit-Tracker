@@ -10,10 +10,23 @@ export default function getOccurrencesGroupedByDate(database: Database): {
 } {
   const getOccurrencesGroupedByDateStmt = database.prepare(`
     WITH occurrences_grouped_by_dates AS (
-      SELECT date, json_group_object(habit_id, json_object('visible', visible, 'complete', complete)) AS habit_ids
-      FROM occurrences
-      LEFT JOIN days
-      ON days.id = occurrences.day_id
+      SELECT
+        date,
+        IIF(
+          count(habit_id) = 0,
+          json_object(),
+          (
+            SELECT json_group_object(
+              habit_id,
+              json_object('visible', visible, 'complete', complete)
+            )
+            FROM occurrences
+            WHERE habit_id IS NOT NULL AND occurrences.day_id = d.id
+          )
+        ) AS habit_ids
+      FROM days d
+      LEFT JOIN occurrences o
+      ON d.id = o.day_id
       GROUP BY date
     )
     SELECT json_group_object(date, json(habit_ids)) as dates

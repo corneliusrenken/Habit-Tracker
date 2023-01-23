@@ -46,7 +46,9 @@ test('only deletes the occurrence matching the arguments', () => {
 
   const occurrences = getOccurrencesGroupedByDate(db);
 
-  expect(occurrences).toHaveProperty('2023-01-17');
-  expect(occurrences).not.toHaveProperty('2023-01-18');
-  expect(occurrences).toHaveProperty('2023-01-19');
+  expect(occurrences).toEqual({
+    '2023-01-17': { [exerciseHabitId]: { complete: false, visible: true } },
+    '2023-01-18': {},
+    '2023-01-19': { [exerciseHabitId]: { complete: false, visible: true } },
+  });
 });
