@@ -1,18 +1,23 @@
 import React from 'react';
-import { SelectedOccurrence } from '../../globalTypes';
+import { ListView, SelectedOccurrence } from '../../globalTypes';
 import './dates.css';
 
 type Props = {
+  latchedListView: ListView;
   selectedOccurrences: SelectedOccurrence[];
   todaysIndex: number;
 };
 
-export default function Dates({ selectedOccurrences, todaysIndex }: Props) {
+export default function Dates({ latchedListView, selectedOccurrences, todaysIndex }: Props) {
+  const occurrencesForWeek = latchedListView.name === 'yesterday' && todaysIndex === 6
+    ? selectedOccurrences.slice(selectedOccurrences.length - 14, selectedOccurrences.length - 7)
+    : selectedOccurrences.slice(selectedOccurrences.length - 7);
+
   return (
     <div className="dates-container">
-      {selectedOccurrences.slice(selectedOccurrences.length - 7).map(({ date, done }, index) => {
+      {occurrencesForWeek.map(({ date, complete }, index) => {
         let className = 'date';
-        if (done) className += ' greyed-out';
+        if (complete) className += ' greyed-out';
 
         return (
           <div

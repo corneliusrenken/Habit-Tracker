@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import React from 'react';
 import { SelectedOccurrence } from '../../globalTypes';
 import './occurrences.css';
@@ -23,14 +24,14 @@ export default function Occurrences({ selectedOccurrences, displayed }: Props) {
       className="occurrence-container"
       style={{ height: `${getContainerHeight(selectedOccurrences.length - 7)}px` }}
     >
-      {selectedOccurrences.slice(0, selectedOccurrences.length - 7).map(({ date, done }, index) => {
+      {selectedOccurrences.slice(0, selectedOccurrences.length - 7).map(({ date, complete }, index) => {
         // row for fading out not used atm -- temporary for later development
         const row = displayed
           ? Math.floor((selectedOccurrences.length - index - 1) / 7)
           : Math.floor(index / 7);
 
         let className = 'occurrence';
-        if (done) className += ' greyed-out';
+        if (complete) className += ' greyed-out';
 
         return (
           <div

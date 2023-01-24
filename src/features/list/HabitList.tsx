@@ -1,13 +1,11 @@
 import React from 'react';
-import { Habit, Streaks } from '../../globalTypes';
+import { Habit, OccurrenceData, Streaks } from '../../globalTypes';
 import HabitListItem from './HabitListItem';
 
 type Props = {
   habits: Habit[];
   streaks: Streaks;
-  todaysOccurrences: {
-    [habitId: string]: boolean;
-  };
+  todaysOccurrences: OccurrenceData['dates'][string];
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   updateHabitCompleted: (habitId: number, completed: boolean) => void;
@@ -19,7 +17,7 @@ export default function HabitList({
   return (
     <div>
       {habits.map(({ name, id }, index) => {
-        const completed = todaysOccurrences[id];
+        const completed = todaysOccurrences[id].complete;
         const selected = index === selectedIndex;
 
         return (

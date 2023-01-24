@@ -1,7 +1,7 @@
 import { useCallback } from 'react';
 import {
   addHabit,
-  removeHabit,
+  deleteHabit,
   renameHabit,
   updateHabitCompleted,
   updateHabitOrder,
@@ -18,7 +18,6 @@ import {
 } from '../../globalTypes';
 
 type States = {
-  userId: number;
   dateObject: DateObject;
   dayObject: DayObject;
   latchedListView: ListView;
@@ -35,7 +34,6 @@ type States = {
 
 export default function useApiFunctions(states: States) {
   const {
-    userId,
     dateObject,
     dayObject,
     latchedListView,
@@ -51,7 +49,7 @@ export default function useApiFunctions(states: States) {
   } = states;
 
   const addHabitMemo = useCallback((name: string) => (
-    addHabit(userId, name, dateObject.today.dateString, {
+    addHabit(name, dateObject.today.dateString, {
       habits,
       setHabits,
       occurrenceData,
@@ -67,11 +65,10 @@ export default function useApiFunctions(states: States) {
     setOccurrenceData,
     setStreaks,
     streaks,
-    userId,
   ]);
 
-  const removeHabitMemo = useCallback((habitId: number) => (
-    removeHabit(habitId, {
+  const deleteHabitMemo = useCallback((habitId: number) => (
+    deleteHabit(habitId, {
       habits,
       setHabits,
       selectedIndex,
@@ -134,7 +131,7 @@ export default function useApiFunctions(states: States) {
 
   return {
     addHabit: addHabitMemo,
-    removeHabit: removeHabitMemo,
+    deleteHabit: deleteHabitMemo,
     renameHabit: renameHabitMemo,
     updateHabitCompleted: updateHabitCompletedMemo,
     updateHabitOrder: updateHabitOrderMemo,

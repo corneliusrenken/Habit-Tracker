@@ -38,16 +38,17 @@ export default function getSelectedOccurrences(states: States) {
     || (oldestDate !== null && currentDate.getTime() >= oldestDate.getTime())
   ) {
     const dateString = getCustomDateString(currentDate);
-    let done = false;
+    let complete = false;
     if (occurrenceData.dates[dateString] !== undefined) {
-      const occurrenceValues = Object.values(occurrenceData.dates[dateString]);
-      if (occurrenceValues.length !== 0) {
-        done = latchedOccurrenceView.name === 'history'
-          ? occurrenceValues.every((value) => value === true)
-          : occurrenceData.dates[dateString][latchedOccurrenceView.focusId] === true;
+      if (latchedOccurrenceView.name === 'focus') {
+        complete = occurrenceData.dates[dateString][latchedOccurrenceView.focusId]?.complete;
+      } else {
+        const occurrences = Object.values(occurrenceData.dates[dateString]);
+        // eslint-disable-next-line max-len
+        if (occurrences.length !== 0) complete = occurrences.every((occurence) => occurence.complete);
       }
     }
-    const occurence = { date: Number(dateString.slice(-2)), done };
+    const occurence = { date: Number(dateString.slice(-2)), complete };
     occurences.push(occurence);
     currentDate.setDate(currentDate.getDate() - 1);
   }

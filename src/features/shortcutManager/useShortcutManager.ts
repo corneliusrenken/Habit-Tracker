@@ -29,7 +29,7 @@ type States = {
   setView: (newView: View) => void;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   reorderingList: boolean;
-  removeHabit: (habitId: number) => void;
+  deleteHabit: (habitId: number) => void;
   updateHabitCompleted: (habitId: number, completed: boolean) => void;
   updateHabitVisibility: (habitId: number, visible: boolean) => void;
 };

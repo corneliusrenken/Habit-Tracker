@@ -1,7 +1,7 @@
 export type Habit = {
   id: number;
   name: string;
-  order: number;
+  orderInList: number;
 };
 
 export type OldestOccurrences = {
@@ -10,7 +10,10 @@ export type OldestOccurrences = {
 
 export type OccurrencesByDate = {
   [dateString: string]: {
-    [habitId: string]: boolean;
+    [habitId: string]: {
+      complete: boolean;
+      visible: boolean;
+    };
   };
 };
 
@@ -28,7 +31,7 @@ export type Streaks = {
 
 export type SelectedOccurrence = {
   date: number;
-  done: boolean;
+  complete: boolean;
 };
 
 export type View = { name: 'today' }

@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
-import axios from 'axios';
 import { Habit, ModalContentGenerator } from '../../globalTypes';
 import HabitRemovalConfirmationModalContent from '../habitRemovalConfirmationModalContent';
 
@@ -36,10 +35,7 @@ export default function removeHabit(
         allowTabTraversal={allowTabTraversal}
         setModalContentGenerator={setModalContentGenerator}
         onConfirm={() => {
-          axios({
-            method: 'delete',
-            url: `/api/habits/${habitId}`,
-          });
+          window.electron['delete-habit'](habitId);
 
           const newHabits: Habit[] = habits.filter(({ id }) => id !== habitId);
 

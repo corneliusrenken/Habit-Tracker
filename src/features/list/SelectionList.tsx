@@ -1,5 +1,5 @@
 import React from 'react';
-import { Habit } from '../../globalTypes';
+import { Habit, OccurrenceData } from '../../globalTypes';
 import AddHabitForm from './AddHabitForm';
 import ReorderableList from './ReorderableList';
 import useMemoizedSelectionListItemConstructors from './useMemoizedSelectionListItemConstructors';
@@ -7,9 +7,7 @@ import useMemoizedSelectionListItemConstructors from './useMemoizedSelectionList
 type Props = {
   allowTabTraversal: boolean;
   habits: Habit[];
-  todaysOccurrences: {
-    [habitId: string]: boolean;
-  };
+  todaysOccurrences: OccurrenceData['dates'][string];
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   inInput: boolean;
@@ -17,7 +15,7 @@ type Props = {
   reorderingList: boolean;
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
   addHabit: (name: string) => Promise<void>;
-  removeHabit: (habitId: number) => void;
+  deleteHabit: (habitId: number) => void;
   renameHabit: (habitId: number, name: string) => void;
   updateHabitOrder: (habitId: number, newOrder: number) => void;
   updateHabitVisibility: (habitId: number, visible: boolean) => void;
@@ -34,7 +32,7 @@ export default function SelectionList({
   reorderingList,
   setReorderingList,
   addHabit,
-  removeHabit,
+  deleteHabit,
   renameHabit,
   updateHabitOrder,
   updateHabitVisibility,
@@ -49,7 +47,7 @@ export default function SelectionList({
     setInInput,
     reorderingList,
     setReorderingList,
-    removeHabit,
+    deleteHabit,
     renameHabit,
     updateHabitVisibility,
   });

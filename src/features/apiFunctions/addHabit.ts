@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { Habit, OccurrenceData, Streaks } from '../../globalTypes';
 
 type States = {
@@ -11,7 +10,6 @@ type States = {
 };
 
 export default async function addHabit(
-  userId: number,
   name: string,
   todaysDateString: string,
   states: States,
@@ -20,19 +18,7 @@ export default async function addHabit(
     habits, setHabits, streaks, setStreaks, occurrenceData, setOccurrenceData,
   } = states;
 
-  if (!habits || !occurrenceData) throw new Error('states should not be undefined');
-
-  const { data } = await axios({
-    method: 'post',
-    url: '/api/habits',
-    data: {
-      userId,
-      name,
-      dateString: todaysDateString,
-    },
-  });
-
-  const createdHabit = data as Habit;
+  const createdHabit = await window.electron['add-habit'](name, todaysDateString);
 
   const newHabits: Habit[] = [
     ...habits,
@@ -53,7 +39,10 @@ export default async function addHabit(
       ...occurrenceData.dates,
       [todaysDateString]: {
         ...occurrenceData.dates[todaysDateString],
-        [createdHabit.id]: false,
+        [createdHabit.id]: {
+          complete: false,
+          visible: true,
+        },
       },
     },
   };

@@ -18,6 +18,6 @@ export default function getSelectedStreaks(states: States) {
   if (!occurrenceData || !streaks) return {};
 
   return latchedListView.name === 'yesterday'
-    ? getYesterdaysStreaks(dateObject.today.dateString, { occurrenceData, streaks })
+    ? getYesterdaysStreaks(dateObject.yesterday.dateString, occurrenceData)
     : streaks;
 }

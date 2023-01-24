@@ -22,10 +22,10 @@ import Modal from '../modal';
 import useShortcutManager from '../shortcutManager/useShortcutManager';
 
 export default function App() {
-  const userId = 1;
   // https://medium.com/swlh/how-to-store-a-function-with-the-usestate-hook-in-react-8a88dd4eede1
   // using a function in useState makes it's initializer only run once instead of on every cycle
   const [dateObject] = useState(() => getDateObject(6));
+  // eslint-disable-next-line @typescript-eslint/naming-convention
   const [view, _setView] = useState<View>({ name: 'today' });
   const [latchedListView, setLatchedListView] = useState<ListView>({ name: 'today' });
   const [latchedOccurrenceView, setLatchedOccurrenceView] = useState<OccurrenceView>({ name: 'history' });
@@ -49,7 +49,7 @@ export default function App() {
   };
 
   useEffect(() => {
-    initialize(userId, dateObject.today.dateString, {
+    initialize(dateObject.today.dateString, {
       setView,
       setHabits,
       setOccurrenceData,
@@ -79,13 +79,12 @@ export default function App() {
 
   const {
     addHabit,
-    removeHabit,
+    deleteHabit,
     renameHabit,
     updateHabitCompleted,
     updateHabitOrder,
     updateHabitVisibility,
   } = useApiFunctions({
-    userId,
     dateObject,
     dayObject,
     latchedListView,
@@ -116,7 +115,7 @@ export default function App() {
     view,
     modalContentGenerator,
     addHabit,
-    removeHabit,
+    deleteHabit,
     renameHabit,
     updateHabitCompleted,
     updateHabitOrder,
@@ -137,7 +136,7 @@ export default function App() {
     setView,
     setSelectedIndex,
     reorderingList,
-    removeHabit,
+    deleteHabit,
     updateHabitCompleted,
     updateHabitVisibility,
   });
