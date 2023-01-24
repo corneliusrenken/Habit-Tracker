@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { OccurrenceData, Streaks } from '../../globalTypes';
 import recalculateStreak from './recalculateStreak';
 
@@ -21,46 +20,39 @@ export default function updateHabitVisibility(
 
   if (!streaks || !occurrenceData) throw new Error('states should not be undefined');
 
-  const newTodaysOccurrencesToday = { ...occurrenceData.dates[todayDateString] };
-
-  const oldOldestOccurrence = occurrenceData.oldest[habitId];
-  let newOldestOccurrence: string | null = oldOldestOccurrence;
+  const todaysOccurrences = { ...occurrenceData.dates[todayDateString] };
+  let habitsOldestOccurrence = occurrenceData.oldest[habitId];
 
   if (visible) {
-    axios({
-      method: 'post',
-      url: '/api/occurrences',
-      data: {
-        occurrences: [
-          { habitId, completed: false, dateString: todayDateString },
-        ],
-      },
-    });
-
-    newTodaysOccurrencesToday[habitId] = false;
-  } else {
-    axios({
-      method: 'delete',
-      url: `/api/occurrences/${habitId}/${todayDateString}`,
-    });
-
-    if (newTodaysOccurrencesToday[habitId] === true) {
-      if (oldOldestOccurrence === todayDateString) {
-        newOldestOccurrence = null;
-      }
+    if (todaysOccurrences[habitId] === undefined) {
+      window.electron['add-occurrence'](habitId, todayDateString);
+      todaysOccurrences[habitId] = { visible: true, complete: false };
+    } else {
+      window.electron['update-occurrence'](habitId, todayDateString, { visible: true });
+      todaysOccurrences[habitId] = { ...todaysOccurrences[habitId], visible: true };
     }
 
-    delete newTodaysOccurrencesToday[habitId];
+    if (habitsOldestOccurrence === null) habitsOldestOccurrence = todayDateString;
+  } else {
+    if (todaysOccurrences[habitId].complete) {
+      window.electron['update-occurrence'](habitId, todayDateString, { visible: false });
+      todaysOccurrences[habitId].visible = false;
+    } else {
+      window.electron['delete-occurrence'](habitId, todayDateString);
+      delete todaysOccurrences[habitId];
+    }
+
+    if (habitsOldestOccurrence === todayDateString) habitsOldestOccurrence = null;
   }
 
   const newOccurrenceData: OccurrenceData = {
     oldest: {
       ...occurrenceData.oldest,
-      [habitId]: newOldestOccurrence,
+      [habitId]: habitsOldestOccurrence,
     },
     dates: {
       ...occurrenceData.dates,
-      [todayDateString]: newTodaysOccurrencesToday,
+      [todayDateString]: todaysOccurrences,
     },
   };
 

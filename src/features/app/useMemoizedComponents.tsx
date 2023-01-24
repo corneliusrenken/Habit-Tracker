@@ -30,7 +30,7 @@ type States = {
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
   modalContentGenerator: ModalContentGenerator | undefined;
   addHabit: (name: string) => Promise<void>;
-  removeHabit: (habitId: number) => void;
+  deleteHabit: (habitId: number) => void;
   renameHabit: (habitId: number, name: string) => void;
   updateHabitCompleted: (habitId: number, completed: boolean) => void;
   updateHabitOrder: (habitId: number, newOrder: number) => void;
@@ -54,7 +54,7 @@ export default function useMemoizedComponents(states: States) {
     setReorderingList,
     modalContentGenerator,
     addHabit,
-    removeHabit,
+    deleteHabit,
     renameHabit,
     updateHabitCompleted,
     updateHabitOrder,
@@ -77,10 +77,11 @@ export default function useMemoizedComponents(states: States) {
 
   const dates = useMemo(() => (
     <Dates
+      latchedListView={latchedListView}
       todaysIndex={dayObject.weekDayIndex}
       selectedOccurrences={selectedOccurrences}
     />
-  ), [dayObject.weekDayIndex, selectedOccurrences]);
+  ), [latchedListView, dayObject.weekDayIndex, selectedOccurrences]);
 
   const list = useMemo(() => (
     occurrenceData !== undefined
@@ -98,7 +99,7 @@ export default function useMemoizedComponents(states: States) {
           reorderingList={reorderingList}
           setReorderingList={setReorderingList}
           addHabit={addHabit}
-          removeHabit={removeHabit}
+          deleteHabit={deleteHabit}
           renameHabit={renameHabit}
           updateHabitCompleted={updateHabitCompleted}
           updateHabitOrder={updateHabitOrder}
@@ -120,7 +121,7 @@ export default function useMemoizedComponents(states: States) {
     setReorderingList,
     setSelectedIndex,
     addHabit,
-    removeHabit,
+    deleteHabit,
     renameHabit,
     updateHabitCompleted,
     updateHabitOrder,

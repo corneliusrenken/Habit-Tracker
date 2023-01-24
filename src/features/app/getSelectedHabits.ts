@@ -27,5 +27,5 @@ export default function getSelectedHabits(states: States) {
 
   return latchedListView.name === 'selection'
     ? habits
-    : habits.filter(({ id }) => dayOccurrences[id] !== undefined);
+    : habits.filter(({ id }) => dayOccurrences[id]?.visible);
 }

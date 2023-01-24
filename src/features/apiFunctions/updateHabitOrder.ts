@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { Habit } from '../../globalTypes';
 
 type States = {
@@ -9,49 +8,51 @@ type States = {
 
 export default function updateHabitOrder(
   habitId: number,
-  newOrder: number,
+  newOrderInList: number,
   states: States,
 ) {
   const { habits, setHabits, setSelectedIndex } = states;
 
   if (!habits) throw new Error('states should not be undefined');
 
-  const oldOrder = habits.find(({ id }) => id === habitId)?.order;
+  const oldOrderInList = habits.find(({ id }) => id === habitId)?.orderInList;
 
-  if (oldOrder === undefined) throw new Error('habit with this id doesn\'t exist');
+  if (oldOrderInList === undefined) throw new Error('habit with this id doesn\'t exist');
 
-  if (oldOrder === newOrder) return;
+  if (oldOrderInList === newOrderInList) return;
 
-  if (newOrder < 0 || newOrder >= habits.length) throw new Error('new order value out of range');
+  if (newOrderInList < 0 || newOrderInList >= habits.length) throw new Error('new order value out of range');
 
-  axios({
-    method: 'patch',
-    url: `/api/habits/${habitId}`,
-    data: {
-      order: newOrder,
-    },
-  });
+  window.electron['update-habit'](habitId, { orderInList: newOrderInList });
 
-  const orderDifference = newOrder - oldOrder;
+  const orderDifference = newOrderInList - oldOrderInList;
 
   let newHabits: Habit[] = new Array(habits.length);
 
   habits.forEach((habit) => {
-    const { order } = habit;
+    const { orderInList } = habit;
 
-    if (order === oldOrder) {
-      newHabits[newOrder] = habit;
-    } else if (orderDifference > 0 && order > oldOrder && order <= newOrder) {
-      newHabits[order - 1] = habit;
-    } else if (orderDifference < 0 && order < oldOrder && order >= newOrder) {
-      newHabits[order + 1] = habit;
+    if (orderInList === oldOrderInList) {
+      newHabits[newOrderInList] = habit;
+    } else if (
+      orderDifference > 0
+      && orderInList > oldOrderInList
+      && orderInList <= newOrderInList
+    ) {
+      newHabits[orderInList - 1] = habit;
+    } else if (
+      orderDifference < 0
+      && orderInList < oldOrderInList
+      && orderInList >= newOrderInList
+    ) {
+      newHabits[orderInList + 1] = habit;
     } else {
-      newHabits[order] = habit;
+      newHabits[orderInList] = habit;
     }
   });
 
   newHabits = newHabits.map((habit, index) => ({ ...habit, order: index }));
 
   setHabits(newHabits);
-  setSelectedIndex(newOrder);
+  setSelectedIndex(newOrderInList);
 }

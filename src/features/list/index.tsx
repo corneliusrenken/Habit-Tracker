@@ -1,5 +1,10 @@
 import React from 'react';
-import { Habit, ListView, Streaks } from '../../globalTypes';
+import {
+  Habit,
+  ListView,
+  OccurrenceData,
+  Streaks,
+} from '../../globalTypes';
 import HabitList from './HabitList';
 import SelectionList from './SelectionList';
 import './list.css';
@@ -8,9 +13,7 @@ type Props = {
   allowTabTraversal: boolean;
   selectedHabits: Habit[];
   streaks: Streaks;
-  todaysOccurrences: {
-    [habitId: string]: boolean;
-  };
+  todaysOccurrences: OccurrenceData['dates'][string];
   latchedListView: ListView;
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
@@ -19,7 +22,7 @@ type Props = {
   reorderingList: boolean;
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
   addHabit: (name: string) => Promise<void>;
-  removeHabit: (habitId: number) => void;
+  deleteHabit: (habitId: number) => void;
   renameHabit: (habitId: number, name: string) => void;
   updateHabitCompleted: (habitId: number, completed: boolean) => void;
   updateHabitOrder: (habitId: number, newOrder: number) => void;
@@ -39,7 +42,7 @@ export default function List({
   reorderingList,
   setReorderingList,
   addHabit,
-  removeHabit,
+  deleteHabit,
   renameHabit,
   updateHabitCompleted,
   updateHabitOrder,
@@ -68,7 +71,7 @@ export default function List({
           reorderingList={reorderingList}
           setReorderingList={setReorderingList}
           addHabit={addHabit}
-          removeHabit={removeHabit}
+          deleteHabit={deleteHabit}
           renameHabit={renameHabit}
           updateHabitOrder={updateHabitOrder}
           updateHabitVisibility={updateHabitVisibility}

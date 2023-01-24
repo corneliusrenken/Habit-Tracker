@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { Habit } from '../../globalTypes';
 
 type States = {
@@ -15,13 +14,7 @@ export default function renameHabit(
 
   if (!habits) throw new Error('states should not be undefined');
 
-  axios({
-    method: 'patch',
-    url: `/api/habits/${habitId}`,
-    data: {
-      name,
-    },
-  });
+  window.electron['update-habit'](habitId, { name });
 
   const newHabits: Habit[] = habits.map((habit) => {
     if (habit.id !== habitId) return habit;

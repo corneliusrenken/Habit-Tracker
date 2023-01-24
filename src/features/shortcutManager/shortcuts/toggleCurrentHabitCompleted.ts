@@ -21,6 +21,7 @@ export default function toggleCurrentHabitCompleted(states: States) {
 
   const selectedHabit = selectedHabits.find((habit, index) => index === selectedIndex);
   if (!selectedHabit) throw new Error('no habit found at selected index');
-  const currentCompletedState = occurrenceData.dates[dayObject.dateString][selectedHabit.id];
+  // eslint-disable-next-line max-len
+  const currentCompletedState = occurrenceData.dates[dayObject.dateString][selectedHabit.id].complete;
   updateHabitCompleted(selectedHabit.id, !currentCompletedState);
 }

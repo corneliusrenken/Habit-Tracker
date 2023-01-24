@@ -1,6 +1,5 @@
-import axios from 'axios';
 import {
-  Habit, OccurrenceData, OccurrencesByDate, OldestOccurrences, Streaks, View,
+  Habit, OccurrenceData, Streaks, View,
 } from '../../globalTypes';
 
 type States = {
@@ -10,25 +9,20 @@ type States = {
   setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
 };
 
-type InitializeRequestData = {
-  habits: Habit[];
-  occurrencesByDate: OccurrencesByDate;
-  oldestOccurrences: OldestOccurrences;
-  streaks: Streaks;
-};
-
-export default async function initialize(userId: number, todayDateString: string, states: States) {
+export default async function initialize(todayDateString: string, states: States) {
   const {
     setView, setHabits, setOccurrenceData, setStreaks,
   } = states;
 
   try {
-    const { data }: { data: InitializeRequestData } = await axios({
-      method: 'get',
-      url: `/api/users/${userId}/initialize/${todayDateString}`,
-    });
+    const {
+      habits,
+      occurrencesGroupedByDate,
+      oldestVisibleOccurrenceDates,
+      streaks,
+    } = await window.electron['initialize-app'](todayDateString);
 
-    const todaysOccurrences = data.occurrencesByDate[todayDateString];
+    const todaysOccurrences = occurrencesGroupedByDate[todayDateString];
     const visibleHabitCount = Object.keys(todaysOccurrences).length;
 
     if (visibleHabitCount === 0) {
@@ -37,12 +31,12 @@ export default async function initialize(userId: number, todayDateString: string
       setView({ name: 'today' });
     }
 
-    setHabits(data.habits);
+    setHabits(habits);
     setOccurrenceData({
-      dates: data.occurrencesByDate,
-      oldest: data.oldestOccurrences,
+      dates: occurrencesGroupedByDate,
+      oldest: oldestVisibleOccurrenceDates,
     });
-    setStreaks(data.streaks);
+    setStreaks(streaks);
   } catch (error) {
     throw new Error('Failed to initialize application');
   }

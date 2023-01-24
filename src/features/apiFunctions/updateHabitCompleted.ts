@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { OccurrenceData, Streaks } from '../../globalTypes';
 import { getDateFromDateString } from '../common/dateStringFunctions';
 import getCustomDateString from '../common/getCustomDateString';
@@ -24,13 +23,7 @@ export default function updateHabitCompleted(
 
   if (!streaks || !occurrenceData) throw new Error('states should not be undefined');
 
-  axios({
-    method: 'patch',
-    url: `/api/occurrences/${habitId}/${dateString}`,
-    data: {
-      completed,
-    },
-  });
+  window.electron['update-occurrence'](habitId, dateString, { complete: completed });
 
   const date = getDateFromDateString(dateString);
   date.setDate(date.getDate() + 1);
@@ -58,7 +51,7 @@ export default function updateHabitCompleted(
     !completed && isYesterday
   ) {
     if (oldOldestOccurrence === dateString) {
-      if (occurrenceData.dates[todayDateString][habitId] === true) {
+      if (occurrenceData.dates[todayDateString][habitId].complete) {
         newOldestOccurrence = todayDateString;
       } else {
         newOldestOccurrence = null;
@@ -66,7 +59,7 @@ export default function updateHabitCompleted(
     }
   }
 
-  const newOccurrenceData = {
+  const newOccurrenceData: OccurrenceData = {
     oldest: {
       ...occurrenceData.oldest,
       [habitId]: newOldestOccurrence,
@@ -75,7 +68,10 @@ export default function updateHabitCompleted(
       ...occurrenceData.dates,
       [dateString]: {
         ...occurrenceData.dates[dateString],
-        [habitId]: completed,
+        [habitId]: {
+          visible: true,
+          complete: completed,
+        },
       },
     },
   };

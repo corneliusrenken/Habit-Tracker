@@ -11,9 +11,9 @@ export default function Days({ weekDays, selectedOccurrences }: Props) {
   return (
     <div className="days-container">
       {weekDays.map(((day, index) => {
-        const { done } = selectedOccurrences[selectedOccurrences.length - 7 + index];
+        const { complete } = selectedOccurrences[selectedOccurrences.length - 7 + index];
         let className = 'day';
-        if (done) className += ' greyed-out';
+        if (complete) className += ' greyed-out';
 
         return (
           <div
