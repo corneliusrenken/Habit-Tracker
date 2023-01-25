@@ -20,6 +20,7 @@ import useMemoizedComponents from './useMemoizedComponents';
 import useSelectedData from './useSelectedData';
 import Modal from '../modal';
 import useShortcutManager from '../shortcutManager/useShortcutManager';
+import Layout from '../layout';
 
 export default function App() {
   // https://medium.com/swlh/how-to-store-a-function-with-the-usestate-hook-in-react-8a88dd4eede1
@@ -141,7 +142,91 @@ export default function App() {
     updateHabitVisibility,
   });
 
+  const [marginHeight, setMarginHeight] = useState(100);
+  const [maxBodyHeight, setMaxBodyHeight] = useState(2000);
+
   if (!habits || !occurrenceData || !streaks) return null;
+
+  /* eslint-disable jsx-a11y/label-has-associated-control */
+  return (
+    <>
+      <div
+        style={{
+          position: 'fixed',
+          width: '200px',
+          margin: '10px',
+          right: -100,
+          top: 100,
+          transform: 'rotateZ(90deg)',
+        }}
+      >
+        <label
+          style={{
+            position: 'absolute',
+            left: 0,
+          }}
+        >
+          {`margin height: ${marginHeight} px`}
+        </label>
+        <input
+          value={marginHeight}
+          min={100}
+          max={2000}
+          onChange={(e) => setMarginHeight(Number(e.target.value))}
+          type="range"
+          style={{
+            width: '200px',
+            padding: '0',
+            margin: '0',
+            position: 'absolute',
+            top: 10,
+            left: 0,
+          }}
+        />
+      </div>
+      <div
+        style={{
+          position: 'fixed',
+          width: '200px',
+          margin: '10px',
+          right: -100,
+          top: 320,
+          transform: 'rotateZ(90deg)',
+        }}
+      >
+        <label
+          style={{
+            position: 'absolute',
+            left: 0,
+          }}
+        >
+          {`max body height: ${maxBodyHeight} px`}
+        </label>
+        <input
+          value={maxBodyHeight}
+          min={100}
+          max={2000}
+          onChange={(e) => setMaxBodyHeight(Number(e.target.value))}
+          type="range"
+          style={{
+            width: '200px',
+            padding: '0',
+            margin: '0',
+            position: 'absolute',
+            top: 10,
+            left: 0,
+          }}
+        />
+      </div>
+      <Layout
+        options={{
+          marginHeight: `${marginHeight}px`,
+          maxBodyHeight: `${maxBodyHeight}px`,
+        }}
+        view={view}
+      />
+    </>
+  );
 
   return (
     <>
