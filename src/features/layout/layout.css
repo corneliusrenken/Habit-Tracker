@@ -1,6 +1,7 @@
 .layout-container {
   width: 350px;
   margin: 0 auto;
+  height: 5000px;
 }
 
 .occurrences {

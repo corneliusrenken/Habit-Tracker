@@ -143,8 +143,8 @@ export default function App() {
   });
 
   const [marginHeight, setMarginHeight] = useState(100);
-  const [maxBodyHeight, setMaxBodyHeight] = useState(2000);
-  const [habitRows, setHabitRows] = useState(4);
+  const [maxListHeight, setMaxListHeight] = useState(2000);
+  const [listRows, setListRows] = useState(4);
   const [occurrenceRows, setOccurrenceRows] = useState(10);
 
   if (!habits || !occurrenceData || !streaks) return null;
@@ -158,7 +158,7 @@ export default function App() {
           width: '200px',
           margin: '10px',
           right: -100,
-          top: 100,
+          top: 150,
           transform: 'rotateZ(90deg)',
         }}
       >
@@ -192,7 +192,7 @@ export default function App() {
           width: '200px',
           margin: '10px',
           right: -100,
-          top: 320,
+          top: 370,
           transform: 'rotateZ(90deg)',
         }}
       >
@@ -202,13 +202,13 @@ export default function App() {
             left: 0,
           }}
         >
-          {`max body height: ${maxBodyHeight} px`}
+          {`max list height: ${maxListHeight} px`}
         </label>
         <input
-          value={maxBodyHeight}
+          value={maxListHeight}
           min={100}
           max={2000}
-          onChange={(e) => setMaxBodyHeight(Number(e.target.value))}
+          onChange={(e) => setMaxListHeight(Math.round(Number(e.target.value) / 50) * 50)}
           type="range"
           style={{
             width: '200px',
@@ -226,7 +226,7 @@ export default function App() {
           width: '200px',
           margin: '10px',
           right: -100,
-          top: 100,
+          top: 150,
           transform: 'rotateZ(90deg)',
         }}
       >
@@ -237,13 +237,13 @@ export default function App() {
             top: 50,
           }}
         >
-          habit rows:
+          list rows:
         </label>
         <input
-          value={habitRows}
+          value={listRows}
           min={0}
           max={20}
-          onChange={(e) => setHabitRows(Number(e.target.value))}
+          onChange={(e) => setListRows(Number(e.target.value))}
           type="number"
           style={{
             border: '1px solid black',
@@ -254,7 +254,7 @@ export default function App() {
             margin: '0',
             position: 'absolute',
             top: 47,
-            left: 90,
+            left: 70,
           }}
         />
       </div>
@@ -264,7 +264,7 @@ export default function App() {
           width: '200px',
           margin: '10px',
           right: -100,
-          top: 260,
+          top: 280,
           transform: 'rotateZ(90deg)',
         }}
       >
@@ -298,11 +298,11 @@ export default function App() {
       </div>
       <Layout
         options={{
-          marginHeight: `${marginHeight}px`,
-          maxBodyHeight: `${maxBodyHeight}px`,
+          marginHeight,
+          maxListHeight,
         }}
         view={view}
-        habitRows={habitRows}
+        listRows={listRows}
         occurrenceRows={occurrenceRows}
       />
     </>

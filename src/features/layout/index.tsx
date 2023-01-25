@@ -1,24 +1,63 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View } from '../../globalTypes';
 import './layout.css';
 
+type LayoutOptions = {
+  marginHeight: number;
+  maxListHeight: number;
+};
+
 type Props = {
-  options: {
-    marginHeight: string;
-    maxBodyHeight: string;
-  }
+  options: LayoutOptions;
   view: View;
-  habitRows: number;
+  listRows: number;
   occurrenceRows: number;
 };
 
+type ViewType = 'occurrence' | 'list';
+
+function calculateScreenHeight(
+  options: LayoutOptions,
+  viewType: ViewType,
+  listRows: number,
+  occurrenceRows: number,
+): number {
+  const screenHeight = window.innerHeight;
+
+  if (viewType === 'list') {
+    // + 100 for days and dates
+    const listHeight = Math.min(listRows * 50 + 100, options.maxListHeight);
+    const listHeightWithBothMargins = listHeight + 2 * options.marginHeight;
+    const overflow = listHeightWithBothMargins - screenHeight;
+    return overflow > 0
+      ? screenHeight + overflow
+      : screenHeight;
+  }
+
+  // + 50 for dates row
+  const occurrenceHeight = occurrenceRows * 50 + 50;
+  const screenMidpoint = Math.ceil(screenHeight / 2);
+  // allows bottom most occurrence row to be centered on screen
+  const marginBelowOccurrences = screenHeight - screenMidpoint - 25;
+  const overflow = occurrenceHeight + marginBelowOccurrences - screenHeight;
+  return overflow > 0
+    ? screenHeight + overflow
+    : screenHeight;
+}
+
 export default function Layout({
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  options, view, habitRows, occurrenceRows,
+  options, view, listRows, occurrenceRows,
 }: Props) {
-  const viewType = view.name === 'focus' || view.name === 'history'
+  const viewType: ViewType = view.name === 'focus' || view.name === 'history'
     ? 'occurrence'
     : 'list';
+
+  const [screenHeight, setScreenHeight] = useState(() => calculateScreenHeight(
+    options,
+    viewType,
+    listRows,
+    occurrenceRows,
+  ));
 
   // to prevent jiggly behavior, would be best to move the whole layout container at once
   // does that work with habit view scrolling?
@@ -26,8 +65,25 @@ export default function Layout({
 
   // could occ, dates and days be sticky?
 
+  useEffect(() => {
+    const onResize = () => setScreenHeight(calculateScreenHeight(
+      options,
+      viewType,
+      listRows,
+      occurrenceRows,
+    ));
+
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [listRows, occurrenceRows, options, viewType]);
+
   return (
-    <div className="layout-container">
+    <div
+      className="layout-container"
+      style={{
+        height: `${screenHeight}px`,
+      }}
+    >
       <div
         className="occurrences"
         style={{
@@ -53,7 +109,7 @@ export default function Layout({
       <div
         className="habits"
         style={{
-          height: `${habitRows * 50}px`,
+          height: `${listRows * 50}px`,
           opacity: viewType === 'list' ? 1 : 0.2,
         }}
       >
