@@ -2,3 +2,25 @@
   width: 350px;
   margin: 0 auto;
 }
+
+.occurrences {
+  width: 350px;
+  background-color: mediumspringgreen;
+}
+
+.days {
+  width: 350px;
+  height: 50px;
+  background-color: mediumseagreen;
+}
+
+.dates {
+  width: 350px;
+  height: 50px;
+  background-color: mediumorchid;
+}
+
+.habits {
+  width: 350px;
+  background-color: mediumvioletred;
+}

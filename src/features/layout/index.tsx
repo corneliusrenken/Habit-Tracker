@@ -20,12 +20,17 @@ export default function Layout({
     ? 'occurrence'
     : 'list';
 
+  // to prevent jiggly behavior, would be best to move the whole layout container at once
+  // does that work with habit view scrolling?
+  // you wanted position sticky for the top stuff
+
+  // could occ, dates and days be sticky?
+
   return (
     <div className="layout-container">
       <div
+        className="occurrences"
         style={{
-          backgroundColor: 'lime',
-          width: '350px',
           height: `${occurrenceRows * 50}px`,
           opacity: viewType === 'occurrence' ? 1 : 0.2,
         }}
@@ -33,28 +38,21 @@ export default function Layout({
         Occurrences
       </div>
       <div
+        className="days"
         style={{
-          backgroundColor: 'yellow',
-          width: '350px',
-          height: '50px',
           opacity: viewType === 'list' ? 1 : 0.2,
         }}
       >
         Days
       </div>
       <div
-        style={{
-          backgroundColor: 'aqua',
-          width: '350px',
-          height: '50px',
-        }}
+        className="dates"
       >
         Dates
       </div>
       <div
+        className="habits"
         style={{
-          backgroundColor: 'red',
-          width: '350px',
           height: `${habitRows * 50}px`,
           opacity: viewType === 'list' ? 1 : 0.2,
         }}

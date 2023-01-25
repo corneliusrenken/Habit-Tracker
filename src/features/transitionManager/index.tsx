@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View } from '../../globalTypes';
-import './transitionManager.css';
+// import './transitionManager.css';
 
 function forceElementReflow(element: HTMLElement, className: string) {
   /* eslint-disable no-param-reassign */
