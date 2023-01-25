@@ -16,6 +16,14 @@
   z-index: -1;
 }
 
+.max-list-height {
+  position: fixed;
+  right: 0;
+  width: 20px;
+  background-color: deeppink;
+  z-index: -1;
+}
+
 .layout-container {
   width: 350px;
   margin: 0 auto;

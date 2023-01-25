@@ -91,6 +91,13 @@ export default function Layout({
       <div className="margin-top" style={{ height: options.marginHeight }} />
       <div className="margin-bottom" style={{ height: options.marginHeight }} />
       <div
+        className="max-list-height"
+        style={{
+          height: options.maxListHeight,
+          top: (window.innerHeight - options.maxListHeight) / 2,
+        }}
+      />
+      <div
         className="layout-container"
         style={{
           height: `${screenHeight}px`,
