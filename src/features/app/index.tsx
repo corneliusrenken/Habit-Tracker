@@ -157,15 +157,12 @@ export default function App() {
           position: 'fixed',
           width: '200px',
           margin: '10px',
-          right: -100,
-          top: 150,
-          transform: 'rotateZ(90deg)',
+          top: '60px',
         }}
       >
         <label
           style={{
             position: 'absolute',
-            left: 0,
           }}
         >
           {`margin height: ${marginHeight} px`}
@@ -181,8 +178,7 @@ export default function App() {
             padding: '0',
             margin: '0',
             position: 'absolute',
-            top: 10,
-            left: 0,
+            top: '10px',
           }}
         />
       </div>
@@ -191,15 +187,13 @@ export default function App() {
           position: 'fixed',
           width: '200px',
           margin: '10px',
-          right: -100,
-          top: 370,
-          transform: 'rotateZ(90deg)',
+          top: '60px',
+          left: '210px',
         }}
       >
         <label
           style={{
             position: 'absolute',
-            left: 0,
           }}
         >
           {`max list height: ${maxListHeight} px`}
@@ -215,8 +209,7 @@ export default function App() {
             padding: '0',
             margin: '0',
             position: 'absolute',
-            top: 10,
-            left: 0,
+            top: '10px',
           }}
         />
       </div>
@@ -225,16 +218,12 @@ export default function App() {
           position: 'fixed',
           width: '200px',
           margin: '10px',
-          right: -100,
-          top: 150,
-          transform: 'rotateZ(90deg)',
+          top: '110px',
         }}
       >
         <label
           style={{
             position: 'absolute',
-            left: 0,
-            top: 50,
           }}
         >
           list rows:
@@ -253,8 +242,8 @@ export default function App() {
             padding: '5px',
             margin: '0',
             position: 'absolute',
-            top: 47,
-            left: 70,
+            left: '70px',
+            top: '-5px',
           }}
         />
       </div>
@@ -263,16 +252,13 @@ export default function App() {
           position: 'fixed',
           width: '200px',
           margin: '10px',
-          right: -100,
-          top: 280,
-          transform: 'rotateZ(90deg)',
+          top: '110px',
+          left: '130px',
         }}
       >
         <label
           style={{
             position: 'absolute',
-            left: 0,
-            top: 50,
           }}
         >
           occurrence rows:
@@ -291,8 +277,8 @@ export default function App() {
             padding: '5px',
             margin: '0',
             position: 'absolute',
-            top: 47,
-            left: 130,
+            left: '130px',
+            top: '-5px',
           }}
         />
       </div>
