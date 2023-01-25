@@ -233,9 +233,7 @@ export default function App() {
         </label>
         <input
           value={listRows}
-          min={0}
-          max={20}
-          onChange={(e) => setListRows(Number(e.target.value))}
+          onChange={(e) => setListRows(Math.max(0, Math.min(28, Number(e.target.value))))}
           type="number"
           style={{
             border: '1px solid black',
@@ -269,9 +267,7 @@ export default function App() {
         </label>
         <input
           value={occurrenceRows}
-          min={0}
-          max={50}
-          onChange={(e) => setOccurrenceRows(Number(e.target.value))}
+          onChange={(e) => setOccurrenceRows(Math.max(0, Math.min(27, Number(e.target.value))))}
           type="number"
           style={{
             border: '1px solid black',

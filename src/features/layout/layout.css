@@ -30,22 +30,24 @@
 
 .occurrences {
   width: 350px;
-  background-color: mediumspringgreen;
+  background-image: url(placeholderImages/occurrences.png);
+  background-position: bottom;
 }
 
 .days {
   width: 350px;
   height: 50px;
-  background-color: mediumseagreen;
+  background-image: url(placeholderImages/days.png);
 }
 
 .dates {
   width: 350px;
   height: 50px;
-  background-color: mediumorchid;
+  background-image: url(placeholderImages/dates.png);
 }
 
-.habits {
+.list {
   width: 350px;
-  background-color: mediumvioletred;
+  background-image: url(placeholderImages/list.png);
+  background-position: top;
 }

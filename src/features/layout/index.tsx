@@ -117,33 +117,25 @@ export default function Layout({
           className="occurrences"
           style={{
             height: `${occurrenceRows * 50}px`,
-            opacity: viewType === 'occurrence' ? 1 : 0.2,
+            opacity: viewType === 'occurrence' ? 1 : 0,
           }}
-        >
-          Occurrences
-        </div>
+        />
         <div
           className="days"
           style={{
-            opacity: viewType === 'list' ? 1 : 0.2,
+            opacity: viewType === 'list' ? 1 : 0,
           }}
-        >
-          Days
-        </div>
+        />
         <div
           className="dates"
-        >
-          Dates
-        </div>
+        />
         <div
-          className="habits"
+          className="list"
           style={{
             height: `${listRows * 50}px`,
-            opacity: viewType === 'list' ? 1 : 0.2,
+            opacity: viewType === 'list' ? 1 : 0,
           }}
-        >
-          Habits
-        </div>
+        />
       </div>
     </>
   );
