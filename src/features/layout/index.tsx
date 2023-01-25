@@ -59,6 +59,15 @@ export default function Layout({
     occurrenceRows,
   ));
 
+  useEffect(() => {
+    setScreenHeight(calculateScreenHeight(
+      options,
+      viewType,
+      listRows,
+      occurrenceRows,
+    ));
+  }, [listRows, occurrenceRows, options, viewType]);
+
   // to prevent jiggly behavior, would be best to move the whole layout container at once
   // does that work with habit view scrolling?
   // you wanted position sticky for the top stuff
