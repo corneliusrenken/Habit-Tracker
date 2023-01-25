@@ -78,43 +78,47 @@ export default function Layout({
   }, [listRows, occurrenceRows, options, viewType]);
 
   return (
-    <div
-      className="layout-container"
-      style={{
-        height: `${screenHeight}px`,
-      }}
-    >
+    <>
+      <div className="margin-top" style={{ height: options.marginHeight }} />
+      <div className="margin-bottom" style={{ height: options.marginHeight }} />
       <div
-        className="occurrences"
+        className="layout-container"
         style={{
-          height: `${occurrenceRows * 50}px`,
-          opacity: viewType === 'occurrence' ? 1 : 0.2,
+          height: `${screenHeight}px`,
         }}
       >
-        Occurrences
+        <div
+          className="occurrences"
+          style={{
+            height: `${occurrenceRows * 50}px`,
+            opacity: viewType === 'occurrence' ? 1 : 0.2,
+          }}
+        >
+          Occurrences
+        </div>
+        <div
+          className="days"
+          style={{
+            opacity: viewType === 'list' ? 1 : 0.2,
+          }}
+        >
+          Days
+        </div>
+        <div
+          className="dates"
+        >
+          Dates
+        </div>
+        <div
+          className="habits"
+          style={{
+            height: `${listRows * 50}px`,
+            opacity: viewType === 'list' ? 1 : 0.2,
+          }}
+        >
+          Habits
+        </div>
       </div>
-      <div
-        className="days"
-        style={{
-          opacity: viewType === 'list' ? 1 : 0.2,
-        }}
-      >
-        Days
-      </div>
-      <div
-        className="dates"
-      >
-        Dates
-      </div>
-      <div
-        className="habits"
-        style={{
-          height: `${listRows * 50}px`,
-          opacity: viewType === 'list' ? 1 : 0.2,
-        }}
-      >
-        Habits
-      </div>
-    </div>
+    </>
   );
 }

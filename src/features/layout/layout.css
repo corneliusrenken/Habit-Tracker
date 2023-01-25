@@ -1,3 +1,21 @@
+.margin-top {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: antiquewhite;
+  z-index: -1;
+}
+
+.margin-bottom {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: antiquewhite;
+  z-index: -1;
+}
+
 .layout-container {
   width: 350px;
   margin: 0 auto;
