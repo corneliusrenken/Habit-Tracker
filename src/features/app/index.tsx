@@ -144,6 +144,8 @@ export default function App() {
 
   const [marginHeight, setMarginHeight] = useState(100);
   const [maxBodyHeight, setMaxBodyHeight] = useState(2000);
+  const [habitRows, setHabitRows] = useState(4);
+  const [occurrenceRows, setOccurrenceRows] = useState(10);
 
   if (!habits || !occurrenceData || !streaks) return null;
 
@@ -218,12 +220,90 @@ export default function App() {
           }}
         />
       </div>
+      <div
+        style={{
+          position: 'fixed',
+          width: '200px',
+          margin: '10px',
+          right: -100,
+          top: 100,
+          transform: 'rotateZ(90deg)',
+        }}
+      >
+        <label
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: 50,
+          }}
+        >
+          habit rows:
+        </label>
+        <input
+          value={habitRows}
+          min={0}
+          max={20}
+          onChange={(e) => setHabitRows(Number(e.target.value))}
+          type="number"
+          style={{
+            border: '1px solid black',
+            borderRadius: '5px',
+            width: '50px',
+            height: '25px',
+            padding: '5px',
+            margin: '0',
+            position: 'absolute',
+            top: 47,
+            left: 90,
+          }}
+        />
+      </div>
+      <div
+        style={{
+          position: 'fixed',
+          width: '200px',
+          margin: '10px',
+          right: -100,
+          top: 260,
+          transform: 'rotateZ(90deg)',
+        }}
+      >
+        <label
+          style={{
+            position: 'absolute',
+            left: 0,
+            top: 50,
+          }}
+        >
+          occurrence rows:
+        </label>
+        <input
+          value={occurrenceRows}
+          min={0}
+          max={50}
+          onChange={(e) => setOccurrenceRows(Number(e.target.value))}
+          type="number"
+          style={{
+            border: '1px solid black',
+            borderRadius: '5px',
+            width: '50px',
+            height: '25px',
+            padding: '5px',
+            margin: '0',
+            position: 'absolute',
+            top: 47,
+            left: 130,
+          }}
+        />
+      </div>
       <Layout
         options={{
           marginHeight: `${marginHeight}px`,
           maxBodyHeight: `${maxBodyHeight}px`,
         }}
         view={view}
+        habitRows={habitRows}
+        occurrenceRows={occurrenceRows}
       />
     </>
   );

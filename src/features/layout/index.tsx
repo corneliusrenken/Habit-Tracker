@@ -8,17 +8,26 @@ type Props = {
     maxBodyHeight: string;
   }
   view: View;
+  habitRows: number;
+  occurrenceRows: number;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function Layout({ options, view }: Props) {
+export default function Layout({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  options, view, habitRows, occurrenceRows,
+}: Props) {
+  const viewType = view.name === 'focus' || view.name === 'history'
+    ? 'occurrence'
+    : 'list';
+
   return (
     <div className="layout-container">
       <div
         style={{
           backgroundColor: 'lime',
           width: '350px',
-          height: '500px',
+          height: `${occurrenceRows * 50}px`,
+          opacity: viewType === 'occurrence' ? 1 : 0.2,
         }}
       >
         Occurrences
@@ -28,6 +37,7 @@ export default function Layout({ options, view }: Props) {
           backgroundColor: 'yellow',
           width: '350px',
           height: '50px',
+          opacity: viewType === 'list' ? 1 : 0.2,
         }}
       >
         Days
@@ -45,7 +55,8 @@ export default function Layout({ options, view }: Props) {
         style={{
           backgroundColor: 'red',
           width: '350px',
-          height: '200px',
+          height: `${habitRows * 50}px`,
+          opacity: viewType === 'list' ? 1 : 0.2,
         }}
       >
         Habits
