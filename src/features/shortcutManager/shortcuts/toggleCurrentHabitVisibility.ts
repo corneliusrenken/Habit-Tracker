@@ -21,6 +21,9 @@ export default function toggleCurrentHabitVisibility(states: States) {
 
   const selectedHabit = selectedHabits.find((habit, index) => index === selectedIndex);
   if (!selectedHabit) throw new Error('no habit found at selected index');
-  const currentVisibility = occurrenceData.dates[dayObject.dateString][selectedHabit.id].visible;
+  // eslint-disable-next-line max-len
+  const currentVisibility = occurrenceData.dates[dayObject.dateString][selectedHabit.id] === undefined
+    ? false
+    : occurrenceData.dates[dayObject.dateString][selectedHabit.id].visible;
   updateHabitVisibility(selectedHabit.id, !currentVisibility);
 }
