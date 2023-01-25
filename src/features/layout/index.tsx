@@ -16,22 +16,26 @@ type Props = {
 
 type ViewType = 'occurrence' | 'list';
 
-function calculateScreenHeight(
+function calculateScreenHeightAndSetMargins(
   options: LayoutOptions,
   viewType: ViewType,
   listRows: number,
   occurrenceRows: number,
+  setMarginHeight: React.Dispatch<React.SetStateAction<number>>,
 ): number {
   const screenHeight = window.innerHeight;
+  const { marginHeight, maxListHeight } = options;
 
   if (viewType === 'list') {
     // + 100 for days and dates
-    const listHeight = Math.min(listRows * 50 + 100, options.maxListHeight);
-    const listHeightWithBothMargins = listHeight + 2 * options.marginHeight;
-    const overflow = listHeightWithBothMargins - screenHeight;
-    return overflow > 0
-      ? screenHeight + overflow
-      : screenHeight;
+    const listHeight = listRows * 50 + 100;
+    const listAvailableSpace = Math.min(screenHeight - 2 * marginHeight, maxListHeight);
+    const overflow = listHeight - listAvailableSpace;
+    setMarginHeight((screenHeight - listAvailableSpace) / 2);
+    if (overflow > 0) {
+      return screenHeight + overflow;
+    }
+    return screenHeight;
   }
 
   // + 50 for dates row
@@ -52,21 +56,14 @@ export default function Layout({
     ? 'occurrence'
     : 'list';
 
-  const [screenHeight, setScreenHeight] = useState(() => calculateScreenHeight(
+  const [marginHeight, setMarginHeight] = useState(0);
+  const [screenHeight, setScreenHeight] = useState(() => calculateScreenHeightAndSetMargins(
     options,
     viewType,
     listRows,
     occurrenceRows,
+    setMarginHeight,
   ));
-
-  useEffect(() => {
-    setScreenHeight(calculateScreenHeight(
-      options,
-      viewType,
-      listRows,
-      occurrenceRows,
-    ));
-  }, [listRows, occurrenceRows, options, viewType]);
 
   // to prevent jiggly behavior, would be best to move the whole layout container at once
   // does that work with habit view scrolling?
@@ -75,11 +72,22 @@ export default function Layout({
   // could occ, dates and days be sticky?
 
   useEffect(() => {
-    const onResize = () => setScreenHeight(calculateScreenHeight(
+    setScreenHeight(calculateScreenHeightAndSetMargins(
       options,
       viewType,
       listRows,
       occurrenceRows,
+      setMarginHeight,
+    ));
+  }, [listRows, occurrenceRows, options, viewType]);
+
+  useEffect(() => {
+    const onResize = () => setScreenHeight(calculateScreenHeightAndSetMargins(
+      options,
+      viewType,
+      listRows,
+      occurrenceRows,
+      setMarginHeight,
     ));
 
     window.addEventListener('resize', onResize);
@@ -88,10 +96,12 @@ export default function Layout({
 
   return (
     <>
-      <div className="margin-top" style={{ height: options.marginHeight }} />
-      <div className="margin-bottom" style={{ height: options.marginHeight }} />
+      <div className="desired-margin-indicator" style={{ height: options.marginHeight, top: 0 }} />
+      <div className="desired-margin-indicator" style={{ height: options.marginHeight, bottom: 0 }} />
+      <div className="actual-margin" style={{ height: `${marginHeight}px`, top: 0 }} />
+      <div className="actual-margin" style={{ height: `${marginHeight}px`, bottom: 0 }} />
       <div
-        className="max-list-height"
+        className="max-list-height-indicator"
         style={{
           height: options.maxListHeight,
           top: (window.innerHeight - options.maxListHeight) / 2,
