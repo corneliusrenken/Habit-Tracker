@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { View } from '../../globalTypes';
+import Indicators from './indicators';
 import './layout.css';
 
 type LayoutOptions = {
@@ -16,158 +17,174 @@ type Props = {
 
 type ViewType = 'occurrence' | 'list';
 
-function calculateScreenHeightAndSetMargins(
+function setScreenHeightAndMargin(
   options: LayoutOptions,
   viewType: ViewType,
   listRows: number,
   occurrenceRows: number,
-  setMarginHeight: React.Dispatch<React.SetStateAction<number>>,
-): number {
-  const screenHeight = window.innerHeight;
+) {
+  const windowHeight = window.innerHeight;
   const { marginHeight, maxListHeight } = options;
 
   if (viewType === 'list') {
     // + 100 for days and dates
     const listHeight = listRows * 50 + 100;
-    const listAvailableSpace = Math.min(screenHeight - 2 * marginHeight, maxListHeight);
+    const listAvailableSpace = Math.min(windowHeight - 2 * marginHeight, maxListHeight);
     const overflow = listHeight - listAvailableSpace;
-    setMarginHeight((screenHeight - listAvailableSpace) / 2);
-    if (overflow > 0) {
-      console.log('overflow');
-      return screenHeight + overflow;
-    }
-    console.log('not overflow');
-    return screenHeight;
+
+    const screenHeight = overflow > 0
+      ? windowHeight + overflow
+      : windowHeight;
+    document.documentElement.style.setProperty('--screen-height', `${screenHeight}px`);
+    document.documentElement.style.setProperty('--margin-height', `${(windowHeight - listAvailableSpace) / 2}px`);
   }
 
-  // + 50 for dates row
-  const occurrenceHeight = occurrenceRows * 50 + 50;
-  const screenMidpoint = Math.ceil(screenHeight / 2);
-  // allows bottom most occurrence row to be centered on screen
-  const marginBelowOccurrences = screenHeight - screenMidpoint - 25;
-  const overflow = occurrenceHeight + marginBelowOccurrences - screenHeight;
-  console.log(screenHeight + overflow);
-  return overflow > 0
-    ? screenHeight + overflow
-    : screenHeight;
+  if (viewType === 'occurrence') {
+    // + 50 for dates row
+    const occurrenceHeight = occurrenceRows * 50 + 50;
+    const screenMidpoint = Math.ceil(windowHeight / 2);
+    // allows bottom most occurrence row to be centered on screen
+    const marginBelowOccurrences = windowHeight - screenMidpoint - 25;
+    const overflow = occurrenceHeight + marginBelowOccurrences - windowHeight;
+
+    const screenHeight = overflow > 0
+      ? windowHeight + overflow
+      : windowHeight;
+    document.documentElement.style.setProperty('--screen-height', `${screenHeight}px`);
+  }
 }
+
+/**
+ * @param duration in ms
+ */
+function transition(
+  from: ViewType,
+  to: ViewType,
+  duration: number,
+  elements: { [key in 'occurrences' | 'days' | 'dates' | 'list']: HTMLDivElement },
+  setInTransition: React.Dispatch<React.SetStateAction<boolean>>,
+) {
+  if (from === to) return;
+
+  setInTransition(true);
+
+  // let finishedTransitionCount = 0;
+
+  Object.values(elements).forEach((element) => {
+    // finishedTransitionCount += 1;
+    element.classList.remove(`${from}-view`);
+    element.classList.add(`${to}-view`);
+
+    if (to === 'occurrence') {
+      window.scrollTo({
+        top: 5000,
+        // top: Number(document.documentElement.style.getPropertyValue('--screen-height')),
+      });
+    } else {
+      window.scrollTo({ top: 0 });
+    }
+
+    // // eslint-disable-next-line no-param-reassign
+    // element.style.transition = `opacity ${duration}ms, top ${duration} ms`;
+
+    // const onTransitionEnd = (e: TransitionEvent) => {
+    //   if (e.propertyName !== 'top') return;
+    //   // eslint-disable-next-line no-param-reassign
+    //   element.style.transition = '';
+
+    //   finishedTransitionCount -= 1;
+    //   if (finishedTransitionCount === 0) {
+    //     setInTransition(false);
+    //   }
+
+    //   element.removeEventListener('transitionend', onTransitionEnd);
+    // };
+
+    // element.addEventListener('transitionend', onTransitionEnd);
+  });
+}
+
+const viewTypes: { [key in View['name']]: ViewType } = {
+  today: 'list',
+  yesterday: 'list',
+  selection: 'list',
+  history: 'occurrence',
+  focus: 'occurrence',
+};
 
 export default function Layout({
   options, view, listRows, occurrenceRows,
 }: Props) {
-  const viewType: ViewType = view.name === 'focus' || view.name === 'history'
-    ? 'occurrence'
-    : 'list';
-
-  const [marginHeight, setMarginHeight] = useState(0);
-  const [screenHeight, setScreenHeight] = useState(() => calculateScreenHeightAndSetMargins(
-    options,
-    viewType,
-    listRows,
-    occurrenceRows,
-    setMarginHeight,
-  ));
-
-  // to prevent jiggly behavior, would be best to move the whole layout container at once
-  // does that work with habit view scrolling?
-  // you wanted position sticky for the top stuff
-
-  // could occ, dates and days be sticky?
+  const occurrences = useRef<HTMLDivElement>(null);
+  const days = useRef<HTMLDivElement>(null);
+  const dates = useRef<HTMLDivElement>(null);
+  const list = useRef<HTMLDivElement>(null);
+  const lastView = useRef<View['name']>('today');
 
   useEffect(() => {
-    setScreenHeight(calculateScreenHeightAndSetMargins(
-      options,
-      viewType,
-      listRows,
-      occurrenceRows,
-      setMarginHeight,
-    ));
-  }, [listRows, occurrenceRows, options, viewType]);
+    document.documentElement.style.setProperty('--list-row-count', listRows.toString());
+  }, [listRows]);
 
   useEffect(() => {
-    const onResize = () => setScreenHeight(calculateScreenHeightAndSetMargins(
+    document.documentElement.style.setProperty('--occurrence-row-count', occurrenceRows.toString());
+  }, [occurrenceRows]);
+
+  useEffect(() => {
+    const onResize = () => setScreenHeightAndMargin(
       options,
-      viewType,
+      viewTypes[view.name],
       listRows,
       occurrenceRows,
-      setMarginHeight,
-    ));
+    );
+
+    onResize();
 
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
-  }, [listRows, occurrenceRows, options, viewType]);
+  }, [listRows, occurrenceRows, options, view]);
 
-  // temp
   useEffect(() => {
-    if (viewType === 'occurrence') window.scrollTo({ top: screenHeight });
-    if (viewType === 'list') window.scrollTo({ top: 0 });
-  }, [viewType, screenHeight]);
+    if (view.name === lastView.current) return;
+
+    if (viewTypes[view.name] !== viewTypes[lastView.current]) {
+      transition(
+        viewTypes[lastView.current],
+        viewTypes[view.name],
+        750,
+        {
+          occurrences: occurrences.current,
+          days: days.current,
+          dates: dates.current,
+          list: list.current,
+        },
+        () => {},
+      );
+    }
+
+    lastView.current = view.name;
+  }, [view]);
 
   return (
     <>
-      <div className="desired-margin-indicator" style={{ height: options.marginHeight, top: 0 }} />
-      <div className="desired-margin-indicator" style={{ height: options.marginHeight, bottom: 0 }} />
-      <div className="actual-margin" style={{ height: `${marginHeight}px`, top: 0 }} />
-      <div className="actual-margin" style={{ height: `${marginHeight}px`, bottom: 0 }} />
-      <div
-        className="max-list-height-indicator"
-        style={{
-          height: options.maxListHeight,
-          top: (window.innerHeight - options.maxListHeight) / 2,
-        }}
-      />
+      <Indicators options={options} />
       <div
         className="layout-container"
-        style={{
-          height: `${screenHeight}px`,
-        }}
       >
         <div
-          className="occurrences"
-          style={{
-            height: `${occurrenceRows * 50}px`,
-            opacity: viewType === 'occurrence' ? 0.8 : 0.2,
-            top: (
-              viewType === 'list'
-                ? `${-occurrenceRows * 50 + 50 + marginHeight}px`
-                : 0
-            ),
-          }}
+          ref={occurrences}
+          className="occurrences list-view"
         />
         <div
-          className="days"
-          style={viewType === 'list' ? ({
-            opacity: 0.8,
-            position: 'sticky',
-            top: `${marginHeight}px`,
-          }) : ({
-            opacity: 0.2,
-            position: 'absolute',
-            top: `${occurrenceRows * 50 - 50}px`,
-          })}
+          ref={days}
+          className="days list-view"
         />
         <div
-          className="dates"
-          style={viewType === 'list' ? ({
-            position: 'sticky',
-            top: `${marginHeight + 50}px`,
-          }) : ({
-            position: 'absolute',
-            top: `${occurrenceRows * 50}px`,
-          })}
+          ref={dates}
+          className="dates list-view"
         />
         <div
-          className="list"
-          style={{
-            position: 'absolute',
-            height: `${listRows * 50}px`,
-            opacity: viewType === 'list' ? 0.8 : 0.2,
-            top: (
-              viewType === 'list'
-                ? `${marginHeight + 100}px`
-                : `${occurrenceRows * 50}px`
-            ),
-          }}
+          ref={list}
+          className="list list-view"
         />
       </div>
     </>

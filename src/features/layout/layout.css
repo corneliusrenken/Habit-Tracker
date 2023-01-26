@@ -22,17 +22,15 @@
   z-index: -1;
 }
 
+body {
+  height: var(--screen-height);
+}
+
 .layout-container {
   width: 350px;
   margin: 0 auto;
   contain: paint; /* instead of overflow hidden so that sticky works, overflow: clip also ok */
-}
-
-.layout-scroller {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  transition: top 1s;
+  height: var(--screen-height);
 }
 
 .occurrences {
@@ -40,14 +38,36 @@
   width: 350px;
   background-image: url(placeholderImages/occurrences_with_marking.png);
   background-position: bottom;
+  height: calc(var(--occurrence-row-count) * 50px);
+}
+
+.occurrences.list-view {
+  opacity: 0.2;
+  top: calc(var(--occurrence-row-count) * 50px + 50px + var(--margin-height))
+}
+
+.occurrences.occurrence-view {
+  opacity: 0.8;
+  top: 0;
 }
 
 .days {
   z-index: 1;
   width: 350px;
   height: 50px;
-  /* background-image: url(p/laceholderImages/days.png); */
-  background-color: red;
+  background-image: url(placeholderImages/days.png);
+}
+
+.days.list-view {
+  opacity: 0.8;
+  position: sticky;
+  top: var(--margin-height);
+}
+
+.days.occurrence-view {
+  opacity: 0.2;
+  position: absolute;
+  top: calc(var(--occurrence-row-count) * 50px - 50px);
 }
 
 .dates {
@@ -57,10 +77,29 @@
   background-image: url(placeholderImages/dates.png);
 }
 
+.dates.list-view {
+  position: sticky;
+  top: calc(var(--margin-height) + 50px);
+}
+
+.dates.occurrence-view {
+  position: absolute;
+  top: calc(var(--occurrence-row-count) * 50px);
+}
+
 .list {
-  /* z-index: -3; */
-  /* position: absolute; */
   width: 350px;
   background-image: url(placeholderImages/list_with_marking.png);
-  /* background-position: top; */
+  height: calc(var(--list-row-count) * 50px);
+  position: absolute
+}
+
+.list.list-view {
+  top: calc(var(--margin-height) + 100px);
+  opacity: 0.8;
+}
+
+.list.occurrence-view {
+  top: calc(var(--occurrence-row-count) * 50px);
+  opacity: 0.2;
 }
