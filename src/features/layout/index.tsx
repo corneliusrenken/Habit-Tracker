@@ -33,8 +33,10 @@ function calculateScreenHeightAndSetMargins(
     const overflow = listHeight - listAvailableSpace;
     setMarginHeight((screenHeight - listAvailableSpace) / 2);
     if (overflow > 0) {
+      console.log('overflow');
       return screenHeight + overflow;
     }
+    console.log('not overflow');
     return screenHeight;
   }
 
@@ -44,6 +46,7 @@ function calculateScreenHeightAndSetMargins(
   // allows bottom most occurrence row to be centered on screen
   const marginBelowOccurrences = screenHeight - screenMidpoint - 25;
   const overflow = occurrenceHeight + marginBelowOccurrences - screenHeight;
+  console.log(screenHeight + overflow);
   return overflow > 0
     ? screenHeight + overflow
     : screenHeight;
@@ -94,6 +97,12 @@ export default function Layout({
     return () => window.removeEventListener('resize', onResize);
   }, [listRows, occurrenceRows, options, viewType]);
 
+  // temp
+  useEffect(() => {
+    if (viewType === 'occurrence') window.scrollTo({ top: screenHeight });
+    if (viewType === 'list') window.scrollTo({ top: 0 });
+  }, [viewType, screenHeight]);
+
   return (
     <>
       <div className="desired-margin-indicator" style={{ height: options.marginHeight, top: 0 }} />
@@ -117,23 +126,47 @@ export default function Layout({
           className="occurrences"
           style={{
             height: `${occurrenceRows * 50}px`,
-            opacity: viewType === 'occurrence' ? 1 : 0,
+            opacity: viewType === 'occurrence' ? 0.8 : 0.2,
+            top: (
+              viewType === 'list'
+                ? `${-occurrenceRows * 50 + 50 + marginHeight}px`
+                : 0
+            ),
           }}
         />
         <div
           className="days"
-          style={{
-            opacity: viewType === 'list' ? 1 : 0,
-          }}
+          style={viewType === 'list' ? ({
+            opacity: 0.8,
+            position: 'sticky',
+            top: `${marginHeight}px`,
+          }) : ({
+            opacity: 0.2,
+            position: 'absolute',
+            top: `${occurrenceRows * 50 - 50}px`,
+          })}
         />
         <div
           className="dates"
+          style={viewType === 'list' ? ({
+            position: 'sticky',
+            top: `${marginHeight + 50}px`,
+          }) : ({
+            position: 'absolute',
+            top: `${occurrenceRows * 50}px`,
+          })}
         />
         <div
           className="list"
           style={{
+            position: 'absolute',
             height: `${listRows * 50}px`,
-            opacity: viewType === 'list' ? 1 : 0,
+            opacity: viewType === 'list' ? 0.8 : 0.2,
+            top: (
+              viewType === 'list'
+                ? `${marginHeight + 100}px`
+                : `${occurrenceRows * 50}px`
+            ),
           }}
         />
       </div>

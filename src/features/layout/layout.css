@@ -25,29 +25,42 @@
 .layout-container {
   width: 350px;
   margin: 0 auto;
-  height: 5000px;
+  contain: paint; /* instead of overflow hidden so that sticky works, overflow: clip also ok */
+}
+
+.layout-scroller {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  transition: top 1s;
 }
 
 .occurrences {
+  position: absolute;
   width: 350px;
-  background-image: url(placeholderImages/occurrences.png);
+  background-image: url(placeholderImages/occurrences_with_marking.png);
   background-position: bottom;
 }
 
 .days {
+  z-index: 1;
   width: 350px;
   height: 50px;
-  background-image: url(placeholderImages/days.png);
+  /* background-image: url(p/laceholderImages/days.png); */
+  background-color: red;
 }
 
 .dates {
+  z-index: 1;
   width: 350px;
   height: 50px;
   background-image: url(placeholderImages/dates.png);
 }
 
 .list {
+  /* z-index: -3; */
+  /* position: absolute; */
   width: 350px;
-  background-image: url(placeholderImages/list.png);
-  background-position: top;
+  background-image: url(placeholderImages/list_with_marking.png);
+  /* background-position: top; */
 }

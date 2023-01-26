@@ -144,8 +144,8 @@ export default function App() {
 
   const [marginHeight, setMarginHeight] = useState(100);
   const [maxListHeight, setMaxListHeight] = useState(2000);
-  const [listRows, setListRows] = useState(4);
-  const [occurrenceRows, setOccurrenceRows] = useState(10);
+  const [listRows, setListRows] = useState(28);
+  const [occurrenceRows, setOccurrenceRows] = useState(27);
 
   if (!habits || !occurrenceData || !streaks) return null;
 
