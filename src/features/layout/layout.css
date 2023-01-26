@@ -48,7 +48,7 @@ body {
 
 .occurrences.occurrence-view {
   opacity: 0.8;
-  top: 0;
+  top: var(--margin-height);
 }
 
 .days {
@@ -67,7 +67,7 @@ body {
 .days.occurrence-view {
   opacity: 0.2;
   position: absolute;
-  top: calc(var(--occurrence-row-count) * 50px - 50px);
+  top: calc(var(--margin-height) + var(--occurrence-row-count) * 50px - 50px);
 }
 
 .dates {
@@ -84,7 +84,7 @@ body {
 
 .dates.occurrence-view {
   position: absolute;
-  top: calc(var(--occurrence-row-count) * 50px);
+  top: calc(var(--margin-height) + var(--occurrence-row-count) * 50px);
 }
 
 .list {
@@ -100,6 +100,6 @@ body {
 }
 
 .list.occurrence-view {
-  top: calc(var(--occurrence-row-count) * 50px);
+  top: calc(var(--margin-height) + var(--occurrence-row-count) * 50px);
   opacity: 0.2;
 }

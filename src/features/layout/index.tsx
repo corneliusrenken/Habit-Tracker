@@ -46,11 +46,15 @@ function setScreenHeightAndMargin(
     // allows bottom most occurrence row to be centered on screen
     const marginBelowOccurrences = windowHeight - screenMidpoint - 25;
     const overflow = occurrenceHeight + marginBelowOccurrences - windowHeight;
+    const marginAboveOccurrences = overflow > 0
+      ? 0
+      : windowHeight - marginBelowOccurrences - occurrenceHeight;
 
     const screenHeight = overflow > 0
       ? windowHeight + overflow
       : windowHeight;
     document.documentElement.style.setProperty('--screen-height', `${screenHeight}px`);
+    document.documentElement.style.setProperty('--margin-height', `${marginAboveOccurrences}px`);
   }
 }
 
