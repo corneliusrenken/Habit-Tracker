@@ -12,6 +12,8 @@
   width: 20px;
   background-color: deeppink;
   z-index: -1;
+  height: var(--max-list-height);
+  top: calc(50vh - var(--max-list-height) / 2);
 }
 
 .desired-margin-indicator {
