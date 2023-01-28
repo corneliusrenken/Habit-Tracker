@@ -142,7 +142,7 @@ export default function App() {
     updateHabitVisibility,
   });
 
-  const [marginHeight, setMarginHeight] = useState(100);
+  const [minMarginHeight, setMinMarginHeight] = useState(100);
   const [maxListHeight, setMaxListHeight] = useState(2000);
   const [listRows, setListRows] = useState(28);
   const [occurrenceRows, setOccurrenceRows] = useState(27);
@@ -152,139 +152,141 @@ export default function App() {
   /* eslint-disable jsx-a11y/label-has-associated-control */
   return (
     <>
-      <div
-        style={{
-          position: 'fixed',
-          width: '200px',
-          margin: '10px',
-          top: '60px',
-          zIndex: 99,
-        }}
-      >
-        <label
+      <div>
+        <div
           style={{
-            position: 'absolute',
-          }}
-        >
-          {`margin height: ${marginHeight} px`}
-        </label>
-        <input
-          value={marginHeight}
-          min={100}
-          max={2000}
-          onChange={(e) => setMarginHeight(Number(e.target.value))}
-          type="range"
-          style={{
+            position: 'fixed',
             width: '200px',
-            padding: '0',
-            margin: '0',
-            position: 'absolute',
-            top: '10px',
-          }}
-        />
-      </div>
-      <div
-        style={{
-          position: 'fixed',
-          width: '200px',
-          margin: '10px',
-          top: '60px',
-          left: '210px',
-          zIndex: 99,
-        }}
-      >
-        <label
-          style={{
-            position: 'absolute',
+            margin: '10px',
+            top: '60px',
+            zIndex: 99,
           }}
         >
-          {`max list height: ${maxListHeight} px`}
-        </label>
-        <input
-          value={maxListHeight}
-          min={100}
-          max={2000}
-          onChange={(e) => setMaxListHeight(Math.round(Number(e.target.value) / 50) * 50)}
-          type="range"
+          <label
+            style={{
+              position: 'absolute',
+            }}
+          >
+            {`margin height: ${minMarginHeight} px`}
+          </label>
+          <input
+            value={minMarginHeight}
+            min={100}
+            max={2000}
+            onChange={(e) => setMinMarginHeight(Number(e.target.value))}
+            type="range"
+            style={{
+              width: '200px',
+              padding: '0',
+              margin: '0',
+              position: 'absolute',
+              top: '10px',
+            }}
+          />
+        </div>
+        <div
           style={{
+            position: 'fixed',
             width: '200px',
-            padding: '0',
-            margin: '0',
-            position: 'absolute',
-            top: '10px',
-          }}
-        />
-      </div>
-      <div
-        style={{
-          position: 'fixed',
-          width: '200px',
-          margin: '10px',
-          top: '110px',
-          zIndex: 99,
-        }}
-      >
-        <label
-          style={{
-            position: 'absolute',
+            margin: '10px',
+            top: '60px',
+            left: '210px',
+            zIndex: 99,
           }}
         >
-          list rows:
-        </label>
-        <input
-          value={listRows}
-          onChange={(e) => setListRows(Math.max(0, Math.min(28, Number(e.target.value))))}
-          type="number"
+          <label
+            style={{
+              position: 'absolute',
+            }}
+          >
+            {`max list height: ${maxListHeight} px`}
+          </label>
+          <input
+            value={maxListHeight}
+            min={100}
+            max={2000}
+            onChange={(e) => setMaxListHeight(Math.round(Number(e.target.value) / 50) * 50)}
+            type="range"
+            style={{
+              width: '200px',
+              padding: '0',
+              margin: '0',
+              position: 'absolute',
+              top: '10px',
+            }}
+          />
+        </div>
+        <div
           style={{
-            border: '1px solid black',
-            borderRadius: '5px',
-            width: '50px',
-            height: '25px',
-            padding: '5px',
-            margin: '0',
-            position: 'absolute',
-            left: '70px',
-            top: '-5px',
-          }}
-        />
-      </div>
-      <div
-        style={{
-          position: 'fixed',
-          width: '200px',
-          margin: '10px',
-          top: '110px',
-          left: '130px',
-          zIndex: 99,
-        }}
-      >
-        <label
-          style={{
-            position: 'absolute',
+            position: 'fixed',
+            width: '200px',
+            margin: '10px',
+            top: '110px',
+            zIndex: 99,
           }}
         >
-          occurrence rows:
-        </label>
-        <input
-          value={occurrenceRows}
-          onChange={(e) => setOccurrenceRows(Math.max(0, Math.min(27, Number(e.target.value))))}
-          type="number"
+          <label
+            style={{
+              position: 'absolute',
+            }}
+          >
+            list rows:
+          </label>
+          <input
+            value={listRows}
+            onChange={(e) => setListRows(Math.max(0, Math.min(28, Number(e.target.value))))}
+            type="number"
+            style={{
+              border: '1px solid black',
+              borderRadius: '5px',
+              width: '50px',
+              height: '25px',
+              padding: '5px',
+              margin: '0',
+              position: 'absolute',
+              left: '70px',
+              top: '-5px',
+            }}
+          />
+        </div>
+        <div
           style={{
-            border: '1px solid black',
-            borderRadius: '5px',
-            width: '50px',
-            height: '25px',
-            padding: '5px',
-            margin: '0',
-            position: 'absolute',
+            position: 'fixed',
+            width: '200px',
+            margin: '10px',
+            top: '110px',
             left: '130px',
-            top: '-5px',
+            zIndex: 99,
           }}
-        />
+        >
+          <label
+            style={{
+              position: 'absolute',
+            }}
+          >
+            occurrence rows:
+          </label>
+          <input
+            value={occurrenceRows}
+            onChange={(e) => setOccurrenceRows(Math.max(0, Math.min(27, Number(e.target.value))))}
+            type="number"
+            style={{
+              border: '1px solid black',
+              borderRadius: '5px',
+              width: '50px',
+              height: '25px',
+              padding: '5px',
+              margin: '0',
+              position: 'absolute',
+              left: '130px',
+              top: '-5px',
+            }}
+          />
+        </div>
       </div>
       <Layout
         options={{
-          marginHeight,
+          minMarginHeight,
           maxListHeight,
         }}
         view={view}

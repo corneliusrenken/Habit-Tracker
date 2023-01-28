@@ -1,15 +1,15 @@
 import React from 'react';
 
 type LayoutOptions = {
-  marginHeight: number;
+  minMarginHeight: number;
   maxListHeight: number;
 };
 
 export default function Indicators({ options }: { options: LayoutOptions }) {
   return (
-    <>
-      <div className="desired-margin-indicator" style={{ height: options.marginHeight, top: 0 }} />
-      <div className="desired-margin-indicator" style={{ height: options.marginHeight, bottom: 0 }} />
+    <div>
+      <div className="desired-margin-indicator" style={{ height: options.minMarginHeight, top: 0 }} />
+      <div className="desired-margin-indicator" style={{ height: options.minMarginHeight, bottom: 0 }} />
       <div className="actual-margin" style={{ height: 'var(--margin-height)', top: 0 }} />
       <div className="actual-margin" style={{ height: 'var(--margin-height)', bottom: 0 }} />
       <div
@@ -19,6 +19,6 @@ export default function Indicators({ options }: { options: LayoutOptions }) {
           top: (window.innerHeight - options.maxListHeight) / 2,
         }}
       />
-    </>
+    </div>
   );
 }
