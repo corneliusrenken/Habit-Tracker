@@ -285,13 +285,14 @@ export default function App() {
         </div>
       </div>
       <Layout
-        options={{
+        layoutOptions={{
           minMarginHeight,
           maxListHeight,
         }}
         view={view}
         listRows={listRows}
         occurrenceRows={occurrenceRows}
+        setInTransition={setInTransition}
       />
     </>
   );

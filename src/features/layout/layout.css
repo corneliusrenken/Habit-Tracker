@@ -9,20 +9,20 @@
   width: 100%;
   position: absolute;
   /* add list margin height for bottom mask to be able to transition up from occurrence view when list view is 100vh tall */
-  height: calc(var(--screen-height) + var(--screen-offset) + var(--last-list-margin-height));
+  height: calc(var(--screen-height) + var(--screen-offset) + var(--latched-list-view-margin-height));
   top: calc(-1 * var(--screen-offset));
 }
 
 .bottom-mask {
   background-color: limegreen;
   width: 100%;
-  height: var(--last-list-margin-height);
+  height: var(--latched-list-view-margin-height);
   z-index: 1;
 }
 
 .bottom-mask.list-view {
   position: sticky;
-  top: calc(var(--transition-offset, 0px) + 100vh - var(--last-list-margin-height));
+  top: calc(var(--transition-offset, 0px) + 100vh - var(--latched-list-view-margin-height));
 }
 
 .bottom-mask.occurrence-view {
@@ -31,7 +31,7 @@
     var(--margin-height)
     + var(--occurrence-row-count) * 50px
     + 50px
-    + 100vh - 2 * var(--last-list-margin-height) - 100px
+    + 100vh - 2 * var(--latched-list-view-margin-height) - 100px
     + var(--transition-offset, 0px)
   );
 }

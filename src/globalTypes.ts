@@ -47,6 +47,16 @@ export type ListView = { name: 'today' }
 export type OccurrenceView = { name: 'history' }
 | { name: 'focus'; focusId: number; };
 
+export type ViewType = 'occurrence' | 'list';
+
+export const viewToViewType: { [key in View['name']]: ViewType } = {
+  today: 'list',
+  yesterday: 'list',
+  selection: 'list',
+  history: 'occurrence',
+  focus: 'occurrence',
+};
+
 export type DayObject = {
   dateString: string,
   weekDayIndex: number,
