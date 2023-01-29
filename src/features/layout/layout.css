@@ -28,48 +28,68 @@
   width: 100%;
   height: var(--screen-height);
   overflow: clip;
-  background-color: rgba(23, 233, 244, 0.5);
   position: relative;
 }
 
 .layout-overflow {
-  width: 800px;
-  background-color: rgba(244, 233, 23, 0.5);
+  width: 100%;
   position: absolute;
-  height: calc(var(--screen-height) + var(--screen-offset));
-  left: calc(50vw - 175px);
+  /* add list margin height for bottom mask to be able to transition up from occurrence view when list view is 100vh tall */
+  height: calc(var(--screen-height) + var(--screen-offset) + var(--last-list-margin-height));
   top: calc(-1 * var(--screen-offset));
 }
 
-.sticky-group {
-  background-color: rgba(23, 244, 23, 0.5);
-  width: 600px;
+.bottom-mask {
+  background-color: rgba(81, 206, 46, 0.229);
+  width: 100%;
+  height: var(--last-list-margin-height);
 }
 
-.list-view .sticky-group {
+.bottom-mask.list-view {
   position: sticky;
-  top: calc(-1 * var(--screen-offset));
-  height: max(
-    var(--occurrence-row-count) * 50px + 50px,
-    var(--margin-height) + 100px
+  top: calc(var(--transition-offset, 0px) + 100vh - var(--last-list-margin-height));
+}
+
+.bottom-mask.occurrence-view {
+  position: absolute;
+  top: calc(
+    var(--margin-height)
+    + var(--occurrence-row-count) * 50px
+    + 50px
+    + 100vh - 2 * var(--last-list-margin-height) - 100px
+    + var(--transition-offset, 0px)
   );
 }
 
-.occurrence-view .sticky-group {
+.sticky-group {
+  background-color: rgba(206, 46, 46, 0.229);
+  width: 100%;
+}
+
+.sticky-group.list-view {
+  position: sticky;
+  top: calc(-1 * var(--screen-offset));
+  /* have transition offset in height instead of top so mask reaches top of screen */
+  height: max(
+    var(--transition-offset, 0px) + var(--occurrence-row-count) * 50px + 50px,
+    var(--transition-offset, 0px) + var(--margin-height) + 100px
+  );
+}
+
+.sticky-group.occurrence-view {
   position: absolute;
-  top: 0;
+  top: var(--transition-offset, 0px);
   height: calc(var(--margin-height) + var(--occurrence-row-count) * 50px + 50px);
 }
 
 .occurrences {
   width: 350px;
-  width: 500px;
-  background-image: url(placeholderImages/occurrences_with_marking.png);
-  background-color: red;
+  background-image: url(placeholderImages/occurrences.png);
   background-position: bottom;
   height: calc(var(--occurrence-row-count) * 50px);
   position: absolute;
-  top: calc(var(--transition-offset, 0px) + 100% - 50px - var(--occurrence-row-count) * 50px);
+  top: calc(100% - 50px - var(--occurrence-row-count) * 50px);
+  left: calc(50vw - 175px);
 }
 
 .days {
@@ -78,7 +98,8 @@
   height: 50px;
   background-image: url(placeholderImages/days.png);
   position: absolute;
-  top: calc(var(--transition-offset, 0px) + 100% - 100px);
+  top: calc(100% - 100px);
+  left: calc(50vw - 175px);
 }
 
 .dates {
@@ -87,17 +108,19 @@
   height: 50px;
   background-image: url(placeholderImages/dates.png);
   position: absolute;
-  top: calc(var(--transition-offset, 0px) + 100% - 50px);
+  top: calc(100% - 50px);
+  left: calc(50vw - 175px);
 }
 
 .list {
   width: 350px;
-  background-image: url(placeholderImages/list_with_marking.png);
+  background-image: url(placeholderImages/list.png);
   height: calc(var(--list-row-count) * 50px);
-  position: absolute
+  position: absolute;
+  left: calc(50vw - 175px);
 }
 
-.list-view .list {
+.list.list-view {
   top: max(
     var(--transition-offset, 0px) + var(--occurrence-row-count) * 50px + 50px,
     var(--transition-offset, 0px) + var(--margin-height) + 100px
@@ -105,7 +128,7 @@
   opacity: 0.8;
 }
 
-.occurrence-view .list {
+.list.occurrence-view {
   top: calc(
     var(--transition-offset, 0px)
     + var(--margin-height)

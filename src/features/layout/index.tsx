@@ -3,6 +3,7 @@ import React, { useEffect, useRef } from 'react';
 import { View } from '../../globalTypes';
 import Indicators from './indicators';
 import './layout.css';
+import triggerElementReflow from './triggerElementReflow';
 
 type LayoutOptions = {
   minMarginHeight: number;
@@ -17,14 +18,6 @@ type Props = {
 };
 
 type ViewType = 'occurrence' | 'list';
-
-// trigger reflow - https://stackoverflow.com/questions/11131875/what-is-the-cleanest-way-to-disable-css-transition-effects-temporarily
-function forceElementReflow(element: HTMLElement) {
-  /* eslint-disable no-param-reassign */
-  element.offsetHeight; // eslint-disable-line @typescript-eslint/no-unused-expressions
-  element.style.transition = '';
-  /* eslint-enable no-param-reassign */
-}
 
 function setScreenHeightAndMargin(
   options: LayoutOptions,
@@ -45,14 +38,11 @@ function setScreenHeightAndMargin(
     const screenHeight = overflow > 0
       ? windowHeight + overflow
       : windowHeight;
+    const screenOffset = occurrenceRows * 50 - 50 > marginHeight
+      ? occurrenceRows * 50 - 50 - marginHeight
+      : 0;
 
-    if (occurrenceRows * 50 - 50 > marginHeight) {
-      const screenOffset = occurrenceRows * 50 - 50 - marginHeight;
-      document.documentElement.style.setProperty('--screen-offset', `${screenOffset}px`);
-    } else {
-      document.documentElement.style.setProperty('--screen-offset', '0px');
-    }
-
+    document.documentElement.style.setProperty('--screen-offset', `${screenOffset}px`);
     document.documentElement.style.setProperty('--screen-height', `${screenHeight}px`);
     document.documentElement.style.setProperty('--last-list-margin-height', `${marginHeight}px`);
     document.documentElement.style.setProperty('--margin-height', `${marginHeight}px`);
@@ -68,13 +58,13 @@ function setScreenHeightAndMargin(
     const marginAboveOccurrences = overflow > 0
       ? 0
       : windowHeight - marginBelowOccurrences - occurrenceHeight;
-
     const screenHeight = overflow > 0
       ? windowHeight + overflow
       : windowHeight;
 
     document.documentElement.style.setProperty('--screen-offset', '0px');
     document.documentElement.style.setProperty('--screen-height', `${screenHeight}px`);
+    document.documentElement.style.setProperty('--last-occurrence-margin-height', `${marginAboveOccurrences}px`);
     document.documentElement.style.setProperty('--margin-height', `${marginAboveOccurrences}px`);
   }
 }
@@ -87,14 +77,10 @@ function transition(
   to: ViewType,
   duration: number,
   scrollDistance: number,
-  layoutContainer: HTMLDivElement,
-  elements: { [key in 'occurrences' | 'days' | 'dates' | 'list']: HTMLDivElement },
+  elements: { [key in 'stickyGroup' | 'list' | 'bottomMask']: HTMLDivElement },
   setInTransition: React.Dispatch<React.SetStateAction<boolean>>,
 ) {
   setInTransition(true);
-
-  layoutContainer.classList.remove(`${from}-view`);
-  layoutContainer.classList.add(`${to}-view`);
 
   if (to === 'occurrence') {
     window.scrollTo({
@@ -108,33 +94,42 @@ function transition(
     window.scrollTo({ top: 0 });
   }
 
+  elements.list.classList.remove(`${from}-view`);
+  elements.list.classList.add(`${to}-view`);
+
+  elements.stickyGroup.classList.remove(`${from}-view`);
+  elements.stickyGroup.classList.add(`${to}-view`);
+
   if (to === 'occurrence') {
     document.documentElement.style.setProperty('--list-offset', `${-scrollDistance}px`);
   }
+  document.documentElement.style.setProperty(
+    '--transition-offset',
+    to === 'list'
+      ? `calc(50vh - var(--last-list-margin-height) - 50px - 25px + ${scrollDistance}px)`
+      : 'calc(-1 * (50vh - var(--last-list-margin-height) - 50px - 25px))',
+  );
+
+  elements.bottomMask.classList.remove(`${from}-view`);
+  elements.bottomMask.classList.add(`${to}-view`);
+
+  triggerElementReflow();
+
+  document.documentElement.style.setProperty('--transition-offset', '');
 
   Object.values(elements).forEach((element) => {
-    document.documentElement.style.setProperty(
-      '--transition-offset',
-      to === 'list'
-        ? `calc(50vh - var(--last-list-margin-height) - 50px - 25px + ${scrollDistance}px)`
-        : 'calc(-1 * (50vh - var(--last-list-margin-height) - 50px - 25px))',
-    );
-    forceElementReflow(element);
-    document.documentElement.style.setProperty('--transition-offset', '');
-
     // eslint-disable-next-line no-param-reassign
-    element.style.transition = `top ${duration}ms`;
-    if (element === elements.occurrences) {
-      // eslint-disable-next-line no-param-reassign
-      element.style.transition = `top ${duration}ms, height ${duration}ms`;
-    }
+    element.style.transition = `top ${duration}ms, height ${duration}ms`;
+  });
 
-    setTimeout(() => {
+  setTimeout(() => {
+    setInTransition(false);
+    // eslint-disable-next-line no-param-reassign
+    Object.values(elements).forEach((element) => {
       // eslint-disable-next-line no-param-reassign
       element.style.transition = '';
-      setInTransition(false);
-    }, duration);
-  });
+    });
+  }, duration);
 }
 
 const viewTypes: { [key in View['name']]: ViewType } = {
@@ -148,11 +143,9 @@ const viewTypes: { [key in View['name']]: ViewType } = {
 export default function Layout({
   options, view, listRows, occurrenceRows,
 }: Props) {
-  const occurrences = useRef<HTMLDivElement>(null);
-  const days = useRef<HTMLDivElement>(null);
-  const dates = useRef<HTMLDivElement>(null);
+  const stickyGroup = useRef<HTMLDivElement>(null);
+  const bottomMask = useRef<HTMLDivElement>(null);
   const list = useRef<HTMLDivElement>(null);
-  const layoutContainer = useRef<HTMLDivElement>(null);
   const lastView = useRef<View['name']>('today');
 
   useEffect(() => {
@@ -181,14 +174,12 @@ export default function Layout({
       transition(
         viewTypes[lastView.current],
         viewTypes[view.name],
-        750,
+        600,
         scrollDistance,
-        layoutContainer.current,
         {
-          occurrences: occurrences.current,
-          days: days.current,
-          dates: dates.current,
+          stickyGroup: stickyGroup.current,
           list: list.current,
+          bottomMask: bottomMask.current,
         },
         () => {},
       );
@@ -212,32 +203,31 @@ export default function Layout({
     <>
       <Indicators options={options} />
       <div
-        ref={layoutContainer}
-        className="layout-container list-view"
+        className="layout-container"
       >
         <div
           className="layout-overflow"
         >
           <div
-            className="sticky-group"
+            ref={stickyGroup}
+            className="sticky-group list-view"
           >
             <div
-              ref={occurrences}
               className="occurrences"
             />
             <div
-              ref={days}
               className="days"
             />
             <div
-              ref={dates}
               className="dates"
             />
           </div>
           <div
             ref={list}
-            className="list"
+            className="list list-view"
           />
+          <div className="top-mask list-view" />
+          <div ref={bottomMask} className="bottom-mask list-view" />
         </div>
       </div>
     </>

@@ -144,7 +144,7 @@ export default function App() {
 
   const [minMarginHeight, setMinMarginHeight] = useState(100);
   const [maxListHeight, setMaxListHeight] = useState(2000);
-  const [listRows, setListRows] = useState(28);
+  const [listRows, setListRows] = useState(10);
   const [occurrenceRows, setOccurrenceRows] = useState(27);
 
   if (!habits || !occurrenceData || !streaks) return null;
@@ -171,8 +171,8 @@ export default function App() {
           </label>
           <input
             value={minMarginHeight}
-            min={100}
-            max={2000}
+            min={0}
+            max={Math.floor((window.innerHeight - 300) / 2)}
             onChange={(e) => setMinMarginHeight(Number(e.target.value))}
             type="range"
             style={{
@@ -203,7 +203,7 @@ export default function App() {
           </label>
           <input
             value={maxListHeight}
-            min={100}
+            min={150}
             max={2000}
             onChange={(e) => setMaxListHeight(Math.round(Number(e.target.value) / 50) * 50)}
             type="range"
