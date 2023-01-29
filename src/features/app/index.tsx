@@ -159,7 +159,7 @@ export default function App() {
             width: '200px',
             margin: '10px',
             top: '60px',
-            zIndex: 99,
+            zIndex: 999,
           }}
         >
           <label
@@ -191,7 +191,7 @@ export default function App() {
             margin: '10px',
             top: '60px',
             left: '210px',
-            zIndex: 99,
+            zIndex: 999,
           }}
         >
           <label
@@ -222,7 +222,7 @@ export default function App() {
             width: '200px',
             margin: '10px',
             top: '110px',
-            zIndex: 99,
+            zIndex: 999,
           }}
         >
           <label
@@ -256,7 +256,7 @@ export default function App() {
             margin: '10px',
             top: '110px',
             left: '130px',
-            zIndex: 99,
+            zIndex: 999,
           }}
         >
           <label

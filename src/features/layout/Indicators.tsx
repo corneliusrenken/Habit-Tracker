@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import './indicators.css';
 
 type LayoutOptions = {
   minMarginHeight: number;
@@ -14,8 +15,6 @@ export default function Indicators({ options }: { options: LayoutOptions }) {
     <div>
       <div className="desired-margin-indicator" style={{ height: options.minMarginHeight, top: 0 }} />
       <div className="desired-margin-indicator" style={{ height: options.minMarginHeight, bottom: 0 }} />
-      <div className="actual-margin" style={{ height: 'var(--margin-height)', top: 0 }} />
-      <div className="actual-margin" style={{ height: 'var(--margin-height)', bottom: 0 }} />
       <div className="max-list-height-indicator" />
     </div>
   );
