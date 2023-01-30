@@ -2,7 +2,6 @@
 import React, { useEffect, useRef } from 'react';
 import { View, viewToViewType } from '../../globalTypes';
 import getScrollDistance from './getScrollDistance';
-import Indicators from './indicators';
 import './layout.css';
 import setLayoutCSSProperties from './setLayoutCSSProperties';
 import transition from './transition';
@@ -82,36 +81,33 @@ export default function Layout({
   }, [listRows, occurrenceRows, layoutOptions, view, setInTransition]);
 
   return (
-    <>
-      <Indicators options={layoutOptions} />
+    <div
+      className="layout-container"
+    >
       <div
-        className="layout-container"
+        className="layout-overflow"
       >
         <div
-          className="layout-overflow"
+          ref={stickyGroup}
+          className="sticky-group list-view"
         >
           <div
-            ref={stickyGroup}
-            className="sticky-group list-view"
-          >
-            <div
-              className="occurrences"
-            />
-            <div
-              className="days"
-            />
-            <div
-              className="dates"
-            />
-          </div>
-          <div
-            ref={list}
-            className="list list-view"
+            className="occurrences"
           />
-          <div className="top-mask list-view" />
-          <div ref={bottomMask} className="bottom-mask list-view" />
+          <div
+            className="days"
+          />
+          <div
+            className="dates"
+          />
         </div>
+        <div
+          ref={list}
+          className="list list-view"
+        />
+        <div className="top-mask list-view" />
+        <div ref={bottomMask} className="bottom-mask list-view" />
       </div>
-    </>
+    </div>
   );
 }

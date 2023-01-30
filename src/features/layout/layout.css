@@ -14,7 +14,7 @@
 }
 
 .bottom-mask {
-  background-color: limegreen;
+  background-color: white;
   width: 100%;
   height: var(--latched-list-view-margin-height);
   z-index: 1;
@@ -37,7 +37,7 @@
 }
 
 .sticky-group {
-  background-color: burlywood;
+  background-color: white;
   width: 100%;
   z-index: 1;
 }
@@ -115,4 +115,28 @@
     + 50px
     + var(--list-offset, 0px)
   );
+}
+
+.list-view .occurrences {
+  opacity: 0;
+}
+
+.occurrence-view .occurrences {
+  opacity: 1;
+}
+
+.list-view .days {
+  opacity: 1;
+}
+
+.occurrence-view .days {
+  opacity: 0;
+}
+
+.list.list-view {
+  opacity: 1;
+}
+
+.list.occurrence-view {
+  opacity: 0;
 }

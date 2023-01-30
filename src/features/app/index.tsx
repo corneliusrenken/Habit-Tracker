@@ -21,6 +21,7 @@ import useSelectedData from './useSelectedData';
 import Modal from '../modal';
 import useShortcutManager from '../shortcutManager/useShortcutManager';
 import Layout from '../layout';
+import LayoutTestingMenu from '../layout/layoutTestingMenu';
 
 export default function App() {
   // https://medium.com/swlh/how-to-store-a-function-with-the-usestate-hook-in-react-8a88dd4eede1
@@ -149,141 +150,18 @@ export default function App() {
 
   if (!habits || !occurrenceData || !streaks) return null;
 
-  /* eslint-disable jsx-a11y/label-has-associated-control */
   return (
     <>
-      <div>
-        <div
-          style={{
-            position: 'fixed',
-            width: '200px',
-            margin: '10px',
-            top: '60px',
-            zIndex: 999,
-          }}
-        >
-          <label
-            style={{
-              position: 'absolute',
-            }}
-          >
-            {`margin height: ${minMarginHeight} px`}
-          </label>
-          <input
-            value={minMarginHeight}
-            min={0}
-            max={Math.floor((window.innerHeight - 300) / 2)}
-            onChange={(e) => setMinMarginHeight(Number(e.target.value))}
-            type="range"
-            style={{
-              width: '200px',
-              padding: '0',
-              margin: '0',
-              position: 'absolute',
-              top: '10px',
-            }}
-          />
-        </div>
-        <div
-          style={{
-            position: 'fixed',
-            width: '200px',
-            margin: '10px',
-            top: '60px',
-            left: '210px',
-            zIndex: 999,
-          }}
-        >
-          <label
-            style={{
-              position: 'absolute',
-            }}
-          >
-            {`max list height: ${maxListHeight} px`}
-          </label>
-          <input
-            value={maxListHeight}
-            min={150}
-            max={2000}
-            onChange={(e) => setMaxListHeight(Math.round(Number(e.target.value) / 50) * 50)}
-            type="range"
-            style={{
-              width: '200px',
-              padding: '0',
-              margin: '0',
-              position: 'absolute',
-              top: '10px',
-            }}
-          />
-        </div>
-        <div
-          style={{
-            position: 'fixed',
-            width: '200px',
-            margin: '10px',
-            top: '110px',
-            zIndex: 999,
-          }}
-        >
-          <label
-            style={{
-              position: 'absolute',
-            }}
-          >
-            list rows:
-          </label>
-          <input
-            value={listRows}
-            onChange={(e) => setListRows(Math.max(0, Math.min(28, Number(e.target.value))))}
-            type="number"
-            style={{
-              border: '1px solid black',
-              borderRadius: '5px',
-              width: '50px',
-              height: '25px',
-              padding: '5px',
-              margin: '0',
-              position: 'absolute',
-              left: '70px',
-              top: '-5px',
-            }}
-          />
-        </div>
-        <div
-          style={{
-            position: 'fixed',
-            width: '200px',
-            margin: '10px',
-            top: '110px',
-            left: '130px',
-            zIndex: 999,
-          }}
-        >
-          <label
-            style={{
-              position: 'absolute',
-            }}
-          >
-            occurrence rows:
-          </label>
-          <input
-            value={occurrenceRows}
-            onChange={(e) => setOccurrenceRows(Math.max(0, Math.min(27, Number(e.target.value))))}
-            type="number"
-            style={{
-              border: '1px solid black',
-              borderRadius: '5px',
-              width: '50px',
-              height: '25px',
-              padding: '5px',
-              margin: '0',
-              position: 'absolute',
-              left: '130px',
-              top: '-5px',
-            }}
-          />
-        </div>
-      </div>
+      <LayoutTestingMenu
+        minMarginHeight={minMarginHeight}
+        maxListHeight={maxListHeight}
+        listRows={listRows}
+        occurrenceRows={occurrenceRows}
+        setMinMarginHeight={setMinMarginHeight}
+        setMaxListHeight={setMaxListHeight}
+        setListRows={setListRows}
+        setOccurrenceRows={setOccurrenceRows}
+      />
       <Layout
         layoutOptions={{
           minMarginHeight,
