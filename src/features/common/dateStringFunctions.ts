@@ -10,9 +10,10 @@ export function getDateFromDateString(dateString: string): Date {
   const date = new Date();
   date.setHours(0, 0, 0, 0);
   const [year, month, day] = getYearMonthDay(dateString);
-  date.setFullYear(year);
-  date.setMonth(month - 1);
+  // ! need to set date first, as otherwise when it's eg. the 31 setting month to feb doesn't work !
   date.setDate(day);
+  date.setMonth(month - 1);
+  date.setFullYear(year);
   return date;
 }
 
