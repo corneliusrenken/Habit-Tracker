@@ -1,5 +1,6 @@
 import React, {
-  useEffect, useMemo, useState,
+  useCallback,
+  useEffect, useMemo, useRef, useState,
 } from 'react';
 import getDateObject from '../common/getDateObject';
 import getTextWidthInPx from './getTextWidthInPx';
@@ -20,12 +21,14 @@ import Modal from '../modal';
 import useShortcutManager from '../shortcutManager/useShortcutManager';
 import Layout from '../layout';
 
+let initializedApp = false;
+
 export default function App() {
   // https://medium.com/swlh/how-to-store-a-function-with-the-usestate-hook-in-react-8a88dd4eede1
   // using a function in useState makes it's initializer only run once instead of on every cycle
   const [dateObject] = useState(() => getDateObject(6));
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  const [view, _setView] = useState<View>({ name: 'today' });
+  const [view, _setView] = useState<View>(() => ({ name: 'today' }));
   const [latchedListView, setLatchedListView] = useState<ListView>({ name: 'today' });
   const [latchedOccurrenceView, setLatchedOccurrenceView] = useState<OccurrenceView>({ name: 'history' });
   const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
@@ -37,24 +40,34 @@ export default function App() {
   const [habits, setHabits] = useState<Habit[]>();
   const [occurrenceData, setOccurrenceData] = useState<OccurrenceData>();
   const [streaks, setStreaks] = useState<Streaks>();
+  const layoutOptions = useRef({
+    minMarginHeight: 50,
+    maxListHeight: 600,
+  });
 
-  const setView = (newView: View) => {
-    if (newView.name === 'today' || newView.name === 'yesterday' || newView.name === 'selection') {
-      setLatchedListView(newView);
-    } else {
-      setLatchedOccurrenceView(newView);
+  const setView = useCallback((newView: View) => {
+    if (newView.name !== view.name) {
+      if (newView.name === 'today' || newView.name === 'yesterday' || newView.name === 'selection') {
+        setLatchedListView(newView);
+      } else {
+        setLatchedOccurrenceView(newView);
+      }
+      _setView(newView);
     }
-    _setView(newView);
-  };
+  }, [view]);
 
+  // improve this later...
   useEffect(() => {
-    initialize(dateObject.today.dateString, {
-      setView,
-      setHabits,
-      setOccurrenceData,
-      setStreaks,
-    });
-  }, [dateObject]);
+    if (!initializedApp) {
+      initializedApp = true;
+      initialize(dateObject.today.dateString, {
+        setView,
+        setHabits,
+        setOccurrenceData,
+        setStreaks,
+      });
+    }
+  }, [dateObject, setView]);
 
   const dayObject = useMemo(() => (
     latchedListView.name === 'yesterday' ? dateObject.yesterday : dateObject.today
@@ -102,6 +115,7 @@ export default function App() {
     selectedStreaks: selectedData.streaks,
     dayObject,
     latchedListView,
+    latchedOccurrenceView,
     occurrenceData,
     selectedHabits: selectedData.habits,
     selectedIndex,
@@ -149,10 +163,7 @@ export default function App() {
         setModalContentGenerator={setModalContentGenerator}
       />
       <Layout
-        layoutOptions={{
-          minMarginHeight: 50,
-          maxListHeight: 600,
-        }}
+        layoutOptions={layoutOptions.current}
         view={view}
         listRows={view.name === 'selection' ? selectedData.habits.length + 1 : selectedData.habits.length}
         occurrenceRows={Math.ceil((selectedData.occurrences.length - 7) / 7)}

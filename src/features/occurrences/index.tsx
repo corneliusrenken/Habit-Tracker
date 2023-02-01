@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { SelectedOccurrence, ViewType } from '../../globalTypes';
+import { OccurrenceView, SelectedOccurrence, ViewType } from '../../globalTypes';
 import './occurrences.css';
 
 function getContainerHeight(occurencesLength: number) {
@@ -7,11 +7,16 @@ function getContainerHeight(occurencesLength: number) {
 }
 
 type Props = {
+  latchedOccurrenceView: OccurrenceView;
   viewType: ViewType;
   selectedOccurrences: SelectedOccurrence[];
 };
 
-export default function Occurrences({ viewType, selectedOccurrences }: Props) {
+export default function Occurrences({
+  latchedOccurrenceView,
+  viewType,
+  selectedOccurrences,
+}: Props) {
   const occurrenceContainerRef = useRef<HTMLDivElement>(null);
   const [firstTimeShowingOccurrences, setFirstTimeShowingOccurrences] = useState(true);
 
@@ -38,15 +43,17 @@ export default function Occurrences({ viewType, selectedOccurrences }: Props) {
     >
       {selectedOccurrences
         .slice(0, selectedOccurrences.length - 7)
-        .map(({ date, complete }, index) => {
+        .map(({ date, fullDate, complete }, index) => {
           const row = Math.floor((selectedOccurrences.length - index - 1) / 7);
 
           let className = 'occurrence';
           if (complete) className += ' greyed-out';
 
+          const key = `${latchedOccurrenceView.name}-${fullDate}`;
+
           return (
             <div
-              key={index} // eslint-disable-line react/no-array-index-key
+              key={key}
               className={className}
               style={{
                 animationDelay: viewType === 'occurrence'

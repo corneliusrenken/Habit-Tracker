@@ -48,7 +48,11 @@ export default function getSelectedOccurrences(states: States) {
         if (occurrences.length !== 0) complete = occurrences.every((occurence) => occurence.complete);
       }
     }
-    const occurence = { date: Number(dateString.slice(-2)), complete };
+    const occurence = {
+      date: Number(dateString.slice(-2)),
+      fullDate: dateString,
+      complete,
+    };
     occurences.push(occurence);
     currentDate.setDate(currentDate.getDate() - 1);
   }

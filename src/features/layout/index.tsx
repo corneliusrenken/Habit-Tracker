@@ -75,6 +75,17 @@ export default function Layout({
         listRows,
         occurrenceRows,
       );
+
+      if (view.name !== lastView.current) {
+        if (viewToViewType[view.name] === 'list') {
+          window.scrollTo({ top: 0 });
+        } else {
+          const screenHeight = Number(
+            document.documentElement.style.getPropertyValue('--screen-height').slice(0, -2),
+          );
+          window.scrollTo({ top: screenHeight });
+        }
+      }
     }
 
     if (view.name !== lastView.current) {
@@ -90,7 +101,7 @@ export default function Layout({
 
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
-  }, [listRows, occurrenceRows, layoutOptions, view, setInTransition]);
+  }, [layoutOptions, listRows, occurrenceRows, setInTransition, view]);
 
   return (
     <div

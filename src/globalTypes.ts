@@ -8,6 +8,9 @@ export type OldestOccurrences = {
   [habitId: string]: string | null;
 };
 
+/**
+ * dateString: YYYY-MM-DD
+ */
 export type OccurrencesByDate = {
   [dateString: string]: {
     [habitId: string]: {
@@ -29,8 +32,12 @@ export type Streaks = {
   };
 };
 
+/**
+ * fullDate: YYYY-MM-DD
+ */
 export type SelectedOccurrence = {
   date: number;
+  fullDate: string;
   complete: boolean;
 };
 
