@@ -12,15 +12,27 @@ type Props = {
   view: View;
   listRows: number;
   occurrenceRows: number;
-  setInTransition: React.Dispatch<React.SetStateAction<boolean>>,
+  setInTransition: React.Dispatch<React.SetStateAction<boolean>>;
+  occurrences: JSX.Element;
+  dates: JSX.Element;
+  days: JSX.Element;
+  list: JSX.Element;
 };
 
 export default function Layout({
-  layoutOptions, view, listRows, occurrenceRows, setInTransition,
+  layoutOptions,
+  view,
+  listRows,
+  occurrenceRows,
+  setInTransition,
+  occurrences,
+  dates,
+  days,
+  list,
 }: Props) {
-  const stickyGroup = useRef<HTMLDivElement>(null);
-  const bottomMask = useRef<HTMLDivElement>(null);
-  const list = useRef<HTMLDivElement>(null);
+  const stickyGroupRef = useRef<HTMLDivElement>(null);
+  const bottomMaskRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
   const lastView = useRef<View['name']>('today');
 
   useEffect(() => {
@@ -50,9 +62,9 @@ export default function Layout({
           ? scrollDistance.fromTop
           : scrollDistance.fromBottom,
         transitionElements: {
-          stickyGroup: stickyGroup.current,
-          list: list.current,
-          bottomMask: bottomMask.current,
+          stickyGroup: stickyGroupRef.current,
+          list: listRef.current,
+          bottomMask: bottomMaskRef.current,
         },
         setInTransition,
       });
@@ -88,25 +100,33 @@ export default function Layout({
         className="layout-overflow"
       >
         <div
-          ref={stickyGroup}
+          ref={stickyGroupRef}
           className="sticky-group list-view"
         >
           <div
             className="occurrences"
-          />
+          >
+            {occurrences}
+          </div>
           <div
             className="days"
-          />
+          >
+            {days}
+          </div>
           <div
             className="dates"
-          />
+          >
+            {dates}
+          </div>
         </div>
         <div
-          ref={list}
+          ref={listRef}
           className="list list-view"
-        />
+        >
+          {list}
+        </div>
         <div className="top-mask list-view" />
-        <div ref={bottomMask} className="bottom-mask list-view" />
+        <div ref={bottomMaskRef} className="bottom-mask list-view" />
       </div>
     </div>
   );

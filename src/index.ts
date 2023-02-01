@@ -25,6 +25,8 @@ const createWindow = (): void => {
       scrollBounce: true,
     },
     titleBarStyle: 'hiddenInset',
+    minHeight: 350,
+    minWidth: 500,
   });
 
   // and load the index.html of the app.
