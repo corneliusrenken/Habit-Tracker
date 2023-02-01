@@ -1,0 +1,46 @@
+.layout-testing-menu-container {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  z-index: 999;
+  width: 350px;
+  height: 150px;
+  top: calc(50vh - 75px);
+  left: 15px;
+}
+
+.layout-testing-menu-container div {
+  height: 30px;
+  display: flex;
+  flex-direction: row;
+  /* align-items: space-between; */
+  align-items: center;
+  justify-content: space-between;
+  background-color: rgb(240, 240, 240);
+  padding-left: 3px;
+}
+
+.layout-testing-menu-container div:first-of-type {
+  justify-content: start;
+  width: fit-content;
+}
+
+.layout-testing-menu-container div:not(:first-of-type) {
+  transition: opacity 0.1s;
+  opacity: var(--menu-opacity);
+}
+
+input[type="checkbox"] {
+  width: 20px;
+}
+
+input[type="range"] {
+  width: 110px;
+}
+
+input {
+  margin: 10px 10px 10px 3px;
+  padding: 0;
+  display: inline-block;
+  height: 20px;
+}

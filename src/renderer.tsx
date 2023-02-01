@@ -37,6 +37,7 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
+    <div className="draggable-area" />
     <App />
   </React.StrictMode>,
 );

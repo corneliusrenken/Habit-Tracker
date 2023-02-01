@@ -22,14 +22,18 @@ const createWindow = (): void => {
     width: 800,
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
+      scrollBounce: true,
     },
+    titleBarStyle: 'hiddenInset',
+    minHeight: 350,
+    minWidth: 500,
   });
 
   // and load the index.html of the app.
   mainWindow.loadURL(MAIN_WINDOW_WEBPACK_ENTRY);
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools({ mode: 'detach' });
+  mainWindow.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished

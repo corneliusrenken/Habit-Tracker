@@ -1,15 +1,16 @@
 import React from 'react';
-import { SelectedOccurrence } from '../../globalTypes';
+import { SelectedOccurrence, ViewType } from '../../globalTypes';
 import './days.css';
 
 type Props = {
+  viewType: ViewType;
   weekDays: string[];
   selectedOccurrences: SelectedOccurrence[];
 };
 
-export default function Days({ weekDays, selectedOccurrences }: Props) {
+export default function Days({ viewType, weekDays, selectedOccurrences }: Props) {
   return (
-    <div className="days-container">
+    <div className="days-container" style={{ opacity: viewType === 'list' ? 1 : 0 }}>
       {weekDays.map(((day, index) => {
         const { complete } = selectedOccurrences[selectedOccurrences.length - 7 + index];
         let className = 'day';

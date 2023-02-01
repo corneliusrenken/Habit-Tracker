@@ -4,12 +4,14 @@ import {
   ListView,
   OccurrenceData,
   Streaks,
+  ViewType,
 } from '../../globalTypes';
 import HabitList from './HabitList';
 import SelectionList from './SelectionList';
 import './list.css';
 
 type Props = {
+  viewType: ViewType;
   allowTabTraversal: boolean;
   selectedHabits: Habit[];
   streaks: Streaks;
@@ -30,6 +32,7 @@ type Props = {
 };
 
 export default function List({
+  viewType,
   allowTabTraversal,
   selectedHabits,
   streaks,
@@ -49,7 +52,7 @@ export default function List({
   updateHabitVisibility,
 }: Props) {
   return (
-    <div>
+    <div className="list-container" style={{ opacity: viewType === 'list' ? 1 : 0 }}>
       {latchedListView.name !== 'selection' ? (
         <HabitList
           habits={selectedHabits}

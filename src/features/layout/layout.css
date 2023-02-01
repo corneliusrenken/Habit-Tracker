@@ -1,0 +1,114 @@
+.layout-container {
+  width: 100%;
+  height: var(--screen-height);
+  overflow: clip;
+  position: relative;
+}
+
+.layout-overflow {
+  width: 100%;
+  position: absolute;
+  /* add list margin height for bottom mask to be able to transition up from occurrence view when list view is 100vh tall */
+  height: calc(var(--screen-height) + var(--screen-offset) + var(--latched-list-view-margin-height));
+  top: calc(-1 * var(--screen-offset));
+}
+
+.bottom-mask {
+  background-color: white;
+  width: 100%;
+  height: var(--latched-list-view-margin-height);
+  z-index: 1;
+}
+
+.bottom-mask.list-view {
+  position: sticky;
+  top: calc(var(--transition-offset, 0px) + 100vh - var(--latched-list-view-margin-height));
+}
+
+.bottom-mask.occurrence-view {
+  position: absolute;
+  top: calc(
+    var(--margin-height)
+    + var(--occurrence-row-count) * 50px
+    + 50px
+    + 100vh - 2 * var(--latched-list-view-margin-height) - 100px
+    + var(--transition-offset, 0px)
+  );
+}
+
+.sticky-group {
+  background-color: white;
+  width: 100%;
+  z-index: 1;
+}
+
+.sticky-group.list-view {
+  position: sticky;
+  top: calc(-1 * var(--screen-offset));
+  /* have transition offset in height instead of top so mask reaches top of screen */
+  height: max(
+    var(--transition-offset, 0px) + var(--occurrence-row-count) * 50px + 50px,
+    var(--transition-offset, 0px) + var(--margin-height) + 100px
+  );
+}
+
+.sticky-group.occurrence-view {
+  position: absolute;
+  top: var(--transition-offset, 0px);
+  height: calc(var(--margin-height) + var(--occurrence-row-count) * 50px + 50px);
+}
+
+.occurrences {
+  width: 350px;
+  background-position: bottom;
+  height: calc(var(--occurrence-row-count) * 50px);
+  position: absolute;
+  top: calc(100% - 50px - var(--occurrence-row-count) * 50px);
+  left: calc(50vw - 175px);
+  z-index: 2;
+}
+
+.days {
+  z-index: 1;
+  width: 350px;
+  height: 50px;
+  position: absolute;
+  top: calc(100% - 100px);
+  left: calc(50vw - 175px);
+  z-index: 2;
+}
+
+.dates {
+  z-index: 1;
+  width: 350px;
+  height: 50px;
+  position: absolute;
+  top: calc(100% - 50px);
+  left: calc(50vw - 175px);
+  z-index: 2;
+}
+
+.list {
+  width: 350px;
+  height: calc(var(--list-row-count) * 50px);
+  position: absolute;
+  left: calc(50vw - 175px);
+  z-index: 0;
+}
+
+.list.list-view {
+  top: max(
+    var(--transition-offset, 0px) + var(--occurrence-row-count) * 50px + 50px,
+    var(--transition-offset, 0px) + var(--margin-height) + 100px
+  );
+}
+
+.list.occurrence-view {
+  top: calc(
+    var(--transition-offset, 0px)
+    + var(--margin-height)
+    + var(--occurrence-row-count) * 50px
+    + 50px
+    + var(--list-offset, 0px)
+  );
+}

@@ -8,6 +8,7 @@ import {
   ListView,
   OccurrenceData,
   ModalContentGenerator,
+  viewToViewType,
 } from '../../globalTypes';
 import Dates from '../dates';
 import Days from '../days';
@@ -61,19 +62,22 @@ export default function useMemoizedComponents(states: States) {
     updateHabitVisibility,
   } = states;
 
+  const viewType = viewToViewType[view.name];
+
   const occurrences = useMemo(() => (
     <Occurrences
-      displayed={view.name === 'history' || view.name === 'focus'}
+      viewType={viewType}
       selectedOccurrences={selectedOccurrences}
     />
-  ), [selectedOccurrences, view]);
+  ), [viewType, selectedOccurrences]);
 
   const days = useMemo(() => (
     <Days
+      viewType={viewType}
       weekDays={dayObject.weekDays}
       selectedOccurrences={selectedOccurrences}
     />
-  ), [dayObject.weekDays, selectedOccurrences]);
+  ), [viewType, dayObject.weekDays, selectedOccurrences]);
 
   const dates = useMemo(() => (
     <Dates
@@ -87,6 +91,7 @@ export default function useMemoizedComponents(states: States) {
     occurrenceData !== undefined
       ? (
         <List
+          viewType={viewType}
           allowTabTraversal={modalContentGenerator === undefined}
           selectedHabits={selectedHabits}
           streaks={selectedStreaks}
@@ -108,6 +113,7 @@ export default function useMemoizedComponents(states: States) {
       )
       : <div />
   ), [
+    viewType,
     modalContentGenerator,
     selectedStreaks,
     dayObject.dateString,

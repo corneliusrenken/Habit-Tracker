@@ -12,14 +12,13 @@ import {
   Streaks,
   View,
 } from '../../globalTypes';
-import TransitionManager from '../transitionManager';
-import getBodyHeight from './getBodyHeight';
 import initialize from './initialize';
 import useApiFunctions from '../apiFunctions/useApiFunctions';
 import useMemoizedComponents from './useMemoizedComponents';
 import useSelectedData from './useSelectedData';
 import Modal from '../modal';
 import useShortcutManager from '../shortcutManager/useShortcutManager';
+import Layout from '../layout';
 
 export default function App() {
   // https://medium.com/swlh/how-to-store-a-function-with-the-usestate-hook-in-react-8a88dd4eede1
@@ -149,10 +148,15 @@ export default function App() {
         modalContentGenerator={modalContentGenerator}
         setModalContentGenerator={setModalContentGenerator}
       />
-      <TransitionManager
-        setInTransition={setInTransition}
+      <Layout
+        layoutOptions={{
+          minMarginHeight: 50,
+          maxListHeight: 600,
+        }}
         view={view}
-        bodyHeight={getBodyHeight(view, habits, selectedData.occurrences)}
+        listRows={view.name === 'selection' ? selectedData.habits.length + 1 : selectedData.habits.length}
+        occurrenceRows={Math.ceil((selectedData.occurrences.length - 7) / 7)}
+        setInTransition={setInTransition}
         occurrences={components.occurrences}
         days={components.days}
         dates={components.dates}
