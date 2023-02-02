@@ -2,7 +2,6 @@
 import React, { useEffect, useRef } from 'react';
 import { View, viewToViewType } from '../../globalTypes';
 import getScrollDistance from './getScrollDistance';
-import './layout.css';
 import setLayoutCSSProperties from './setLayoutCSSProperties';
 import transition from './transition';
 import { LayoutOptions } from './types';
@@ -105,39 +104,38 @@ export default function Layout({
 
   return (
     <div
-      className="layout-container"
+      className="layout"
     >
       <div
         className="layout-overflow"
       >
         <div
           ref={stickyGroupRef}
-          className="sticky-group list-view"
+          className="layout-sticky-group list-view"
         >
           <div
-            className="occurrences"
+            className="layout-occurrences"
           >
             {occurrences}
           </div>
           <div
-            className="days"
+            className="layout-days"
           >
             {days}
           </div>
           <div
-            className="dates"
+            className="layout-dates"
           >
             {dates}
           </div>
         </div>
         <div
           ref={listRef}
-          className="list list-view"
+          className="layout-list list-view"
         >
           {list}
         </div>
-        <div className="top-mask list-view" />
-        <div ref={bottomMaskRef} className="bottom-mask list-view" />
+        <div ref={bottomMaskRef} className="layout-bottom-mask list-view" />
       </div>
     </div>
   );

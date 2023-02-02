@@ -1,3 +1,5 @@
+@use 'theme';
+
 .icon {
   margin: 8px;
   height: 34px;
@@ -9,8 +11,13 @@
   z-index: 2;
   background-color: transparent;
   border: 0;
-}
+  color: theme.$foreground;
 
-.icon.hidden {
-  display: none;
+  &.greyed-out {
+    color: theme.$secondary;
+  }
+
+  &.hidden {
+    display: none;
+  }
 }

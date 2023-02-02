@@ -16,12 +16,12 @@ export default function HabitListItem({
 }: Props) {
   let containerClassName = 'list-item';
   if (completed) containerClassName += ' greyed-out';
-  if (selected) containerClassName += ' list-item-selected';
+  if (selected) containerClassName += ' selected';
 
   return (
     <div className={containerClassName} onClick={toggleCompleted} onMouseEnter={select}>
-      <div className="name">{name}</div>
-      <div className="streak">{streak}</div>
+      <div className="list-name">{name}</div>
+      <div className="list-streak">{streak}</div>
     </div>
   );
 }

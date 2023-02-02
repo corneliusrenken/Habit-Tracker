@@ -23,7 +23,7 @@ time, mark, audio, video {
   font: inherit;
   vertical-align: baseline;
 }
-/* HTML5 display-role reset for older browsers */
+// HTML5 display-role reset for older browsers
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section {
   display: block;
@@ -45,42 +45,4 @@ q:before, q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
-}
-
-*,
-*:before,
-*:after {
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
-}
-
-:root, input, button {
-  font-family: 'Inter', sans-serif;
-  font-size: 15px;
-  font-weight: 400;
-
-  -webkit-font-feature-settings: "ss01","cv05","cv07","cv08";
-          font-feature-settings: "ss01","cv05","cv07","cv08";
-}
-
-b {
-  font-weight: 600;
-}
-
-:root {
-  --grey: rgb(183, 183, 183);
-}
-
-.greyed-out {
-  color: var(--grey);
-}
-
-.draggable-area {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 50px;
-  -webkit-app-region: drag;
 }

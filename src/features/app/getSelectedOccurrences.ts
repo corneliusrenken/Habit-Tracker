@@ -35,7 +35,7 @@ export default function getSelectedOccurrences(states: States) {
   while (
     occurences.length < 7
     || occurences.length % 7 !== 0
-    || (oldestDate !== null && currentDate.getTime() >= oldestDate.getTime())
+    || (oldestDate !== null && currentDate >= oldestDate)
   ) {
     const dateString = getCustomDateString(currentDate);
     let complete = false;

@@ -8,7 +8,6 @@ import {
 } from '../../globalTypes';
 import HabitList from './HabitList';
 import SelectionList from './SelectionList';
-import './list.css';
 
 type Props = {
   viewType: ViewType;
@@ -52,7 +51,7 @@ export default function List({
   updateHabitVisibility,
 }: Props) {
   return (
-    <div className="list-container" style={{ opacity: viewType === 'list' ? 1 : 0 }}>
+    <div className="list" style={{ opacity: viewType === 'list' ? 1 : 0 }}>
       {latchedListView.name !== 'selection' ? (
         <HabitList
           habits={selectedHabits}

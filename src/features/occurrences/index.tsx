@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { OccurrenceView, SelectedOccurrence, ViewType } from '../../globalTypes';
-import './occurrences.css';
 
 function getContainerHeight(occurencesLength: number) {
   return Math.ceil(occurencesLength / 7) * 50;
@@ -38,7 +37,7 @@ export default function Occurrences({
   return (
     <div
       ref={occurrenceContainerRef}
-      className="occurrence-container"
+      className="occurrences"
       style={{ height: `${getContainerHeight(selectedOccurrences.length - 7)}px` }}
     >
       {selectedOccurrences
@@ -46,7 +45,7 @@ export default function Occurrences({
         .map(({ date, fullDate, complete }, index) => {
           const row = Math.floor((selectedOccurrences.length - index - 1) / 7);
 
-          let className = 'occurrence';
+          let className = 'occurrences-occurrence';
           if (complete) className += ' greyed-out';
 
           const key = `${latchedOccurrenceView.name}-${fullDate}`;

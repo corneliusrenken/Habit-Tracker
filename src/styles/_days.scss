@@ -1,0 +1,21 @@
+@use 'theme';
+
+.days {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  align-items: center;
+  transition: opacity 600ms;
+
+  &-day {
+    width: 50px;
+    text-align: center;
+    font-size: 10px;
+    color: theme.$foreground;
+
+    &.greyed-out {
+      color: theme.$secondary;
+    }
+  }
+}
