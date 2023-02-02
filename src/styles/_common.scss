@@ -1,0 +1,37 @@
+@use 'theme';
+
+*,
+*:before,
+*:after {
+  user-select: none;
+
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+}
+
+:root, input, button {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+
+  -webkit-font-feature-settings: "ss01","cv05","cv07","cv08";
+          font-feature-settings: "ss01","cv05","cv07","cv08";
+}
+
+b {
+  font-weight: 600;
+}
+
+.draggable-area {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 50px;
+  -webkit-app-region: drag;
+}
+
+body {
+  background-color: theme.$background;
+}

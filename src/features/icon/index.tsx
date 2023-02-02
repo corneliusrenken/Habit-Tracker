@@ -1,5 +1,4 @@
 import React from 'react';
-import './icon.css';
 import {
   hiddenPath, moreOptionsPath, movePath, renamePath, visiblePath, trashPath,
 } from './iconPaths';

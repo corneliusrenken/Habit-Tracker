@@ -1,0 +1,40 @@
+@use 'theme';
+
+.dates {
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  align-items: center;
+
+  &-date {
+    width: 50px;
+    text-align: center;
+    color: theme.$foreground;
+
+    &.complete {
+      color: theme.$secondary;
+    }
+  }
+
+  &-selector {
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid theme.$foreground;
+    // https://stackoverflow.com/questions/23135196/css-1px-border-stroke-breaks-around-border-radius
+    // pseudo anti aliasing for thin border
+
+    // could use media query to only add this when not on high dpi / retina display
+
+    box-shadow: 0 0 1px 0px theme.$foreground inset, 0 0 1px 0px theme.$foreground;
+    // this looks cool as well, with more of a glow - try it out
+    // box-shadow: 0 0 0px 0px theme.$foreground inset, 0 0 8px 0px theme.$foreground;
+
+    &.complete {
+      border-color: theme.$secondary;
+      box-shadow: 0 0 1px 0px theme.$secondary inset, 0 0 1px 0px theme.$secondary;
+    }
+  }
+}

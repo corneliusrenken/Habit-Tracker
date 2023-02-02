@@ -1,6 +1,5 @@
 import React from 'react';
 import { ListView, SelectedOccurrence } from '../../globalTypes';
-import './dates.css';
 
 type Props = {
   latchedListView: ListView;
@@ -13,22 +12,31 @@ export default function Dates({ latchedListView, selectedOccurrences, todaysInde
     ? selectedOccurrences.slice(selectedOccurrences.length - 14, selectedOccurrences.length - 7)
     : selectedOccurrences.slice(selectedOccurrences.length - 7);
 
+  let selectorClassName = 'dates-selector';
+
+  if (occurrencesForWeek[todaysIndex].complete) {
+    selectorClassName += ' complete';
+  }
+
   return (
-    <div className="dates-container">
-      {occurrencesForWeek.map(({ date, complete }, index) => {
-        let className = 'date';
-        if (complete) className += ' greyed-out';
+    <div className="dates">
+      {occurrencesForWeek.map(({ date, fullDate, complete }) => {
+        let className = 'dates-date';
+        if (complete) className += ' complete';
 
         return (
           <div
-            key={index} // eslint-disable-line react/no-array-index-key
+            key={fullDate}
             className={className}
           >
             {date}
           </div>
         );
       })}
-      <div className="date-selector" style={{ left: `calc(5px + ${todaysIndex} * 50px)` }} />
+      <div
+        className={selectorClassName}
+        style={{ left: `calc(5px + ${todaysIndex} * 50px)` }}
+      />
     </div>
   );
 }

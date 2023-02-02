@@ -1,0 +1,45 @@
+@use 'theme';
+
+.occurrences {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 350px;
+
+  &-occurrence {
+    width: 50px;
+    text-align: center;
+    opacity: 0;
+    animation-name: var(--occurrence-animation-name);
+    animation-duration: 600ms;
+    animation-fill-mode: forwards;
+    animation-delay: 0ms;
+    color: theme.$foreground;
+
+    &.complete {
+      color: theme.$secondary;
+    }
+
+    &:nth-of-type(9n - 8) { --animation-delay-multiplier: 0.93; }
+    &:nth-of-type(9n - 7) { --animation-delay-multiplier: 0.88; }
+    &:nth-of-type(9n - 6) { --animation-delay-multiplier: 0.26; }
+    &:nth-of-type(9n - 5) { --animation-delay-multiplier: 0.85; }
+    &:nth-of-type(9n - 4) { --animation-delay-multiplier: 0.56; }
+    &:nth-of-type(9n - 3) { --animation-delay-multiplier: 0.93; }
+    &:nth-of-type(9n - 2) { --animation-delay-multiplier: 0.19; }
+    &:nth-of-type(9n - 1) { --animation-delay-multiplier: 0.37; }
+    &:nth-of-type(9n) { --animation-delay-multiplier: 0.26; }
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0 }
+    to { opacity: 1 }
+  }
+
+  @keyframes fade-out {
+    from { opacity: 1 }
+    to { opacity: 0 }
+  }
+}
+

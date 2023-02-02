@@ -1,11 +1,10 @@
 import React from 'react';
 import { ModalContentGenerator } from '../../globalTypes';
-import './habitRemovalConfirmationModalContent.css';
 
 type Props = {
   habitName: string;
   allowTabTraversal: boolean;
-  onConfirm: Function;
+  onConfirm: () => void;
   setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
 };
 

@@ -45,12 +45,12 @@ export default function SelectionListItem({
   const inputRef = useRef<HTMLInputElement>(null);
 
   let containerClassName = 'list-item';
-  if (selected) containerClassName += ' list-item-selected';
+  if (selected) containerClassName += ' selected';
 
   return (
     <div className={containerClassName} onMouseEnter={select}>
       {!beingRenamed ? (
-        <div className="name">{name}</div>
+        <div className="list-name">{name}</div>
       ) : (
         <form
           onSubmit={(e) => {
@@ -83,7 +83,7 @@ export default function SelectionListItem({
           />
         </form>
       )}
-      <div className="horizontal-icon-list">
+      <div className="list-horizontal-icon-container">
         <Icon
           icon="rename"
           allowTabTraversal={allowTabTraversal}

@@ -63,7 +63,7 @@ export default function SelectionList({
           setReorderingList(false);
         }}
         clampMovement
-        activeClass="list-item-being-reordered"
+        activeClass="being-reordered"
       />
       <AddHabitForm
         allowTabTraversal={allowTabTraversal}
