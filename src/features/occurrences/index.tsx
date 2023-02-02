@@ -46,7 +46,7 @@ export default function Occurrences({
           const row = Math.floor((selectedOccurrences.length - index - 1) / 7);
 
           let className = 'occurrences-occurrence';
-          if (complete) className += ' greyed-out';
+          if (complete) className += ' complete';
 
           const key = `${latchedOccurrenceView.name}-${fullDate}`;
 

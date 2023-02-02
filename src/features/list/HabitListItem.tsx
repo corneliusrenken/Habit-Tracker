@@ -15,7 +15,7 @@ export default function HabitListItem({
   name, streak, completed, selected, select, toggleCompleted,
 }: Props) {
   let containerClassName = 'list-item';
-  if (completed) containerClassName += ' greyed-out';
+  if (completed) containerClassName += ' complete';
   if (selected) containerClassName += ' selected';
 
   return (

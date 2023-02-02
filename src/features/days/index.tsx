@@ -13,7 +13,7 @@ export default function Days({ viewType, weekDays, selectedOccurrences }: Props)
       {weekDays.map(((day, index) => {
         const { complete } = selectedOccurrences[selectedOccurrences.length - 7 + index];
         let className = 'days-day';
-        if (complete) className += ' greyed-out';
+        if (complete) className += ' complete';
 
         return (
           <div

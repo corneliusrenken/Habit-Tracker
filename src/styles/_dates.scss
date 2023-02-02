@@ -12,7 +12,7 @@
     text-align: center;
     color: theme.$foreground;
 
-    &.greyed-out {
+    &.complete {
       color: theme.$secondary;
     }
   }
@@ -32,7 +32,7 @@
     // this looks cool as well, with more of a glow - try it out
     // box-shadow: 0 0 0px 0px theme.$foreground inset, 0 0 8px 0px theme.$foreground;
 
-    &.greyed-out {
+    &.complete {
       border-color: theme.$secondary;
       box-shadow: 0 0 1px 0px theme.$secondary inset, 0 0 1px 0px theme.$secondary;
     }

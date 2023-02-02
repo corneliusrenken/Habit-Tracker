@@ -64,7 +64,7 @@
     width: 26px;
   }
 
-  &-item.greyed-out::after {
+  &-item.complete::after {
     background-color: theme.$secondary;
   }
 
@@ -81,7 +81,7 @@
     min-width: 0;
     color: theme.$foreground;
 
-    .greyed-out & {
+    .complete & {
       color: theme.$secondary;
     }
   }
@@ -90,7 +90,7 @@
     margin: 0 var(--right-margin);
     color: theme.$foreground;
 
-    .greyed-out & {
+    .complete & {
       color: theme.$secondary;
     }
   }

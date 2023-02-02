@@ -15,14 +15,14 @@ export default function Dates({ latchedListView, selectedOccurrences, todaysInde
   let selectorClassName = 'dates-selector';
 
   if (occurrencesForWeek[todaysIndex].complete) {
-    selectorClassName += ' greyed-out';
+    selectorClassName += ' complete';
   }
 
   return (
     <div className="dates">
       {occurrencesForWeek.map(({ date, fullDate, complete }) => {
         let className = 'dates-date';
-        if (complete) className += ' greyed-out';
+        if (complete) className += ' complete';
 
         return (
           <div
