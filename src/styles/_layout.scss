@@ -69,6 +69,25 @@
     }
   }
 
+  &-scrollbar {
+    z-index: 2;
+    height: 50px;
+
+    .list-view & {
+      position: absolute;
+      top: calc(-1 * var(--scroll-offset, 0px) + 100% - 50px);
+    }
+
+    .occurrence-view & {
+      position: sticky;
+      top: calc(50vh - 25px);
+    }
+
+    .in-transition & {
+      transition: top variables.$transition-duration;
+    }
+  }
+
   @mixin centered-component {
     width: 350px;
     left: calc(50vw - 175px);
