@@ -30,9 +30,7 @@ export default function Layout({
   list,
 }: Props) {
   const layoutRef = useRef<HTMLDivElement>(null);
-  const stickyGroupRef = useRef<HTMLDivElement>(null);
-  const bottomMaskRef = useRef<HTMLDivElement>(null);
-  const listRef = useRef<HTMLDivElement>(null);
+
   const lastView = useRef<View['name']>('today');
 
   useEffect(() => {
@@ -61,11 +59,6 @@ export default function Layout({
           ? scrollDistance.fromTop
           : scrollDistance.fromBottom,
         layout: layoutRef.current,
-        transitionElements: {
-          stickyGroup: stickyGroupRef.current,
-          list: listRef.current,
-          bottomMask: bottomMaskRef.current,
-        },
         setInTransition,
       });
     } else {
@@ -112,7 +105,6 @@ export default function Layout({
         className="layout-overflow"
       >
         <div
-          ref={stickyGroupRef}
           className="layout-sticky-group"
         >
           <div
@@ -132,12 +124,11 @@ export default function Layout({
           </div>
         </div>
         <div
-          ref={listRef}
           className="layout-list"
         >
           {list}
         </div>
-        <div ref={bottomMaskRef} className="layout-bottom-mask" />
+        <div className="layout-bottom-mask" />
       </div>
     </div>
   );

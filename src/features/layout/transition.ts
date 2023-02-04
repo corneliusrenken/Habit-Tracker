@@ -7,7 +7,6 @@ type TransitionOptions = {
   to: ViewType;
   currentScrollPosition: number;
   layout: HTMLDivElement;
-  transitionElements: { [key in 'stickyGroup' | 'list' | 'bottomMask']: HTMLDivElement },
   setInTransition: React.Dispatch<React.SetStateAction<boolean>>,
 };
 
@@ -20,7 +19,6 @@ export default function transition(options: TransitionOptions) {
     to,
     currentScrollPosition,
     layout,
-    // transitionElements,
     setInTransition,
   } = options;
 
