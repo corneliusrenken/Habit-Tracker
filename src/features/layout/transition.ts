@@ -38,6 +38,7 @@ export default function transition(options: TransitionOptions) {
   if (to === 'occurrence') {
     document.documentElement.style.setProperty('--list-offset', `${-currentScrollPosition}px`);
   }
+  document.documentElement.style.setProperty('--scroll-offset', `${currentScrollPosition}px`);
   document.documentElement.style.setProperty(
     '--transition-offset',
     to === 'list'
@@ -47,6 +48,7 @@ export default function transition(options: TransitionOptions) {
 
   triggerElementReflow();
 
+  document.documentElement.style.setProperty('--scroll-offset', '');
   document.documentElement.style.setProperty('--transition-offset', '');
 
   layout.classList.add('in-transition');

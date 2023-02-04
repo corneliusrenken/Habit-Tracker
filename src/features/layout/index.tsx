@@ -1,6 +1,7 @@
 /* eslint-disable max-len */
 import React, { useEffect, useRef } from 'react';
 import { View, viewToViewType } from '../../globalTypes';
+import Scrollbar from '../scrollbar';
 import getScrollDistance from './getScrollDistance';
 import setLayoutCSSProperties from './setLayoutCSSProperties';
 import transition from './transition';
@@ -30,8 +31,8 @@ export default function Layout({
   list,
 }: Props) {
   const layoutRef = useRef<HTMLDivElement>(null);
-
   const lastView = useRef<View['name']>('today');
+  const [screenHeight, setScreenHeight] = React.useState(() => Number(document.documentElement.style.getPropertyValue('--screen-height').slice(0, -2)));
 
   useEffect(() => {
     document.documentElement.style.setProperty('--list-row-count', listRows.toString());
@@ -50,6 +51,7 @@ export default function Layout({
         viewToViewType[view.name],
         listRows,
         occurrenceRows,
+        setScreenHeight,
       );
 
       transition({
@@ -67,16 +69,14 @@ export default function Layout({
         viewToViewType[view.name],
         listRows,
         occurrenceRows,
+        setScreenHeight,
       );
 
       if (view.name !== lastView.current) {
         if (viewToViewType[view.name] === 'list') {
           window.scrollTo({ top: 0 });
         } else {
-          const screenHeight = Number(
-            document.documentElement.style.getPropertyValue('--screen-height').slice(0, -2),
-          );
-          window.scrollTo({ top: screenHeight });
+          window.scrollTo({ top: document.body.scrollHeight });
         }
       }
     }
@@ -90,6 +90,7 @@ export default function Layout({
       viewToViewType[view.name],
       listRows,
       occurrenceRows,
+      setScreenHeight,
     );
 
     window.addEventListener('resize', onResize);
@@ -107,6 +108,14 @@ export default function Layout({
         <div
           className="layout-sticky-group"
         >
+          <div
+            className="layout-scrollbar"
+          >
+            <Scrollbar
+              view={view}
+              screenHeight={screenHeight}
+            />
+          </div>
           <div
             className="layout-occurrences"
           >

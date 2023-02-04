@@ -6,6 +6,7 @@ export default function setLayoutCSSProperties(
   viewType: ViewType,
   listRows: number,
   occurrenceRows: number,
+  setScreenHeight: React.Dispatch<React.SetStateAction<number>>,
 ) {
   const windowHeight = window.innerHeight;
   const { minMarginHeight, maxListHeight } = layoutOptions;
@@ -26,6 +27,7 @@ export default function setLayoutCSSProperties(
 
     document.documentElement.style.setProperty('--screen-offset', `${screenOffset}px`);
     document.documentElement.style.setProperty('--screen-height', `${screenHeight}px`);
+    setScreenHeight(screenHeight);
     document.documentElement.style.setProperty('--latched-list-view-margin-height', `${marginHeight}px`);
     document.documentElement.style.setProperty('--margin-height', `${marginHeight}px`);
   }
@@ -46,6 +48,7 @@ export default function setLayoutCSSProperties(
 
     document.documentElement.style.setProperty('--screen-offset', '0px');
     document.documentElement.style.setProperty('--screen-height', `${screenHeight}px`);
+    setScreenHeight(screenHeight);
     document.documentElement.style.setProperty('--margin-height', `${marginAboveOccurrences}px`);
   }
 }
