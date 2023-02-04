@@ -29,6 +29,7 @@ export default function Layout({
   days,
   list,
 }: Props) {
+  const layoutRef = useRef<HTMLDivElement>(null);
   const stickyGroupRef = useRef<HTMLDivElement>(null);
   const bottomMaskRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -56,10 +57,10 @@ export default function Layout({
       transition({
         from: viewToViewType[lastView.current],
         to: viewToViewType[view.name],
-        duration: 600,
         currentScrollPosition: viewToViewType[view.name] === 'occurrence'
           ? scrollDistance.fromTop
           : scrollDistance.fromBottom,
+        layout: layoutRef.current,
         transitionElements: {
           stickyGroup: stickyGroupRef.current,
           list: listRef.current,
@@ -104,14 +105,15 @@ export default function Layout({
 
   return (
     <div
-      className="layout"
+      ref={layoutRef}
+      className="layout list-view"
     >
       <div
         className="layout-overflow"
       >
         <div
           ref={stickyGroupRef}
-          className="layout-sticky-group list-view"
+          className="layout-sticky-group"
         >
           <div
             className="layout-occurrences"
@@ -131,11 +133,11 @@ export default function Layout({
         </div>
         <div
           ref={listRef}
-          className="layout-list list-view"
+          className="layout-list"
         >
           {list}
         </div>
-        <div ref={bottomMaskRef} className="layout-bottom-mask list-view" />
+        <div ref={bottomMaskRef} className="layout-bottom-mask" />
       </div>
     </div>
   );

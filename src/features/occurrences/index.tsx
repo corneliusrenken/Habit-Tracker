@@ -56,7 +56,7 @@ export default function Occurrences({
               className={className}
               style={{
                 animationDelay: viewType === 'occurrence'
-                  ? `calc(38ms * ${row} + 150ms * var(--animation-delay-multiplier))`
+                  ? `calc(38ms * ${row} + 150ms * var(--animation-delay-multiplier, 1))`
                   : '0ms',
               }}
             >

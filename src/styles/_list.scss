@@ -12,9 +12,9 @@
   }
 
   input {
-    margin-left: calc(var(--left-margin) - 8px);
-    margin-right: calc(var(--right-margin) - 8px);
-    width: calc(100% - var(--left-margin) - var(--right-margin) + 16px);
+    margin-left: calc(var(--left-margin, 0px) - 8px);
+    margin-right: calc(var(--right-margin, 0px) - 8px);
+    width: calc(100% - var(--left-margin, 0px) - var(--right-margin, 0px) + 16px);
     height: 34px;
     padding: 8px;
     border: 0;
@@ -56,7 +56,7 @@
     width: 0px;
     height: 1px;
     background-color: theme.$foreground;
-    right: calc(350px - var(--left-margin) + 8px);
+    right: calc(350px - var(--left-margin, 0px) + 8px);
   }
 
   &-item.selected::after {
@@ -69,8 +69,8 @@
   }
 
   &-name {
-    margin-left: var(--left-margin);
-    max-width: calc(350px - var(--left-margin) - var(--right-margin));
+    margin-left: var(--left-margin, 0px);
+    max-width: calc(350px - var(--left-margin, 0px) - var(--right-margin, 0px));
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -87,7 +87,7 @@
   }
 
   &-streak {
-    margin: 0 var(--right-margin);
+    margin: 0 var(--right-margin, 0px);
     color: theme.$foreground;
 
     .complete & {

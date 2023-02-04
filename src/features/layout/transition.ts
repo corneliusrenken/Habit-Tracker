@@ -5,8 +5,8 @@ import triggerElementReflow from './triggerElementReflow';
 type TransitionOptions = {
   from: ViewType;
   to: ViewType;
-  duration: number;
   currentScrollPosition: number;
+  layout: HTMLDivElement;
   transitionElements: { [key in 'stickyGroup' | 'list' | 'bottomMask']: HTMLDivElement },
   setInTransition: React.Dispatch<React.SetStateAction<boolean>>,
 };
@@ -18,9 +18,9 @@ export default function transition(options: TransitionOptions) {
   const {
     from,
     to,
-    duration,
     currentScrollPosition,
-    transitionElements,
+    layout,
+    // transitionElements,
     setInTransition,
   } = options;
 
@@ -34,10 +34,8 @@ export default function transition(options: TransitionOptions) {
     window.scrollTo({ top: 0 });
   }
 
-  Object.values(transitionElements).forEach((element) => {
-    element.classList.remove(`${from}-view`);
-    element.classList.add(`${to}-view`);
-  });
+  layout.classList.remove(`${from}-view`);
+  layout.classList.add(`${to}-view`);
 
   if (to === 'occurrence') {
     document.documentElement.style.setProperty('--list-offset', `${-currentScrollPosition}px`);
@@ -45,22 +43,18 @@ export default function transition(options: TransitionOptions) {
   document.documentElement.style.setProperty(
     '--transition-offset',
     to === 'list'
-      ? `calc(50vh - var(--latched-list-view-margin-height) - 50px - 25px + ${currentScrollPosition}px)`
-      : 'calc(-1 * (50vh - var(--latched-list-view-margin-height) - 50px - 25px))',
+      ? `calc(50vh - var(--latched-list-view-margin-height, 0px) - 50px - 25px + ${currentScrollPosition}px)`
+      : 'calc(-1 * (50vh - var(--latched-list-view-margin-height, 0px) - 50px - 25px))',
   );
 
   triggerElementReflow();
 
   document.documentElement.style.setProperty('--transition-offset', '');
 
-  Object.values(transitionElements).forEach((element) => {
-    element.style.transition = `top ${duration}ms, height ${duration}ms`;
-  });
+  layout.classList.add('in-transition');
 
   setTimeout(() => {
+    layout.classList.remove('in-transition');
     setInTransition(false);
-    Object.values(transitionElements).forEach((element) => {
-      element.style.transition = '';
-    });
-  }, duration);
+  }, Number(getComputedStyle(document.documentElement).getPropertyValue('--transition-duration').slice(0, -2)));
 }
