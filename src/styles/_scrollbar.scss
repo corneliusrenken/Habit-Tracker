@@ -1,3 +1,4 @@
+@use "sass:list";
 @use 'variables';
 @use 'theme';
 
@@ -17,6 +18,13 @@
     height: 100%;
     border-radius: calc($scrollbar-width / 2);
     background-color: theme.$secondary;
+    opacity: 1;
+
+    transition: opacity 600ms;
+
+    .hidden & {
+      opacity: 0;
+    }
   }
 
   &-bar {
@@ -25,10 +33,13 @@
     border-radius: calc($scrollbar-width / 2);
     background-color: theme.$foreground;
 
-    transition: height variables.$transition-duration;
+    transition:
+      height variables.$transition-duration;
 
     .in-transition & {
-      transition: height variables.$transition-duration, top variables.$transition-duration;
+      transition:
+        height variables.$transition-duration,
+        top variables.$transition-duration;
     }
   }
 }

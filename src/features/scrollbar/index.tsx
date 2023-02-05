@@ -47,8 +47,14 @@ export default function Scrollbar({
     ? { top: `${scrollPercentage.fromTop * barTravelDistance}%` }
     : { top: `${100 - screenPercentage - scrollPercentage.fromBottom * barTravelDistance}%` };
 
+  let scrollbarClass = 'scrollbar';
+
+  if (screenPercentage === 100) {
+    scrollbarClass += ' hidden';
+  }
+
   return (
-    <div className="scrollbar">
+    <div className={scrollbarClass}>
       <div className="scrollbar-track">
         <div
           className="scrollbar-bar"
