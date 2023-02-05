@@ -1,3 +1,4 @@
+@use 'fonts';
 @use 'theme';
 
 .occurrences {
@@ -8,6 +9,8 @@
   width: 350px;
 
   &-occurrence {
+    @include fonts.cursive;
+
     width: 50px;
     text-align: center;
     opacity: 0;
@@ -18,6 +21,7 @@
     color: theme.$foreground;
 
     &.complete {
+      @include fonts.cursive-secondary;
       color: theme.$secondary;
     }
 
