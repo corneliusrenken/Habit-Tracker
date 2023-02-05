@@ -49,7 +49,6 @@ export default function Scrollbar({
 
   return (
     <div className="scrollbar">
-      <div className="scrollbar-end top" />
       <div className="scrollbar-track">
         <div
           className="scrollbar-bar"
@@ -59,7 +58,6 @@ export default function Scrollbar({
           }}
         />
       </div>
-      <div className="scrollbar-end bottom" />
     </div>
   );
 }

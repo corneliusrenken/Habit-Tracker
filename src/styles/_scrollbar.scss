@@ -2,46 +2,33 @@
 @use 'theme';
 
 .scrollbar {
-  $scrollbar-width: 3px;
+  $scrollbar-width: 2px;
 
   margin-left: calc(50vw + 175px);
   height: 120%;
-  position: absolute;
+  position: relative;
   top: -10%;
   width: $scrollbar-width;
-  display: flex;
-  flex-direction: column;
 
   &-track {
-    flex-grow: 1;
+    overflow: hidden;
     position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: calc($scrollbar-width / 2);
+    background-color: theme.$secondary;
   }
 
   &-bar {
+    position: absolute;
+    width: 100%;
     border-radius: calc($scrollbar-width / 2);
     background-color: theme.$foreground;
-    width: 100%;
-    position: absolute;
+
     transition: height variables.$transition-duration;
 
     .in-transition & {
       transition: height variables.$transition-duration, top variables.$transition-duration;
-    }
-  }
-
-  &-end {
-    height: $scrollbar-width;
-    border-radius: calc($scrollbar-width / 2);
-    background-color: theme.$foreground;
-
-    &.top {
-      top: 0;
-      margin-bottom: $scrollbar-width + 2px;
-    }
-
-    &.bottom {
-      bottom: 0;
-      margin-top: $scrollbar-width + 2px;
     }
   }
 }
