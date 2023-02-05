@@ -17,24 +17,62 @@
     }
   }
 
-  &-selector {
+  &-selected-day-indicator {
+    width: 50px;
+    height: 50px;
     position: absolute;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    border: 1px solid theme.$foreground;
-    // https://stackoverflow.com/questions/23135196/css-1px-border-stroke-breaks-around-border-radius
-    // pseudo anti aliasing for thin border
 
-    // could use media query to only add this when not on high dpi / retina display
+    &::after {
+      content: '';
+      position: absolute;
+      top: calc(50% - 20px);
+      left: calc(50% - 20px);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
 
-    box-shadow: 0 0 1px 0px theme.$foreground inset, 0 0 1px 0px theme.$foreground;
-    // this looks cool as well, with more of a glow - try it out
-    // box-shadow: 0 0 0px 0px theme.$foreground inset, 0 0 8px 0px theme.$foreground;
+      border: 1px solid theme.$foreground;
+      // https://stackoverflow.com/questions/23135196/css-1px-border-stroke-breaks-around-border-radius
+      // pseudo anti aliasing for thin border
 
-    &.complete {
+      // could use media query to only add this when not on high dpi / retina display
+
+      box-shadow: 0 0 1px 0px theme.$foreground inset, 0 0 1px 0px theme.$foreground;
+      // this looks cool as well, with more of a glow - try it out
+      // box-shadow: 0 0 0px 0px theme.$foreground inset, 0 0 8px 0px theme.$foreground;
+    }
+
+    &.complete::after {
       border-color: theme.$secondary;
       box-shadow: 0 0 1px 0px theme.$secondary inset, 0 0 1px 0px theme.$secondary;
+    }
+  }
+
+  &-actual-day-indicator {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: calc(50% - 7px);
+      bottom: -1px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background-color: theme.$background;
+    }
+
+    &::after {
+      content: '';
+      position: absolute;
+      left: calc(50% - 3px);
+      bottom: 3px;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background-color: theme.$highlight;
     }
   }
 }

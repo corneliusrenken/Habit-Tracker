@@ -1,21 +1,25 @@
 import React from 'react';
-import { ListView, SelectedOccurrence } from '../../globalTypes';
+import { DateObject, ListView, SelectedOccurrence } from '../../globalTypes';
 
 type Props = {
+  dateObject: DateObject;
   latchedListView: ListView;
   selectedOccurrences: SelectedOccurrence[];
-  todaysIndex: number;
 };
 
-export default function Dates({ latchedListView, selectedOccurrences, todaysIndex }: Props) {
-  const occurrencesForWeek = latchedListView.name === 'yesterday' && todaysIndex === 6
+export default function Dates({ dateObject, latchedListView, selectedOccurrences }: Props) {
+  const selectedDayIndex = latchedListView.name !== 'yesterday'
+    ? dateObject.today.weekDayIndex
+    : dateObject.yesterday.weekDayIndex;
+
+  const occurrencesForWeek = latchedListView.name === 'yesterday' && selectedDayIndex === 6
     ? selectedOccurrences.slice(selectedOccurrences.length - 14, selectedOccurrences.length - 7)
     : selectedOccurrences.slice(selectedOccurrences.length - 7);
 
-  let selectorClassName = 'dates-selector';
+  let selectedDayIndicatorClassName = 'dates-selected-day-indicator';
 
-  if (occurrencesForWeek[todaysIndex].complete) {
-    selectorClassName += ' complete';
+  if (occurrencesForWeek[selectedDayIndex].complete) {
+    selectedDayIndicatorClassName += ' complete';
   }
 
   return (
@@ -34,8 +38,12 @@ export default function Dates({ latchedListView, selectedOccurrences, todaysInde
         );
       })}
       <div
-        className={selectorClassName}
-        style={{ left: `calc(5px + ${todaysIndex} * 50px)` }}
+        className={selectedDayIndicatorClassName}
+        style={{ left: `calc(${selectedDayIndex} * 50px)` }}
+      />
+      <div
+        className="dates-actual-day-indicator"
+        style={{ left: `calc(${dateObject.today.weekDayIndex} * 50px)` }}
       />
     </div>
   );

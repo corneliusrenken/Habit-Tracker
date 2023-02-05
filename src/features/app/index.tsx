@@ -113,6 +113,7 @@ export default function App() {
 
   const components = useMemoizedComponents({
     selectedStreaks: selectedData.streaks,
+    dateObject,
     dayObject,
     latchedListView,
     latchedOccurrenceView,
