@@ -5,7 +5,7 @@
 .scrollbar {
   $scrollbar-width: 2px;
 
-  margin-left: calc(50vw + 175px);
+  margin-left: calc(50vw + 175px + 10px);
   height: 120%;
   position: relative;
   top: -10%;
