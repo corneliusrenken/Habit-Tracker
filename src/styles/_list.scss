@@ -13,6 +13,8 @@
   }
 
   input {
+    @include fonts.regular;
+
     margin-left: calc(var(--left-margin, 0px) - 8px);
     margin-right: calc(var(--right-margin, 0px) - 8px);
     width: calc(100% - var(--left-margin, 0px) - var(--right-margin, 0px) + 16px);
