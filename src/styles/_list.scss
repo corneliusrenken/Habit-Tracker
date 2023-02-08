@@ -13,7 +13,7 @@
   }
 
   input {
-    @include fonts.regular;
+    @include fonts.cursive-secondary;
 
     margin-left: calc(var(--left-margin, 0px) - 8px);
     margin-right: calc(var(--right-margin, 0px) - 8px);
@@ -72,7 +72,7 @@
   }
 
   &-name {
-    @include fonts.regular;
+    @include fonts.cursive-secondary;
 
     margin-left: var(--left-margin, 0px);
     max-width: calc(350px - var(--left-margin, 0px) - var(--right-margin, 0px));
