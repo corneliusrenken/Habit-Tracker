@@ -51,7 +51,11 @@ export default function updateHabitOrder(
     }
   });
 
-  newHabits = newHabits.map((habit, index) => ({ ...habit, order: index }));
+  newHabits = newHabits.map(({ id, name }, index) => ({
+    id,
+    name,
+    orderInList: index,
+  }));
 
   setHabits(newHabits);
   setSelectedIndex(newOrderInList);
