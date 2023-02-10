@@ -23,8 +23,6 @@ export default function updateHabitOrder(
 
   if (newOrderInList < 0 || newOrderInList >= habits.length) throw new Error('new order value out of range');
 
-  window.electron['update-habit'](habitId, { orderInList: newOrderInList });
-
   const orderDifference = newOrderInList - oldOrderInList;
 
   let newHabits: Habit[] = new Array(habits.length);

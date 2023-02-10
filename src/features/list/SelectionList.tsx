@@ -61,6 +61,7 @@ export default function SelectionList({
         height={50}
         width={350}
         onIndexChange={(newIndicesById, changedId) => {
+          window.electron['update-habit'](changedId, { orderInList: newIndicesById[changedId] });
           updateHabitOrder(changedId, newIndicesById[changedId]);
           setReorderingList(false);
         }}
