@@ -4,7 +4,7 @@ import {
   createTables,
   openDatabase,
   updateHabit,
-} from '../../queries';
+} from '../../../database';
 import { verifyOrderInListValues } from '../helperFunctions';
 
 let db: Database.Database;

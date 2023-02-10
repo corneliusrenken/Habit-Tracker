@@ -6,7 +6,7 @@ import {
   getOccurrenceStreaks,
   openDatabase,
   updateOccurrence,
-} from '../../queries';
+} from '../../../database';
 
 let db: Database.Database;
 let exerciseHabitId: number;

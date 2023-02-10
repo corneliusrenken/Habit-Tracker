@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  DateObject,
   Habit,
   ListView,
   OccurrenceData,
@@ -10,6 +11,7 @@ import HabitList from './HabitList';
 import SelectionList from './SelectionList';
 
 type Props = {
+  dateObject: DateObject;
   viewType: ViewType;
   allowTabTraversal: boolean;
   selectedHabits: Habit[];
@@ -22,7 +24,7 @@ type Props = {
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   reorderingList: boolean;
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
-  addHabit: (name: string) => Promise<void>;
+  addHabit: (name: string, id: number) => Promise<void>;
   deleteHabit: (habitId: number) => void;
   renameHabit: (habitId: number, name: string) => void;
   updateHabitCompleted: (habitId: number, completed: boolean) => void;
@@ -31,6 +33,7 @@ type Props = {
 };
 
 export default function List({
+  dateObject,
   viewType,
   allowTabTraversal,
   selectedHabits,
@@ -63,6 +66,7 @@ export default function List({
         />
       ) : (
         <SelectionList
+          dateObject={dateObject}
           allowTabTraversal={allowTabTraversal}
           habits={selectedHabits}
           todaysOccurrences={todaysOccurrences}

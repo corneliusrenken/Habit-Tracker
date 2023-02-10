@@ -34,7 +34,7 @@ type States = {
   reorderingList: boolean;
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
   modalContentGenerator: ModalContentGenerator | undefined;
-  addHabit: (name: string) => Promise<void>;
+  addHabit: (name: string, id: number) => Promise<void>;
   deleteHabit: (habitId: number) => void;
   renameHabit: (habitId: number, name: string) => void;
   updateHabitCompleted: (habitId: number, completed: boolean) => void;
@@ -98,6 +98,7 @@ export default function useMemoizedComponents(states: States) {
     occurrenceData !== undefined
       ? (
         <List
+          dateObject={dateObject}
           viewType={viewType}
           allowTabTraversal={modalContentGenerator === undefined}
           selectedHabits={selectedHabits}
@@ -120,6 +121,7 @@ export default function useMemoizedComponents(states: States) {
       )
       : <div />
   ), [
+    dateObject,
     viewType,
     modalContentGenerator,
     selectedStreaks,

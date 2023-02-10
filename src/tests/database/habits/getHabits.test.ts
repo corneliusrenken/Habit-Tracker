@@ -6,7 +6,7 @@ import {
   getHabits,
   openDatabase,
   setUniqueOrderInListIndex,
-} from '../../queries';
+} from '../../../database';
 import { verifyOrderInListValues } from '../helperFunctions';
 
 let db: Database.Database;

@@ -4,7 +4,7 @@ import {
   createTables,
   deleteHabit,
   openDatabase,
-} from '../../queries';
+} from '../../../database';
 
 let db: Database.Database;
 let exerciseHabitId: number;

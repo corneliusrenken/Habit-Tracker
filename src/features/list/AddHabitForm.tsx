@@ -1,18 +1,25 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Habit } from '../../globalTypes';
+import { DateObject, Habit } from '../../globalTypes';
 import isValidHabitName from './isValidHabitName';
 
 type Props = {
+  dateObject: DateObject;
   allowTabTraversal: boolean;
   habits: Habit[];
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
-  addHabit: (name: string) => Promise<void>;
+  addHabit: (name: string, id: number) => Promise<void>;
 };
 
 export default function AddHabitForm({
-  allowTabTraversal, habits, selectedIndex, setSelectedIndex, addHabit, setInInput,
+  dateObject,
+  allowTabTraversal,
+  habits,
+  selectedIndex,
+  setSelectedIndex,
+  addHabit,
+  setInInput,
 }: Props) {
   const [habitInput, setHabitInput] = useState('');
   const habitInputRef = useRef<HTMLInputElement>(null);
@@ -33,7 +40,8 @@ export default function AddHabitForm({
         const trimmedHabitInput = habitInput.trim();
         const validation = isValidHabitName(trimmedHabitInput, { habits });
         if (validation === true) {
-          await addHabit(trimmedHabitInput);
+          const newHabit = await window.electron['add-habit'](trimmedHabitInput, dateObject.today.dateString);
+          addHabit(trimmedHabitInput, newHabit.id);
           setHabitInput('');
         } else {
           console.error(validation); // eslint-disable-line no-console

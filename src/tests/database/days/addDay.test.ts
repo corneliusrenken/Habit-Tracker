@@ -1,5 +1,5 @@
 import Database from 'better-sqlite3';
-import { addDay, createTables, openDatabase } from '../../queries';
+import { addDay, createTables, openDatabase } from '../../../database';
 
 let db: Database.Database;
 

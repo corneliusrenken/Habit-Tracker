@@ -5,7 +5,7 @@ import {
   addHabit,
   addOccurrences,
   updateOccurrence,
-} from './database/queries';
+} from './database';
 
 function dateToString(dateObj: Date) {
   const year = dateObj.getFullYear();

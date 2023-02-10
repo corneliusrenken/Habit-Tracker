@@ -14,12 +14,12 @@ import {
   View,
 } from '../../globalTypes';
 import initialize from './initialize';
-import useApiFunctions from '../apiFunctions/useApiFunctions';
 import useMemoizedComponents from './useMemoizedComponents';
 import useSelectedData from './useSelectedData';
 import Modal from '../modal';
 import useShortcutManager from '../shortcutManager/useShortcutManager';
 import Layout from '../layout';
+import useFrontEndDatabaseQueries from '../frontEndDatabaseQueries/useFrontEndDatabaseQueries';
 
 let initializedApp = false;
 
@@ -96,7 +96,7 @@ export default function App() {
     updateHabitCompleted,
     updateHabitOrder,
     updateHabitVisibility,
-  } = useApiFunctions({
+  } = useFrontEndDatabaseQueries({
     dateObject,
     dayObject,
     latchedListView,

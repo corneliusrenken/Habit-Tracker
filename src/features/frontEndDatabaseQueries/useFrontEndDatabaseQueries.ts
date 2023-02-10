@@ -32,7 +32,7 @@ type States = {
   setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
 };
 
-export default function useApiFunctions(states: States) {
+export default function useFrontEndDatabaseQueries(states: States) {
   const {
     dateObject,
     dayObject,
@@ -48,8 +48,8 @@ export default function useApiFunctions(states: States) {
     setModalContentGenerator,
   } = states;
 
-  const addHabitMemo = useCallback((name: string) => (
-    addHabit(name, dateObject.today.dateString, {
+  const addHabitMemo = useCallback((name: string, id: number) => (
+    addHabit(name, id, dateObject.today.dateString, {
       habits,
       setHabits,
       occurrenceData,

@@ -9,8 +9,9 @@ type States = {
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
 };
 
-export default async function addHabit(
+export default function addHabit(
   name: string,
+  id: number,
   todaysDateString: string,
   states: States,
 ) {
@@ -18,28 +19,32 @@ export default async function addHabit(
     habits, setHabits, streaks, setStreaks, occurrenceData, setOccurrenceData,
   } = states;
 
-  const createdHabit = await window.electron['add-habit'](name, todaysDateString);
+  const newHabit: Habit = {
+    id,
+    name,
+    orderInList: habits.length,
+  };
 
   const newHabits: Habit[] = [
     ...habits,
-    createdHabit,
+    newHabit,
   ];
 
   const newStreaks: Streaks = {
     ...streaks,
-    [createdHabit.id]: { current: 0, maximum: 0 },
+    [newHabit.id]: { current: 0, maximum: 0 },
   };
 
   const newOccurrenceData: OccurrenceData = {
     oldest: {
       ...occurrenceData.oldest,
-      [createdHabit.id]: null,
+      [newHabit.id]: null,
     },
     dates: {
       ...occurrenceData.dates,
       [todaysDateString]: {
         ...occurrenceData.dates[todaysDateString],
-        [createdHabit.id]: {
+        [newHabit.id]: {
           complete: false,
           visible: true,
         },
