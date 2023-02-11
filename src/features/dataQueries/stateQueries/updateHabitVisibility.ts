@@ -20,6 +20,14 @@ export default function updateHabitVisibility(
 
   if (!streaks || !occurrenceData) throw new Error('states should not be undefined');
 
+  if (occurrenceData.dates[todayDateString] === undefined) {
+    throw new Error('no date entry exists with the given date string');
+  }
+
+  if (occurrenceData.dates[todayDateString][habitId] === undefined) {
+    throw new Error('the date contains no entry for the given habit id');
+  }
+
   const todaysOccurrences = { ...occurrenceData.dates[todayDateString] };
   let habitsOldestOccurrence = occurrenceData.oldest[habitId];
 
