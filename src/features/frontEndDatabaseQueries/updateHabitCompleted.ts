@@ -23,7 +23,15 @@ export default function updateHabitCompleted(
 
   if (!streaks || !occurrenceData) throw new Error('states should not be undefined');
 
-  window.electron['update-occurrence'](habitId, dateString, { complete: completed });
+  // window.electron['update-occurrence'](habitId, dateString, { complete: completed });
+
+  if (occurrenceData.dates[dateString] === undefined) {
+    throw new Error('no date entry exists with the given date string');
+  }
+
+  if (occurrenceData.dates[dateString][habitId] === undefined) {
+    throw new Error('the date contains no entry for the given habit id');
+  }
 
   const date = getDateFromDateString(dateString);
   date.setDate(date.getDate() + 1);
