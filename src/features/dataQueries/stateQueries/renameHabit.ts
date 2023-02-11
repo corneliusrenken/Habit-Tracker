@@ -1,7 +1,6 @@
 import { Habit } from '../../../globalTypes';
 
 type States = {
-  habits: Habit[] | undefined;
   setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
 };
 
@@ -10,17 +9,19 @@ export default function renameHabit(
   name: string,
   states: States,
 ) {
-  const { habits, setHabits } = states;
+  const { setHabits } = states;
 
-  if (!habits) throw new Error('states should not be undefined');
+  setHabits((oldHabits) => {
+    if (oldHabits.find(({ id }) => id === habitId) === undefined) {
+      throw new Error('habit with this id doesn\'t exist');
+    }
 
-  const newHabits: Habit[] = habits.map((habit) => {
-    if (habit.id !== habitId) return habit;
-    return {
-      ...habit,
-      name,
-    };
+    return oldHabits.map((habit) => {
+      if (habit.id !== habitId) return habit;
+      return {
+        ...habit,
+        name,
+      };
+    });
   });
-
-  setHabits(newHabits);
 }
