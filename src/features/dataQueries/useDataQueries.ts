@@ -6,14 +6,13 @@ import {
   updateHabitCompleted,
   updateHabitOrder,
   updateHabitVisibility,
-} from '.';
+} from './linkedQueries';
 import {
   Habit,
   DateObject,
   DayObject,
   OccurrenceData,
   Streaks,
-  ModalContentGenerator,
   ListView,
 } from '../../globalTypes';
 
@@ -27,12 +26,10 @@ type States = {
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
   streaks: Streaks | undefined;
   setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
-  selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
 };
 
-export default function useFrontEndDatabaseQueries(states: States) {
+export default function useDataQueries(states: States) {
   const {
     dateObject,
     dayObject,
@@ -43,13 +40,11 @@ export default function useFrontEndDatabaseQueries(states: States) {
     setOccurrenceData,
     streaks,
     setStreaks,
-    selectedIndex,
     setSelectedIndex,
-    setModalContentGenerator,
   } = states;
 
-  const addHabitMemo = useCallback((name: string, id: number) => (
-    addHabit(name, id, dateObject.today.dateString, {
+  const addHabitMemo = useCallback(async (name: string) => (
+    addHabit(name, dateObject.today.dateString, {
       habits,
       setHabits,
       occurrenceData,
@@ -69,18 +64,12 @@ export default function useFrontEndDatabaseQueries(states: States) {
 
   const deleteHabitMemo = useCallback((habitId: number) => (
     deleteHabit(habitId, {
-      habits,
       setHabits,
-      selectedIndex,
       setSelectedIndex,
-      setModalContentGenerator,
     })
   ), [
-    habits,
-    selectedIndex,
     setHabits,
     setSelectedIndex,
-    setModalContentGenerator,
   ]);
 
   const renameHabitMemo = useCallback((habitId: number, name: string) => (

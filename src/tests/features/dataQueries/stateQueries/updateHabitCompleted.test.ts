@@ -1,6 +1,6 @@
-import { updateHabitCompleted } from '../../../features/frontEndDatabaseQueries';
-import { OccurrenceData, Streaks } from '../../../globalTypes';
-import PseudoUseState from '../helperFunctions/pseudoUseState';
+import updateHabitCompleted from '../../../../features/dataQueries/stateQueries/updateHabitCompleted';
+import { OccurrenceData, Streaks } from '../../../../globalTypes';
+import PseudoUseState from '../../helperFunctions/pseudoUseState';
 
 describe('updating streaks', () => {
   test('updates the streaks state', () => {

@@ -1,4 +1,4 @@
-import { Habit } from '../../globalTypes';
+import { Habit } from '../../../globalTypes';
 
 type States = {
   habits: Habit[] | undefined;

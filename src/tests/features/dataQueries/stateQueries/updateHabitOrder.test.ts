@@ -1,6 +1,6 @@
-import { updateHabitOrder } from '../../../features/frontEndDatabaseQueries';
-import { Habit } from '../../../globalTypes';
-import PseudoUseState from '../helperFunctions/pseudoUseState';
+import updateHabitOrder from '../../../../features/dataQueries/stateQueries/updateHabitOrder';
+import { Habit } from '../../../../globalTypes';
+import PseudoUseState from '../../helperFunctions/pseudoUseState';
 
 let habitState: PseudoUseState<Habit[] | undefined>;
 let setSelectedIndexState: PseudoUseState<number | null>;

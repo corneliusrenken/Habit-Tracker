@@ -1,22 +1,20 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from 'react';
 import { Habit, ModalContentGenerator } from '../../globalTypes';
-import HabitRemovalConfirmationModalContent from '../habitRemovalConfirmationModalContent';
+import HabitRemovalConfirmationModalContent from '.';
 
 type States = {
   habits: Habit[] | undefined;
-  setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
   selectedIndex: number | null;
-  setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
+  deleteHabit: (habitId: number) => void;
 };
 
-export default function removeHabit(
+export default function openDeleteHabitModal(
   habitId: number,
   states: States,
 ) {
   const {
-    habits, setHabits, selectedIndex, setSelectedIndex, setModalContentGenerator,
+    habits, selectedIndex, setModalContentGenerator, deleteHabit,
   } = states;
 
   if (selectedIndex === null) return;
@@ -35,14 +33,8 @@ export default function removeHabit(
         allowTabTraversal={allowTabTraversal}
         setModalContentGenerator={setModalContentGenerator}
         onConfirm={() => {
-          window.electron['delete-habit'](habitId);
-
-          const newHabits: Habit[] = habits.filter(({ id }) => id !== habitId);
-
           setModalContentGenerator(undefined);
-          setHabits(newHabits);
-          // will always be able to set selected index to non null value in seleciton view
-          setSelectedIndex(Math.min(selectedIndex, newHabits.length));
+          deleteHabit(habitToRemove.id);
         }}
       />
     );

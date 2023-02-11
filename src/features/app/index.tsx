@@ -19,7 +19,7 @@ import useSelectedData from './useSelectedData';
 import Modal from '../modal';
 import useShortcutManager from '../shortcutManager/useShortcutManager';
 import Layout from '../layout';
-import useFrontEndDatabaseQueries from '../frontEndDatabaseQueries/useFrontEndDatabaseQueries';
+import useDataQueries from '../dataQueries/useDataQueries';
 
 let initializedApp = false;
 
@@ -96,7 +96,7 @@ export default function App() {
     updateHabitCompleted,
     updateHabitOrder,
     updateHabitVisibility,
-  } = useFrontEndDatabaseQueries({
+  } = useDataQueries({
     dateObject,
     dayObject,
     latchedListView,
@@ -106,9 +106,7 @@ export default function App() {
     setOccurrenceData,
     streaks,
     setStreaks,
-    selectedIndex,
     setSelectedIndex,
-    setModalContentGenerator,
   });
 
   const components = useMemoizedComponents({
@@ -134,6 +132,7 @@ export default function App() {
     updateHabitCompleted,
     updateHabitOrder,
     updateHabitVisibility,
+    setModalContentGenerator,
   });
 
   useShortcutManager({
@@ -150,6 +149,7 @@ export default function App() {
     setView,
     setSelectedIndex,
     reorderingList,
+    setModalContentGenerator,
     deleteHabit,
     updateHabitCompleted,
     updateHabitVisibility,

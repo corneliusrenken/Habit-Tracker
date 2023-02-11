@@ -1,6 +1,6 @@
-import { OccurrenceData, Streaks } from '../../globalTypes';
-import { getDateFromDateString } from '../common/dateStringFunctions';
-import getCustomDateString from '../common/getCustomDateString';
+import { OccurrenceData, Streaks } from '../../../../globalTypes';
+import { getDateFromDateString } from '../../../common/dateStringFunctions';
+import getCustomDateString from '../../../common/getCustomDateString';
 
 export default function recalculateStreak(
   habitId: number,

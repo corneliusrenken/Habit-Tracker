@@ -1,5 +1,5 @@
-import { OccurrenceData, Streaks } from '../../globalTypes';
-import recalculateStreak from './recalculateStreak';
+import { OccurrenceData, Streaks } from '../../../globalTypes';
+import recalculateStreak from './helperFunctions/recalculateStreak';
 
 type States = {
   streaks: Streaks | undefined;
@@ -25,20 +25,16 @@ export default function updateHabitVisibility(
 
   if (visible) {
     if (todaysOccurrences[habitId] === undefined) {
-      window.electron['add-occurrence'](habitId, todayDateString);
       todaysOccurrences[habitId] = { visible: true, complete: false };
     } else {
-      window.electron['update-occurrence'](habitId, todayDateString, { visible: true });
       todaysOccurrences[habitId] = { ...todaysOccurrences[habitId], visible: true };
     }
 
     if (habitsOldestOccurrence === null) habitsOldestOccurrence = todayDateString;
   } else {
     if (todaysOccurrences[habitId].complete) {
-      window.electron['update-occurrence'](habitId, todayDateString, { visible: false });
       todaysOccurrences[habitId].visible = false;
     } else {
-      window.electron['delete-occurrence'](habitId, todayDateString);
       delete todaysOccurrences[habitId];
     }
 

@@ -1,6 +1,6 @@
-import addHabit from '../../../features/frontEndDatabaseQueries/addHabit';
-import { Habit, OccurrenceData, Streaks } from '../../../globalTypes';
-import PseudoUseState from '../helperFunctions/pseudoUseState';
+import addHabit from '../../../../features/dataQueries/stateQueries/addHabit';
+import { Habit, OccurrenceData, Streaks } from '../../../../globalTypes';
+import PseudoUseState from '../../helperFunctions/pseudoUseState';
 
 let habitState: PseudoUseState<Habit[] | undefined>;
 let streaksState: PseudoUseState<Streaks | undefined>;

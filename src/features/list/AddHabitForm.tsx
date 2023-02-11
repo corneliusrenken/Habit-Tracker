@@ -1,19 +1,17 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { DateObject, Habit } from '../../globalTypes';
+import { Habit } from '../../globalTypes';
 import isValidHabitName from './isValidHabitName';
 
 type Props = {
-  dateObject: DateObject;
   allowTabTraversal: boolean;
   habits: Habit[];
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
-  addHabit: (name: string, id: number) => Promise<void>;
+  addHabit: (name: string) => Promise<void>;
 };
 
 export default function AddHabitForm({
-  dateObject,
   allowTabTraversal,
   habits,
   selectedIndex,
@@ -40,8 +38,7 @@ export default function AddHabitForm({
         const trimmedHabitInput = habitInput.trim();
         const validation = isValidHabitName(trimmedHabitInput, { habits });
         if (validation === true) {
-          const newHabit = await window.electron['add-habit'](trimmedHabitInput, dateObject.today.dateString);
-          addHabit(trimmedHabitInput, newHabit.id);
+          await addHabit(trimmedHabitInput);
           setHabitInput('');
         } else {
           console.error(validation); // eslint-disable-line no-console

@@ -1,7 +1,7 @@
-import { OccurrenceData, Streaks } from '../../globalTypes';
-import { getDateFromDateString } from '../common/dateStringFunctions';
-import getCustomDateString from '../common/getCustomDateString';
-import recalculateStreak from './recalculateStreak';
+import { OccurrenceData, Streaks } from '../../../globalTypes';
+import { getDateFromDateString } from '../../common/dateStringFunctions';
+import getCustomDateString from '../../common/getCustomDateString';
+import recalculateStreak from './helperFunctions/recalculateStreak';
 
 type States = {
   streaks: Streaks | undefined;
@@ -22,8 +22,6 @@ export default function updateHabitCompleted(
   } = states;
 
   if (!streaks || !occurrenceData) throw new Error('states should not be undefined');
-
-  // window.electron['update-occurrence'](habitId, dateString, { complete: completed });
 
   if (occurrenceData.dates[dateString] === undefined) {
     throw new Error('no date entry exists with the given date string');

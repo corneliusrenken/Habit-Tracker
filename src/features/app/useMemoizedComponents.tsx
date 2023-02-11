@@ -34,12 +34,13 @@ type States = {
   reorderingList: boolean;
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
   modalContentGenerator: ModalContentGenerator | undefined;
-  addHabit: (name: string, id: number) => Promise<void>;
+  addHabit: (name: string) => Promise<void>;
   deleteHabit: (habitId: number) => void;
   renameHabit: (habitId: number, name: string) => void;
   updateHabitCompleted: (habitId: number, completed: boolean) => void;
   updateHabitOrder: (habitId: number, newOrder: number) => void;
   updateHabitVisibility: (habitId: number, visible: boolean) => void;
+  setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
 };
 
 export default function useMemoizedComponents(states: States) {
@@ -66,6 +67,7 @@ export default function useMemoizedComponents(states: States) {
     updateHabitCompleted,
     updateHabitOrder,
     updateHabitVisibility,
+    setModalContentGenerator,
   } = states;
 
   const viewType = viewToViewType[view.name];
@@ -98,7 +100,6 @@ export default function useMemoizedComponents(states: States) {
     occurrenceData !== undefined
       ? (
         <List
-          dateObject={dateObject}
           viewType={viewType}
           allowTabTraversal={modalContentGenerator === undefined}
           selectedHabits={selectedHabits}
@@ -117,11 +118,11 @@ export default function useMemoizedComponents(states: States) {
           updateHabitCompleted={updateHabitCompleted}
           updateHabitOrder={updateHabitOrder}
           updateHabitVisibility={updateHabitVisibility}
+          setModalContentGenerator={setModalContentGenerator}
         />
       )
       : <div />
   ), [
-    dateObject,
     viewType,
     modalContentGenerator,
     selectedStreaks,
@@ -141,6 +142,7 @@ export default function useMemoizedComponents(states: States) {
     updateHabitCompleted,
     updateHabitOrder,
     updateHabitVisibility,
+    setModalContentGenerator,
   ]);
 
   return {

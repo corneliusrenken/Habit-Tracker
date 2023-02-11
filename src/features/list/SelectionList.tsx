@@ -1,11 +1,10 @@
 import React from 'react';
-import { DateObject, Habit, OccurrenceData } from '../../globalTypes';
+import { Habit, ModalContentGenerator, OccurrenceData } from '../../globalTypes';
 import AddHabitForm from './AddHabitForm';
 import ReorderableList from './ReorderableList';
 import useMemoizedSelectionListItemConstructors from './useMemoizedSelectionListItemConstructors';
 
 type Props = {
-  dateObject: DateObject;
   allowTabTraversal: boolean;
   habits: Habit[];
   todaysOccurrences: OccurrenceData['dates'][string];
@@ -15,15 +14,15 @@ type Props = {
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   reorderingList: boolean;
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
-  addHabit: (name: string, id: number) => Promise<void>;
+  addHabit: (name: string) => Promise<void>;
   deleteHabit: (habitId: number) => void;
   renameHabit: (habitId: number, name: string) => void;
   updateHabitOrder: (habitId: number, newOrder: number) => void;
   updateHabitVisibility: (habitId: number, visible: boolean) => void;
+  setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
 };
 
 export default function SelectionList({
-  dateObject,
   allowTabTraversal,
   habits,
   todaysOccurrences,
@@ -38,6 +37,7 @@ export default function SelectionList({
   renameHabit,
   updateHabitOrder,
   updateHabitVisibility,
+  setModalContentGenerator,
 }: Props) {
   const elementConstructors = useMemoizedSelectionListItemConstructors({
     allowTabTraversal,
@@ -52,6 +52,7 @@ export default function SelectionList({
     deleteHabit,
     renameHabit,
     updateHabitVisibility,
+    setModalContentGenerator,
   });
 
   return (
@@ -61,7 +62,6 @@ export default function SelectionList({
         height={50}
         width={350}
         onIndexChange={(newIndicesById, changedId) => {
-          window.electron['update-habit'](changedId, { orderInList: newIndicesById[changedId] });
           updateHabitOrder(changedId, newIndicesById[changedId]);
           setReorderingList(false);
         }}
@@ -69,7 +69,6 @@ export default function SelectionList({
         activeClass="being-reordered"
       />
       <AddHabitForm
-        dateObject={dateObject}
         allowTabTraversal={allowTabTraversal}
         habits={habits}
         selectedIndex={selectedIndex}

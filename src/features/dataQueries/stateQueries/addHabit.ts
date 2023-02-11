@@ -1,4 +1,4 @@
-import { Habit, OccurrenceData, Streaks } from '../../globalTypes';
+import { Habit, OccurrenceData, Streaks } from '../../../globalTypes';
 
 type States = {
   habits: Habit[] | undefined;
