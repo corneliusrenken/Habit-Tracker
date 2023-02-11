@@ -10,6 +10,10 @@ export default function recalculateStreak(
   let maximumStreak = 0;
   let currentStreak = 0;
 
+  if (occurrenceData.oldest[habitId] === undefined) {
+    throw new Error('no oldest occurrence entry exists for the given habit id');
+  }
+
   const oldestDateString = occurrenceData.oldest[habitId];
 
   if (oldestDateString === null) return { current: currentStreak, maximum: maximumStreak };
