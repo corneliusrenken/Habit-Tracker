@@ -15,7 +15,13 @@ export default function deleteHabit(
   let newHabits: Habit[] = [];
 
   setHabits((prevHabits) => {
-    newHabits = prevHabits.filter(({ id }) => id !== habitId);
+    if (prevHabits.find(({ id }) => id === habitId) === undefined) {
+      throw new Error('habit with this id doesn\'t exist');
+    }
+
+    newHabits = prevHabits
+      .filter(({ id }) => id !== habitId)
+      .map((habit, index) => ({ ...habit, orderInList: index }));
     return newHabits;
   });
 
