@@ -2,6 +2,44 @@ import updateHabitCompleted from '../../../../features/dataQueries/stateQueries/
 import { OccurrenceData, Streaks } from '../../../../globalTypes';
 import PseudoUseState from '../../helperFunctions/pseudoUseState';
 
+test('throws an error if the date is not in the dates object', () => {
+  const streaksState = new PseudoUseState<Streaks | undefined>({});
+  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+    oldest: {},
+    dates: {},
+  });
+
+  expect(() => {
+    updateHabitCompleted(10, true, '2023-02-10', false, {
+      streaks: streaksState.value,
+      setStreaks: streaksState.setState.bind(streaksState),
+      occurrenceData: occurrenceDataState.value,
+      setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
+    });
+  }).toThrowError('no date entry exists with the given date string');
+});
+
+test('throws an error if the habit does not exist in the date object', () => {
+  const streaksState = new PseudoUseState<Streaks | undefined>({
+    1: { current: 0, maximum: 0 },
+  });
+  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+    oldest: { 1: '2023-02-09' },
+    dates: {
+      '2023-02-10': { 1: { complete: false, visible: true } },
+    },
+  });
+
+  expect(() => {
+    updateHabitCompleted(2, true, '2023-02-10', false, {
+      streaks: streaksState.value,
+      setStreaks: streaksState.setState.bind(streaksState),
+      occurrenceData: occurrenceDataState.value,
+      setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
+    });
+  }).toThrowError('the date contains no entry for the given habit id');
+});
+
 describe('updating streaks', () => {
   test('updates the streaks state', () => {
     const streaksState = new PseudoUseState<Streaks | undefined>({
@@ -176,43 +214,5 @@ describe('updating "dates" occurrence data', () => {
     expect(occurrenceDataState.value.dates).toEqual({
       '2023-02-10': { 1: { complete: false, visible: true } },
     });
-  });
-
-  test('throws an error if the date is not in the dates object', () => {
-    const streaksState = new PseudoUseState<Streaks | undefined>({});
-    const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
-      oldest: {},
-      dates: {},
-    });
-
-    expect(() => {
-      updateHabitCompleted(10, true, '2023-02-10', false, {
-        streaks: streaksState.value,
-        setStreaks: streaksState.setState.bind(streaksState),
-        occurrenceData: occurrenceDataState.value,
-        setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
-      });
-    }).toThrowError('no date entry exists with the given date string');
-  });
-
-  test('throws an error if the habit does not exist in the date object', () => {
-    const streaksState = new PseudoUseState<Streaks | undefined>({
-      1: { current: 0, maximum: 0 },
-    });
-    const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
-      oldest: { 1: '2023-02-09' },
-      dates: {
-        '2023-02-10': { 1: { complete: false, visible: true } },
-      },
-    });
-
-    expect(() => {
-      updateHabitCompleted(2, true, '2023-02-10', false, {
-        streaks: streaksState.value,
-        setStreaks: streaksState.setState.bind(streaksState),
-        occurrenceData: occurrenceDataState.value,
-        setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
-      });
-    }).toThrowError('the date contains no entry for the given habit id');
   });
 });
