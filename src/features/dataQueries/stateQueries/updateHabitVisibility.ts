@@ -24,8 +24,8 @@ export default function updateHabitVisibility(
     throw new Error('no date entry exists with the given date string');
   }
 
-  if (occurrenceData.dates[todayDateString][habitId] === undefined) {
-    throw new Error('the date contains no entry for the given habit id');
+  if (occurrenceData.oldest[habitId] === undefined) {
+    throw new Error('habit id does not exist in the occurrence data');
   }
 
   const todaysOccurrences = { ...occurrenceData.dates[todayDateString] };

@@ -37,7 +37,7 @@ test('throws an error if the date is not in the dates object', () => {
   }).toThrowError('no date entry exists with the given date string');
 });
 
-test('throws an error if the habit does not exist in the date object', () => {
+test('throws an error if the habit does not exist in the oldest object', () => {
   expect(() => {
     updateHabitVisibility(2, true, '2023-02-10', {
       streaks: streaksState.value,
@@ -45,10 +45,37 @@ test('throws an error if the habit does not exist in the date object', () => {
       occurrenceData: occurrenceDataState.value,
       setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
     });
-  }).toThrowError('the date contains no entry for the given habit id');
+  }).toThrowError('habit id does not exist in the occurrence data');
 });
 
-test('when the habit is not complete, setting the visibility to false deletes the entry', () => {
+test('when the habit did not previously have an occurrence on the given date, setting the habit to visible creates an incomplete, visible occurrence', () => {
+  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+    oldest: {
+      1: null,
+    },
+    dates: {
+      '2023-02-10': {},
+    },
+  });
+
+  updateHabitVisibility(1, true, '2023-02-10', {
+    streaks: streaksState.value,
+    setStreaks: streaksState.setState.bind(streaksState),
+    occurrenceData: occurrenceDataState.value,
+    setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
+  });
+
+  expect(occurrenceDataState.value).toEqual({
+    oldest: {
+      1: '2023-02-10',
+    },
+    dates: {
+      '2023-02-10': { 1: { complete: false, visible: true } },
+    },
+  });
+});
+
+test('when the habit is not complete, setting the visibility to false deletes the occurrence entry', () => {
   updateHabitVisibility(1, false, '2023-02-10', {
     streaks: streaksState.value,
     setStreaks: streaksState.setState.bind(streaksState),
@@ -66,7 +93,7 @@ test('when the habit is not complete, setting the visibility to false deletes th
   });
 });
 
-test('when the habit is complete, setting the visibility to false keeps the entry, and simply updates the value', () => {
+test('when the habit is complete, setting the visibility to false keeps the occurrence entry, and simply updates the value', () => {
   occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
     oldest: {
       1: '2023-02-10',
@@ -89,6 +116,22 @@ test('when the habit is complete, setting the visibility to false keeps the entr
     },
     dates: {
       '2023-02-10': { 1: { complete: true, visible: false } },
+    },
+  });
+
+  updateHabitVisibility(1, true, '2023-02-10', {
+    streaks: streaksState.value,
+    setStreaks: streaksState.setState.bind(streaksState),
+    occurrenceData: occurrenceDataState.value,
+    setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
+  });
+
+  expect(occurrenceDataState.value).toEqual({
+    oldest: {
+      1: '2023-02-10',
+    },
+    dates: {
+      '2023-02-10': { 1: { complete: true, visible: true } },
     },
   });
 });
