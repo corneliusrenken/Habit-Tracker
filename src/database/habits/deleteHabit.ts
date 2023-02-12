@@ -1,9 +1,9 @@
 import { Database } from 'better-sqlite3';
-import dropUniqueOrderInListIndex from '../common/dropUniqueOrderInListIndex';
-import setUniqueOrderInListIndex from '../common/setUniqueOrderInListIndex';
+import dropUniqueIndexOnListPosition from '../common/dropUniqueIndexOnListPosition';
+import setUniqueIndexOnListPosition from '../common/setUniqueIndexOnListPosition';
 
 export default function deleteHabit(database: Database, habitId: number) {
-  const getHabitByIdStmt = database.prepare('SELECT order_in_list FROM habits WHERE id = ?');
+  const getHabitByIdStmt = database.prepare('SELECT list_position FROM habits WHERE id = ?');
 
   const habitToDelete = getHabitByIdStmt.get(habitId);
 
@@ -13,18 +13,18 @@ export default function deleteHabit(database: Database, habitId: number) {
 
   const deleteHabitStmt = database.prepare('DELETE FROM habits WHERE id = ?');
 
-  const shiftOrderInListValuesStmt = database.prepare(`
+  const shiftListPositionValuesStmt = database.prepare(`
     UPDATE habits
-    SET order_in_list = order_in_list - 1
-    WHERE order_in_list > ?
+    SET list_position = list_position - 1
+    WHERE list_position > ?
   `);
 
-  const deleteHabitAndShiftOrderInListValues = database.transaction(() => {
+  const deleteHabitAndShiftListPositionValues = database.transaction(() => {
     deleteHabitStmt.run(habitId);
-    dropUniqueOrderInListIndex(database);
-    shiftOrderInListValuesStmt.run(habitToDelete.order_in_list);
-    setUniqueOrderInListIndex(database);
+    dropUniqueIndexOnListPosition(database);
+    shiftListPositionValuesStmt.run(habitToDelete.list_position);
+    setUniqueIndexOnListPosition(database);
   });
 
-  deleteHabitAndShiftOrderInListValues();
+  deleteHabitAndShiftListPositionValues();
 }

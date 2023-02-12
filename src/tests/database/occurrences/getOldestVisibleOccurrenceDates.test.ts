@@ -15,7 +15,7 @@ beforeEach(() => {
   db = openDatabase(':memory:');
   createTables(db);
   // can't use addHabit here as that automatically creates an occurrence for the day
-  const addOnlyHabitStmt = db.prepare('INSERT INTO habits (name, order_in_list) VALUES (?, ?)');
+  const addOnlyHabitStmt = db.prepare('INSERT INTO habits (name, list_position) VALUES (?, ?)');
   exerciseHabitId = Number(addOnlyHabitStmt.run('exercise', 0).lastInsertRowid);
   addDay(db, '2023-01-17');
   addDay(db, '2023-01-18');
@@ -74,7 +74,7 @@ test('both complete or incomplete occurrences count as an oldest occurrence', ()
 });
 
 test('returns oldest occurrences for multiple habits', () => {
-  const addOnlyHabitStmt = db.prepare('INSERT INTO habits (name, order_in_list) VALUES (?, ?)');
+  const addOnlyHabitStmt = db.prepare('INSERT INTO habits (name, list_position) VALUES (?, ?)');
   const readHabitId = Number(addOnlyHabitStmt.run('read', 1).lastInsertRowid);
   const sleepHabitId = Number(addOnlyHabitStmt.run('sleep', 2).lastInsertRowid);
 

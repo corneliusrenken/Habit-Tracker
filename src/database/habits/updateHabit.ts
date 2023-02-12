@@ -1,15 +1,15 @@
 import { Database } from 'better-sqlite3';
-import dropUniqueOrderInListIndex from '../common/dropUniqueOrderInListIndex';
-import setUniqueOrderInListIndex from '../common/setUniqueOrderInListIndex';
+import dropUniqueIndexOnListPosition from '../common/dropUniqueIndexOnListPosition';
+import setUniqueIndexOnListPosition from '../common/setUniqueIndexOnListPosition';
 
 type UpdateData = ({
   name: string;
 }) | ({
-  orderInList: number;
+  listPosition: number;
 });
 
 export default function updateHabit(database: Database, habitId: number, updateData: UpdateData) {
-  const getHabitByIdStmt = database.prepare('SELECT name, order_in_list FROM habits WHERE id = ?');
+  const getHabitByIdStmt = database.prepare('SELECT name, list_position FROM habits WHERE id = ?');
 
   const habitPreUpdate = getHabitByIdStmt.get(habitId);
 
@@ -18,7 +18,7 @@ export default function updateHabit(database: Database, habitId: number, updateD
   }
 
   if (('name' in updateData && habitPreUpdate.name === updateData.name)
-  || ('orderInList' in updateData && habitPreUpdate.order_in_list === updateData.orderInList)) {
+  || ('listPosition' in updateData && habitPreUpdate.list_position === updateData.listPosition)) {
     return;
   }
 
@@ -31,32 +31,35 @@ export default function updateHabit(database: Database, habitId: number, updateD
   const getHabitCountStmt = database.prepare('SELECT count(id) AS count FROM habits');
   const habitCount = getHabitCountStmt.get().count;
 
-  if (updateData.orderInList < 0 || updateData.orderInList >= habitCount) {
-    throw new Error('Error: Order in list is out of range. The value needs to inclusively be between 0 and the count of all habits - 1');
+  if (updateData.listPosition < 0 || updateData.listPosition >= habitCount) {
+    throw new Error('Error: List position is out of range. The value needs to inclusively be between 0 and the count of all habits - 1');
   }
 
-  const shiftDirection = Math.sign(updateData.orderInList - habitPreUpdate.order_in_list) as 1 | -1;
+  // can't be 0 as that would've been caught by the above if statement
+  const shiftDirection = Math.sign(
+    updateData.listPosition - habitPreUpdate.list_position,
+  ) as 1 | -1;
 
-  const shiftOtherOrderInListValuesStmt = shiftDirection === 1
+  const shiftOtherListPositionValuesStmt = shiftDirection === 1
     ? database.prepare(`
       UPDATE habits
-      SET order_in_list = order_in_list - 1
-      WHERE order_in_list > ? AND order_in_list <= ?
+      SET list_position = list_position - 1
+      WHERE list_position > ? AND list_position <= ?
     `)
     : database.prepare(`
       UPDATE habits
-      SET order_in_list = order_in_list + 1
-      WHERE order_in_list < ? AND order_in_list >= ?
+      SET list_position = list_position + 1
+      WHERE list_position < ? AND list_position >= ?
     `);
 
-  const setUpdatedOrderInListStmt = database.prepare('UPDATE habits SET order_in_list = ? WHERE id = ?');
+  const updateListPositionStmt = database.prepare('UPDATE habits SET list_position = ? WHERE id = ?');
 
-  const reorderOrderInListValues = database.transaction(() => {
-    dropUniqueOrderInListIndex(database);
-    shiftOtherOrderInListValuesStmt.run(habitPreUpdate.order_in_list, updateData.orderInList);
-    setUpdatedOrderInListStmt.run(updateData.orderInList, habitId);
-    setUniqueOrderInListIndex(database);
+  const updateListPositionValues = database.transaction(() => {
+    dropUniqueIndexOnListPosition(database);
+    shiftOtherListPositionValuesStmt.run(habitPreUpdate.list_position, updateData.listPosition);
+    updateListPositionStmt.run(updateData.listPosition, habitId);
+    setUniqueIndexOnListPosition(database);
   });
 
-  reorderOrderInListValues();
+  updateListPositionValues();
 }

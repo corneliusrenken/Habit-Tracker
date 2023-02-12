@@ -30,7 +30,7 @@ test('adding a habit with a pre-existing name will throw an error', () => {
   expect(() => addHabit(db, 'exercise', '2023-01-17')).toThrow('UNIQUE constraint failed: habits.name');
 });
 
-test('added a habit with an invalid name will throw an error', () => {
+test('adding a habit with an invalid name will throw an error', () => {
   addDay('2023-01-17');
   expect(() => addHabit(db, '', '2023-01-17')).toThrow('CHECK constraint failed: name NOT IN (\'\')');
 });
@@ -63,21 +63,21 @@ test('adding a habit creates a row in habits with the correct name', () => {
 test('adding a habit returns an object with data that matches the data in the database', () => {
   addDay('2023-01-17');
   const habit = addHabit(db, 'exercise', '2023-01-17');
-  const getHabitsStmt = db.prepare('SELECT id, name, order_in_list FROM habits');
+  const getHabitsStmt = db.prepare('SELECT id, name FROM habits');
   const habitInDb = getHabitsStmt.get();
   expect(habit.id).toBe(habitInDb.id);
   expect(habit.name).toBe(habitInDb.name);
-  expect(habit.orderInList).toBe(habitInDb.order_in_list);
 });
 
-test('a new habit will automatically get an order_in_list assigned, equal to how many habits existed before adding the new habit', () => {
+test('a new habit will automatically get a list position assigned, equal to how many habits existed before adding the new habit', () => {
   addDay('2023-01-17');
   const exerciseHabit = addHabit(db, 'exercise', '2023-01-17');
   const readHabit = addHabit(db, 'run', '2023-01-17');
   const sleepHabit = addHabit(db, 'sleep', '2023-01-17');
-  expect(exerciseHabit.orderInList).toBe(0);
-  expect(readHabit.orderInList).toBe(1);
-  expect(sleepHabit.orderInList).toBe(2);
+  const getListPositionStmt = db.prepare('SELECT list_position FROM habits WHERE name = ?');
+  expect(getListPositionStmt.get(exerciseHabit.name).list_position).toBe(0);
+  expect(getListPositionStmt.get(readHabit.name).list_position).toBe(1);
+  expect(getListPositionStmt.get(sleepHabit.name).list_position).toBe(2);
 });
 
 test('when adding a habit, a visible, but incomplete occurrence is created for that habit on the date that was passed into the addHabit function', () => {

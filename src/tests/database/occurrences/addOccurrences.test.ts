@@ -13,7 +13,7 @@ beforeEach(() => {
   const addDayStmt = db.prepare('INSERT INTO days (date) VALUES (?)');
   dayId = Number(addDayStmt.run('2023-01-17').lastInsertRowid);
   // can't use addHabit as that function automatically creates an occurrence
-  const addOnlyHabitStmt = db.prepare('INSERT INTO habits (name, order_in_list) VALUES (?, ?)');
+  const addOnlyHabitStmt = db.prepare('INSERT INTO habits (name, list_position) VALUES (?, ?)');
   exerciseHabitId = Number(addOnlyHabitStmt.run('exercise', 0).lastInsertRowid);
   readHabitId = Number(addOnlyHabitStmt.run('read', 1).lastInsertRowid);
   sleepHabitId = Number(addOnlyHabitStmt.run('sleep', 2).lastInsertRowid);

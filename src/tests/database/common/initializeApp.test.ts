@@ -90,10 +90,10 @@ describe('if the date passed into the function doesn\'t already have a correspon
     const initializeAppResult = initializeApp(db, '2023-01-21');
     expect(initializeAppResult).toEqual({
       habits: [
-        { id: 1, name: 'exercise', orderInList: 0 },
-        { id: 2, name: 'read', orderInList: 1 },
-        { id: 3, name: 'sleep', orderInList: 2 },
-        { id: 4, name: 'code', orderInList: 3 },
+        { id: 1, name: 'exercise' },
+        { id: 2, name: 'read' },
+        { id: 3, name: 'sleep' },
+        { id: 4, name: 'code' },
       ],
       occurrencesGroupedByDate: {
         '2023-01-20': {
@@ -128,10 +128,10 @@ describe('if the date passed into the function already has a corresponding day e
     const initializeAppResult = initializeApp(db, '2023-01-20');
     expect(initializeAppResult).toEqual({
       habits: [
-        { id: 1, name: 'exercise', orderInList: 0 },
-        { id: 2, name: 'read', orderInList: 1 },
-        { id: 3, name: 'sleep', orderInList: 2 },
-        { id: 4, name: 'code', orderInList: 3 },
+        { id: 1, name: 'exercise' },
+        { id: 2, name: 'read' },
+        { id: 3, name: 'sleep' },
+        { id: 4, name: 'code' },
       ],
       occurrencesGroupedByDate: {
         '2023-01-20': {
