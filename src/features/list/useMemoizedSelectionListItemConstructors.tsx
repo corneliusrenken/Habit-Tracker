@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
-import { Habit, OccurrenceData } from '../../globalTypes';
+import { Habit, ModalContentGenerator, OccurrenceData } from '../../globalTypes';
+import openDeleteHabitModal from '../deleteHabitModal/openDeleteHabitModal';
 import { ElementConstructor } from './ReorderableList';
 import SelectionListItem from './SelectionListItem';
 
@@ -16,6 +17,7 @@ type States = {
   deleteHabit: (habitId: number) => void;
   renameHabit: (habitId: number, name: string) => void;
   updateHabitVisibility: (habitId: number, visible: boolean) => void;
+  setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
 };
 
 export default function useMemoizedSelectionListItemConstructors(states: States) {
@@ -33,6 +35,7 @@ export default function useMemoizedSelectionListItemConstructors(states: States)
       deleteHabit,
       renameHabit,
       updateHabitVisibility,
+      setModalContentGenerator,
     } = states;
 
     return habits.map(({ id, name }, index) => ({
@@ -52,7 +55,12 @@ export default function useMemoizedSelectionListItemConstructors(states: States)
             selected={selectedIndex === index}
             select={reorderingList || inInput ? undefined : () => setSelectedIndex(index)}
             toggleVisibility={() => updateHabitVisibility(id, !visible)}
-            deleteHabit={() => deleteHabit(id)}
+            openDeleteHabitModal={() => openDeleteHabitModal(id, {
+              deleteHabit,
+              habits,
+              selectedIndex,
+              setModalContentGenerator,
+            })}
             renameHabit={(newName: string) => {
               renameHabit(id, newName);
             }}

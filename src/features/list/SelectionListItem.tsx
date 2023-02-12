@@ -11,7 +11,7 @@ type Props = {
   selected: boolean;
   select: undefined | (() => void);
   toggleVisibility: () => void;
-  deleteHabit: () => void;
+  openDeleteHabitModal: () => void;
   renameHabit: (newName: string) => void;
   inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
@@ -26,7 +26,7 @@ export default function SelectionListItem({
   selected,
   select,
   toggleVisibility,
-  deleteHabit,
+  openDeleteHabitModal,
   renameHabit,
   inInput,
   setInInput,
@@ -107,7 +107,7 @@ export default function SelectionListItem({
         <Icon
           icon="trash"
           allowTabTraversal={allowTabTraversal}
-          onClick={deleteHabit}
+          onClick={openDeleteHabitModal}
           hidden={!selected}
         />
         <Icon

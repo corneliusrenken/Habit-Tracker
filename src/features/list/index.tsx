@@ -2,6 +2,7 @@ import React from 'react';
 import {
   Habit,
   ListView,
+  ModalContentGenerator,
   OccurrenceData,
   Streaks,
   ViewType,
@@ -28,6 +29,7 @@ type Props = {
   updateHabitCompleted: (habitId: number, completed: boolean) => void;
   updateHabitOrder: (habitId: number, newOrder: number) => void;
   updateHabitVisibility: (habitId: number, visible: boolean) => void;
+  setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
 };
 
 export default function List({
@@ -49,6 +51,7 @@ export default function List({
   updateHabitCompleted,
   updateHabitOrder,
   updateHabitVisibility,
+  setModalContentGenerator,
 }: Props) {
   return (
     <div className="list" style={{ opacity: viewType === 'list' ? 1 : 0 }}>
@@ -63,6 +66,7 @@ export default function List({
         />
       ) : (
         <SelectionList
+          setModalContentGenerator={setModalContentGenerator}
           allowTabTraversal={allowTabTraversal}
           habits={selectedHabits}
           todaysOccurrences={todaysOccurrences}

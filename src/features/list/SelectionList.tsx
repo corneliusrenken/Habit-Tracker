@@ -1,5 +1,5 @@
 import React from 'react';
-import { Habit, OccurrenceData } from '../../globalTypes';
+import { Habit, ModalContentGenerator, OccurrenceData } from '../../globalTypes';
 import AddHabitForm from './AddHabitForm';
 import ReorderableList from './ReorderableList';
 import useMemoizedSelectionListItemConstructors from './useMemoizedSelectionListItemConstructors';
@@ -19,6 +19,7 @@ type Props = {
   renameHabit: (habitId: number, name: string) => void;
   updateHabitOrder: (habitId: number, newOrder: number) => void;
   updateHabitVisibility: (habitId: number, visible: boolean) => void;
+  setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
 };
 
 export default function SelectionList({
@@ -36,6 +37,7 @@ export default function SelectionList({
   renameHabit,
   updateHabitOrder,
   updateHabitVisibility,
+  setModalContentGenerator,
 }: Props) {
   const elementConstructors = useMemoizedSelectionListItemConstructors({
     allowTabTraversal,
@@ -50,6 +52,7 @@ export default function SelectionList({
     deleteHabit,
     renameHabit,
     updateHabitVisibility,
+    setModalContentGenerator,
   });
 
   return (

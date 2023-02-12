@@ -40,6 +40,7 @@ type States = {
   updateHabitCompleted: (habitId: number, completed: boolean) => void;
   updateHabitOrder: (habitId: number, newOrder: number) => void;
   updateHabitVisibility: (habitId: number, visible: boolean) => void;
+  setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
 };
 
 export default function useMemoizedComponents(states: States) {
@@ -66,6 +67,7 @@ export default function useMemoizedComponents(states: States) {
     updateHabitCompleted,
     updateHabitOrder,
     updateHabitVisibility,
+    setModalContentGenerator,
   } = states;
 
   const viewType = viewToViewType[view.name];
@@ -116,6 +118,7 @@ export default function useMemoizedComponents(states: States) {
           updateHabitCompleted={updateHabitCompleted}
           updateHabitOrder={updateHabitOrder}
           updateHabitVisibility={updateHabitVisibility}
+          setModalContentGenerator={setModalContentGenerator}
         />
       )
       : <div />
@@ -139,6 +142,7 @@ export default function useMemoizedComponents(states: States) {
     updateHabitCompleted,
     updateHabitOrder,
     updateHabitVisibility,
+    setModalContentGenerator,
   ]);
 
   return {

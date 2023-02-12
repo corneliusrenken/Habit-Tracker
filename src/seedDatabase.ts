@@ -5,7 +5,7 @@ import {
   addHabit,
   addOccurrences,
   updateOccurrence,
-} from './database/queries';
+} from './database';
 
 function dateToString(dateObj: Date) {
   const year = dateObj.getFullYear();
@@ -17,16 +17,10 @@ function dateToString(dateObj: Date) {
 /**
  * @param dateString "YYYY-MM-DD"
  */
-function stringToDate(dateString: string) {
-  const dateObj = new Date();
-  dateObj.setTime(0);
-  const year = Number(dateString.slice(0, 4));
-  const month = Number(dateString.slice(5, 7));
-  const date = Number(dateString.slice(8));
-  dateObj.setFullYear(year);
-  dateObj.setMonth(month - 1);
-  dateObj.setDate(date);
-  return dateObj;
+export function stringToDate(dateString: string): Date {
+  const [year, month, day] = dateString.split('-').map(Number);
+  const date = new Date(year, month - 1, day, 0, 0, 0, 0);
+  return date;
 }
 
 type Options = {

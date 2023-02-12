@@ -12,7 +12,12 @@ type Props = {
 };
 
 export default function AddHabitForm({
-  allowTabTraversal, habits, selectedIndex, setSelectedIndex, addHabit, setInInput,
+  allowTabTraversal,
+  habits,
+  selectedIndex,
+  setSelectedIndex,
+  addHabit,
+  setInInput,
 }: Props) {
   const [habitInput, setHabitInput] = useState('');
   const habitInputRef = useRef<HTMLInputElement>(null);

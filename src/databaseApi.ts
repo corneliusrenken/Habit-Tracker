@@ -14,7 +14,7 @@ import {
   addOccurrences,
   deleteOccurrence,
   updateOccurrence,
-} from './database/queries';
+} from './database';
 
 // https://stackoverflow.com/a/67605309
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
