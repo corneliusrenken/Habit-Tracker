@@ -27,20 +27,13 @@ export default function updateHabitVisibility(
 
   const todaysOccurrences = { ...occurrenceData.dates[todayDateString] };
 
-  console.log(todaysOccurrences);
-  console.log(visible);
-
   if (visible && todaysOccurrences[habitId] === undefined) {
-    console.log(1);
     window.electron['add-occurrence'](habitId, todayDateString);
   } else if (visible) {
-    console.log(2);
     window.electron['update-occurrence'](habitId, todayDateString, { visible: true });
   } else if (todaysOccurrences[habitId].complete) {
-    console.log(3);
     window.electron['update-occurrence'](habitId, todayDateString, { visible: false });
   } else {
-    console.log(4);
     window.electron['delete-occurrence'](habitId, todayDateString);
   }
   updateHabitVisibilityStateQuery(habitId, visible, todayDateString, states);
