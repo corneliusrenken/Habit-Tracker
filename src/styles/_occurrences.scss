@@ -9,7 +9,7 @@
   width: 350px;
 
   &-occurrence {
-    @include fonts.cursive;
+    @include fonts.numbers;
 
     width: 50px;
     text-align: center;
@@ -21,7 +21,6 @@
     color: theme.$foreground;
 
     &.complete {
-      @include fonts.cursive-secondary;
       color: theme.$secondary;
     }
 

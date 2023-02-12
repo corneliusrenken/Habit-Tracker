@@ -10,7 +10,7 @@
   transition: opacity 600ms;
 
   &-day {
-    @include fonts.cursive-secondary;
+    @include fonts.text;
     font-style: normal;
 
     width: 50px;

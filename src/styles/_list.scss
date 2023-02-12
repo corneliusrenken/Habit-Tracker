@@ -13,7 +13,7 @@
   }
 
   input {
-    @include fonts.cursive-secondary;
+    @include fonts.text;
 
     margin-left: calc(var(--left-margin, 0px) - 8px);
     margin-right: calc(var(--right-margin, 0px) - 8px);
@@ -72,7 +72,7 @@
   }
 
   &-name {
-    @include fonts.cursive-secondary;
+    @include fonts.text;
 
     margin-left: var(--left-margin, 0px);
     max-width: calc(350px - var(--left-margin, 0px) - var(--right-margin, 0px));
@@ -92,14 +92,13 @@
   }
 
   &-streak {
-    @include fonts.cursive;
+    @include fonts.numbers;
 
     margin: 0 var(--right-margin, 0px);
     color: theme.$foreground;
 
     .complete & {
       color: theme.$secondary;
-      @include fonts.cursive-secondary;
     }
   }
 

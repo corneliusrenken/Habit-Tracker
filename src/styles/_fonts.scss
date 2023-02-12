@@ -1,27 +1,15 @@
-@mixin cursive {
-  font-family: 'Averia Libre', cursive;
-  font-size: 17px;
-  // 400 - 700
+@mixin numbers {
+  // font is not centered otherwise
+  padding-top: 4px;
+  font-family: 'Dongle', sans-serif;
+  font-size: 24px;
   font-weight: 700;
-  font-style: italic;
 }
 
-@mixin cursive-secondary {
-  font-family: 'Averia Libre', cursive;
-  font-size: 17px;
-  // 400 - 700
+@mixin text {
+  font-family: 'Inter var', sans-serif;
+  font-size: 15px;
   font-weight: 400;
-  font-style: italic;
+  -webkit-font-feature-settings: "ss01","cv05","cv07","cv08";
+          font-feature-settings: "ss01","cv05","cv07","cv08";
 }
-
-// old inter settings: (decide later if you want to use it)
-
-// @mixin regular {
-//   // font-family: 'Inter', sans-serif;
-//   font-family: 'Inter', fantasy;
-//   font-size: 15px;
-//   font-weight: 100;
-//   font-style: normal;
-//   -webkit-font-feature-settings: "ss01","cv05","cv07","cv08";
-//           font-feature-settings: "ss01","cv05","cv07","cv08";
-// }
