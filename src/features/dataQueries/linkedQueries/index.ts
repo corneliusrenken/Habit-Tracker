@@ -2,7 +2,7 @@ import addHabit from './addHabit';
 import deleteHabit from './deleteHabit';
 import renameHabit from './renameHabit';
 import updateHabitCompleted from './updateHabitCompleted';
-import updateHabitOrder from './updateHabitOrder';
+import updateHabitListPosition from './updateHabitListPosition';
 import updateHabitVisibility from './updateHabitVisibility';
 
 export {
@@ -10,6 +10,6 @@ export {
   deleteHabit,
   renameHabit,
   updateHabitCompleted,
-  updateHabitOrder,
+  updateHabitListPosition,
   updateHabitVisibility,
 };

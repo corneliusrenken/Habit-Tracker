@@ -19,9 +19,7 @@ export default function deleteHabit(
       throw new Error('habit with this id doesn\'t exist');
     }
 
-    newHabits = prevHabits
-      .filter(({ id }) => id !== habitId)
-      .map((habit, index) => ({ ...habit, orderInList: index }));
+    newHabits = prevHabits.filter(({ id }) => id !== habitId);
     return newHabits;
   });
 

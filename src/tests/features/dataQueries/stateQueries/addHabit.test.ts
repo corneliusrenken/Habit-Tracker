@@ -8,9 +8,9 @@ let occurrenceDataState: PseudoUseState<OccurrenceData | undefined>;
 
 beforeEach(() => {
   habitState = new PseudoUseState<Habit[] | undefined>([
-    { id: 1, name: 'exercise', orderInList: 0 },
-    { id: 2, name: 'read', orderInList: 1 },
-    { id: 3, name: 'sleep', orderInList: 2 },
+    { id: 1, name: 'exercise' },
+    { id: 2, name: 'read' },
+    { id: 3, name: 'sleep' },
   ]);
 
   streaksState = new PseudoUseState<Streaks | undefined>({
@@ -46,10 +46,10 @@ test('adds new habit to habit state, using the given name and id', () => {
   });
 
   expect(habitState.value).toEqual([
-    { id: 1, name: 'exercise', orderInList: 0 },
-    { id: 2, name: 'read', orderInList: 1 },
-    { id: 3, name: 'sleep', orderInList: 2 },
-    { id: 4, name: 'one', orderInList: 3 },
+    { id: 1, name: 'exercise' },
+    { id: 2, name: 'read' },
+    { id: 3, name: 'sleep' },
+    { id: 4, name: 'one' },
   ]);
 
   addHabit('two', 100, '2023-02-10', {
@@ -62,11 +62,11 @@ test('adds new habit to habit state, using the given name and id', () => {
   });
 
   expect(habitState.value).toEqual([
-    { id: 1, name: 'exercise', orderInList: 0 },
-    { id: 2, name: 'read', orderInList: 1 },
-    { id: 3, name: 'sleep', orderInList: 2 },
-    { id: 4, name: 'one', orderInList: 3 },
-    { id: 100, name: 'two', orderInList: 4 },
+    { id: 1, name: 'exercise' },
+    { id: 2, name: 'read' },
+    { id: 3, name: 'sleep' },
+    { id: 4, name: 'one' },
+    { id: 100, name: 'two' },
   ]);
 });
 

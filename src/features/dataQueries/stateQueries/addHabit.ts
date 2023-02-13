@@ -22,7 +22,6 @@ export default function addHabit(
   const newHabit: Habit = {
     id,
     name,
-    orderInList: habits.length,
   };
 
   const newHabits: Habit[] = [

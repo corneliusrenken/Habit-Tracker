@@ -4,7 +4,7 @@ import {
   deleteHabit,
   renameHabit,
   updateHabitCompleted,
-  updateHabitOrder,
+  updateHabitListPosition,
   updateHabitVisibility,
 } from './linkedQueries';
 import {
@@ -95,8 +95,8 @@ export default function useDataQueries(states: States) {
     streaks,
   ]);
 
-  const updateHabitOrderMemo = useCallback((habitId: number, newOrder: number) => (
-    updateHabitOrder(habitId, newOrder, { habits, setHabits, setSelectedIndex })
+  const updateHabitListPositionMemo = useCallback((habitId: number, newListPosition: number) => (
+    updateHabitListPosition(habitId, newListPosition, { habits, setHabits, setSelectedIndex })
   ), [
     habits,
     setHabits,
@@ -123,7 +123,7 @@ export default function useDataQueries(states: States) {
     deleteHabit: deleteHabitMemo,
     renameHabit: renameHabitMemo,
     updateHabitCompleted: updateHabitCompletedMemo,
-    updateHabitOrder: updateHabitOrderMemo,
+    updateHabitListPosition: updateHabitListPositionMemo,
     updateHabitVisibility: updateHabitVisibilityMemo,
   };
 }
