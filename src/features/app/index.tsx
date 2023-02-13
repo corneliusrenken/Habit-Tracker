@@ -1,6 +1,9 @@
 import React, {
   useCallback,
-  useEffect, useMemo, useRef, useState,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
 } from 'react';
 import getDateObject from '../common/getDateObject';
 import getTextWidthInPx from './getTextWidthInPx';
