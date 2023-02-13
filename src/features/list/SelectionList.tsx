@@ -17,7 +17,7 @@ type Props = {
   addHabit: (name: string) => Promise<void>;
   deleteHabit: (habitId: number) => void;
   renameHabit: (habitId: number, name: string) => void;
-  updateHabitOrder: (habitId: number, newOrder: number) => void;
+  updateHabitListPosition: (habitId: number, newListPosition: number) => void;
   updateHabitVisibility: (habitId: number, visible: boolean) => void;
   setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
 };
@@ -35,7 +35,7 @@ export default function SelectionList({
   addHabit,
   deleteHabit,
   renameHabit,
-  updateHabitOrder,
+  updateHabitListPosition,
   updateHabitVisibility,
   setModalContentGenerator,
 }: Props) {
@@ -62,7 +62,7 @@ export default function SelectionList({
         height={50}
         width={350}
         onIndexChange={(newIndicesById, changedId) => {
-          updateHabitOrder(changedId, newIndicesById[changedId]);
+          updateHabitListPosition(changedId, newIndicesById[changedId]);
           setReorderingList(false);
         }}
         clampMovement

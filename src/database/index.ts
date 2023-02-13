@@ -1,8 +1,8 @@
 import createTables from './common/createTables';
-import dropUniqueOrderInListIndex from './common/dropUniqueOrderInListIndex';
+import dropUniqueIndexOnListPosition from './common/dropUniqueIndexOnListPosition';
 import initializeApp from './common/initializeApp';
 import openDatabase from './common/openDatabase';
-import setUniqueOrderInListIndex from './common/setUniqueOrderInListIndex';
+import setUniqueIndexOnListPosition from './common/setUniqueIndexOnListPosition';
 import addDay from './days/addDay';
 import addHabit from './habits/addHabit';
 import deleteHabit from './habits/deleteHabit';
@@ -17,10 +17,10 @@ import updateOccurrence from './occurrences/updateOccurrence';
 
 export {
   createTables,
-  dropUniqueOrderInListIndex,
+  dropUniqueIndexOnListPosition,
   initializeApp,
   openDatabase,
-  setUniqueOrderInListIndex,
+  setUniqueIndexOnListPosition,
   addDay,
   addHabit,
   deleteHabit,

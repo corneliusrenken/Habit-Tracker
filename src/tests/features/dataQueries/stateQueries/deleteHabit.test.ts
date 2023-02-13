@@ -7,9 +7,9 @@ let selectedIndexState: PseudoUseState<number | null>;
 
 beforeEach(() => {
   habitState = new PseudoUseState<Habit[] | undefined>([
-    { id: 1, name: 'exercise', orderInList: 0 },
-    { id: 2, name: 'read', orderInList: 1 },
-    { id: 3, name: 'sleep', orderInList: 2 },
+    { id: 1, name: 'exercise' },
+    { id: 2, name: 'read' },
+    { id: 3, name: 'sleep' },
   ]);
 
   selectedIndexState = new PseudoUseState<number | null>(0);
@@ -24,15 +24,15 @@ test('throws an error if the habit id does not exist', () => {
   }).toThrowError('habit with this id doesn\'t exist');
 });
 
-test('deletes habit from habit state using the given id, and shifts the orderInList to fill any gaps', () => {
+test('deletes habit from habit state using the given id, keeping the order of the other habits the same', () => {
   deleteHabit(2, {
     setSelectedIndex: selectedIndexState.setState.bind(selectedIndexState),
     setHabits: habitState.setState.bind(habitState),
   });
 
   expect(habitState.value).toEqual([
-    { id: 1, name: 'exercise', orderInList: 0 },
-    { id: 3, name: 'sleep', orderInList: 1 },
+    { id: 1, name: 'exercise' },
+    { id: 3, name: 'sleep' },
   ]);
 
   deleteHabit(1, {
@@ -41,7 +41,7 @@ test('deletes habit from habit state using the given id, and shifts the orderInL
   });
 
   expect(habitState.value).toEqual([
-    { id: 3, name: 'sleep', orderInList: 0 },
+    { id: 3, name: 'sleep' },
   ]);
 
   deleteHabit(3, {

@@ -38,7 +38,7 @@ type States = {
   deleteHabit: (habitId: number) => void;
   renameHabit: (habitId: number, name: string) => void;
   updateHabitCompleted: (habitId: number, completed: boolean) => void;
-  updateHabitOrder: (habitId: number, newOrder: number) => void;
+  updateHabitListPosition: (habitId: number, newListPosition: number) => void;
   updateHabitVisibility: (habitId: number, visible: boolean) => void;
   setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
 };
@@ -65,7 +65,7 @@ export default function useMemoizedComponents(states: States) {
     deleteHabit,
     renameHabit,
     updateHabitCompleted,
-    updateHabitOrder,
+    updateHabitListPosition,
     updateHabitVisibility,
     setModalContentGenerator,
   } = states;
@@ -116,7 +116,7 @@ export default function useMemoizedComponents(states: States) {
           deleteHabit={deleteHabit}
           renameHabit={renameHabit}
           updateHabitCompleted={updateHabitCompleted}
-          updateHabitOrder={updateHabitOrder}
+          updateHabitListPosition={updateHabitListPosition}
           updateHabitVisibility={updateHabitVisibility}
           setModalContentGenerator={setModalContentGenerator}
         />
@@ -140,7 +140,7 @@ export default function useMemoizedComponents(states: States) {
     deleteHabit,
     renameHabit,
     updateHabitCompleted,
-    updateHabitOrder,
+    updateHabitListPosition,
     updateHabitVisibility,
     setModalContentGenerator,
   ]);

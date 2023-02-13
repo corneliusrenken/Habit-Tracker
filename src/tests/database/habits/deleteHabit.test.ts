@@ -1,4 +1,4 @@
-import Database, { Statement } from 'better-sqlite3';
+import Database from 'better-sqlite3';
 import {
   addHabit,
   createTables,
@@ -41,38 +41,38 @@ test('occurrences referencing the deleted habit should now reference null', () =
   expect(occurrenceHabitIdAfterDelete).toBe(null);
 });
 
-describe('habit\'s order in list values stay in an uninterrupted range from 0 -> habits length - 1 after a habit deletion, shifting down to close gaps', () => {
+describe('habit\'s list position values stay in an uninterrupted range from 0 -> habits length - 1 after a habit deletion, shifting down to close gaps', () => {
   let readHabitId: number;
   let sleepHabitId: number;
-  let getHabitOrderInListByIdStmt: Statement<any[]>; // eslint-disable-line @typescript-eslint/no-explicit-any, max-len
+  let getHabitListPositionByIdStmt: Database.Statement;
 
   beforeEach(() => {
     readHabitId = addHabit(db, 'read', '2023-01-17').id;
     sleepHabitId = addHabit(db, 'sleep', '2023-01-17').id;
-    getHabitOrderInListByIdStmt = db.prepare('SELECT order_in_list FROM habits WHERE id = ?');
+    getHabitListPositionByIdStmt = db.prepare('SELECT list_position FROM habits WHERE id = ?');
   });
 
-  test('habit with the minimum order in list is deleted', () => {
+  test('habit with the minimum list position is deleted', () => {
     deleteHabit(db, exerciseHabitId);
-    const readOrderInList = getHabitOrderInListByIdStmt.get(readHabitId).order_in_list;
-    expect(readOrderInList).toBe(0);
-    const sleepOrderInList = getHabitOrderInListByIdStmt.get(sleepHabitId).order_in_list;
-    expect(sleepOrderInList).toBe(1);
+    const readListPosition = getHabitListPositionByIdStmt.get(readHabitId).list_position;
+    expect(readListPosition).toBe(0);
+    const sleepListPosition = getHabitListPositionByIdStmt.get(sleepHabitId).list_position;
+    expect(sleepListPosition).toBe(1);
   });
 
-  test('habit with an order in list in between max and min is deleted', () => {
+  test('habit with an list position in between max and min is deleted', () => {
     deleteHabit(db, readHabitId);
-    const exerciseOrderInList = getHabitOrderInListByIdStmt.get(exerciseHabitId).order_in_list;
-    expect(exerciseOrderInList).toBe(0);
-    const sleepOrderInList = getHabitOrderInListByIdStmt.get(sleepHabitId).order_in_list;
-    expect(sleepOrderInList).toBe(1);
+    const exerciseListPosition = getHabitListPositionByIdStmt.get(exerciseHabitId).list_position;
+    expect(exerciseListPosition).toBe(0);
+    const sleepListPosition = getHabitListPositionByIdStmt.get(sleepHabitId).list_position;
+    expect(sleepListPosition).toBe(1);
   });
 
-  test('habit with the maximum order in list is deleted', () => {
+  test('habit with the maximum list position is deleted', () => {
     deleteHabit(db, sleepHabitId);
-    const exerciseOrderInList = getHabitOrderInListByIdStmt.get(exerciseHabitId).order_in_list;
-    expect(exerciseOrderInList).toBe(0);
-    const readOrderInList = getHabitOrderInListByIdStmt.get(readHabitId).order_in_list;
-    expect(readOrderInList).toBe(1);
+    const exerciseListPosition = getHabitListPositionByIdStmt.get(exerciseHabitId).list_position;
+    expect(exerciseListPosition).toBe(0);
+    const readListPosition = getHabitListPositionByIdStmt.get(readHabitId).list_position;
+    expect(readListPosition).toBe(1);
   });
 });

@@ -94,7 +94,7 @@ export default function App() {
     deleteHabit,
     renameHabit,
     updateHabitCompleted,
-    updateHabitOrder,
+    updateHabitListPosition,
     updateHabitVisibility,
   } = useDataQueries({
     dateObject,
@@ -130,7 +130,7 @@ export default function App() {
     deleteHabit,
     renameHabit,
     updateHabitCompleted,
-    updateHabitOrder,
+    updateHabitListPosition,
     updateHabitVisibility,
     setModalContentGenerator,
   });

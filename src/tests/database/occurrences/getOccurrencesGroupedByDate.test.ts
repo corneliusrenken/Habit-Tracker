@@ -17,7 +17,7 @@ beforeEach(() => {
   db = openDatabase(':memory:');
   createTables(db);
   // can't use addHabit here as that automatically creates an occurrence for the day
-  const addOnlyHabitStmt = db.prepare('INSERT INTO habits (name, order_in_list) VALUES (?, ?)');
+  const addOnlyHabitStmt = db.prepare('INSERT INTO habits (name, list_position) VALUES (?, ?)');
   exerciseHabitId = Number(addOnlyHabitStmt.run('exercise', 0).lastInsertRowid);
   readHabitId = Number(addOnlyHabitStmt.run('read', 1).lastInsertRowid);
   addDay(db, '2023-01-17');

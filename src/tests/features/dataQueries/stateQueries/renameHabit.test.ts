@@ -6,9 +6,9 @@ let habitState: PseudoUseState<Habit[] | undefined>;
 
 beforeEach(() => {
   habitState = new PseudoUseState<Habit[] | undefined>([
-    { id: 1, name: 'exercise', orderInList: 0 },
-    { id: 2, name: 'read', orderInList: 1 },
-    { id: 3, name: 'sleep', orderInList: 2 },
+    { id: 1, name: 'exercise' },
+    { id: 2, name: 'read' },
+    { id: 3, name: 'sleep' },
   ]);
 });
 
@@ -26,8 +26,8 @@ test('renames habit', () => {
   });
 
   expect(habitState.value).toEqual([
-    { id: 1, name: 'new name', orderInList: 0 },
-    { id: 2, name: 'read', orderInList: 1 },
-    { id: 3, name: 'sleep', orderInList: 2 },
+    { id: 1, name: 'new name' },
+    { id: 2, name: 'read' },
+    { id: 3, name: 'sleep' },
   ]);
 });

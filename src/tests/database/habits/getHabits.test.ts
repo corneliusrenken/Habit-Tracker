@@ -2,12 +2,12 @@ import Database from 'better-sqlite3';
 import {
   addHabit,
   createTables,
-  dropUniqueOrderInListIndex,
+  dropUniqueIndexOnListPosition,
   getHabits,
   openDatabase,
-  setUniqueOrderInListIndex,
+  setUniqueIndexOnListPosition,
 } from '../../../database';
-import { verifyOrderInListValues } from '../helperFunctions';
+import checkValidListPositionValues from '../helperFunctions/checkValidListPositionValues';
 
 let db: Database.Database;
 
@@ -28,7 +28,7 @@ test('returns an empty array if no  habits exist', () => {
   expect(habits.length).toBe(0);
 });
 
-test('returns an array of objects, each containing the habit\'s id, name, and orderInList', () => {
+test('returns an array of objects, each containing the habit\'s id and name', () => {
   addHabit(db, 'exercise', '2023-01-17');
   addHabit(db, 'read', '2023-01-17');
   addHabit(db, 'sleep', '2023-01-17');
@@ -36,31 +36,30 @@ test('returns an array of objects, each containing the habit\'s id, name, and or
   habits.forEach((habit) => {
     expect(habit).toHaveProperty('id');
     expect(habit).toHaveProperty('name');
-    expect(habit).toHaveProperty('orderInList');
   });
 });
 
-test('returns habits in ascending \'orderInList\' order', () => {
+test('returns habits in ascending list position order', () => {
   addHabit(db, 'exercise', '2023-01-17');
   addHabit(db, 'read', '2023-01-17');
   addHabit(db, 'sleep', '2023-01-17');
 
-  verifyOrderInListValues(db);
+  expect(checkValidListPositionValues(db, ['exercise', 'read', 'sleep'])).toBe(true);
 
-  const manuallyChangeOrderInList = db.prepare(`
+  const manuallyChangeListPosition = db.prepare(`
     UPDATE habits
-    SET order_in_list = ?
+    SET list_position = ?
     WHERE name = ?
   `);
 
-  const shuffleOrderIndices = db.transaction(() => {
-    dropUniqueOrderInListIndex(db);
-    manuallyChangeOrderInList.run(2, 'exercise');
-    manuallyChangeOrderInList.run(0, 'sleep');
-    setUniqueOrderInListIndex(db);
+  const shuffleListPositions = db.transaction(() => {
+    dropUniqueIndexOnListPosition(db);
+    manuallyChangeListPosition.run(2, 'exercise');
+    manuallyChangeListPosition.run(0, 'sleep');
+    setUniqueIndexOnListPosition(db);
   });
 
-  shuffleOrderIndices();
+  shuffleListPositions();
 
-  verifyOrderInListValues(db);
+  expect(checkValidListPositionValues(db, ['sleep', 'read', 'exercise'])).toBe(true);
 });
