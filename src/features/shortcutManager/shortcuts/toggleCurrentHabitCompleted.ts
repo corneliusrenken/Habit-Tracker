@@ -1,7 +1,13 @@
-import { DayObject, Habit, OccurrenceData } from '../../../globalTypes';
+import {
+  DateObject,
+  Habit,
+  ListView,
+  OccurrenceData,
+} from '../../../globalTypes';
 
 type States = {
-  dayObject: DayObject;
+  dateObject: DateObject;
+  latchedListView: ListView;
   selectedHabits: Habit[];
   selectedIndex: number | null;
   occurrenceData: OccurrenceData | undefined;
@@ -10,7 +16,8 @@ type States = {
 
 export default function toggleCurrentHabitCompleted(states: States) {
   const {
-    dayObject,
+    dateObject,
+    latchedListView,
     selectedHabits,
     selectedIndex,
     occurrenceData,
@@ -22,6 +29,10 @@ export default function toggleCurrentHabitCompleted(states: States) {
   const selectedHabit = selectedHabits.find((habit, index) => index === selectedIndex);
   if (!selectedHabit) throw new Error('no habit found at selected index');
   // eslint-disable-next-line max-len
-  const currentCompletedState = occurrenceData.dates[dayObject.dateString][selectedHabit.id].complete;
+  const todaysOccurrences = latchedListView.name === 'yesterday'
+    ? occurrenceData.dates[dateObject.yesterday.dateString]
+    : occurrenceData.dates[dateObject.today.dateString];
+  // if the selected habit is visible (checked above) it must be present in today's occurrences
+  const currentCompletedState = todaysOccurrences[selectedHabit.id].complete;
   updateHabitCompleted(selectedHabit.id, !currentCompletedState);
 }

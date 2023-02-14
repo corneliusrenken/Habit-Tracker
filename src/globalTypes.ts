@@ -63,16 +63,16 @@ export const viewToViewType: { [key in View['name']]: ViewType } = {
   focus: 'occurrence',
 };
 
-export type DayObject = {
+type DayObject = {
   dateString: string,
   weekDayIndex: number,
   weekDateStrings: string[],
-  weekDays: string[],
 };
 
 export type DateObject = {
   today: DayObject,
   yesterday: DayObject,
+  weekDays: string[],
 };
 
 export type ModalContentGenerator = (allowTabTraversal: boolean) => JSX.Element;

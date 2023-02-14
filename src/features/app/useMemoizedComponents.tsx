@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import {
-  DayObject,
   SelectedOccurrence,
   View,
   Streaks,
@@ -22,7 +21,6 @@ type States = {
   latchedListView: ListView;
   latchedOccurrenceView: OccurrenceView;
   dateObject: DateObject;
-  dayObject: DayObject;
   selectedHabits: Habit[];
   selectedOccurrences: SelectedOccurrence[];
   selectedStreaks: Streaks;
@@ -49,7 +47,6 @@ export default function useMemoizedComponents(states: States) {
     latchedListView,
     latchedOccurrenceView,
     dateObject,
-    dayObject,
     selectedHabits,
     selectedOccurrences,
     selectedStreaks,
@@ -83,10 +80,10 @@ export default function useMemoizedComponents(states: States) {
   const days = useMemo(() => (
     <Days
       viewType={viewType}
-      weekDays={dayObject.weekDays}
+      weekDays={dateObject.weekDays}
       selectedOccurrences={selectedOccurrences}
     />
-  ), [viewType, dayObject.weekDays, selectedOccurrences]);
+  ), [viewType, dateObject.weekDays, selectedOccurrences]);
 
   const dates = useMemo(() => (
     <Dates
@@ -104,7 +101,10 @@ export default function useMemoizedComponents(states: States) {
           allowTabTraversal={modalContentGenerator === undefined}
           selectedHabits={selectedHabits}
           streaks={selectedStreaks}
-          todaysOccurrences={occurrenceData.dates[dayObject.dateString]}
+          todaysOccurrences={(latchedListView.name === 'yesterday'
+            ? occurrenceData.dates[dateObject.yesterday.dateString]
+            : occurrenceData.dates[dateObject.today.dateString]
+          )}
           latchedListView={latchedListView}
           selectedIndex={selectedIndex}
           setSelectedIndex={setSelectedIndex}
@@ -123,10 +123,10 @@ export default function useMemoizedComponents(states: States) {
       )
       : <div />
   ), [
+    dateObject,
     viewType,
     modalContentGenerator,
     selectedStreaks,
-    dayObject.dateString,
     latchedListView,
     occurrenceData,
     selectedHabits,

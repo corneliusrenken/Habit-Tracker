@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import {
-  DateObject, DayObject, Habit, ModalContentGenerator, OccurrenceData, View,
+  DateObject, Habit, ListView, ModalContentGenerator, OccurrenceData, View,
 } from '../../globalTypes';
 import noModifierKeysPressed from './noModifierKeysPressed';
 import {
@@ -17,7 +17,7 @@ import {
 
 type States = {
   dateObject: DateObject;
-  dayObject: DayObject;
+  latchedListView: ListView;
   habits: Habit[] | undefined;
   inInput: boolean;
   inTransition: boolean;
