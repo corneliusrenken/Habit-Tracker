@@ -10,7 +10,6 @@ import {
 import {
   Habit,
   DateObject,
-  DayObject,
   OccurrenceData,
   Streaks,
   ListView,
@@ -18,7 +17,6 @@ import {
 
 type States = {
   dateObject: DateObject;
-  dayObject: DayObject;
   latchedListView: ListView;
   habits: Habit[] | undefined;
   setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
@@ -32,7 +30,6 @@ type States = {
 export default function useDataQueries(states: States) {
   const {
     dateObject,
-    dayObject,
     latchedListView,
     habits,
     setHabits,
@@ -79,15 +76,19 @@ export default function useDataQueries(states: States) {
     setHabits,
   ]);
 
-  const updateHabitCompletedMemo = useCallback((habitId: number, completed: boolean) => (
-    updateHabitCompleted(habitId, completed, dayObject.dateString, latchedListView.name === 'yesterday', {
+  const updateHabitCompletedMemo = useCallback((habitId: number, completed: boolean) => {
+    const dateString = latchedListView.name === 'yesterday'
+      ? dateObject.yesterday.dateString
+      : dateObject.today.dateString;
+
+    updateHabitCompleted(habitId, completed, dateString, latchedListView.name === 'yesterday', {
       streaks,
       setStreaks,
       occurrenceData,
       setOccurrenceData,
-    })
-  ), [
-    dayObject.dateString,
+    });
+  }, [
+    dateObject,
     latchedListView,
     occurrenceData,
     setOccurrenceData,

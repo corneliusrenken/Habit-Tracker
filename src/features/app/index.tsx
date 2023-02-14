@@ -1,12 +1,10 @@
 import React, {
   useCallback,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react';
 import getDateObject from '../common/getDateObject';
-import getTextWidthInPx from './getTextWidthInPx';
 import {
   Habit,
   ListView,
@@ -93,7 +91,6 @@ export default function App() {
     updateHabitVisibility,
   } = useDataQueries({
     dateObject,
-    dayObject,
     latchedListView,
     habits,
     setHabits,
