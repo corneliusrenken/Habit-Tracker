@@ -20,6 +20,8 @@ export default function Occurrences({
   const [firstTimeShowingOccurrences, setFirstTimeShowingOccurrences] = useState(true);
 
   useEffect(() => {
+    if (occurrenceContainerRef.current === null) return;
+
     if (firstTimeShowingOccurrences && viewType === 'occurrence') {
       setFirstTimeShowingOccurrences(false);
     } else if (firstTimeShowingOccurrences) {

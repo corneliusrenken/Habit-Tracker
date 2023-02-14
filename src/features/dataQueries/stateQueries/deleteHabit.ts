@@ -15,6 +15,8 @@ export default function deleteHabit(
   let newHabits: Habit[] = [];
 
   setHabits((prevHabits) => {
+    if (!prevHabits) throw new Error('previous state should not be undefined');
+
     if (prevHabits.find(({ id }) => id === habitId) === undefined) {
       throw new Error('habit with this id doesn\'t exist');
     }
@@ -24,5 +26,9 @@ export default function deleteHabit(
   });
 
   // will always be able to set selected index to non null value in selection view
-  setSelectedIndex((previousSelectedIndex) => Math.min(previousSelectedIndex, newHabits.length));
+  setSelectedIndex((previousSelectedIndex) => {
+    if (previousSelectedIndex === null) throw new Error('should never call deleteHabit when selected index is null');
+
+    return Math.min(previousSelectedIndex, newHabits.length);
+  });
 }

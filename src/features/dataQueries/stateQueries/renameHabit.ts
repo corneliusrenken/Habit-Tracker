@@ -11,12 +11,14 @@ export default function renameHabit(
 ) {
   const { setHabits } = states;
 
-  setHabits((oldHabits) => {
-    if (oldHabits.find(({ id }) => id === habitId) === undefined) {
+  setHabits((prevHabits) => {
+    if (!prevHabits) throw new Error('previous state should not be undefined');
+
+    if (prevHabits.find(({ id }) => id === habitId) === undefined) {
       throw new Error('habit with this id doesn\'t exist');
     }
 
-    return oldHabits.map((habit) => {
+    return prevHabits.map((habit) => {
       if (habit.id !== habitId) return habit;
       return {
         ...habit,
