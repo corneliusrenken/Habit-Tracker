@@ -128,7 +128,7 @@ export default function App() {
 
   useShortcutManager({
     dateObject,
-    dayObject,
+    latchedListView,
     habits,
     inInput,
     inTransition,
