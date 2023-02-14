@@ -23,6 +23,7 @@ import Modal from '../modal';
 import useShortcutManager from '../shortcutManager/useShortcutManager';
 import Layout from '../layout';
 import useDataQueries from '../dataQueries/useDataQueries';
+import useSetLeftAndRightDateMargins from './useSetLeftAndRightDateMargins';
 
 let initializedApp = false;
 
@@ -72,17 +73,6 @@ export default function App() {
     }
   }, [dateObject, setView]);
 
-  const dayObject = useMemo(() => (
-    latchedListView.name === 'yesterday' ? dateObject.yesterday : dateObject.today
-  ), [dateObject, latchedListView]);
-
-  useEffect(() => {
-    const firstDate = Number(dayObject.weekDateStrings[0].slice(-2));
-    const lastDate = Number(dayObject.weekDateStrings[6].slice(-2));
-    document.documentElement.style.setProperty('--left-margin', `${(50 - getTextWidthInPx(firstDate, 15)) / 2}px`);
-    document.documentElement.style.setProperty('--right-margin', `${(50 - getTextWidthInPx(lastDate, 15)) / 2}px`);
-  }, [dayObject]);
-
   const selectedData = useSelectedData({
     dateObject,
     habits,
@@ -91,6 +81,8 @@ export default function App() {
     latchedListView,
     view,
   });
+
+  useSetLeftAndRightDateMargins({ selectedOccurrences: selectedData.occurrences });
 
   const {
     addHabit,
