@@ -89,7 +89,7 @@ export default function App() {
     occurrenceData,
     streaks,
     latchedListView,
-    latchedOccurrenceView,
+    view,
   });
 
   const {
