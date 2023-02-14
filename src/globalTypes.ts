@@ -63,7 +63,7 @@ export const viewToViewType: { [key in View['name']]: ViewType } = {
   focus: 'occurrence',
 };
 
-export type DayObject = {
+type DayObject = {
   dateString: string,
   weekDayIndex: number,
   weekDateStrings: string[],
