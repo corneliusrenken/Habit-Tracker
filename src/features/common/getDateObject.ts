@@ -1,4 +1,4 @@
-import { DateObject, DayObject } from '../../globalTypes';
+import { DateObject } from '../../globalTypes';
 import getCustomDateString from './getCustomDateString';
 
 function rotateArray<ArrayType>(array: ArrayType[], rotationAmt: number): ArrayType[] {
@@ -30,13 +30,12 @@ function getWeekDays(sundayIndex: number): string[] {
   return rotateArray(weekDays, sundayIndex);
 }
 
-function getDayObject(sundayIndex: number, date: Date): DayObject {
+function getDayObject(sundayIndex: number, date: Date) {
   const weekDayIndex = getWeekDayIndex(sundayIndex, date);
   return {
     dateString: getCustomDateString(date),
     weekDayIndex,
     weekDateStrings: getWeekDateStrings(weekDayIndex, date),
-    weekDays: getWeekDays(sundayIndex),
   };
 }
 
@@ -49,5 +48,6 @@ export default function getDateObject(sundayIndex: number, date = new Date()): D
   return {
     today: getDayObject(sundayIndex, date),
     yesterday: getDayObject(sundayIndex, yesterday),
+    weekDays: getWeekDays(sundayIndex),
   };
 }

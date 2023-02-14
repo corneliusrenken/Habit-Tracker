@@ -22,7 +22,6 @@ type States = {
   latchedListView: ListView;
   latchedOccurrenceView: OccurrenceView;
   dateObject: DateObject;
-  dayObject: DayObject;
   selectedHabits: Habit[];
   selectedOccurrences: SelectedOccurrence[];
   selectedStreaks: Streaks;
@@ -49,7 +48,6 @@ export default function useMemoizedComponents(states: States) {
     latchedListView,
     latchedOccurrenceView,
     dateObject,
-    dayObject,
     selectedHabits,
     selectedOccurrences,
     selectedStreaks,
@@ -83,10 +81,10 @@ export default function useMemoizedComponents(states: States) {
   const days = useMemo(() => (
     <Days
       viewType={viewType}
-      weekDays={dayObject.weekDays}
+      weekDays={dateObject.weekDays}
       selectedOccurrences={selectedOccurrences}
     />
-  ), [viewType, dayObject.weekDays, selectedOccurrences]);
+  ), [viewType, dateObject.weekDays, selectedOccurrences]);
 
   const dates = useMemo(() => (
     <Dates

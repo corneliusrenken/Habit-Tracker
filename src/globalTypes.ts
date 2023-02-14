@@ -67,12 +67,12 @@ type DayObject = {
   dateString: string,
   weekDayIndex: number,
   weekDateStrings: string[],
-  weekDays: string[],
 };
 
 export type DateObject = {
   today: DayObject,
   yesterday: DayObject,
+  weekDays: string[],
 };
 
 export type ModalContentGenerator = (allowTabTraversal: boolean) => JSX.Element;
