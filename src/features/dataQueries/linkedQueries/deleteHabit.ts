@@ -4,6 +4,7 @@ import deleteHabitStateQuery from '../stateQueries/deleteHabit';
 type States = {
   setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
+  setInInput: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function deleteHabit(

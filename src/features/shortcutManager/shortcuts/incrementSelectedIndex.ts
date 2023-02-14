@@ -18,20 +18,24 @@ export default function incrementSelectedIndex(increment: 1 | -1, states: States
   setSelectedIndex((oldIndex) => {
     let newIndex: number | null;
 
-    if (increment === 1) {
-      if (oldIndex === null && (selectedHabits.length !== 0 || view.name === 'selection')) {
+    if (oldIndex === null) {
+      if (view.name === 'selection') {
         newIndex = 0;
       } else {
-        const maxIndex = view.name === 'selection' ? selectedHabits.length : selectedHabits.length - 1;
-        newIndex = oldIndex === null ? null : Math.min(oldIndex + 1, maxIndex);
+        newIndex = null;
       }
-    } else if (oldIndex === null && (selectedHabits.length !== 0 || view.name === 'selection')) {
-      newIndex = view.name === 'selection' ? selectedHabits.length : selectedHabits.length - 1;
+    } else if (selectedHabits.length === 0 && view.name === 'selection') {
+      newIndex = null;
+    } else if (increment === 1) {
+      const maxIndex = view.name === 'selection' ? selectedHabits.length : selectedHabits.length - 1;
+      newIndex = oldIndex === null ? 0 : Math.min(oldIndex + 1, maxIndex);
     } else {
-      newIndex = oldIndex === null ? null : Math.max(oldIndex - 1, 0);
+      newIndex = Math.max(0, oldIndex - 1);
     }
 
-    if (newIndex !== oldIndex) {
+    if (view.name === 'selection' && newIndex === selectedHabits.length) {
+      setInInput(true);
+    } else if (newIndex !== oldIndex) {
       setInInput(false);
     }
 

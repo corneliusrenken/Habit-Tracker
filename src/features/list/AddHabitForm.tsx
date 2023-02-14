@@ -7,6 +7,7 @@ type Props = {
   habits: Habit[];
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
+  inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   addHabit: (name: string) => Promise<void>;
 };
@@ -17,18 +18,19 @@ export default function AddHabitForm({
   selectedIndex,
   setSelectedIndex,
   addHabit,
+  inInput,
   setInInput,
 }: Props) {
   const [habitInput, setHabitInput] = useState('');
   const habitInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (selectedIndex === habits.length) {
+    if (selectedIndex === habits.length && inInput) {
       habitInputRef.current?.focus();
     } else {
       habitInputRef.current?.blur();
     }
-  }, [selectedIndex, habits.length]);
+  }, [selectedIndex, habits.length, inInput]);
 
   return (
     <form

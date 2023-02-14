@@ -47,14 +47,18 @@ export default function App() {
     maxListHeight: 600,
   });
 
-  const setView = useCallback((newView: View) => {
-    if (newView.name !== view.name) {
-      if (newView.name === 'today' || newView.name === 'yesterday' || newView.name === 'selection') {
-        setLatchedListView(newView);
+  const setView = useCallback((nextView: View | ((lastView: View) => View)) => {
+    if (nextView instanceof Function) {
+      nextView = nextView(view); // eslint-disable-line no-param-reassign
+    }
+
+    if (nextView.name !== view.name) {
+      if (nextView.name === 'today' || nextView.name === 'yesterday' || nextView.name === 'selection') {
+        setLatchedListView(nextView);
       } else {
-        setLatchedOccurrenceView(newView);
+        setLatchedOccurrenceView(nextView);
       }
-      _setView(newView);
+      _setView(nextView);
     }
   }, [view]);
 
@@ -64,6 +68,7 @@ export default function App() {
       initializedApp = true;
       initialize(dateObject.today.dateString, {
         setView,
+        setSelectedIndex,
         setHabits,
         setOccurrenceData,
         setStreaks,
@@ -99,6 +104,7 @@ export default function App() {
     streaks,
     setStreaks,
     setSelectedIndex,
+    setInInput,
   });
 
   const components = useMemoizedComponents({

@@ -4,6 +4,7 @@ import {
 
 type States = {
   setView: (newView: View) => void;
+  setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
   setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
@@ -11,7 +12,7 @@ type States = {
 
 export default async function initialize(todayDateString: string, states: States) {
   const {
-    setView, setHabits, setOccurrenceData, setStreaks,
+    setView, setSelectedIndex, setHabits, setOccurrenceData, setStreaks,
   } = states;
 
   try {
@@ -25,11 +26,8 @@ export default async function initialize(todayDateString: string, states: States
     const todaysOccurrences = occurrencesGroupedByDate[todayDateString];
     const visibleHabitCount = Object.keys(todaysOccurrences).length;
 
-    if (visibleHabitCount === 0) {
-      setView({ name: 'selection' });
-    } else {
-      setView({ name: 'today' });
-    }
+    setView({ name: 'today' });
+    setSelectedIndex(visibleHabitCount === 0 ? null : 0);
 
     setHabits(habits);
     setOccurrenceData({

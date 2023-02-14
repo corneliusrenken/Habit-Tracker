@@ -74,6 +74,7 @@ export default function SelectionList({
         selectedIndex={selectedIndex}
         setSelectedIndex={setSelectedIndex}
         addHabit={addHabit}
+        inInput={inInput}
         setInInput={setInInput}
       />
     </>

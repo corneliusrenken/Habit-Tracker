@@ -11,7 +11,8 @@ type States = {
   habits: Habit[] | undefined;
   occurrenceData: OccurrenceData | undefined;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  setView: (newView: View) => void;
+  setView: (nextView: View | ((lastView: View) => View)) => void;
+  setInInput: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function transitionToView(viewName: View['name'], states: States) {
@@ -23,39 +24,37 @@ export default function transitionToView(viewName: View['name'], states: States)
     occurrenceData,
     setSelectedIndex,
     setView,
+    setInInput,
   } = states;
 
+  if (!habits || !occurrenceData) throw new Error('state should not be undefined');
+
   if (viewName === 'focus') {
-    if (selectedHabits.length === 0) return;
-    const selectedHabit = selectedHabits.find((habit, index) => index === selectedIndex);
-    if (!selectedHabit) throw new Error('no habit found at selected index');
-    setView({ name: viewName, focusId: selectedHabit.id });
-    return;
-  }
+    setView((prevView) => {
+      if (
+        (prevView.name === 'selection' && selectedIndex === selectedHabits.length)
+        || selectedIndex === null
+      ) return prevView;
 
-  if (viewName === 'history') {
+      const selectedHabit = selectedHabits.find((habit, index) => index === selectedIndex);
+      if (!selectedHabit) throw new Error('no habit found at selected index');
+      return { name: 'focus', focusId: selectedHabit.id };
+    });
+  } else if (viewName === 'history') {
     setView({ name: 'history' });
-    return;
-  }
-
-  if (viewName === 'selection') {
+  } else if (viewName === 'selection') {
     setView({ name: 'selection' });
-    if (selectedIndex === null) setSelectedIndex(0);
-    return;
+    setSelectedIndex(0);
+    if (habits.length === 0) setInInput(true);
+  } else {
+    const newSelectedHabits = getSelectedHabits({
+      dateObject,
+      habits,
+      occurrenceData,
+      latchedListView: { name: viewName },
+    });
+    // anonymous function needed because of typescript weirdness, research later
+    setView(() => ({ name: viewName }));
+    setSelectedIndex(newSelectedHabits.length === 0 ? null : 0);
   }
-
-  const newSelectedHabits = getSelectedHabits({
-    dateObject,
-    habits,
-    occurrenceData,
-    latchedListView: { name: viewName },
-  });
-
-  setSelectedIndex((lastSelectedIndex) => {
-    if (newSelectedHabits.length === 0) return null;
-    if (lastSelectedIndex === null) return 0;
-    return Math.min(newSelectedHabits.length - 1, lastSelectedIndex);
-  });
-
-  setView({ name: viewName });
 }
