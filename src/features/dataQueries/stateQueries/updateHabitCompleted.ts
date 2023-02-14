@@ -1,6 +1,5 @@
 import { OccurrenceData, Streaks } from '../../../globalTypes';
-import { getDateFromDateString } from '../../common/dateStringFunctions';
-import getCustomDateString from '../../common/getCustomDateString';
+import { getDateFromDateString, getDateStringFromDate } from '../../common/dateStringFunctions';
 import recalculateStreak from '../../common/recalculateStreak';
 
 type States = {
@@ -33,7 +32,7 @@ export default function updateHabitCompleted(
 
   const date = getDateFromDateString(dateString);
   date.setDate(date.getDate() + 1);
-  const tomorrowDateString = getCustomDateString(date);
+  const tomorrowDateString = getDateStringFromDate(date);
   const todayDateString = isYesterday ? tomorrowDateString : dateString;
   const oldOldestOccurrence = occurrenceData.oldest[habitId];
   let newOldestOccurrence: null | string = oldOldestOccurrence;

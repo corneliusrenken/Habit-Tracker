@@ -1,8 +1,7 @@
 import {
   SelectedOccurrence, OccurrenceData, DateObject, View,
 } from '../../globalTypes';
-import { getDateFromDateString, getMinimumDateString } from '../common/dateStringFunctions';
-import getCustomDateString from '../common/getCustomDateString';
+import { getDateFromDateString, getDateStringFromDate, getMinimumDateString } from '../common/dateStringFunctions';
 
 type States = {
   occurrenceData: OccurrenceData | undefined,
@@ -40,7 +39,7 @@ export default function getSelectedOccurrences(states: States) {
     || occurences.length % 7 !== 0
     || (oldestDate !== null && currentDate >= oldestDate)
   ) {
-    const dateString = getCustomDateString(currentDate);
+    const dateString = getDateStringFromDate(currentDate);
 
     let complete = false;
 

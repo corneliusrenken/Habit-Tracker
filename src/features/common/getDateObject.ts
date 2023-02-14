@@ -1,5 +1,5 @@
 import { DateObject } from '../../globalTypes';
-import getCustomDateString from './getCustomDateString';
+import { getDateStringFromDate } from './dateStringFunctions';
 
 function rotateArray<ArrayType>(array: ArrayType[], rotationAmt: number): ArrayType[] {
   const rotatedArray: ArrayType[] = new Array(array.length);
@@ -20,7 +20,7 @@ function getWeekDateStrings(weekDayIndex: number, date: Date): string[] {
   for (let i = 0; i < 7; i += 1) {
     const tempDate = new Date(date);
     tempDate.setDate(date.getDate() + (i - weekDayIndex));
-    weekDateStrings.push(getCustomDateString(tempDate));
+    weekDateStrings.push(getDateStringFromDate(tempDate));
   }
   return weekDateStrings;
 }
@@ -33,7 +33,7 @@ function getWeekDays(sundayIndex: number): string[] {
 function getDayObject(sundayIndex: number, date: Date) {
   const weekDayIndex = getWeekDayIndex(sundayIndex, date);
   return {
-    dateString: getCustomDateString(date),
+    dateString: getDateStringFromDate(date),
     weekDayIndex,
     weekDateStrings: getWeekDateStrings(weekDayIndex, date),
   };

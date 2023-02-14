@@ -1,6 +1,5 @@
 import { OccurrenceData, Streaks } from '../../globalTypes';
-import { getDateFromDateString } from './dateStringFunctions';
-import getCustomDateString from './getCustomDateString';
+import { getDateFromDateString, getDateStringFromDate } from './dateStringFunctions';
 
 export default function recalculateStreak(
   habitId: number,
@@ -27,7 +26,7 @@ export default function recalculateStreak(
 
   while (currentDate.getTime() <= todayDate.getTime()) {
     const isToday = currentDate.getTime() === todayDate.getTime();
-    const currentDateString = getCustomDateString(currentDate);
+    const currentDateString = getDateStringFromDate(currentDate);
     const occurredToday = occurrenceData.dates[currentDateString]
       && occurrenceData.dates[currentDateString][habitId]
       && occurrenceData.dates[currentDateString][habitId].complete
