@@ -26,7 +26,7 @@ type States = {
   selectedIndex: number | null;
   view: View;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
-  setView: (newView: View) => void;
+  setView: (nextView: View | ((lastView: View) => View)) => void;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   reorderingList: boolean;
   setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
