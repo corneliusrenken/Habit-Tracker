@@ -75,15 +75,13 @@
     @include fonts.text;
 
     margin-left: var(--left-margin, 0px);
-    max-width: calc(350px - var(--left-margin, 0px) - var(--right-margin, 0px));
+    width: 100%;
+    height: 50px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    height: 50px;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis;
-    min-width: 0;
     color: theme.$foreground;
 
     .complete & {
