@@ -30,6 +30,14 @@
     }
   }
 
+  .being-reordered {
+    z-index: 1;
+
+    .move-icon {
+      color: theme.$secondary;
+    }
+  }
+
   &-item {
     height: 50px;
     width: 350px;
@@ -38,16 +46,7 @@
     justify-content: space-between;
     align-items: center;
     position: relative;
-    background-color: transparent;
     border: 0;
-
-    .being-reordered & {
-      z-index: 99;
-
-      .move-icon {
-        color: theme.$secondary;
-      }
-    }
   }
 
   // selector

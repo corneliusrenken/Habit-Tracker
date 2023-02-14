@@ -20,7 +20,7 @@
     background-color: theme.$background;
     width: 100%;
     height: var(--latched-list-view-margin-height, 0px);
-    z-index: 1;
+    z-index: 2;
 
     .list-view & {
       position: sticky;
@@ -44,7 +44,7 @@
   }
 
   &-sticky-group {
-    z-index: 1;
+    z-index: 2;
     width: 100%;
     background-color: theme.$background;
 
@@ -70,7 +70,7 @@
   }
 
   &-scrollbar {
-    z-index: 2;
+    z-index: 3;
     height: 50px;
 
     .list-view & {
@@ -97,7 +97,7 @@
   &-occurrences {
     @include centered-component;
 
-    z-index: 2;
+    z-index: 3;
     height: calc(var(--occurrence-row-count, 0) * 50px);
     top: calc(100% - 50px - var(--occurrence-row-count, 0) * 50px);
   }
@@ -105,7 +105,7 @@
   &-days {
     @include centered-component;
 
-    z-index: 2;
+    z-index: 3;
     height: 50px;
     top: calc(100% - 100px);
   }
@@ -113,7 +113,7 @@
   &-dates {
     @include centered-component;
 
-    z-index: 2;
+    z-index: 3;
     height: 50px;
     top: calc(100% - 50px);
   }
