@@ -1,5 +1,5 @@
 import {
-  DateObject, DayObject, Habit, ListView, OccurrenceData,
+  DateObject, Habit, ListView, OccurrenceData,
 } from '../../globalTypes';
 
 type States = {
@@ -19,7 +19,7 @@ export default function getSelectedHabits(states: States) {
 
   if (!habits || !occurrenceData) return [];
 
-  const dayObject: DayObject = latchedListView.name === 'yesterday'
+  const dayObject = latchedListView.name === 'yesterday'
     ? dateObject.yesterday
     : dateObject.today;
 

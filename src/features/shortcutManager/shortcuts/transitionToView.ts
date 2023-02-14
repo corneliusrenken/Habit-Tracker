@@ -2,7 +2,7 @@
 import {
   DateObject, Habit, OccurrenceData, View,
 } from '../../../globalTypes';
-import getSelectedHabits from '../../app/getSelectedHabits';
+import getSelectedHabits from '../../selectedData/getSelectedHabits';
 
 type States = {
   selectedHabits: Habit[];
