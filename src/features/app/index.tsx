@@ -80,7 +80,7 @@ export default function App() {
     view,
   });
 
-  useSetLeftAndRightDateMargins({ selectedOccurrences: selectedData.occurrences });
+  useSetLeftAndRightDateMargins({ view, dateObject });
 
   const {
     addHabit,
