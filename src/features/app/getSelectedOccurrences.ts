@@ -41,23 +41,33 @@ export default function getSelectedOccurrences(states: States) {
     || (oldestDate !== null && currentDate >= oldestDate)
   ) {
     const dateString = getCustomDateString(currentDate);
+
     let complete = false;
-    if (occurrenceData.dates[dateString] !== undefined) {
+
+    const day = occurrenceData.dates[dateString];
+    if (day !== undefined) {
       if (view.name === 'focus') {
-        complete = occurrenceData.dates[dateString][view.focusId]?.complete;
+        const occurrence = day[view.focusId];
+        if (occurrence !== undefined) {
+          complete = occurrence.complete && occurrence.visible;
+        }
       } else {
-        const occurrences = Object.values(occurrenceData.dates[dateString]);
-        if (occurrences.length !== 0) {
-          complete = occurrences.every((occurence) => occurence.complete);
+        const visibleOccurrences = Object
+          .values(day)
+          .filter(({ visible }) => visible);
+
+        if (visibleOccurrences.length !== 0) {
+          complete = visibleOccurrences.every((occurence) => occurence.complete);
         }
       }
     }
-    const occurence = {
+
+    occurences.push({
       date: Number(dateString.slice(-2)),
       fullDate: dateString,
       complete,
-    };
-    occurences.push(occurence);
+    });
+
     currentDate.setDate(currentDate.getDate() - 1);
   }
 
