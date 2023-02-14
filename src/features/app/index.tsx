@@ -68,6 +68,7 @@ export default function App() {
       initializedApp = true;
       initialize(dateObject.today.dateString, {
         setView,
+        setSelectedIndex,
         setHabits,
         setOccurrenceData,
         setStreaks,
@@ -103,6 +104,7 @@ export default function App() {
     streaks,
     setStreaks,
     setSelectedIndex,
+    setInInput,
   });
 
   const components = useMemoizedComponents({

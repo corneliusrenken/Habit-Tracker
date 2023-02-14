@@ -12,6 +12,7 @@ type States = {
   occurrenceData: OccurrenceData | undefined;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setView: (nextView: View | ((lastView: View) => View)) => void;
+  setInInput: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function transitionToView(viewName: View['name'], states: States) {
@@ -23,7 +24,10 @@ export default function transitionToView(viewName: View['name'], states: States)
     occurrenceData,
     setSelectedIndex,
     setView,
+    setInInput,
   } = states;
+
+  if (!habits || !occurrenceData) throw new Error('state should not be undefined');
 
   if (viewName === 'focus') {
     setView((prevView) => {
@@ -41,6 +45,7 @@ export default function transitionToView(viewName: View['name'], states: States)
   } else if (viewName === 'selection') {
     setView({ name: 'selection' });
     setSelectedIndex(0);
+    if (habits.length === 0) setInInput(true);
   } else {
     const newSelectedHabits = getSelectedHabits({
       dateObject,

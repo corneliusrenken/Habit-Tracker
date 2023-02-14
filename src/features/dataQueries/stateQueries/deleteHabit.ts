@@ -4,13 +4,14 @@ import { Habit } from '../../../globalTypes';
 type States = {
   setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
+  setInInput: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function deleteHabit(
   habitId: number,
   states: States,
 ) {
-  const { setHabits, setSelectedIndex } = states;
+  const { setHabits, setSelectedIndex, setInInput } = states;
 
   let newHabits: Habit[] = [];
 
@@ -29,6 +30,13 @@ export default function deleteHabit(
   setSelectedIndex((previousSelectedIndex) => {
     if (previousSelectedIndex === null) throw new Error('should never call deleteHabit when selected index is null');
 
-    return Math.min(previousSelectedIndex, newHabits.length);
+    const newIndex = Math.min(previousSelectedIndex, newHabits.length);
+
+    if (newIndex === newHabits.length) {
+      // selects the create habit input
+      setInInput(true);
+    }
+
+    return newIndex;
   });
 }

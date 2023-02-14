@@ -25,6 +25,7 @@ type States = {
   streaks: Streaks | undefined;
   setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
+  setInInput: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default function useDataQueries(states: States) {
@@ -38,6 +39,7 @@ export default function useDataQueries(states: States) {
     streaks,
     setStreaks,
     setSelectedIndex,
+    setInInput,
   } = states;
 
   const addHabitMemo = useCallback(async (name: string) => (
@@ -63,10 +65,12 @@ export default function useDataQueries(states: States) {
     deleteHabit(habitId, {
       setHabits,
       setSelectedIndex,
+      setInInput,
     })
   ), [
     setHabits,
     setSelectedIndex,
+    setInInput,
   ]);
 
   const renameHabitMemo = useCallback((habitId: number, name: string) => (
