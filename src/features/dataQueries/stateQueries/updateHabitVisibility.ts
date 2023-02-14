@@ -1,5 +1,5 @@
 import { OccurrenceData, Streaks } from '../../../globalTypes';
-import recalculateStreak from './helperFunctions/recalculateStreak';
+import recalculateStreak from '../../common/recalculateStreak';
 
 type States = {
   streaks: Streaks | undefined;

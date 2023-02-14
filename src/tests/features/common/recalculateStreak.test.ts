@@ -1,6 +1,6 @@
-import recalculateStreak from '../../../../../features/dataQueries/stateQueries/helperFunctions/recalculateStreak';
-import { OccurrenceData } from '../../../../../globalTypes';
-import PseudoUseState from '../../../helperFunctions/pseudoUseState';
+import recalculateStreak from '../../../features/common/recalculateStreak';
+import { OccurrenceData } from '../../../globalTypes';
+import PseudoUseState from '../helperFunctions/pseudoUseState';
 
 test('throws an error if the habit id does not have an oldest occurrence entry', () => {
   const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({

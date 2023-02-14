@@ -1,7 +1,7 @@
 import { OccurrenceData, Streaks } from '../../../globalTypes';
 import { getDateFromDateString } from '../../common/dateStringFunctions';
 import getCustomDateString from '../../common/getCustomDateString';
-import recalculateStreak from './helperFunctions/recalculateStreak';
+import recalculateStreak from '../../common/recalculateStreak';
 
 type States = {
   streaks: Streaks | undefined;
