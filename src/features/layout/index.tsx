@@ -43,6 +43,8 @@ export default function Layout({
   }, [occurrenceRows]);
 
   useEffect(() => {
+    if (layoutRef.current === null) return;
+
     if (viewToViewType[view.name] !== viewToViewType[lastView.current]) {
       const scrollDistance = getScrollDistance();
 
@@ -94,7 +96,7 @@ export default function Layout({
     );
 
     window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize); // eslint-disable-line consistent-return
   }, [layoutOptions, listRows, occurrenceRows, setInTransition, view]);
 
   return (

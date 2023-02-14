@@ -19,6 +19,8 @@ export default function addHabit(
     habits, setHabits, streaks, setStreaks, occurrenceData, setOccurrenceData,
   } = states;
 
+  if (!habits || !streaks || !occurrenceData) throw new Error('states should not be undefined');
+
   const newHabit: Habit = {
     id,
     name,

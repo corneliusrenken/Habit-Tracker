@@ -125,7 +125,7 @@ describe('updating "oldest" occurrence data', () => {
       setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
     });
 
-    expect(occurrenceDataState.value.oldest).toEqual({
+    expect(occurrenceDataState?.value?.oldest).toEqual({
       1: '2023-02-09',
     });
   });
@@ -149,7 +149,7 @@ describe('updating "oldest" occurrence data', () => {
       setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
     });
 
-    expect(occurrenceDataState.value.oldest).toEqual({
+    expect(occurrenceDataState?.value?.oldest).toEqual({
       1: '2023-02-10',
     });
   });
@@ -173,7 +173,7 @@ describe('updating "oldest" occurrence data', () => {
       setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
     });
 
-    expect(occurrenceDataState.value.oldest).toEqual({
+    expect(occurrenceDataState?.value?.oldest).toEqual({
       1: '2023-02-09',
     });
   });
@@ -200,7 +200,7 @@ describe('updating "dates" occurrence data', () => {
       setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
     });
 
-    expect(occurrenceDataState.value.dates).toEqual({
+    expect(occurrenceDataState?.value?.dates).toEqual({
       '2023-02-10': { 1: { complete: true, visible: true } },
     });
 
@@ -211,7 +211,7 @@ describe('updating "dates" occurrence data', () => {
       setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
     });
 
-    expect(occurrenceDataState.value.dates).toEqual({
+    expect(occurrenceDataState?.value?.dates).toEqual({
       '2023-02-10': { 1: { complete: false, visible: true } },
     });
   });
