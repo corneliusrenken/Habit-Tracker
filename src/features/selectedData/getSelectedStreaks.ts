@@ -1,7 +1,7 @@
 import {
   DateObject, ListView, OccurrenceData, Streaks,
 } from '../../globalTypes';
-import getYesterdaysStreaks from './getYesterdaysStreaks';
+import recalculateStreak from '../common/recalculateStreak';
 
 type States = {
   dateObject: DateObject;
@@ -17,7 +17,19 @@ export default function getSelectedStreaks(states: States) {
 
   if (!occurrenceData || !streaks) return {};
 
-  return latchedListView.name === 'yesterday'
-    ? getYesterdaysStreaks(dateObject.yesterday.dateString, occurrenceData)
-    : streaks;
+  if (latchedListView.name !== 'yesterday') return streaks;
+
+  const habitIds = Object.keys(streaks).map(Number);
+
+  const yesterdaysStreaks: Streaks = {};
+
+  habitIds.forEach((habitId) => {
+    yesterdaysStreaks[habitId] = recalculateStreak(
+      habitId,
+      dateObject.yesterday.dateString,
+      occurrenceData,
+    );
+  });
+
+  return yesterdaysStreaks;
 }

@@ -16,12 +16,12 @@ import {
 } from '../../globalTypes';
 import initialize from './initialize';
 import useMemoizedComponents from './useMemoizedComponents';
-import useSelectedData from './useSelectedData';
 import Modal from '../modal';
 import useShortcutManager from '../shortcutManager/useShortcutManager';
 import Layout from '../layout';
 import useDataQueries from '../dataQueries/useDataQueries';
 import useSetLeftAndRightDateMargins from './useSetLeftAndRightDateMargins';
+import useSelectedData from '../selectedData/useSelectedData';
 
 let initializedApp = false;
 
