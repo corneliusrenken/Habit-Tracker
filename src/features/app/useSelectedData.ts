@@ -5,7 +5,7 @@ import {
   OccurrenceData,
   Streaks,
   ListView,
-  OccurrenceView,
+  View,
 } from '../../globalTypes';
 import getSelectedHabits from './getSelectedHabits';
 import getSelectedOccurrences from './getSelectedOccurrences';
@@ -17,7 +17,7 @@ type States = {
   streaks: Streaks | undefined;
   dateObject: DateObject;
   latchedListView: ListView;
-  latchedOccurrenceView: OccurrenceView;
+  view: View;
 };
 
 export default function useSelectedData(states: States) {
@@ -27,7 +27,7 @@ export default function useSelectedData(states: States) {
     streaks,
     dateObject,
     latchedListView,
-    latchedOccurrenceView,
+    view,
   } = states;
 
   const selectedHabits = useMemo(() => getSelectedHabits({
@@ -40,8 +40,8 @@ export default function useSelectedData(states: States) {
   const selectedOccurrences = useMemo(() => getSelectedOccurrences({
     occurrenceData,
     dateObject,
-    latchedOccurrenceView,
-  }), [dateObject, latchedOccurrenceView, occurrenceData]);
+    view,
+  }), [dateObject, view, occurrenceData]);
 
   const selectedStreaks = useMemo(() => getSelectedStreaks({
     dateObject,

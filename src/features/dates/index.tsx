@@ -12,9 +12,7 @@ export default function Dates({ dateObject, latchedListView, selectedOccurrences
     ? dateObject.today.weekDayIndex
     : dateObject.yesterday.weekDayIndex;
 
-  const occurrencesForWeek = latchedListView.name === 'yesterday' && selectedDayIndex === 6
-    ? selectedOccurrences.slice(selectedOccurrences.length - 14, selectedOccurrences.length - 7)
-    : selectedOccurrences.slice(selectedOccurrences.length - 7);
+  const occurrencesForWeek = selectedOccurrences.slice(selectedOccurrences.length - 7);
 
   let selectedDayIndicatorClassName = 'dates-selected-day-indicator';
 
@@ -41,10 +39,12 @@ export default function Dates({ dateObject, latchedListView, selectedOccurrences
         className={selectedDayIndicatorClassName}
         style={{ left: `calc(${selectedDayIndex} * 50px)` }}
       />
-      <div
-        className="dates-actual-day-indicator"
-        style={{ left: `calc(${dateObject.today.weekDayIndex} * 50px)` }}
-      />
+      {occurrencesForWeek[selectedDayIndex].fullDate === dateObject.today.dateString && (
+        <div
+          className="dates-actual-day-indicator"
+          style={{ left: `calc(${dateObject.today.weekDayIndex} * 50px)` }}
+        />
+      )}
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import {
-  SelectedOccurrence, OccurrenceData, DateObject, OccurrenceView,
+  SelectedOccurrence, OccurrenceData, DateObject, View,
 } from '../../globalTypes';
 import { getDateFromDateString, getMinimumDateString } from '../common/dateStringFunctions';
 import getCustomDateString from '../common/getCustomDateString';
@@ -7,25 +7,28 @@ import getCustomDateString from '../common/getCustomDateString';
 type States = {
   occurrenceData: OccurrenceData | undefined,
   dateObject: DateObject,
-  latchedOccurrenceView: OccurrenceView,
+  view: View,
 };
 
 export default function getSelectedOccurrences(states: States) {
   const {
     occurrenceData,
     dateObject,
-    latchedOccurrenceView,
+    view,
   } = states;
 
   if (!occurrenceData) return [];
 
   const occurences: SelectedOccurrence[] = [];
 
-  const oldestDateString = latchedOccurrenceView.name === 'history'
+  const oldestDateString = view.name !== 'focus'
     ? getMinimumDateString(Object.values(occurrenceData.oldest))
-    : occurrenceData.oldest[latchedOccurrenceView.focusId];
+    : occurrenceData.oldest[view.focusId];
 
-  const lastDateOfWeek = getDateFromDateString(dateObject.today.weekDateStrings[6]);
+  const lastDateOfWeek = view.name !== 'yesterday'
+    ? getDateFromDateString(dateObject.today.weekDateStrings[6])
+    : getDateFromDateString(dateObject.yesterday.weekDateStrings[6]);
+
   const oldestDate = oldestDateString === null
     ? null
     : getDateFromDateString(oldestDateString);
@@ -40,12 +43,13 @@ export default function getSelectedOccurrences(states: States) {
     const dateString = getCustomDateString(currentDate);
     let complete = false;
     if (occurrenceData.dates[dateString] !== undefined) {
-      if (latchedOccurrenceView.name === 'focus') {
-        complete = occurrenceData.dates[dateString][latchedOccurrenceView.focusId]?.complete;
+      if (view.name === 'focus') {
+        complete = occurrenceData.dates[dateString][view.focusId]?.complete;
       } else {
         const occurrences = Object.values(occurrenceData.dates[dateString]);
-        // eslint-disable-next-line max-len
-        if (occurrences.length !== 0) complete = occurrences.every((occurence) => occurence.complete);
+        if (occurrences.length !== 0) {
+          complete = occurrences.every((occurence) => occurence.complete);
+        }
       }
     }
     const occurence = {
