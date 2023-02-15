@@ -27,5 +27,8 @@
     "webpack.rules.ts",
     "jest.config.ts",
     "create_react_app_version/*"
-  ]
+  ],
+  "rules": {
+    "@typescript-eslint/lines-between-class-members": "off"
+  }
 }
