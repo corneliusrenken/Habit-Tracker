@@ -24,17 +24,17 @@ afterEach(() => {
 });
 
 test('if the days table doesn\'t contain an entry with the date passed into the addOccurrence function, the function should throw an error', () => {
-  expect(() => addOccurrences(db, [exerciseHabitId], '2023-01-16')).toThrow('NOT NULL constraint failed: occurrences.day_id');
+  expect(() => addOccurrences(db, { habitIds: [exerciseHabitId], date: '2023-01-16' })).toThrow('NOT NULL constraint failed: occurrences.day_id');
 });
 
 test('trying to add an occurrence on a date where one for that habit already exists will throw an error', () => {
-  addOccurrences(db, [exerciseHabitId], '2023-01-17');
-  expect(() => addOccurrences(db, [exerciseHabitId], '2023-01-17')).toThrow('UNIQUE constraint failed: occurrences.habit_id, occurrences.day_id');
+  addOccurrences(db, { habitIds: [exerciseHabitId], date: '2023-01-17' });
+  expect(() => addOccurrences(db, { habitIds: [exerciseHabitId], date: '2023-01-17' })).toThrow('UNIQUE constraint failed: occurrences.habit_id, occurrences.day_id');
 });
 
 test('if adding multiple occurrences, and one of them fails, none of the occurrences should be saved', () => {
-  addOccurrences(db, [exerciseHabitId], '2023-01-17');
-  expect(() => addOccurrences(db, [exerciseHabitId, readHabitId], '2023-01-17')).toThrow();
+  addOccurrences(db, { habitIds: [exerciseHabitId], date: '2023-01-17' });
+  expect(() => addOccurrences(db, { habitIds: [exerciseHabitId, readHabitId], date: '2023-01-17' })).toThrow();
   const getOccurrenceCountStmt = db.prepare('SELECT count(id) AS count FROM occurrences');
   const occurrenceCount = getOccurrenceCountStmt.get().count;
   expect(occurrenceCount).toBe(1);
@@ -42,7 +42,7 @@ test('if adding multiple occurrences, and one of them fails, none of the occurre
 
 test('added occurrences appear in the database correctly, with visibility and completeness set to their default values, 1 and 0, respectively', () => {
   const getOccurrencesStmt = db.prepare('SELECT visible, complete, habit_id, day_id FROM occurrences');
-  addOccurrences(db, [exerciseHabitId], '2023-01-17');
+  addOccurrences(db, { habitIds: [exerciseHabitId], date: '2023-01-17' });
   let occurrences = getOccurrencesStmt.all();
   expect(occurrences.length).toBe(1);
   expect(occurrences[0].visible).toBe(1);
@@ -50,7 +50,7 @@ test('added occurrences appear in the database correctly, with visibility and co
   expect(occurrences[0].habit_id).toBe(exerciseHabitId);
   expect(occurrences[0].day_id).toBe(dayId);
 
-  addOccurrences(db, [readHabitId, sleepHabitId], '2023-01-17');
+  addOccurrences(db, { habitIds: [readHabitId, sleepHabitId], date: '2023-01-17' });
   occurrences = getOccurrencesStmt.all();
   expect(occurrences.length).toBe(3);
 

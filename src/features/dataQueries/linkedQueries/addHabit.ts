@@ -15,6 +15,6 @@ export default async function addHabit(
   todaysDateString: string,
   states: States,
 ) {
-  const addedHabit = await window.electron['add-habit'](name, todaysDateString);
+  const addedHabit = await window.electron['add-habit']({ name, date: todaysDateString });
   addHabitStateQuery(name, addedHabit.id, todaysDateString, states);
 }

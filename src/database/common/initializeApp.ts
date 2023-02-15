@@ -9,16 +9,18 @@ import getOldestVisibleOccurrenceDates from '../occurrences/getOldestVisibleOccu
 /**
  * @param date "YYYY-MM-DD"
  */
-export default function initializeApp(database: Database, date: string) {
+export default function initializeApp(database: Database, options: { date: string }) {
+  const { date } = options;
+
   const habits = getHabits(database);
   const occurrencesGroupedByDate = getOccurrencesGroupedByDate(database);
-  const streaks = getOccurrenceStreaks(database, date);
+  const streaks = getOccurrenceStreaks(database, { date });
   const oldestVisibleOccurrenceDates = getOldestVisibleOccurrenceDates(database);
 
   if (occurrencesGroupedByDate[date] === undefined) {
     const functionsToRunInTransaction: (() => void)[] = [];
 
-    functionsToRunInTransaction.push(() => addDay(database, date));
+    functionsToRunInTransaction.push(() => addDay(database, { date }));
     occurrencesGroupedByDate[date] = {};
 
     const getLastDayBeforeDateStmt = database.prepare('SELECT date FROM days WHERE date < ?');
@@ -36,8 +38,10 @@ export default function initializeApp(database: Database, date: string) {
 
       functionsToRunInTransaction.push(() => addOccurrences(
         database,
-        habitIdsWithVisibleOccurrencesOnPrevDate,
-        date,
+        {
+          habitIds: habitIdsWithVisibleOccurrencesOnPrevDate,
+          date,
+        },
       ));
       habitIdsWithVisibleOccurrencesOnPrevDate.forEach((id) => {
         occurrencesGroupedByDate[date][id] = { visible: true, complete: false };

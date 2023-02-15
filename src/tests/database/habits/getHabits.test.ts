@@ -29,9 +29,9 @@ test('returns an empty array if no  habits exist', () => {
 });
 
 test('returns an array of objects, each containing the habit\'s id and name', () => {
-  addHabit(db, 'exercise', '2023-01-17');
-  addHabit(db, 'read', '2023-01-17');
-  addHabit(db, 'sleep', '2023-01-17');
+  addHabit(db, { name: 'exercise', date: '2023-01-17' });
+  addHabit(db, { name: 'read', date: '2023-01-17' });
+  addHabit(db, { name: 'sleep', date: '2023-01-17' });
   const habits = getHabits(db);
   habits.forEach((habit) => {
     expect(habit).toHaveProperty('id');
@@ -40,9 +40,9 @@ test('returns an array of objects, each containing the habit\'s id and name', ()
 });
 
 test('returns habits in ascending list position order', () => {
-  addHabit(db, 'exercise', '2023-01-17');
-  addHabit(db, 'read', '2023-01-17');
-  addHabit(db, 'sleep', '2023-01-17');
+  addHabit(db, { name: 'exercise', date: '2023-01-17' });
+  addHabit(db, { name: 'read', date: '2023-01-17' });
+  addHabit(db, { name: 'sleep', date: '2023-01-17' });
 
   expect(checkValidListPositionValues(db, ['exercise', 'read', 'sleep'])).toBe(true);
 

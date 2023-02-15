@@ -11,6 +11,6 @@ export default function renameHabit(
   name: string,
   states: States,
 ) {
-  window.electron['update-habit'](habitId, { name });
+  window.electron['update-habit']({ habitId, updateData: { name } });
   renameHabitStateQuery(habitId, name, states);
 }

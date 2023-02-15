@@ -3,12 +3,14 @@ import { Database } from 'better-sqlite3';
 /**
  * @param date "YYYY-MM-DD" — used to calculate current streak
  */
-export default function getOccurrenceStreaks(database: Database, date: string): {
+export default function getOccurrenceStreaks(database: Database, options: { date: string }): {
   [habitId: string]: {
     current: number;
     maximum: number;
   };
 } {
+  const { date } = options;
+
   const getOccurrenceStreaksStmt = database.prepare(`
     WITH occurrences_with_date AS (
       SELECT habit_id, date

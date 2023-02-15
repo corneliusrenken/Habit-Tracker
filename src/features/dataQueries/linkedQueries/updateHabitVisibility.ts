@@ -28,13 +28,13 @@ export default function updateHabitVisibility(
   const todaysOccurrences = { ...occurrenceData.dates[todayDateString] };
 
   if (visible && todaysOccurrences[habitId] === undefined) {
-    window.electron['add-occurrence'](habitId, todayDateString);
+    window.electron['add-occurrence']({ habitId, date: todayDateString });
   } else if (visible) {
-    window.electron['update-occurrence'](habitId, todayDateString, { visible: true });
+    window.electron['update-occurrence']({ habitId, date: todayDateString, updateData: { visible: true } });
   } else if (todaysOccurrences[habitId].complete) {
-    window.electron['update-occurrence'](habitId, todayDateString, { visible: false });
+    window.electron['update-occurrence']({ habitId, date: todayDateString, updateData: { visible: false } });
   } else {
-    window.electron['delete-occurrence'](habitId, todayDateString);
+    window.electron['delete-occurrence']({ habitId, date: todayDateString });
   }
   updateHabitVisibilityStateQuery(habitId, visible, todayDateString, states);
 }

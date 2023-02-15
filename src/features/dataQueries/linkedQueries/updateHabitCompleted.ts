@@ -15,6 +15,8 @@ export default function updateHabitCompleted(
   isYesterday: boolean,
   states: States,
 ) {
-  window.electron['update-occurrence'](habitId, dateString, { complete: completed });
+  window.electron['update-occurrence'](
+    { habitId, date: dateString, updateData: { complete: completed } },
+  );
   updateHabitCompletedStateQuery(habitId, completed, dateString, isYesterday, states);
 }

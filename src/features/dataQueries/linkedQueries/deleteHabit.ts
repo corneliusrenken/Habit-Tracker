@@ -11,6 +11,6 @@ export default function deleteHabit(
   habitId: number,
   states: States,
 ) {
-  window.electron['delete-habit'](habitId);
+  window.electron['delete-habit']({ habitId });
   deleteHabitStateQuery(habitId, states);
 }

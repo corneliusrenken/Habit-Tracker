@@ -11,10 +11,10 @@ type UpdateData = ({
  */
 export default function updateOccurrence(
   database: Database,
-  habitId: number,
-  date: string,
-  updateData: UpdateData,
+  options: { habitId: number, date: string, updateData: UpdateData },
 ) {
+  const { habitId, date, updateData } = options;
+
   const getOccurrenceStmt = database.prepare(`
     SELECT occurrences.id, visible, complete
     FROM occurrences

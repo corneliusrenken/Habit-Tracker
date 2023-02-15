@@ -12,6 +12,6 @@ export default function updateHabitListPosition(
   newListPosition: number,
   states: States,
 ) {
-  window.electron['update-habit'](habitId, { listPosition: newListPosition });
+  window.electron['update-habit']({ habitId, updateData: { listPosition: newListPosition } });
   updateHabitListPositionStateQuery(habitId, newListPosition, states);
 }

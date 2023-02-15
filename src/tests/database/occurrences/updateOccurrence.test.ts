@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import Database from 'better-sqlite3';
 import {
   addDay,
@@ -38,8 +39,8 @@ const getSingleOccurrence = (database: Database.Database, habitId: number, date:
 beforeEach(() => {
   db = openDatabase(':memory:');
   createTables(db);
-  addDay(db, occurrenceDate);
-  exerciseHabitId = addHabit(db, 'exercise', occurrenceDate).id;
+  addDay(db, { date: occurrenceDate });
+  exerciseHabitId = addHabit(db, { name: 'exercise', date: occurrenceDate }).id;
   originalOccurrence = getSingleOccurrence(db, exerciseHabitId, occurrenceDate);
 });
 
@@ -53,28 +54,28 @@ test('verify occurrence starts with default values for next tests', () => {
 });
 
 test('doesn\'t throw when the changed value is the same as the original', () => {
-  let update = () => updateOccurrence(db, exerciseHabitId, occurrenceDate, { complete: false });
+  let update = () => updateOccurrence(db, { habitId: exerciseHabitId, date: occurrenceDate, updateData: { complete: false } });
   expect(update).not.toThrow();
-  update = () => updateOccurrence(db, exerciseHabitId, occurrenceDate, { visible: true });
+  update = () => updateOccurrence(db, { habitId: exerciseHabitId, date: occurrenceDate, updateData: { visible: true } });
   expect(update).not.toThrow();
 });
 
 test('throws an error if the occurrence to update does not exist, even if the updated value is the same as the original', () => {
-  expect(() => updateOccurrence(db, exerciseHabitId, '2023-01-18', { complete: false })).toThrow('Error: No occurrence matches the given habit id / date');
-  expect(() => updateOccurrence(db, exerciseHabitId, '2023-01-18', { visible: true })).toThrow('Error: No occurrence matches the given habit id / date');
-  expect(() => updateOccurrence(db, 123, '2023-01-19', { complete: false })).toThrow('Error: No occurrence matches the given habit id / date');
-  expect(() => updateOccurrence(db, 123, '2023-01-19', { visible: true })).toThrow('Error: No occurrence matches the given habit id / date');
+  expect(() => updateOccurrence(db, { habitId: exerciseHabitId, date: '2023-01-18', updateData: { complete: false } })).toThrow('Error: No occurrence matches the given habit id / date');
+  expect(() => updateOccurrence(db, { habitId: exerciseHabitId, date: '2023-01-18', updateData: { visible: true } })).toThrow('Error: No occurrence matches the given habit id / date');
+  expect(() => updateOccurrence(db, { habitId: 123, date: '2023-01-19', updateData: { complete: false } })).toThrow('Error: No occurrence matches the given habit id / date');
+  expect(() => updateOccurrence(db, { habitId: 123, date: '2023-01-19', updateData: { visible: true } })).toThrow('Error: No occurrence matches the given habit id / date');
 });
 
 test('updates the occurrence\'s complete value, and only the complete value', () => {
-  updateOccurrence(db, exerciseHabitId, occurrenceDate, { complete: true });
+  updateOccurrence(db, { habitId: exerciseHabitId, date: occurrenceDate, updateData: { complete: true } });
   const updatedOccurrence = getSingleOccurrence(db, exerciseHabitId, occurrenceDate);
   expect(updatedOccurrence.visible).toBe(originalOccurrence.visible);
   expect(updatedOccurrence.complete).toBe(1);
 });
 
 test('updates the occurrence\'s visibility value, and only the visibility value', () => {
-  updateOccurrence(db, exerciseHabitId, occurrenceDate, { visible: false });
+  updateOccurrence(db, { habitId: exerciseHabitId, date: occurrenceDate, updateData: { visible: false } });
   const updatedOccurrence = getSingleOccurrence(db, exerciseHabitId, occurrenceDate);
   expect(updatedOccurrence.visible).toBe(0);
   expect(updatedOccurrence.complete).toBe(originalOccurrence.complete);

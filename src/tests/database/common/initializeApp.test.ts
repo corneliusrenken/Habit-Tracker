@@ -17,15 +17,15 @@ let codeHabitId: number;
 beforeEach(() => {
   db = openDatabase(':memory:');
   createTables(db);
-  addDay(db, '2023-01-20');
-  exerciseHabitId = addHabit(db, 'exercise', '2023-01-20').id;
-  readHabitId = addHabit(db, 'read', '2023-01-20').id;
-  sleepHabitId = addHabit(db, 'sleep', '2023-01-20').id;
-  codeHabitId = addHabit(db, 'code', '2023-01-20').id;
-  updateOccurrence(db, readHabitId, '2023-01-20', { complete: true });
-  updateOccurrence(db, sleepHabitId, '2023-01-20', { complete: true });
-  updateOccurrence(db, sleepHabitId, '2023-01-20', { visible: false });
-  updateOccurrence(db, codeHabitId, '2023-01-20', { visible: false });
+  addDay(db, { date: '2023-01-20' });
+  exerciseHabitId = addHabit(db, { name: 'exercise', date: '2023-01-20' }).id;
+  readHabitId = addHabit(db, { name: 'read', date: '2023-01-20' }).id;
+  sleepHabitId = addHabit(db, { name: 'sleep', date: '2023-01-20' }).id;
+  codeHabitId = addHabit(db, { name: 'code', date: '2023-01-20' }).id;
+  updateOccurrence(db, { habitId: readHabitId, date: '2023-01-20', updateData: { complete: true } });
+  updateOccurrence(db, { habitId: sleepHabitId, date: '2023-01-20', updateData: { complete: true } });
+  updateOccurrence(db, { habitId: sleepHabitId, date: '2023-01-20', updateData: { visible: false } });
+  updateOccurrence(db, { habitId: codeHabitId, date: '2023-01-20', updateData: { visible: false } });
 });
 
 afterEach(() => {
@@ -33,7 +33,7 @@ afterEach(() => {
 });
 
 test('returns habits, occurrences grouped by date, streaks, and oldest visible occurrence dates', () => {
-  const initializeAppResult = initializeApp(db, '2023-01-21');
+  const initializeAppResult = initializeApp(db, { date: '2023-01-21' });
   expect(initializeAppResult).toHaveProperty('habits');
   expect(initializeAppResult).toHaveProperty('occurrencesGroupedByDate');
   expect(initializeAppResult).toHaveProperty('streaks');
@@ -44,12 +44,12 @@ describe('if the date passed into the function doesn\'t already have a correspon
   test('a day entry is created linked to the passed date', () => {
     const selectDayByDateStmt = db.prepare('SELECT id FROM days WHERE date = ?');
     expect(selectDayByDateStmt.get('2023-01-21')).toBe(undefined);
-    initializeApp(db, '2023-01-21');
+    initializeApp(db, { date: '2023-01-21' });
     expect(selectDayByDateStmt.get('2023-01-21')).not.toBe(undefined);
   });
 
   test('incomplete, visible, occurrences are created on the passed date for all habits that were visible on the last registered day entry', () => {
-    initializeApp(db, '2023-01-21');
+    initializeApp(db, { date: '2023-01-21' });
     const getOccurrenceByHabitIdAndDateStmt = db.prepare(`
       SELECT occurrences.id, complete, visible
       FROM occurrences
@@ -82,12 +82,12 @@ describe('if the date passed into the function doesn\'t already have a correspon
       ON occurrences.day_id = days.id
       WHERE date <= ?
     `);
-    initializeApp(db, '2023-01-19');
+    initializeApp(db, { date: '2023-01-19' });
     expect(getOccurrencesBeforeDateStmt.all('2023-01-19').length).toBe(0);
   });
 
   test('data is fetched, including the occurrences created for the current date', () => {
-    const initializeAppResult = initializeApp(db, '2023-01-21');
+    const initializeAppResult = initializeApp(db, { date: '2023-01-21' });
     expect(initializeAppResult).toEqual({
       habits: [
         { id: 1, name: 'exercise' },
@@ -125,7 +125,7 @@ describe('if the date passed into the function doesn\'t already have a correspon
 
 describe('if the date passed into the function already has a corresponding day entry...', () => {
   test('the app was already initialized so only the data has to be fetched', () => {
-    const initializeAppResult = initializeApp(db, '2023-01-20');
+    const initializeAppResult = initializeApp(db, { date: '2023-01-20' });
     expect(initializeAppResult).toEqual({
       habits: [
         { id: 1, name: 'exercise' },
