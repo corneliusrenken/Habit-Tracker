@@ -6,7 +6,7 @@ type TaskArguments = {
   [type in TaskTypes]: Parameters<typeof window.electron[type]>[0];
 };
 
-type Task<TaskType extends TaskTypes> = {
+export type Task<TaskType extends TaskTypes> = {
   args: TaskArguments[TaskType]
   operation: (args: TaskArguments[TaskType]) => Promise<void>;
 };
