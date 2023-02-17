@@ -1,17 +1,21 @@
-import { Habit } from '../../../globalTypes';
-import updateHabitListPositionStateQuery from '../stateQueries/updateHabitListPosition';
+import TaskQueue from '../../taskQueue';
+import { Habit, OccurrenceData, Streaks } from '../../../globalTypes';
+import { generateUpdateHabitTask } from '../tasks';
+import { updateHabitStateUpdate } from '../stateUpdaters';
 
 type States = {
-  habits: Habit[] | undefined;
+  queue: TaskQueue;
   setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
+  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
+  setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
 export default function updateHabitListPosition(
   habitId: number,
-  newListPosition: number,
+  listPosition: number,
   states: States,
 ) {
-  window.electron['update-habit']({ habitId, updateData: { listPosition: newListPosition } });
-  updateHabitListPositionStateQuery(habitId, newListPosition, states);
+  updateHabitStateUpdate(habitId, { listPosition }, states);
+  states.queue.enqueue<'update-habit'>(generateUpdateHabitTask(habitId, { listPosition }));
 }

@@ -1,20 +1,28 @@
+import TaskQueue from '../../taskQueue';
 import { Habit, OccurrenceData, Streaks } from '../../../globalTypes';
-import addHabitStateQuery from '../stateQueries/addHabit';
+import { addHabitStateUpdate } from '../stateUpdaters';
+import { generateAddHabitTask } from '../tasks';
 
 type States = {
+  queue: TaskQueue;
   habits: Habit[] | undefined;
-  setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
   streaks: Streaks | undefined;
-  setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
   occurrenceData: OccurrenceData | undefined;
+  setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
+  setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
+  setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
-export default async function addHabit(
+/**
+ * @param date YYYY-MM-DD
+ */
+export default function addHabit(
   name: string,
-  todaysDateString: string,
+  date: string,
   states: States,
 ) {
-  const addedHabit = await window.electron['add-habit']({ name, date: todaysDateString });
-  addHabitStateQuery(name, addedHabit.id, todaysDateString, states);
+  const tempId = -new Date().getTime();
+  addHabitStateUpdate(tempId, name, date, states);
+  states.queue.enqueue<'add-habit'>(generateAddHabitTask(tempId, name, date, states));
 }

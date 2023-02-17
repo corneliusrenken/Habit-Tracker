@@ -1,7 +1,7 @@
 import TaskQueue from '../../taskQueue';
 import { Habit, OccurrenceData, Streaks } from '../../../globalTypes';
-import { generateDeleteHabitTask } from '../tasks';
-import { deleteHabitStateUpdate } from '../stateUpdaters';
+import { generateUpdateHabitTask } from '../tasks';
+import { updateHabitStateUpdate } from '../stateUpdaters';
 
 type States = {
   queue: TaskQueue;
@@ -9,13 +9,13 @@ type States = {
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
   setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  setInInput: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function deleteHabit(
+export default function renameHabit(
   habitId: number,
+  name: string,
   states: States,
 ) {
-  deleteHabitStateUpdate(habitId, states);
-  states.queue.enqueue<'delete-habit'>(generateDeleteHabitTask(habitId));
+  updateHabitStateUpdate(habitId, { name }, states);
+  states.queue.enqueue<'update-habit'>(generateUpdateHabitTask(habitId, { name }));
 }
