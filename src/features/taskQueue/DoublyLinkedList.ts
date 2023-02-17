@@ -39,6 +39,10 @@ export default class DoublyLinkedList<T> {
 
     this.size -= 1;
 
+    if (this.size === 0) {
+      this.tail = null;
+    }
+
     return value;
   }
 }

@@ -16,6 +16,8 @@ test('adding the first item to the tail also sets the head', () => {
   expect(list.head).toBe(null);
   list.unshift(1);
   expect(list.head?.value).toBe(1);
+  list.unshift(2);
+  expect(list.head?.value).toBe(1);
 });
 
 test('removing an item from the head of the list sets the head to be next in line and returns the removed item', () => {
@@ -30,6 +32,16 @@ test('removing an item from the head of the list sets the head to be next in lin
   expect(list.head?.value).toBe(3);
   expect(list.pop()).toBe(3);
   expect(list.head).toBe(null);
+});
+
+test('removing the last item sets the head and tail to null', () => {
+  const list = new DoublyLinkedList<number>();
+  list.unshift(1);
+  expect(list.head?.value).toBe(1);
+  expect(list.tail?.value).toBe(1);
+  expect(list.pop()).toBe(1);
+  expect(list.head).toBe(null);
+  expect(list.tail).toBe(null);
 });
 
 test('removing an item from the head when the list is empty returns undefined', () => {
