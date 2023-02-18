@@ -23,21 +23,15 @@ export default function addOccurrenceStateUpdate(
       throw new Error('occurrence with the given parameters already exists');
     }
 
-    return {
-      oldest: {
-        ...previousOccurrenceData.oldest,
-        [habitId]: getMinimumDateString([previousOccurrenceData.oldest[habitId], date]),
-      },
-      dates: {
-        ...previousOccurrenceData.dates,
-        [date]: {
-          ...previousOccurrenceData.dates[date],
-          [habitId]: {
-            complete: false,
-            visible: true,
-          },
-        },
-      },
-    };
+    const newOccurrenceData: OccurrenceData = JSON.parse(JSON.stringify(previousOccurrenceData));
+
+    newOccurrenceData.oldest[habitId] = getMinimumDateString([
+      previousOccurrenceData.oldest[habitId],
+      date,
+    ]);
+
+    newOccurrenceData.dates[date][habitId] = { complete: false, visible: true };
+
+    return newOccurrenceData;
   });
 }

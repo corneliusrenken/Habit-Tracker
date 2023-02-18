@@ -30,7 +30,10 @@ export default function deleteHabitStateUpdate(
       throw new Error('habit with this id doesn\'t exist');
     }
 
-    newHabits = previousHabits.filter(({ id }) => id !== habitId);
+    newHabits = JSON.parse(JSON.stringify(previousHabits));
+
+    newHabits = newHabits.filter(({ id }) => id !== habitId);
+
     return newHabits;
   });
 
@@ -39,10 +42,7 @@ export default function deleteHabitStateUpdate(
 
     const dates = Object.keys(previousOccurrenceData.dates);
 
-    const newOccurrenceData = {
-      oldest: { ...previousOccurrenceData.oldest },
-      dates: { ...previousOccurrenceData.dates },
-    };
+    const newOccurrenceData: OccurrenceData = JSON.parse(JSON.stringify(previousOccurrenceData));
 
     delete newOccurrenceData.oldest[habitId];
 
@@ -56,7 +56,7 @@ export default function deleteHabitStateUpdate(
   setStreaks((previousStreaks) => {
     if (!previousStreaks) throw new Error('state should not be undefined');
 
-    const newStreaks = { ...previousStreaks };
+    const newStreaks: Streaks = JSON.parse(JSON.stringify(previousStreaks));
 
     delete newStreaks[habitId];
 

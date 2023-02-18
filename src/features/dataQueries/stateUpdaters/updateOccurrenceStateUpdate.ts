@@ -35,18 +35,11 @@ export default function updateOccurrenceStateUpdate(
       throw new Error('occurrence does not exist for given date and habit id');
     }
 
-    newOccurrenceData = {
-      ...previousOccurrenceData,
-      dates: {
-        ...previousOccurrenceData.dates,
-        [occurrenceDate]: {
-          ...previousOccurrenceData.dates[occurrenceDate],
-          [habitId]: {
-            ...previousOccurrenceData.dates[occurrenceDate][habitId],
-            ...updateData,
-          },
-        },
-      },
+    newOccurrenceData = JSON.parse(JSON.stringify(previousOccurrenceData));
+
+    newOccurrenceData.dates[occurrenceDate][habitId] = {
+      ...newOccurrenceData.dates[occurrenceDate][habitId],
+      ...updateData,
     };
 
     const previousOldestValue = previousOccurrenceData.oldest[habitId];
@@ -73,11 +66,12 @@ export default function updateOccurrenceStateUpdate(
   setStreaks((previousStreaks) => {
     if (!previousStreaks) throw new Error('state should not be undefined');
 
-    const newStreaks = recalculateStreak(habitId, currentDate, newOccurrenceData);
+    const newStreaks: Streaks = JSON.parse(JSON.stringify(previousStreaks));
 
-    return {
-      ...previousStreaks,
-      [habitId]: newStreaks,
-    };
+    const newStreak = recalculateStreak(habitId, currentDate, newOccurrenceData);
+
+    newStreaks[habitId] = newStreak;
+
+    return newStreaks;
   });
 }

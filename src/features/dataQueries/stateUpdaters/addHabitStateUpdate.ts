@@ -26,6 +26,10 @@ export default function addHabitStateUpdate(
       throw new Error('habit id has to be unique');
     }
 
+    const newHabits : Habit[] = JSON.parse(JSON.stringify(previousHabits));
+
+    newHabits.push({ id: habitId, name });
+
     return [
       ...previousHabits,
       { id: habitId, name },
@@ -35,30 +39,22 @@ export default function addHabitStateUpdate(
   setStreaks((previousStreaks) => {
     if (!previousStreaks) throw new Error('state should not be undefined');
 
-    return {
-      ...previousStreaks,
-      [habitId]: { current: 0, maximum: 0 },
-    };
+    const newStreaks: Streaks = JSON.parse(JSON.stringify(previousStreaks));
+
+    newStreaks[habitId] = { current: 0, maximum: 0 };
+
+    return newStreaks;
   });
 
   setOccurrenceData((previousOccurrenceData) => {
     if (!previousOccurrenceData) throw new Error('state should not be undefined');
 
-    return {
-      oldest: {
-        ...previousOccurrenceData.oldest,
-        [habitId]: date,
-      },
-      dates: {
-        ...previousOccurrenceData.dates,
-        [date]: {
-          ...previousOccurrenceData.dates[date],
-          [habitId]: {
-            complete: false,
-            visible: true,
-          },
-        },
-      },
-    };
+    const newOccurrenceData: OccurrenceData = JSON.parse(JSON.stringify(previousOccurrenceData));
+
+    newOccurrenceData.oldest[habitId] = date;
+
+    newOccurrenceData.dates[date][habitId] = { complete: false, visible: true };
+
+    return newOccurrenceData;
   });
 }

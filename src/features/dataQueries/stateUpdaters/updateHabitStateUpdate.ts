@@ -26,8 +26,10 @@ export default function updateHabitStateUpdate(
       throw new Error('no habit exists with the given id');
     }
 
+    const newHabits: Habit[] = JSON.parse(JSON.stringify(previousHabits));
+
     if ('name' in updateData) {
-      return previousHabits.map((habit) => (habit.id === habitId
+      return newHabits.map((habit) => (habit.id === habitId
         ? { ...habit, name: updateData.name }
         : habit));
     }
@@ -37,7 +39,6 @@ export default function updateHabitStateUpdate(
         throw new Error('new list position is out of bounds');
       }
 
-      const newHabits = [...previousHabits];
       const toUpdateIndex = newHabits.findIndex((habit) => habit.id === habitId);
       const toUpdateHabit = newHabits.splice(toUpdateIndex, 1)[0];
       newHabits.splice(updateData.listPosition, 0, toUpdateHabit);
@@ -52,7 +53,7 @@ export default function updateHabitStateUpdate(
         throw new Error('habit id has to be unique');
       }
 
-      return previousHabits.map((habit) => (habit.id === habitId
+      return newHabits.map((habit) => (habit.id === habitId
         ? { ...habit, id: updateData.id }
         : habit));
     }
