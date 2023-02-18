@@ -57,9 +57,9 @@ export default function seedDatabase(
 
     if (init) {
       init = false;
-      addDay(database, currentDateString);
+      addDay(database, { date: currentDateString });
       habitNames.forEach((habitName) => {
-        const habitId = addHabit(database, habitName, currentDateString).id;
+        const habitId = addHabit(database, { name: habitName, date: currentDateString }).id;
         habitNameToIds[habitName] = habitId;
       });
       continue;
@@ -67,15 +67,21 @@ export default function seedDatabase(
 
     const login = Math.random() <= loginProbabilityDecimal;
     if (!login) continue;
-    addDay(database, currentDateString);
+    addDay(database, { date: currentDateString });
 
     habitNames.forEach((habitName) => {
       const complete = Math.random() <= habitCompleteProbabilityDecimal;
       const visible = Math.random() <= habitVisibleProbabilityDecimal;
       if (!complete && !visible) return;
-      addOccurrences(database, [habitNameToIds[habitName]], currentDateString);
-      updateOccurrence(database, habitNameToIds[habitName], currentDateString, { complete });
-      updateOccurrence(database, habitNameToIds[habitName], currentDateString, { visible });
+      addOccurrences(database, { habitIds: [habitNameToIds[habitName]], date: currentDateString });
+      updateOccurrence(
+        database,
+        { habitId: habitNameToIds[habitName], date: currentDateString, updateData: { complete } },
+      );
+      updateOccurrence(
+        database,
+        { habitId: habitNameToIds[habitName], date: currentDateString, updateData: { visible } },
+      );
     });
   }
 }

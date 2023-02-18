@@ -8,7 +8,12 @@ type UpdateData = ({
   listPosition: number;
 });
 
-export default function updateHabit(database: Database, habitId: number, updateData: UpdateData) {
+export default function updateHabit(
+  database: Database,
+  options: { habitId: number, updateData: UpdateData },
+) {
+  const { habitId, updateData } = options;
+
   const getHabitByIdStmt = database.prepare('SELECT name, list_position FROM habits WHERE id = ?');
 
   const habitPreUpdate = getHabitByIdStmt.get(habitId);

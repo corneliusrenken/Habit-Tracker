@@ -25,7 +25,10 @@ const channelFunctions = {
   'add-habit': addHabit,
   'delete-habit': deleteHabit,
   'update-habit': updateHabit,
-  'add-occurrence': (database: Database, habitId: number, date: string) => addOccurrences(database, [habitId], date),
+  'add-occurrence': (database: Database, options: { habitId: number, date: string }) => {
+    const { habitId, date } = options;
+    addOccurrences(database, { habitIds: [habitId], date });
+  },
   'delete-occurrence': deleteOccurrence,
   'update-occurrence': updateOccurrence,
 };

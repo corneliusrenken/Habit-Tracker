@@ -16,9 +16,9 @@ beforeEach(() => {
   updateListPositionStmt = db.prepare('UPDATE habits SET list_position = ? WHERE name = ?');
   const addDayStmt = db.prepare('INSERT INTO days (date) VALUES (?)');
   addDayStmt.run('2023-02-12');
-  addHabit(db, 'exercise', '2023-02-12');
-  addHabit(db, 'read', '2023-02-12');
-  addHabit(db, 'sleep', '2023-02-12');
+  addHabit(db, { name: 'exercise', date: '2023-02-12' });
+  addHabit(db, { name: 'read', date: '2023-02-12' });
+  addHabit(db, { name: 'sleep', date: '2023-02-12' });
 });
 
 afterEach(() => {

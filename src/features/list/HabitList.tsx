@@ -8,11 +8,11 @@ type Props = {
   todaysOccurrences: OccurrenceData['dates'][string];
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  updateHabitCompleted: (habitId: number, completed: boolean) => void;
+  updateOccurrenceCompleted: (habitId: number, complete: boolean) => void;
 };
 
 export default function HabitList({
-  habits, streaks, todaysOccurrences, selectedIndex, setSelectedIndex, updateHabitCompleted,
+  habits, streaks, todaysOccurrences, selectedIndex, setSelectedIndex, updateOccurrenceCompleted,
 }: Props) {
   return (
     <div>
@@ -28,7 +28,7 @@ export default function HabitList({
             completed={completed}
             selected={selected}
             select={() => setSelectedIndex(index)}
-            toggleCompleted={() => updateHabitCompleted(id, !completed)}
+            toggleCompleted={() => updateOccurrenceCompleted(id, !completed)}
           />
         );
       })}

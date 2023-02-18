@@ -11,7 +11,7 @@ type States = {
   occurrenceData: OccurrenceData | undefined;
   selectedHabits: Habit[];
   selectedIndex: number | null;
-  updateHabitVisibility: (habitId: number, visible: boolean) => void;
+  updateOccurrenceVisibility: (habitId: number, visible: boolean) => void;
 };
 
 export default function toggleCurrentHabitVisibility(states: States) {
@@ -21,7 +21,7 @@ export default function toggleCurrentHabitVisibility(states: States) {
     occurrenceData,
     selectedHabits,
     selectedIndex,
-    updateHabitVisibility,
+    updateOccurrenceVisibility,
   } = states;
 
   if (selectedHabits.length === 0 || !occurrenceData) return;
@@ -35,5 +35,5 @@ export default function toggleCurrentHabitVisibility(states: States) {
   const currentVisibility = todaysOccurrences[selectedHabit.id] === undefined
     ? false
     : todaysOccurrences[selectedHabit.id].visible;
-  updateHabitVisibility(selectedHabit.id, !currentVisibility);
+  updateOccurrenceVisibility(selectedHabit.id, !currentVisibility);
 }

@@ -14,12 +14,12 @@ type Props = {
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   reorderingList: boolean;
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
-  addHabit: (name: string) => Promise<void>;
-  deleteHabit: (habitId: number) => void;
-  renameHabit: (habitId: number, name: string) => void;
-  updateHabitListPosition: (habitId: number, newListPosition: number) => void;
-  updateHabitVisibility: (habitId: number, visible: boolean) => void;
   setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
+  addHabit: (name: string) => void;
+  deleteHabit: (habitId: number) => void;
+  updateHabitListPosition: (habitId: number, newPosition: number) => void;
+  updateHabitName: (habitId: number, newName: string) => void;
+  updateOccurrenceVisibility: (habitId: number, visible: boolean) => void;
 };
 
 export default function SelectionList({
@@ -32,12 +32,12 @@ export default function SelectionList({
   setInInput,
   reorderingList,
   setReorderingList,
+  setModalContentGenerator,
   addHabit,
   deleteHabit,
-  renameHabit,
   updateHabitListPosition,
-  updateHabitVisibility,
-  setModalContentGenerator,
+  updateHabitName,
+  updateOccurrenceVisibility,
 }: Props) {
   const elementConstructors = useMemoizedSelectionListItemConstructors({
     allowTabTraversal,
@@ -49,10 +49,10 @@ export default function SelectionList({
     setInInput,
     reorderingList,
     setReorderingList,
-    deleteHabit,
-    renameHabit,
-    updateHabitVisibility,
     setModalContentGenerator,
+    deleteHabit,
+    updateHabitName,
+    updateOccurrenceVisibility,
   });
 
   return (

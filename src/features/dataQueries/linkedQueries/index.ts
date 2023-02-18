@@ -1,15 +1,15 @@
 import addHabit from './addHabit';
 import deleteHabit from './deleteHabit';
-import renameHabit from './renameHabit';
-import updateHabitCompleted from './updateHabitCompleted';
+import updateHabitName from './updateHabitName';
+import updateOccurrenceCompleted from './updateOccurrenceCompleted';
 import updateHabitListPosition from './updateHabitListPosition';
-import updateHabitVisibility from './updateHabitVisibility';
+import updateOccurrenceVisibility from './updateOccurrenceVisibility';
 
 export {
   addHabit,
   deleteHabit,
-  renameHabit,
-  updateHabitCompleted,
+  updateHabitName,
+  updateOccurrenceCompleted,
   updateHabitListPosition,
-  updateHabitVisibility,
+  updateOccurrenceVisibility,
 };

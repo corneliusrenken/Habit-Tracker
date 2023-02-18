@@ -2,27 +2,29 @@ import { useCallback } from 'react';
 import {
   addHabit,
   deleteHabit,
-  renameHabit,
-  updateHabitCompleted,
   updateHabitListPosition,
-  updateHabitVisibility,
+  updateHabitName,
+  updateOccurrenceCompleted,
+  updateOccurrenceVisibility,
 } from './linkedQueries';
 import {
   Habit,
   DateObject,
   OccurrenceData,
   Streaks,
-  ListView,
+  View,
 } from '../../globalTypes';
+import TaskQueue from '../taskQueue';
 
 type States = {
+  queue: TaskQueue;
   dateObject: DateObject;
-  latchedListView: ListView;
+  view: View;
   habits: Habit[] | undefined;
-  setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
   occurrenceData: OccurrenceData | undefined;
-  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
   streaks: Streaks | undefined;
+  setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
+  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
   setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
@@ -30,105 +32,162 @@ type States = {
 
 export default function useDataQueries(states: States) {
   const {
+    queue,
     dateObject,
-    latchedListView,
+    view,
     habits,
-    setHabits,
     occurrenceData,
-    setOccurrenceData,
     streaks,
+    setHabits,
+    setOccurrenceData,
     setStreaks,
     setSelectedIndex,
     setInInput,
   } = states;
 
-  const addHabitMemo = useCallback(async (name: string) => (
+  const selectedDate = view.name === 'yesterday'
+    ? dateObject.yesterday.dateString
+    : dateObject.today.dateString;
+
+  const addHabitMemo = useCallback((
+    name: string,
+  ) => (
     addHabit(name, dateObject.today.dateString, {
+      queue,
       habits,
-      setHabits,
-      occurrenceData,
-      setOccurrenceData,
       streaks,
+      occurrenceData,
+      setHabits,
       setStreaks,
+      setOccurrenceData,
+      setSelectedIndex,
     })
   ), [
     dateObject.today.dateString,
+    queue,
     habits,
+    streaks,
     occurrenceData,
     setHabits,
-    setOccurrenceData,
     setStreaks,
-    streaks,
+    setOccurrenceData,
+    setSelectedIndex,
   ]);
 
-  const deleteHabitMemo = useCallback((habitId: number) => (
+  const deleteHabitMemo = useCallback((
+    habitId: number,
+  ) => (
     deleteHabit(habitId, {
+      queue,
       setHabits,
+      setOccurrenceData,
+      setStreaks,
       setSelectedIndex,
       setInInput,
     })
   ), [
+    queue,
     setHabits,
+    setOccurrenceData,
+    setStreaks,
     setSelectedIndex,
     setInInput,
   ]);
 
-  const renameHabitMemo = useCallback((habitId: number, name: string) => (
-    renameHabit(habitId, name, { habits, setHabits })
-  ), [
-    habits,
-    setHabits,
-  ]);
-
-  const updateHabitCompletedMemo = useCallback((habitId: number, completed: boolean) => {
-    const dateString = latchedListView.name === 'yesterday'
-      ? dateObject.yesterday.dateString
-      : dateObject.today.dateString;
-
-    updateHabitCompleted(habitId, completed, dateString, latchedListView.name === 'yesterday', {
-      streaks,
-      setStreaks,
-      occurrenceData,
+  const updateHabitListPositionMemo = useCallback((
+    habitId: number,
+    newPosition: number,
+  ) => (
+    updateHabitListPosition(habitId, newPosition, {
+      queue,
+      setHabits,
       setOccurrenceData,
-    });
-  }, [
-    dateObject,
-    latchedListView,
-    occurrenceData,
+      setStreaks,
+      setSelectedIndex,
+    })
+  ), [
+    queue,
+    setHabits,
     setOccurrenceData,
     setStreaks,
-    streaks,
-  ]);
-
-  const updateHabitListPositionMemo = useCallback((habitId: number, newListPosition: number) => (
-    updateHabitListPosition(habitId, newListPosition, { habits, setHabits, setSelectedIndex })
-  ), [
-    habits,
-    setHabits,
     setSelectedIndex,
   ]);
 
-  const updateHabitVisibilityMemo = useCallback((habitId: number, visible: boolean) => (
-    updateHabitVisibility(habitId, visible, dateObject.today.dateString, {
-      streaks,
-      setStreaks,
-      occurrenceData,
+  const updateHabitNameMemo = useCallback((
+    habitId: number,
+    newName: string,
+  ) => (
+    updateHabitName(habitId, newName, {
+      queue,
+      setHabits,
       setOccurrenceData,
+      setStreaks,
+      setSelectedIndex,
     })
   ), [
-    dateObject.today.dateString,
-    occurrenceData,
+    queue,
+    setHabits,
     setOccurrenceData,
     setStreaks,
+    setSelectedIndex,
+  ]);
+
+  const updateOccurrenceCompletedMemo = useCallback((
+    habitId: number,
+    complete: boolean,
+  ) => (
+    updateOccurrenceCompleted(
+      habitId,
+      complete,
+      selectedDate,
+      dateObject.today.dateString,
+      {
+        queue,
+        setOccurrenceData,
+        setStreaks,
+      },
+    )
+  ), [
+    dateObject,
+    selectedDate,
+    queue,
+    setOccurrenceData,
+    setStreaks,
+  ]);
+
+  const updateOccurrenceVisibilityMemo = useCallback((
+    habitId: number,
+    visible: boolean,
+  ) => (
+    updateOccurrenceVisibility(
+      habitId,
+      visible,
+      selectedDate,
+      dateObject.today.dateString,
+      {
+        queue,
+        streaks,
+        occurrenceData,
+        setStreaks,
+        setOccurrenceData,
+      },
+    )
+  ), [
+    dateObject,
+    selectedDate,
+    queue,
     streaks,
+    occurrenceData,
+    setStreaks,
+    setOccurrenceData,
   ]);
 
   return {
     addHabit: addHabitMemo,
     deleteHabit: deleteHabitMemo,
-    renameHabit: renameHabitMemo,
-    updateHabitCompleted: updateHabitCompletedMemo,
     updateHabitListPosition: updateHabitListPositionMemo,
-    updateHabitVisibility: updateHabitVisibilityMemo,
+    updateHabitName: updateHabitNameMemo,
+    updateOccurrenceCompleted: updateOccurrenceCompletedMemo,
+    updateOccurrenceVisibility: updateOccurrenceVisibilityMemo,
   };
 }

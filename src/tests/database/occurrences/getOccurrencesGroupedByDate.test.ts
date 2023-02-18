@@ -20,8 +20,8 @@ beforeEach(() => {
   const addOnlyHabitStmt = db.prepare('INSERT INTO habits (name, list_position) VALUES (?, ?)');
   exerciseHabitId = Number(addOnlyHabitStmt.run('exercise', 0).lastInsertRowid);
   readHabitId = Number(addOnlyHabitStmt.run('read', 1).lastInsertRowid);
-  addDay(db, '2023-01-17');
-  addDay(db, '2023-01-18');
+  addDay(db, { date: '2023-01-17' });
+  addDay(db, { date: '2023-01-18' });
 });
 
 afterEach(() => {
@@ -36,7 +36,7 @@ test('returns an empty object if no day entries exist', () => {
 });
 
 test('returns a single occurrence correctly', () => {
-  addOccurrences(db, [exerciseHabitId], '2023-01-17');
+  addOccurrences(db, { habitIds: [exerciseHabitId], date: '2023-01-17' });
 
   const occurrences = getOccurrencesGroupedByDate(db);
   expect(occurrences).toEqual({
@@ -51,8 +51,8 @@ test('returns a single occurrence correctly', () => {
 });
 
 test('returns multiple occurrences on the same date correctly', () => {
-  addOccurrences(db, [exerciseHabitId], '2023-01-17');
-  addOccurrences(db, [readHabitId], '2023-01-17');
+  addOccurrences(db, { habitIds: [exerciseHabitId], date: '2023-01-17' });
+  addOccurrences(db, { habitIds: [readHabitId], date: '2023-01-17' });
 
   const occurrences = getOccurrencesGroupedByDate(db);
   expect(occurrences).toEqual({
@@ -71,8 +71,8 @@ test('returns multiple occurrences on the same date correctly', () => {
 });
 
 test('returns multiple occurrences on different dates correctly', () => {
-  addOccurrences(db, [exerciseHabitId], '2023-01-17');
-  addOccurrences(db, [readHabitId], '2023-01-18');
+  addOccurrences(db, { habitIds: [exerciseHabitId], date: '2023-01-17' });
+  addOccurrences(db, { habitIds: [readHabitId], date: '2023-01-18' });
 
   const occurrences = getOccurrencesGroupedByDate(db);
   expect(occurrences).toEqual({
@@ -106,14 +106,14 @@ test('ignores occurrences whose habit got deleted', () => {
     '2023-01-18': {},
   });
 
-  addOccurrences(db, [exerciseHabitId], '2023-01-17');
+  addOccurrences(db, { habitIds: [exerciseHabitId], date: '2023-01-17' });
   occurrences = getOccurrencesGroupedByDate(db);
   expect(occurrences).toEqual({
     '2023-01-17': { [exerciseHabitId]: { complete: false, visible: true } },
     '2023-01-18': {},
   });
 
-  deleteHabit(db, exerciseHabitId);
+  deleteHabit(db, { habitId: exerciseHabitId });
   occurrences = getOccurrencesGroupedByDate(db);
   expect(occurrences).toEqual({
     '2023-01-17': {},
@@ -122,9 +122,9 @@ test('ignores occurrences whose habit got deleted', () => {
 });
 
 test('returns the correct result if an occurrence with null as habit_id exist before non-null habit_id occurrences', () => {
-  addOccurrences(db, [exerciseHabitId], '2023-01-17');
-  addOccurrences(db, [readHabitId], '2023-01-17');
-  deleteHabit(db, exerciseHabitId);
+  addOccurrences(db, { habitIds: [exerciseHabitId], date: '2023-01-17' });
+  addOccurrences(db, { habitIds: [readHabitId], date: '2023-01-17' });
+  deleteHabit(db, { habitId: exerciseHabitId });
 
   const occurrences = getOccurrencesGroupedByDate(db);
   expect(occurrences).toEqual({
@@ -134,9 +134,9 @@ test('returns the correct result if an occurrence with null as habit_id exist be
 });
 
 test('returns the correct result if an occurrence with null as habit_id exist after non-null habit_id occurrences', () => {
-  addOccurrences(db, [exerciseHabitId], '2023-01-17');
-  addOccurrences(db, [readHabitId], '2023-01-17');
-  deleteHabit(db, readHabitId);
+  addOccurrences(db, { habitIds: [exerciseHabitId], date: '2023-01-17' });
+  addOccurrences(db, { habitIds: [readHabitId], date: '2023-01-17' });
+  deleteHabit(db, { habitId: readHabitId });
 
   const occurrences = getOccurrencesGroupedByDate(db);
   expect(occurrences).toEqual({
@@ -146,11 +146,11 @@ test('returns the correct result if an occurrence with null as habit_id exist af
 });
 
 test('returns the correct result if multiple occurrences with null as habit_id exist before non-null habit_id occurrences', () => {
-  addOccurrences(db, [exerciseHabitId], '2023-01-17');
-  addOccurrences(db, [readHabitId], '2023-01-17');
-  const sleepHabitId = addHabit(db, 'sleep', '2023-01-17').id; // creates the occurrence as well
-  deleteHabit(db, exerciseHabitId);
-  deleteHabit(db, readHabitId);
+  addOccurrences(db, { habitIds: [exerciseHabitId], date: '2023-01-17' });
+  addOccurrences(db, { habitIds: [readHabitId], date: '2023-01-17' });
+  const sleepHabitId = addHabit(db, { name: 'sleep', date: '2023-01-17' }).id; // creates the occurrence as well
+  deleteHabit(db, { habitId: exerciseHabitId });
+  deleteHabit(db, { habitId: readHabitId });
 
   const occurrences = getOccurrencesGroupedByDate(db);
   expect(occurrences).toEqual({
@@ -160,11 +160,11 @@ test('returns the correct result if multiple occurrences with null as habit_id e
 });
 
 test('returns the correct result if multiple occurrences with null as habit_id exist after non-null habit_id occurrences', () => {
-  addOccurrences(db, [exerciseHabitId], '2023-01-17');
-  addOccurrences(db, [readHabitId], '2023-01-17');
-  const sleepHabitId = addHabit(db, 'sleep', '2023-01-17').id; // creates the occurrence as well
-  deleteHabit(db, readHabitId);
-  deleteHabit(db, sleepHabitId);
+  addOccurrences(db, { habitIds: [exerciseHabitId], date: '2023-01-17' });
+  addOccurrences(db, { habitIds: [readHabitId], date: '2023-01-17' });
+  const sleepHabitId = addHabit(db, { name: 'sleep', date: '2023-01-17' }).id; // creates the occurrence as well
+  deleteHabit(db, { habitId: readHabitId });
+  deleteHabit(db, { habitId: sleepHabitId });
 
   const occurrences = getOccurrencesGroupedByDate(db);
   expect(occurrences).toEqual({

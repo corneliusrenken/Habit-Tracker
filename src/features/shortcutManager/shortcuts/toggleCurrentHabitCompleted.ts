@@ -11,7 +11,7 @@ type States = {
   selectedHabits: Habit[];
   selectedIndex: number | null;
   occurrenceData: OccurrenceData | undefined;
-  updateHabitCompleted: (habitId: number, completed: boolean) => void;
+  updateOccurrenceCompleted: (habitId: number, complete: boolean) => void;
 };
 
 export default function toggleCurrentHabitCompleted(states: States) {
@@ -21,7 +21,7 @@ export default function toggleCurrentHabitCompleted(states: States) {
     selectedHabits,
     selectedIndex,
     occurrenceData,
-    updateHabitCompleted,
+    updateOccurrenceCompleted,
   } = states;
 
   if (!occurrenceData || selectedHabits.length === 0) return;
@@ -34,5 +34,5 @@ export default function toggleCurrentHabitCompleted(states: States) {
     : occurrenceData.dates[dateObject.today.dateString];
   // if the selected habit is visible (checked above) it must be present in today's occurrences
   const currentCompletedState = todaysOccurrences[selectedHabit.id].complete;
-  updateHabitCompleted(selectedHabit.id, !currentCompletedState);
+  updateOccurrenceCompleted(selectedHabit.id, !currentCompletedState);
 }

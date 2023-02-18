@@ -21,7 +21,7 @@ export default async function initialize(todayDateString: string, states: States
       occurrencesGroupedByDate,
       oldestVisibleOccurrenceDates,
       streaks,
-    } = await window.electron['initialize-app'](todayDateString);
+    } = await window.electron['initialize-app']({ date: todayDateString });
 
     const todaysOccurrences = occurrencesGroupedByDate[todayDateString];
     const visibleHabitCount = Object.keys(todaysOccurrences).length;

@@ -23,13 +23,13 @@ type Props = {
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   reorderingList: boolean;
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
-  addHabit: (name: string) => Promise<void>;
-  deleteHabit: (habitId: number) => void;
-  renameHabit: (habitId: number, name: string) => void;
-  updateHabitCompleted: (habitId: number, completed: boolean) => void;
-  updateHabitListPosition: (habitId: number, newListPosition: number) => void;
-  updateHabitVisibility: (habitId: number, visible: boolean) => void;
   setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
+  addHabit: (name: string) => void;
+  deleteHabit: (habitId: number) => void;
+  updateHabitListPosition: (habitId: number, newPosition: number) => void;
+  updateHabitName: (habitId: number, newName: string) => void;
+  updateOccurrenceCompleted: (habitId: number, complete: boolean) => void;
+  updateOccurrenceVisibility: (habitId: number, visible: boolean) => void;
 };
 
 export default function List({
@@ -45,13 +45,13 @@ export default function List({
   setInInput,
   reorderingList,
   setReorderingList,
+  setModalContentGenerator,
   addHabit,
   deleteHabit,
-  renameHabit,
-  updateHabitCompleted,
   updateHabitListPosition,
-  updateHabitVisibility,
-  setModalContentGenerator,
+  updateHabitName,
+  updateOccurrenceCompleted,
+  updateOccurrenceVisibility,
 }: Props) {
   return (
     <div className="list" style={{ opacity: viewType === 'list' ? 1 : 0 }}>
@@ -62,7 +62,7 @@ export default function List({
           todaysOccurrences={todaysOccurrences}
           selectedIndex={selectedIndex}
           setSelectedIndex={setSelectedIndex}
-          updateHabitCompleted={updateHabitCompleted}
+          updateOccurrenceCompleted={updateOccurrenceCompleted}
         />
       ) : (
         <SelectionList
@@ -78,9 +78,9 @@ export default function List({
           setReorderingList={setReorderingList}
           addHabit={addHabit}
           deleteHabit={deleteHabit}
-          renameHabit={renameHabit}
           updateHabitListPosition={updateHabitListPosition}
-          updateHabitVisibility={updateHabitVisibility}
+          updateHabitName={updateHabitName}
+          updateOccurrenceVisibility={updateOccurrenceVisibility}
         />
       )}
     </div>

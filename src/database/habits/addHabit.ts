@@ -3,10 +3,12 @@ import { Database } from 'better-sqlite3';
 /**
  * @param date "YYYY-MM-DD"
  */
-export default function addHabit(database: Database, name: string, date: string): {
+export default function addHabit(database: Database, options: { name: string, date: string }): {
   id: number;
   name: string;
 } {
+  const { name, date } = options;
+
   const getDayStmt = database.prepare('SELECT id FROM days WHERE date = ?');
   const day = getDayStmt.get(date);
   if (day === undefined) {
