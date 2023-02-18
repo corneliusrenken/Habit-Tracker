@@ -22,8 +22,11 @@ import Layout from '../layout';
 import useDataQueries from '../dataQueries/useDataQueries';
 import useSetLeftAndRightDateMargins from './useSetLeftAndRightDateMargins';
 import useSelectedData from '../selectedData/useSelectedData';
+import TaskQueue from '../taskQueue';
 
 let initializedApp = false;
+
+const queue = new TaskQueue();
 
 export default function App() {
   // https://medium.com/swlh/how-to-store-a-function-with-the-usestate-hook-in-react-8a88dd4eede1
@@ -90,13 +93,14 @@ export default function App() {
   const {
     addHabit,
     deleteHabit,
-    renameHabit,
-    updateHabitCompleted,
     updateHabitListPosition,
-    updateHabitVisibility,
+    updateHabitName,
+    updateOccurrenceCompleted,
+    updateOccurrenceVisibility,
   } = useDataQueries({
+    queue,
     dateObject,
-    latchedListView,
+    view,
     habits,
     setHabits,
     occurrenceData,
@@ -123,13 +127,13 @@ export default function App() {
     setReorderingList,
     view,
     modalContentGenerator,
+    setModalContentGenerator,
     addHabit,
     deleteHabit,
-    renameHabit,
-    updateHabitCompleted,
     updateHabitListPosition,
-    updateHabitVisibility,
-    setModalContentGenerator,
+    updateHabitName,
+    updateOccurrenceCompleted,
+    updateOccurrenceVisibility,
   });
 
   useShortcutManager({
@@ -148,8 +152,8 @@ export default function App() {
     reorderingList,
     setModalContentGenerator,
     deleteHabit,
-    updateHabitCompleted,
-    updateHabitVisibility,
+    updateOccurrenceCompleted,
+    updateOccurrenceVisibility,
   });
 
   if (!habits || !occurrenceData || !streaks) return null;

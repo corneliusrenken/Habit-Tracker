@@ -14,10 +14,10 @@ type States = {
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   reorderingList: boolean;
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
-  deleteHabit: (habitId: number) => void;
-  renameHabit: (habitId: number, name: string) => void;
-  updateHabitVisibility: (habitId: number, visible: boolean) => void;
   setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
+  deleteHabit: (habitId: number) => void;
+  updateHabitName: (habitId: number, newName: string) => void;
+  updateOccurrenceVisibility: (habitId: number, visible: boolean) => void;
 };
 
 export default function useMemoizedSelectionListItemConstructors(states: States) {
@@ -32,10 +32,10 @@ export default function useMemoizedSelectionListItemConstructors(states: States)
       setInInput,
       reorderingList,
       setReorderingList,
-      deleteHabit,
-      renameHabit,
-      updateHabitVisibility,
       setModalContentGenerator,
+      deleteHabit,
+      updateHabitName,
+      updateOccurrenceVisibility,
     } = states;
 
     return habits.map(({ id, name }, index) => ({
@@ -54,7 +54,7 @@ export default function useMemoizedSelectionListItemConstructors(states: States)
             visible={visible}
             selected={selectedIndex === index}
             select={reorderingList || inInput ? undefined : () => setSelectedIndex(index)}
-            toggleVisibility={() => updateHabitVisibility(id, !visible)}
+            toggleVisibility={() => updateOccurrenceVisibility(id, !visible)}
             openDeleteHabitModal={() => openDeleteHabitModal(id, {
               deleteHabit,
               habits,
@@ -62,7 +62,7 @@ export default function useMemoizedSelectionListItemConstructors(states: States)
               setModalContentGenerator,
             })}
             renameHabit={(newName: string) => {
-              renameHabit(id, newName);
+              updateHabitName(id, newName);
             }}
             inInput={inInput}
             setInInput={setInInput}

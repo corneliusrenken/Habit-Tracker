@@ -32,13 +32,13 @@ type States = {
   reorderingList: boolean;
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
   modalContentGenerator: ModalContentGenerator | undefined;
-  addHabit: (name: string) => Promise<void>;
-  deleteHabit: (habitId: number) => void;
-  renameHabit: (habitId: number, name: string) => void;
-  updateHabitCompleted: (habitId: number, completed: boolean) => void;
-  updateHabitListPosition: (habitId: number, newListPosition: number) => void;
-  updateHabitVisibility: (habitId: number, visible: boolean) => void;
   setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
+  addHabit: (name: string) => void;
+  deleteHabit: (habitId: number) => void;
+  updateHabitListPosition: (habitId: number, newPosition: number) => void;
+  updateHabitName: (habitId: number, newName: string) => void;
+  updateOccurrenceCompleted: (habitId: number, complete: boolean) => void;
+  updateOccurrenceVisibility: (habitId: number, visible: boolean) => void;
 };
 
 export default function useMemoizedComponents(states: States) {
@@ -58,13 +58,13 @@ export default function useMemoizedComponents(states: States) {
     reorderingList,
     setReorderingList,
     modalContentGenerator,
+    setModalContentGenerator,
     addHabit,
     deleteHabit,
-    renameHabit,
-    updateHabitCompleted,
     updateHabitListPosition,
-    updateHabitVisibility,
-    setModalContentGenerator,
+    updateHabitName,
+    updateOccurrenceCompleted,
+    updateOccurrenceVisibility,
   } = states;
 
   const viewType = viewToViewType[view.name];
@@ -112,13 +112,13 @@ export default function useMemoizedComponents(states: States) {
           setInInput={setInInput}
           reorderingList={reorderingList}
           setReorderingList={setReorderingList}
+          setModalContentGenerator={setModalContentGenerator}
           addHabit={addHabit}
           deleteHabit={deleteHabit}
-          renameHabit={renameHabit}
-          updateHabitCompleted={updateHabitCompleted}
           updateHabitListPosition={updateHabitListPosition}
-          updateHabitVisibility={updateHabitVisibility}
-          setModalContentGenerator={setModalContentGenerator}
+          updateHabitName={updateHabitName}
+          updateOccurrenceCompleted={updateOccurrenceCompleted}
+          updateOccurrenceVisibility={updateOccurrenceVisibility}
         />
       )
       : <div />
@@ -136,13 +136,13 @@ export default function useMemoizedComponents(states: States) {
     reorderingList,
     setReorderingList,
     setSelectedIndex,
+    setModalContentGenerator,
     addHabit,
     deleteHabit,
-    renameHabit,
-    updateHabitCompleted,
     updateHabitListPosition,
-    updateHabitVisibility,
-    setModalContentGenerator,
+    updateHabitName,
+    updateOccurrenceCompleted,
+    updateOccurrenceVisibility,
   ]);
 
   return {

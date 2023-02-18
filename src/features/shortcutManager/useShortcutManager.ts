@@ -31,8 +31,8 @@ type States = {
   reorderingList: boolean;
   setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
   deleteHabit: (habitId: number) => void;
-  updateHabitCompleted: (habitId: number, completed: boolean) => void;
-  updateHabitVisibility: (habitId: number, visible: boolean) => void;
+  updateOccurrenceCompleted: (habitId: number, complete: boolean) => void;
+  updateOccurrenceVisibility: (habitId: number, visible: boolean) => void;
 };
 
 export default function useShortcutManager(states: States) {
