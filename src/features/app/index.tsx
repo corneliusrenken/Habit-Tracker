@@ -4,8 +4,8 @@ import React, {
   useRef,
   useState,
 } from 'react';
-import getDateObject from '../common/getDateObject';
 import {
+  DateObject,
   Habit,
   ListView,
   ModalContentGenerator,
@@ -23,15 +23,15 @@ import useDataQueries from '../dataQueries/useDataQueries';
 import useSetLeftAndRightDateMargins from './useSetLeftAndRightDateMargins';
 import useSelectedData from '../selectedData/useSelectedData';
 import TaskQueue from '../taskQueue';
-
-let initializedApp = false;
-
-const queue = new TaskQueue();
+import onDateChange from '../onDateChange/onDateChange';
+import getDateObject from '../common/getDateObject';
 
 export default function App() {
+  const queue = useRef(new TaskQueue());
+  const firstRender = useRef(true);
   // https://medium.com/swlh/how-to-store-a-function-with-the-usestate-hook-in-react-8a88dd4eede1
   // using a function in useState makes it's initializer only run once instead of on every cycle
-  const [dateObject] = useState(() => getDateObject(6));
+  const [dateObject, setDateObject] = useState(() => getDateObject(6));
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const [view, _setView] = useState<View>(() => ({ name: 'today' }));
   const [latchedListView, setLatchedListView] = useState<ListView>({ name: 'today' });
@@ -65,19 +65,31 @@ export default function App() {
     }
   }, [view]);
 
-  // improve this later...
   useEffect(() => {
-    if (!initializedApp) {
-      initializedApp = true;
+    if (firstRender.current) {
+      firstRender.current = false;
+
       initialize(dateObject.today.dateString, {
-        setView,
         setSelectedIndex,
         setHabits,
         setOccurrenceData,
         setStreaks,
       });
     }
-  }, [dateObject, setView]);
+
+    const cancelInterval = onDateChange(() => {
+      const newDateObject = getDateObject(6);
+
+      setDateObject(newDateObject);
+      initialize(newDateObject.today.dateString, {
+        setSelectedIndex,
+        setHabits,
+        setOccurrenceData,
+        setStreaks,
+      });
+    });
+    return cancelInterval;
+  }, [dateObject]);
 
   const selectedData = useSelectedData({
     dateObject,
@@ -98,7 +110,7 @@ export default function App() {
     updateOccurrenceCompleted,
     updateOccurrenceVisibility,
   } = useDataQueries({
-    queue,
+    queue: queue.current,
     dateObject,
     view,
     habits,

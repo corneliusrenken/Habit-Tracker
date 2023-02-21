@@ -1,4 +1,8 @@
-import { Habit, OccurrenceData, Streaks } from '../../globalTypes';
+import {
+  Habit,
+  OccurrenceData,
+  Streaks,
+} from '../../globalTypes';
 
 type States = {
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
@@ -7,7 +11,10 @@ type States = {
   setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
 };
 
-export default async function initialize(todayDateString: string, states: States) {
+/**
+ * @param date YYYY-MM-DD
+ */
+export default async function initialize(date: string, states: States) {
   const {
     setSelectedIndex, setHabits, setOccurrenceData, setStreaks,
   } = states;
@@ -18,13 +25,12 @@ export default async function initialize(todayDateString: string, states: States
       occurrencesGroupedByDate,
       oldestVisibleOccurrenceDates,
       streaks,
-    } = await window.electron['initialize-app']({ date: todayDateString });
+    } = await window.electron['initialize-app']({ date });
 
-    const todaysOccurrences = occurrencesGroupedByDate[todayDateString];
+    const todaysOccurrences = occurrencesGroupedByDate[date];
     const visibleHabitCount = Object.keys(todaysOccurrences).length;
 
     setSelectedIndex(visibleHabitCount === 0 ? null : 0);
-
     setHabits(habits);
     setOccurrenceData({
       dates: occurrencesGroupedByDate,
