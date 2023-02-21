@@ -1,9 +1,6 @@
-import {
-  Habit, OccurrenceData, Streaks, View,
-} from '../../globalTypes';
+import { Habit, OccurrenceData, Streaks } from '../../globalTypes';
 
 type States = {
-  setView: (newView: View) => void;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
@@ -12,7 +9,7 @@ type States = {
 
 export default async function initialize(todayDateString: string, states: States) {
   const {
-    setView, setSelectedIndex, setHabits, setOccurrenceData, setStreaks,
+    setSelectedIndex, setHabits, setOccurrenceData, setStreaks,
   } = states;
 
   try {
@@ -26,7 +23,6 @@ export default async function initialize(todayDateString: string, states: States
     const todaysOccurrences = occurrencesGroupedByDate[todayDateString];
     const visibleHabitCount = Object.keys(todaysOccurrences).length;
 
-    setView({ name: 'today' });
     setSelectedIndex(visibleHabitCount === 0 ? null : 0);
 
     setHabits(habits);
