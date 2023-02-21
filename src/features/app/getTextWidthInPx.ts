@@ -1,8 +1,12 @@
-export default function getTextWidthInPx(text: string | number, fontSize: number): number {
+export default function getTextWidthInPx(
+  text: string | number,
+  fontSize: number,
+  classList: string[],
+): number {
   const el = document.createElement('div');
   document.body.appendChild(el);
+  el.classList.add(...classList);
 
-  el.style.fontSize = `${fontSize}px`;
   el.style.height = 'auto';
   el.style.width = 'auto';
   el.style.position = 'absolute';

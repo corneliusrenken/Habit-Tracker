@@ -10,12 +10,12 @@
   transition: opacity 600ms;
 
   &-day {
-    @include fonts.text;
+    @include fonts.main-text-font;
     font-style: normal;
+    font-size: 9px;
 
     width: 50px;
     text-align: center;
-    font-size: 10px;
     color: theme.$foreground;
 
     &.complete {

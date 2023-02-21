@@ -1,5 +1,5 @@
-$transition-duration: 600ms;
+$layout-transition-duration: 600ms;
 
 :root {
-  --transition-duration: #{$transition-duration};
+  --layout-transition-duration: #{$layout-transition-duration};
 }

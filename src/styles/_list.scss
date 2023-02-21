@@ -13,7 +13,7 @@
   }
 
   input {
-    @include fonts.text;
+    @include fonts.main-text-font;
 
     margin-left: calc(var(--left-margin, 0px) - 8px);
     margin-right: calc(var(--right-margin, 0px) - 8px);
@@ -51,19 +51,19 @@
 
   // selector
   &-item::after {
-    // delay selector disappearing
-    transition: width 0.25s 50ms;
+    transition: opacity 200ms;
     content: '';
     position: absolute;
-    width: 0px;
-    height: 1px;
-    background-color: theme.$foreground;
+    height: 4px;
+    width: 4px;
+    border-radius: 50%;
     right: calc(350px - var(--left-margin, 0px) + 8px);
+    background-color: theme.$foreground;
+    opacity: 0;
   }
 
   &-item.selected::after {
-    transition: width 0.25s;
-    width: 26px;
+    opacity: 1;
   }
 
   &-item.complete::after {
@@ -71,7 +71,9 @@
   }
 
   &-name {
-    @include fonts.text;
+    @include fonts.main-text-font;
+
+    text-transform: capitalize;
 
     margin-left: var(--left-margin, 0px);
     width: 100%;
@@ -89,7 +91,7 @@
   }
 
   &-streak {
-    @include fonts.numbers;
+    @include fonts.main-text-font;
 
     margin: 0 var(--right-margin, 0px);
     color: theme.$foreground;
