@@ -56,5 +56,5 @@ export default function transition(options: TransitionOptions) {
   setTimeout(() => {
     layout.classList.remove('in-transition');
     setInTransition(false);
-  }, Number(getComputedStyle(document.documentElement).getPropertyValue('--transition-duration').slice(0, -2)));
+  }, Number(getComputedStyle(document.documentElement).getPropertyValue('--layout-transition-duration').slice(0, -2)));
 }

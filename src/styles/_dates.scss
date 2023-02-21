@@ -9,7 +9,7 @@
   align-items: center;
 
   &-date {
-    @include fonts.numbers;
+    @include fonts.week-date-font;
 
     width: 50px;
     text-align: center;
@@ -28,10 +28,11 @@
     &::after {
       content: '';
       position: absolute;
-      top: calc(50% - 20px);
-      left: calc(50% - 20px);
-      width: 40px;
-      height: 40px;
+      --diameter: 28px;
+      width: var(--diameter);
+      height: var(--diameter);
+      top: calc(50% - var(--diameter) / 2);
+      left: calc(50% - var(--diameter) / 2);
       border-radius: 50%;
 
       border: 1px solid theme.$foreground;
@@ -40,7 +41,7 @@
 
       // could use media query to only add this when not on high dpi / retina display
 
-      box-shadow: 0 0 1px 0px theme.$foreground inset, 0 0 1px 0px theme.$foreground;
+      // box-shadow: 0 0 1px 0px theme.$foreground inset, 0 0 1px 0px theme.$foreground;
       // this looks cool as well, with more of a glow - try it out
       // box-shadow: 0 0 0px 0px theme.$foreground inset, 0 0 8px 0px theme.$foreground;
     }
@@ -56,26 +57,31 @@
     height: 50px;
     position: absolute;
 
-    &::before {
-      content: '';
-      position: absolute;
-      left: calc(50% - 7px);
-      bottom: -1px;
-      width: 14px;
-      height: 14px;
-      border-radius: 50%;
-      background-color: theme.$background;
-    }
+    // no actual day indicator atm
+    // no actual day indicator atm
+    // no actual day indicator atm
+    // no actual day indicator atm
 
-    &::after {
-      content: '';
-      position: absolute;
-      left: calc(50% - 3px);
-      bottom: 3px;
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background-color: theme.$highlight;
-    }
+    // &::before {
+    //   content: '';
+    //   position: absolute;
+    //   left: calc(50% - 7px);
+    //   bottom: -1px;
+    //   width: 14px;
+    //   height: 14px;
+    //   border-radius: 50%;
+    //   background-color: theme.$background;
+    // }
+
+    // &::after {
+    //   content: '';
+    //   position: absolute;
+    //   left: calc(50% - 3px);
+    //   bottom: 3px;
+    //   width: 6px;
+    //   height: 6px;
+    //   border-radius: 50%;
+    //   background-color: theme.$highlight;
+    // }
   }
 }

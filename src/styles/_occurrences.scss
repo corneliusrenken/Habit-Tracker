@@ -9,7 +9,7 @@
   width: 350px;
 
   &-occurrence {
-    @include fonts.numbers;
+    @include fonts.week-date-font;
 
     width: 50px;
     text-align: center;

@@ -1,14 +1,13 @@
-@mixin numbers {
-  // font is not centered otherwise
-  padding-top: 4px;
-  font-family: 'Dongle', sans-serif;
-  font-size: 24px;
-  font-weight: 700;
+@mixin week-date-font {
+  font-family: 'Averia Libre', cursive;
+  font-size: 16px;
+  font-weight: 400;
+  font-style: italic;
 }
 
-@mixin text {
+@mixin main-text-font {
   font-family: 'Inter var', sans-serif;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 400;
   -webkit-font-feature-settings: "ss01","cv05","cv07","cv08";
           font-feature-settings: "ss01","cv05","cv07","cv08";

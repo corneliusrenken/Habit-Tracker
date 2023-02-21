@@ -17,10 +17,10 @@
     width: 100%;
     height: 100%;
     border-radius: calc($scrollbar-width / 2);
-    background-color: theme.$secondary;
+    background-color: theme.$scrollbar-track;
     opacity: 1;
 
-    transition: opacity 600ms;
+    transition: opacity 300ms;
 
     .hidden & {
       opacity: 0;
@@ -34,12 +34,12 @@
     background-color: theme.$foreground;
 
     transition:
-      height variables.$transition-duration;
+      height 300ms;
 
     .in-transition & {
       transition:
-        height variables.$transition-duration,
-        top variables.$transition-duration;
+        height 300ms,
+        top 300ms;
     }
   }
 }

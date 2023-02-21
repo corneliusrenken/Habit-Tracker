@@ -16,7 +16,7 @@ export default function useSetLeftAndRightDateMargins({ dateObject, view }: Stat
     const firstDateOfWeek = Number(weekDates[0].slice(-2));
     const lastDateOfWeek = Number(weekDates[6].slice(-2));
 
-    document.documentElement.style.setProperty('--left-margin', `${(50 - getTextWidthInPx(firstDateOfWeek, 15)) / 2}px`);
-    document.documentElement.style.setProperty('--right-margin', `${(50 - getTextWidthInPx(lastDateOfWeek, 15)) / 2}px`);
+    document.documentElement.style.setProperty('--left-margin', `${(50 - getTextWidthInPx(firstDateOfWeek, 15, ['dates-date'])) / 2}px`);
+    document.documentElement.style.setProperty('--right-margin', `${(50 - getTextWidthInPx(lastDateOfWeek, 15, ['dates-date'])) / 2}px`);
   }, [dateObject, view]);
 }

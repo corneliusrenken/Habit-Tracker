@@ -39,7 +39,7 @@
     }
 
     .in-transition & {
-      transition: top variables.$transition-duration;
+      transition: top variables.$layout-transition-duration;
     }
   }
 
@@ -65,7 +65,7 @@
     }
 
     .in-transition & {
-      transition: top variables.$transition-duration, height variables.$transition-duration;
+      transition: top variables.$layout-transition-duration, height variables.$layout-transition-duration;
     }
   }
 
@@ -84,7 +84,7 @@
     }
 
     .in-transition & {
-      transition: top variables.$transition-duration;
+      transition: top variables.$layout-transition-duration;
     }
   }
 
@@ -142,7 +142,7 @@
     }
 
     .in-transition & {
-      transition: top variables.$transition-duration;
+      transition: top variables.$layout-transition-duration;
     }
   }
 }
