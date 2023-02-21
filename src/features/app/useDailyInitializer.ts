@@ -4,23 +4,12 @@ import {
   Habit,
   OccurrenceData,
   Streaks,
+  View,
 } from '../../globalTypes';
 import getDateObject from '../common/getDateObject';
 import onDateChange from '../onDateChange/onDateChange';
 import TaskQueue from '../taskQueue';
 import initialize from './initialize';
-
-type States = {
-  queue: TaskQueue;
-  dateObject: DateObject;
-  inInput: boolean;
-  reorderingList: boolean;
-  setDateObject: React.Dispatch<React.SetStateAction<DateObject>>;
-  setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
-  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
-  setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
-};
 
 function reInitialize({
   queue,
@@ -29,6 +18,7 @@ function reInitialize({
   setHabits,
   setOccurrenceData,
   setStreaks,
+  setView,
 }: {
   queue: TaskQueue;
   setDateObject: React.Dispatch<React.SetStateAction<DateObject>>;
@@ -36,6 +26,7 @@ function reInitialize({
   setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
   setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
+  setView: (nextView: View | ((lastView: View) => View)) => void;
 }) {
   if (!queue.running) {
     const newDateObject = getDateObject(6);
@@ -45,6 +36,7 @@ function reInitialize({
       setHabits,
       setOccurrenceData,
       setStreaks,
+      setView,
     });
   } else {
     const onQueueFinishedRunning = () => {
@@ -57,12 +49,26 @@ function reInitialize({
         setHabits,
         setOccurrenceData,
         setStreaks,
+        setView,
       });
     };
 
     queue.onFinishedRunning.push(onQueueFinishedRunning);
   }
 }
+
+type States = {
+  queue: TaskQueue;
+  dateObject: DateObject;
+  inInput: boolean;
+  reorderingList: boolean;
+  setDateObject: React.Dispatch<React.SetStateAction<DateObject>>;
+  setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
+  setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
+  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
+  setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
+  setView: (nextView: View | ((lastView: View) => View)) => void;
+};
 
 export default function useDailyInitializer({
   queue,
@@ -74,6 +80,7 @@ export default function useDailyInitializer({
   setHabits,
   setOccurrenceData,
   setStreaks,
+  setView,
 }: States) {
   const firstRender = useRef(true);
   const waitingOnReorderingListOrInInput = useRef(false);
@@ -89,6 +96,7 @@ export default function useDailyInitializer({
         setHabits,
         setOccurrenceData,
         setStreaks,
+        setView,
       });
     }
   }, [
@@ -100,6 +108,7 @@ export default function useDailyInitializer({
     setOccurrenceData,
     setSelectedIndex,
     setStreaks,
+    setView,
   ]);
 
   useEffect(() => {
@@ -111,6 +120,7 @@ export default function useDailyInitializer({
         setHabits,
         setOccurrenceData,
         setStreaks,
+        setView,
       });
     }
 
@@ -127,6 +137,7 @@ export default function useDailyInitializer({
         setHabits,
         setOccurrenceData,
         setStreaks,
+        setView,
       });
     });
 
@@ -141,5 +152,6 @@ export default function useDailyInitializer({
     setOccurrenceData,
     setSelectedIndex,
     setStreaks,
+    setView,
   ]);
 }

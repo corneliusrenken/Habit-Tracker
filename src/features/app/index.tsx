@@ -71,6 +71,7 @@ export default function App() {
     setHabits,
     setOccurrenceData,
     setStreaks,
+    setView,
   });
 
   const selectedData = useSelectedData({
