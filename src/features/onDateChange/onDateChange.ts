@@ -1,3 +1,5 @@
+import { getDateFromDateString } from '../common/dateStringFunctions';
+
 function isSameDate(date1: Date, date2: Date) {
   return date1.getFullYear() === date2.getFullYear()
     && date1.getMonth() === date2.getMonth()
@@ -5,11 +7,16 @@ function isSameDate(date1: Date, date2: Date) {
 }
 
 /**
+ * @param initialDate YYYY-MM-DD
  * @param refreshRate in ms
  * @returns function to cancel the event subscription
  */
-export default function onDateChange(callback: () => void, checkRate = 1000): () => void {
-  let lastDate = new Date();
+export default function onDateChange(
+  initialDate: string,
+  callback: () => void,
+  checkRate = 1000,
+): () => void {
+  let lastDate = getDateFromDateString(initialDate);
 
   const intervalId = setInterval(() => {
     const currentDate = new Date();
