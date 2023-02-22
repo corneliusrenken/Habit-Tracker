@@ -36,8 +36,7 @@ export default function transitionToView(viewName: View['name'], states: States)
         || selectedIndex === null
       ) return prevView;
 
-      const selectedHabit = selectedHabits.find((habit, index) => index === selectedIndex);
-      if (!selectedHabit) throw new Error('no habit found at selected index');
+      const selectedHabit = selectedHabits[selectedIndex];
       return { name: 'focus', focusId: selectedHabit.id };
     });
   } else if (viewName === 'history') {
