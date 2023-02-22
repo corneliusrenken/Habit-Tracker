@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react';
 import {
   DateObject, Habit, ListView, ModalContentGenerator, OccurrenceData, View,
 } from '../../globalTypes';
-import noModifierKeysPressed from './noModifierKeysPressed';
+import checkModifierKeyWhitelist from './checkModifierKeyWhitelist';
 import {
   escapeCreateHabitInput,
   escapeRenameHabitInput,
@@ -52,28 +52,28 @@ export default function useShortcutManager(states: States) {
 
     let shortcut: undefined | (() => void);
 
-    if (reorderingList || !noModifierKeysPressed(e)) return;
+    if (reorderingList) return;
 
-    if (key === 'ArrowDown' && (view.name === 'today' || view.name === 'yesterday' || view.name === 'selection')) shortcut = () => incrementSelectedIndex(1, states);
-    if (key === 'ArrowUp' && (view.name === 'today' || view.name === 'yesterday' || view.name === 'selection')) shortcut = () => incrementSelectedIndex(-1, states);
+    if (key === 'ArrowDown' && checkModifierKeyWhitelist(e) && (view.name === 'today' || view.name === 'yesterday' || view.name === 'selection')) shortcut = () => incrementSelectedIndex(1, states);
+    if (key === 'ArrowUp' && checkModifierKeyWhitelist(e) && (view.name === 'today' || view.name === 'yesterday' || view.name === 'selection')) shortcut = () => incrementSelectedIndex(-1, states);
 
     if (!inInput) {
       if (!inTransition) {
-        if (key === 't' && view.name !== 'today') shortcut = () => transitionToView('today', states);
-        if (key === 'y' && view.name !== 'yesterday') shortcut = () => transitionToView('yesterday', states);
-        if (key === 's' && view.name !== 'selection') shortcut = () => transitionToView('selection', states);
-        if (key === 'h' && view.name !== 'history') shortcut = () => transitionToView('history', states);
-        if (key === 'f' && (view.name === 'today' || view.name === 'yesterday' || view.name === 'selection')) shortcut = () => transitionToView('focus', states);
+        if (key === 't' && checkModifierKeyWhitelist(e) && view.name !== 'today') shortcut = () => transitionToView('today', states);
+        if (key === 'y' && checkModifierKeyWhitelist(e) && view.name !== 'yesterday') shortcut = () => transitionToView('yesterday', states);
+        if (key === 's' && checkModifierKeyWhitelist(e) && view.name !== 'selection') shortcut = () => transitionToView('selection', states);
+        if (key === 'h' && checkModifierKeyWhitelist(e) && view.name !== 'history') shortcut = () => transitionToView('history', states);
+        if (key === 'f' && checkModifierKeyWhitelist(e) && (view.name === 'today' || view.name === 'yesterday' || view.name === 'selection')) shortcut = () => transitionToView('focus', states);
       }
 
-      if (key === 'Enter' && (view.name === 'today' || view.name === 'yesterday')) shortcut = () => toggleCurrentHabitCompleted(states); // this would throw if you allow it in selection view
-      if (key === 'c' && view.name === 'selection') shortcut = () => moveToCreateHabitInput(states);
-      if (key === 'v' && view.name === 'selection') shortcut = () => toggleCurrentHabitVisibility(states);
-      if (key === 'Backspace' && view.name === 'selection') shortcut = () => removeCurrentHabit(states);
-      if (key === 'r' && view.name === 'selection' && selectedIndex !== habits.length) shortcut = () => renameCurrentHabit(states);
+      if (key === 'Enter' && checkModifierKeyWhitelist(e) && (view.name === 'today' || view.name === 'yesterday')) shortcut = () => toggleCurrentHabitCompleted(states); // this would throw if you allow it in selection view
+      if (key === 'c' && checkModifierKeyWhitelist(e) && view.name === 'selection') shortcut = () => moveToCreateHabitInput(states);
+      if (key === 'v' && checkModifierKeyWhitelist(e) && view.name === 'selection') shortcut = () => toggleCurrentHabitVisibility(states);
+      if (key === 'Backspace' && checkModifierKeyWhitelist(e) && view.name === 'selection') shortcut = () => removeCurrentHabit(states);
+      if (key === 'r' && checkModifierKeyWhitelist(e) && view.name === 'selection' && selectedIndex !== habits.length) shortcut = () => renameCurrentHabit(states);
     } else {
-      if (key === 'Escape' && view.name === 'selection' && selectedIndex === habits.length) shortcut = () => escapeCreateHabitInput(states);
-      if (key === 'Escape' && view.name === 'selection' && selectedIndex !== habits.length) shortcut = () => escapeRenameHabitInput(states);
+      if (key === 'Escape' && checkModifierKeyWhitelist(e) && view.name === 'selection' && selectedIndex === habits.length) shortcut = () => escapeCreateHabitInput(states);
+      if (key === 'Escape' && checkModifierKeyWhitelist(e) && view.name === 'selection' && selectedIndex !== habits.length) shortcut = () => escapeRenameHabitInput(states);
     }
 
     if (shortcut === undefined) return;
