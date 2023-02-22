@@ -46,6 +46,13 @@ export default function App() {
     maxListHeight: 600,
   });
 
+  // development only
+  // development only
+  // development only
+  if (!inInput && selectedIndex === habits?.length) {
+    throw new Error('should always be in input when selected index is equal to habits length');
+  }
+
   const setView = useCallback((nextView: View | ((lastView: View) => View)) => {
     if (nextView instanceof Function) {
       nextView = nextView(view); // eslint-disable-line no-param-reassign
