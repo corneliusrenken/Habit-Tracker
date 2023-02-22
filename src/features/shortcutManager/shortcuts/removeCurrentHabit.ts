@@ -14,7 +14,7 @@ export default function removeCurrentHabit(states: States) {
     selectedIndex,
   } = states;
 
-  if (!selectedHabits || selectedIndex === selectedHabits.length || selectedIndex === null) return;
+  if (selectedIndex === selectedHabits.length || selectedIndex === null) return;
 
   const selectedHabit = selectedHabits[selectedIndex];
   openDeleteHabitModal(selectedHabit, states);
