@@ -47,10 +47,7 @@ function reInitialize({
       setStreaks,
     });
   } else {
-    console.log('waiting on queue finished');
-
     const onQueueFinishedRunning = () => {
-      console.log(queue.onFinishedRunning);
       queue.onFinishedRunning.splice(queue.onFinishedRunning.indexOf(onQueueFinishedRunning), 1);
 
       const newDateObject = getDateObject(6);
@@ -61,8 +58,6 @@ function reInitialize({
         setOccurrenceData,
         setStreaks,
       });
-
-      console.log(queue.onFinishedRunning);
     };
 
     queue.onFinishedRunning.push(onQueueFinishedRunning);
