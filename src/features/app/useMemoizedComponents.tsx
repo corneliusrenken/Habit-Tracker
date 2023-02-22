@@ -87,11 +87,11 @@ export default function useMemoizedComponents(states: States) {
 
   const dates = useMemo(() => (
     <Dates
-      latchedListView={latchedListView}
+      view={view}
       dateObject={dateObject}
       selectedOccurrences={selectedOccurrences}
     />
-  ), [latchedListView, dateObject, selectedOccurrences]);
+  ), [view, dateObject, selectedOccurrences]);
 
   const list = useMemo(() => (
     occurrenceData !== undefined

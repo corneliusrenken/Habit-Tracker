@@ -1,14 +1,14 @@
 import React from 'react';
-import { DateObject, ListView, SelectedOccurrence } from '../../globalTypes';
+import { DateObject, View, SelectedOccurrence } from '../../globalTypes';
 
 type Props = {
   dateObject: DateObject;
-  latchedListView: ListView;
+  view: View;
   selectedOccurrences: SelectedOccurrence[];
 };
 
-export default function Dates({ dateObject, latchedListView, selectedOccurrences }: Props) {
-  const selectedDayIndex = latchedListView.name !== 'yesterday'
+export default function Dates({ dateObject, view, selectedOccurrences }: Props) {
+  const selectedDayIndex = view.name !== 'yesterday'
     ? dateObject.today.weekDayIndex
     : dateObject.yesterday.weekDayIndex;
 
