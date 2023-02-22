@@ -156,6 +156,7 @@ export default function App() {
     deleteHabit,
     updateOccurrenceCompleted,
     updateOccurrenceVisibility,
+    updateHabitListPosition,
   });
 
   if (!habits || !occurrenceData || !streaks) return null;

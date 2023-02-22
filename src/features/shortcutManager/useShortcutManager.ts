@@ -10,6 +10,7 @@ import {
   moveToCreateHabitInput,
   removeCurrentHabit,
   renameCurrentHabit,
+  reorderHabit,
   toggleCurrentHabitCompleted,
   toggleCurrentHabitVisibility,
   transitionToView,
@@ -33,6 +34,7 @@ type States = {
   deleteHabit: (habitId: number) => void;
   updateOccurrenceCompleted: (habitId: number, complete: boolean) => void;
   updateOccurrenceVisibility: (habitId: number, visible: boolean) => void;
+  updateHabitListPosition(habitId: number, listPosition: number): void;
 };
 
 export default function useShortcutManager(states: States) {
@@ -71,6 +73,8 @@ export default function useShortcutManager(states: States) {
       if (key === 'v' && checkModifierKeyWhitelist(e) && view.name === 'selection') shortcut = () => toggleCurrentHabitVisibility(states);
       if (key === 'Backspace' && checkModifierKeyWhitelist(e) && view.name === 'selection') shortcut = () => removeCurrentHabit(states);
       if (key === 'r' && checkModifierKeyWhitelist(e) && view.name === 'selection' && selectedIndex !== habits.length) shortcut = () => renameCurrentHabit(states);
+      if (key === 'ArrowDown' && checkModifierKeyWhitelist(e, { alt: true }) && view.name === 'selection') shortcut = () => reorderHabit(1, states);
+      if (key === 'ArrowUp' && checkModifierKeyWhitelist(e, { alt: true }) && view.name === 'selection') shortcut = () => reorderHabit(-1, states);
     } else {
       if (key === 'Escape' && checkModifierKeyWhitelist(e) && view.name === 'selection' && selectedIndex === habits.length) shortcut = () => escapeCreateHabitInput(states);
       if (key === 'Escape' && checkModifierKeyWhitelist(e) && view.name === 'selection' && selectedIndex !== habits.length) shortcut = () => escapeRenameHabitInput(states);
