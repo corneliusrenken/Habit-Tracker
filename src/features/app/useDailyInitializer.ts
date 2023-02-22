@@ -24,6 +24,55 @@ type States = {
   setView: (nextView: View | ((lastView: View) => View)) => void;
 };
 
+function initializeAfterQueueFinishedRunning({
+  queue,
+  setDateObject,
+  setSelectedIndex,
+  setHabits,
+  setOccurrenceData,
+  setStreaks,
+  setView,
+}: {
+  queue: TaskQueue;
+  setDateObject: React.Dispatch<React.SetStateAction<DateObject>>;
+  setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
+  setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
+  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
+  setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
+  setView: (nextView: View | ((lastView: View) => View)) => void;
+}) {
+  if (!queue.running) {
+    const newDateObject = getDateObject(6);
+    setDateObject(newDateObject);
+    initialize(newDateObject.today.dateString, {
+      setSelectedIndex,
+      setHabits,
+      setOccurrenceData,
+      setStreaks,
+      setView,
+    });
+  } else {
+    const onQueueFinishedRunning = () => {
+      queue.onFinishedRunning.splice(
+        queue.onFinishedRunning.indexOf(onQueueFinishedRunning),
+        1,
+      );
+
+      const newDateObject = getDateObject(6);
+      setDateObject(newDateObject);
+      initialize(newDateObject.today.dateString, {
+        setSelectedIndex,
+        setHabits,
+        setOccurrenceData,
+        setStreaks,
+        setView,
+      });
+    };
+
+    queue.onFinishedRunning.push(onQueueFinishedRunning);
+  }
+}
+
 export default function useDailyInitializer({
   queue,
   dateObject,
@@ -43,9 +92,9 @@ export default function useDailyInitializer({
     if (waitingOnReorderingListOrInInput.current && !inInput && !reorderingList) {
       waitingOnReorderingListOrInInput.current = false;
 
-      const newDateObject = getDateObject(6);
-      setDateObject(newDateObject);
-      initialize(newDateObject.today.dateString, {
+      initializeAfterQueueFinishedRunning({
+        queue,
+        setDateObject,
         setSelectedIndex,
         setHabits,
         setOccurrenceData,
@@ -84,36 +133,15 @@ export default function useDailyInitializer({
         return;
       }
 
-      if (!queue.running) {
-        const newDateObject = getDateObject(6);
-        setDateObject(newDateObject);
-        initialize(newDateObject.today.dateString, {
-          setSelectedIndex,
-          setHabits,
-          setOccurrenceData,
-          setStreaks,
-          setView,
-        });
-      } else {
-        const onQueueFinishedRunning = () => {
-          queue.onFinishedRunning.splice(
-            queue.onFinishedRunning.indexOf(onQueueFinishedRunning),
-            1,
-          );
-
-          const newDateObject = getDateObject(6);
-          setDateObject(newDateObject);
-          initialize(newDateObject.today.dateString, {
-            setSelectedIndex,
-            setHabits,
-            setOccurrenceData,
-            setStreaks,
-            setView,
-          });
-        };
-
-        queue.onFinishedRunning.push(onQueueFinishedRunning);
-      }
+      initializeAfterQueueFinishedRunning({
+        queue,
+        setDateObject,
+        setSelectedIndex,
+        setHabits,
+        setOccurrenceData,
+        setStreaks,
+        setView,
+      });
     });
 
     return cancelInterval;
