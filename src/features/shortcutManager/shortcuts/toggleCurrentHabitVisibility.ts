@@ -24,11 +24,9 @@ export default function toggleCurrentHabitVisibility(states: States) {
     updateOccurrenceVisibility,
   } = states;
 
-  if (selectedHabits.length === 0 || !occurrenceData) return;
+  if (!occurrenceData || selectedIndex === null || selectedIndex === selectedHabits.length) return;
 
-  const selectedHabit = selectedHabits.find((habit, index) => index === selectedIndex);
-  if (!selectedHabit) throw new Error('no habit found at selected index');
-  // eslint-disable-next-line max-len
+  const selectedHabit = selectedHabits[selectedIndex];
   const todaysOccurrences = latchedListView.name === 'yesterday'
     ? occurrenceData.dates[dateObject.yesterday.dateString]
     : occurrenceData.dates[dateObject.today.dateString];
