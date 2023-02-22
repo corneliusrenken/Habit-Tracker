@@ -1,18 +1,24 @@
 import {
-  Habit, OccurrenceData, Streaks, View,
+  Habit,
+  OccurrenceData,
+  Streaks,
+  View,
 } from '../../globalTypes';
 
 type States = {
-  setView: (newView: View) => void;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
   setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
+  setView: (nextView: View | ((lastView: View) => View)) => void;
 };
 
-export default async function initialize(todayDateString: string, states: States) {
+/**
+ * @param date YYYY-MM-DD
+ */
+export default async function initialize(date: string, states: States) {
   const {
-    setView, setSelectedIndex, setHabits, setOccurrenceData, setStreaks,
+    setSelectedIndex, setHabits, setOccurrenceData, setStreaks, setView,
   } = states;
 
   try {
@@ -21,14 +27,13 @@ export default async function initialize(todayDateString: string, states: States
       occurrencesGroupedByDate,
       oldestVisibleOccurrenceDates,
       streaks,
-    } = await window.electron['initialize-app']({ date: todayDateString });
+    } = await window.electron['initialize-app']({ date });
 
-    const todaysOccurrences = occurrencesGroupedByDate[todayDateString];
+    const todaysOccurrences = occurrencesGroupedByDate[date];
     const visibleHabitCount = Object.keys(todaysOccurrences).length;
 
     setView({ name: 'today' });
     setSelectedIndex(visibleHabitCount === 0 ? null : 0);
-
     setHabits(habits);
     setOccurrenceData({
       dates: occurrencesGroupedByDate,
