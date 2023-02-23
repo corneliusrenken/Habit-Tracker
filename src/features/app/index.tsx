@@ -1,5 +1,6 @@
 import React, {
   useCallback,
+  useEffect,
   useRef,
   useState,
 } from 'react';
@@ -41,10 +42,34 @@ export default function App() {
   const [habits, setHabits] = useState<Habit[]>();
   const [occurrenceData, setOccurrenceData] = useState<OccurrenceData>();
   const [streaks, setStreaks] = useState<Streaks>();
+  const [ignoreMouse, setIgnoreMouse] = useState(true);
   const layoutOptions = useRef({
     minMarginHeight: 50,
     maxListHeight: 600,
   });
+
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    if (ignoreMouse) {
+      const onMouseMove = (e: MouseEvent) => {
+        setIgnoreMouse(false);
+        window.removeEventListener('mousemove', onMouseMove);
+        setTimeout(() => {
+          const elementAtMousePosition = document.elementFromPoint(e.clientX, e.clientY);
+          if (elementAtMousePosition) {
+            elementAtMousePosition.dispatchEvent(new MouseEvent('mouseover', {
+              view: window,
+              bubbles: true,
+              cancelable: true,
+            }));
+          }
+        }, 0);
+      };
+
+      window.addEventListener('mousemove', onMouseMove);
+      return () => window.removeEventListener('mousemove', onMouseMove);
+    }
+  }, [ignoreMouse]);
 
   // development only
   // development only
@@ -114,6 +139,7 @@ export default function App() {
   });
 
   const components = useMemoizedComponents({
+    ignoreMouse,
     selectedStreaks: selectedData.streaks,
     dateObject,
     latchedListView,
@@ -139,6 +165,7 @@ export default function App() {
   });
 
   useShortcutManager({
+    setIgnoreMouse,
     dateObject,
     latchedListView,
     habits,

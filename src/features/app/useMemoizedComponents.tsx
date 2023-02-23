@@ -17,6 +17,7 @@ import List from '../list';
 import Occurrences from '../occurrences';
 
 type States = {
+  ignoreMouse: boolean;
   view: View;
   latchedListView: ListView;
   latchedOccurrenceView: OccurrenceView;
@@ -41,32 +42,31 @@ type States = {
   updateOccurrenceVisibility: (habitId: number, visible: boolean) => void;
 };
 
-export default function useMemoizedComponents(states: States) {
-  const {
-    view,
-    latchedListView,
-    latchedOccurrenceView,
-    dateObject,
-    selectedHabits,
-    selectedOccurrences,
-    selectedStreaks,
-    occurrenceData,
-    selectedIndex,
-    setSelectedIndex,
-    inInput,
-    setInInput,
-    reorderingList,
-    setReorderingList,
-    modalContentGenerator,
-    setModalContentGenerator,
-    addHabit,
-    deleteHabit,
-    updateHabitListPosition,
-    updateHabitName,
-    updateOccurrenceCompleted,
-    updateOccurrenceVisibility,
-  } = states;
-
+export default function useMemoizedComponents({
+  ignoreMouse,
+  view,
+  latchedListView,
+  latchedOccurrenceView,
+  dateObject,
+  selectedHabits,
+  selectedOccurrences,
+  selectedStreaks,
+  occurrenceData,
+  selectedIndex,
+  setSelectedIndex,
+  inInput,
+  setInInput,
+  reorderingList,
+  setReorderingList,
+  modalContentGenerator,
+  setModalContentGenerator,
+  addHabit,
+  deleteHabit,
+  updateHabitListPosition,
+  updateHabitName,
+  updateOccurrenceCompleted,
+  updateOccurrenceVisibility,
+}: States) {
   const viewType = viewToViewType[view.name];
 
   const occurrences = useMemo(() => (
@@ -97,6 +97,7 @@ export default function useMemoizedComponents(states: States) {
     occurrenceData !== undefined
       ? (
         <List
+          ignoreMouse={ignoreMouse}
           viewType={viewType}
           allowTabTraversal={modalContentGenerator === undefined}
           selectedHabits={selectedHabits}
@@ -123,6 +124,7 @@ export default function useMemoizedComponents(states: States) {
       )
       : <div />
   ), [
+    ignoreMouse,
     dateObject,
     viewType,
     modalContentGenerator,

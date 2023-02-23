@@ -4,6 +4,7 @@ import Icon from '../icon';
 import isValidHabitName from './isValidHabitName';
 
 type Props = {
+  ignoreMouse: boolean;
   allowTabTraversal: boolean;
   name: string;
   visible: boolean;
@@ -19,6 +20,7 @@ type Props = {
 };
 
 export default function SelectionListItem({
+  ignoreMouse,
   allowTabTraversal,
   name,
   visible,
@@ -48,7 +50,7 @@ export default function SelectionListItem({
   if (selected) containerClassName += ' selected';
 
   return (
-    <div className={containerClassName} onMouseEnter={select}>
+    <div className={containerClassName} onMouseEnter={ignoreMouse ? undefined : select}>
       {!beingRenamed ? (
         <div className="list-name">{name}</div>
       ) : (

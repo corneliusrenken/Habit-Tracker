@@ -17,6 +17,7 @@ import {
 } from './shortcuts';
 
 type States = {
+  setIgnoreMouse: React.Dispatch<React.SetStateAction<boolean>>;
   dateObject: DateObject;
   latchedListView: ListView;
   habits: Habit[] | undefined;
@@ -40,6 +41,7 @@ type States = {
 export default function useShortcutManager(states: States) {
   const onKeyDown = useCallback((e: KeyboardEvent) => {
     const {
+      setIgnoreMouse,
       view,
       inTransition,
       inInput,
@@ -82,6 +84,7 @@ export default function useShortcutManager(states: States) {
 
     if (shortcut === undefined) return;
 
+    setIgnoreMouse(true);
     e.preventDefault();
     shortcut();
   }, [states]);
