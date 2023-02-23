@@ -23,7 +23,12 @@ export default function initializeApp(database: Database, options: { date: strin
     functionsToRunInTransaction.push(() => addDay(database, { date }));
     occurrencesGroupedByDate[date] = {};
 
-    const getLastDayBeforeDateStmt = database.prepare('SELECT date FROM days WHERE date < ?');
+    const getLastDayBeforeDateStmt = database.prepare(`
+      SELECT date
+      FROM days
+      WHERE date < ?
+      ORDER BY date DESC
+    `);
     const previousDay = getLastDayBeforeDateStmt.get(date);
 
     if (previousDay !== undefined) {
