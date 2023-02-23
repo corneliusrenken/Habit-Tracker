@@ -17,6 +17,7 @@ import {
 } from './shortcuts';
 
 type States = {
+  modalContentGenerator: ModalContentGenerator | undefined;
   setIgnoreMouse: React.Dispatch<React.SetStateAction<boolean>>;
   dateObject: DateObject;
   latchedListView: ListView;
@@ -41,6 +42,7 @@ type States = {
 export default function useShortcutManager(states: States) {
   const onKeyDown = useCallback((e: KeyboardEvent) => {
     const {
+      modalContentGenerator,
       setIgnoreMouse,
       view,
       inTransition,
@@ -56,7 +58,7 @@ export default function useShortcutManager(states: States) {
 
     let shortcut: undefined | (() => void);
 
-    if (reorderingList) return;
+    if (reorderingList || modalContentGenerator) return;
 
     if (key === 'ArrowDown' && checkModifierKeyWhitelist(e) && (view.name === 'today' || view.name === 'yesterday' || view.name === 'selection')) shortcut = () => incrementSelectedIndex(1, states);
     if (key === 'ArrowUp' && checkModifierKeyWhitelist(e) && (view.name === 'today' || view.name === 'yesterday' || view.name === 'selection')) shortcut = () => incrementSelectedIndex(-1, states);

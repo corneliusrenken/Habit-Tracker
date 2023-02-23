@@ -165,6 +165,7 @@ export default function App() {
   });
 
   useShortcutManager({
+    modalContentGenerator,
     setIgnoreMouse,
     dateObject,
     latchedListView,
