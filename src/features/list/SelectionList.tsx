@@ -5,6 +5,7 @@ import ReorderableList from './ReorderableList';
 import useMemoizedSelectionListItemConstructors from './useMemoizedSelectionListItemConstructors';
 
 type Props = {
+  ignoreMouse: boolean;
   allowTabTraversal: boolean;
   habits: Habit[];
   todaysOccurrences: OccurrenceData['dates'][string];
@@ -23,6 +24,7 @@ type Props = {
 };
 
 export default function SelectionList({
+  ignoreMouse,
   allowTabTraversal,
   habits,
   todaysOccurrences,
@@ -40,6 +42,7 @@ export default function SelectionList({
   updateOccurrenceVisibility,
 }: Props) {
   const elementConstructors = useMemoizedSelectionListItemConstructors({
+    ignoreMouse,
     allowTabTraversal,
     habits,
     todaysOccurrences,

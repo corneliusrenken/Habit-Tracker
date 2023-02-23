@@ -3,6 +3,7 @@ import { Habit, OccurrenceData, Streaks } from '../../globalTypes';
 import HabitListItem from './HabitListItem';
 
 type Props = {
+  ignoreMouse: boolean;
   habits: Habit[];
   streaks: Streaks;
   todaysOccurrences: OccurrenceData['dates'][string];
@@ -12,7 +13,13 @@ type Props = {
 };
 
 export default function HabitList({
-  habits, streaks, todaysOccurrences, selectedIndex, setSelectedIndex, updateOccurrenceCompleted,
+  ignoreMouse,
+  habits,
+  streaks,
+  todaysOccurrences,
+  selectedIndex,
+  setSelectedIndex,
+  updateOccurrenceCompleted,
 }: Props) {
   return (
     <div>
@@ -22,6 +29,7 @@ export default function HabitList({
 
         return (
           <HabitListItem
+            ignoreMouse={ignoreMouse}
             key={id}
             name={name}
             streak={streaks[id].current}

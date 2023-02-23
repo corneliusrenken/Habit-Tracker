@@ -11,6 +11,7 @@ import HabitList from './HabitList';
 import SelectionList from './SelectionList';
 
 type Props = {
+  ignoreMouse: boolean;
   viewType: ViewType;
   allowTabTraversal: boolean;
   selectedHabits: Habit[];
@@ -33,6 +34,7 @@ type Props = {
 };
 
 export default function List({
+  ignoreMouse,
   viewType,
   allowTabTraversal,
   selectedHabits,
@@ -57,6 +59,7 @@ export default function List({
     <div className="list" style={{ opacity: viewType === 'list' ? 1 : 0 }}>
       {latchedListView.name !== 'selection' ? (
         <HabitList
+          ignoreMouse={ignoreMouse}
           habits={selectedHabits}
           streaks={streaks}
           todaysOccurrences={todaysOccurrences}
@@ -66,6 +69,7 @@ export default function List({
         />
       ) : (
         <SelectionList
+          ignoreMouse={ignoreMouse}
           setModalContentGenerator={setModalContentGenerator}
           allowTabTraversal={allowTabTraversal}
           habits={selectedHabits}

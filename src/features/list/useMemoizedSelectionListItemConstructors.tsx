@@ -5,6 +5,7 @@ import { ElementConstructor } from './ReorderableList';
 import SelectionListItem from './SelectionListItem';
 
 type States = {
+  ignoreMouse: boolean;
   allowTabTraversal: boolean;
   habits: Habit[];
   todaysOccurrences: OccurrenceData['dates'][string];
@@ -20,33 +21,33 @@ type States = {
   updateOccurrenceVisibility: (habitId: number, visible: boolean) => void;
 };
 
-export default function useMemoizedSelectionListItemConstructors(states: States) {
-  return useMemo<ElementConstructor[]>(() => {
-    const {
-      allowTabTraversal,
-      habits,
-      todaysOccurrences,
-      selectedIndex,
-      setSelectedIndex,
-      inInput,
-      setInInput,
-      reorderingList,
-      setReorderingList,
-      setModalContentGenerator,
-      deleteHabit,
-      updateHabitName,
-      updateOccurrenceVisibility,
-    } = states;
-
-    return habits.map(({ id, name }, index) => ({
-      id,
+export default function useMemoizedSelectionListItemConstructors({
+  ignoreMouse,
+  allowTabTraversal,
+  habits,
+  todaysOccurrences,
+  selectedIndex,
+  setSelectedIndex,
+  inInput,
+  setInInput,
+  reorderingList,
+  setReorderingList,
+  setModalContentGenerator,
+  deleteHabit,
+  updateHabitName,
+  updateOccurrenceVisibility,
+}: States) {
+  return useMemo<ElementConstructor[]>(() => (
+    habits.map((habit, index) => ({
+      id: habit.id,
       elementConstructor: (onMouseDown: React.MouseEventHandler<HTMLButtonElement>) => {
-        const visible = todaysOccurrences[id]?.visible;
+        const visible = todaysOccurrences[habit.id]?.visible;
 
         return (
           <SelectionListItem
+            ignoreMouse={ignoreMouse}
             allowTabTraversal={allowTabTraversal}
-            name={name}
+            name={habit.name}
             move={(e) => {
               onMouseDown(e);
               setReorderingList(true);
@@ -54,15 +55,13 @@ export default function useMemoizedSelectionListItemConstructors(states: States)
             visible={visible}
             selected={selectedIndex === index}
             select={reorderingList || inInput ? undefined : () => setSelectedIndex(index)}
-            toggleVisibility={() => updateOccurrenceVisibility(id, !visible)}
-            openDeleteHabitModal={() => openDeleteHabitModal(id, {
+            toggleVisibility={() => updateOccurrenceVisibility(habit.id, !visible)}
+            openDeleteHabitModal={() => openDeleteHabitModal(habit, {
               deleteHabit,
-              habits,
-              selectedIndex,
               setModalContentGenerator,
             })}
             renameHabit={(newName: string) => {
-              updateHabitName(id, newName);
+              updateHabitName(habit.id, newName);
             }}
             inInput={inInput}
             setInInput={setInInput}
@@ -70,6 +69,21 @@ export default function useMemoizedSelectionListItemConstructors(states: States)
           />
         );
       },
-    }));
-  }, [states]);
+    }))
+  ), [
+    ignoreMouse,
+    allowTabTraversal,
+    habits,
+    todaysOccurrences,
+    selectedIndex,
+    setSelectedIndex,
+    inInput,
+    setInInput,
+    reorderingList,
+    setReorderingList,
+    setModalContentGenerator,
+    deleteHabit,
+    updateHabitName,
+    updateOccurrenceVisibility,
+  ]);
 }
