@@ -24,8 +24,6 @@ import TaskQueue from '../taskQueue';
 import getDateObject from '../common/getDateObject';
 import useDailyInitializer from './useDailyInitializer';
 
-let lastIgnoreMouse = true;
-
 export default function App() {
   const queue = useRef(new TaskQueue());
   // https://medium.com/swlh/how-to-store-a-function-with-the-usestate-hook-in-react-8a88dd4eede1
