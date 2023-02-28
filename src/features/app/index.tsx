@@ -23,6 +23,7 @@ import useSelectedData from '../selectedData/useSelectedData';
 import TaskQueue from '../taskQueue';
 import getDateObject from '../common/getDateObject';
 import useDailyInitializer from './useDailyInitializer';
+import Occurrences from '../occurrences';
 
 export default function App() {
   const queue = useRef(new TaskQueue());
@@ -143,7 +144,6 @@ export default function App() {
     selectedStreaks: selectedData.streaks,
     dateObject,
     latchedListView,
-    latchedOccurrenceView,
     occurrenceData,
     selectedHabits: selectedData.habits,
     selectedIndex,
@@ -201,7 +201,12 @@ export default function App() {
         listRows={view.name === 'selection' ? selectedData.habits.length + 1 : selectedData.habits.length}
         occurrenceRows={Math.ceil((selectedData.occurrences.length - 7) / 7)}
         setInTransition={setInTransition}
-        occurrences={components.occurrences}
+        occurrences={(
+          <Occurrences
+            view={view}
+            selectedOccurrences={selectedData.occurrences}
+          />
+        )}
         days={components.days}
         dates={components.dates}
         list={components.list}

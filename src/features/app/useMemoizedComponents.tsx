@@ -8,19 +8,16 @@ import {
   OccurrenceData,
   ModalContentGenerator,
   viewToViewType,
-  OccurrenceView,
   DateObject,
 } from '../../globalTypes';
 import Dates from '../dates';
 import Days from '../days';
 import List from '../list';
-import Occurrences from '../occurrences';
 
 type States = {
   ignoreMouse: boolean;
   view: View;
   latchedListView: ListView;
-  latchedOccurrenceView: OccurrenceView;
   dateObject: DateObject;
   selectedHabits: Habit[];
   selectedOccurrences: SelectedOccurrence[];
@@ -46,7 +43,6 @@ export default function useMemoizedComponents({
   ignoreMouse,
   view,
   latchedListView,
-  latchedOccurrenceView,
   dateObject,
   selectedHabits,
   selectedOccurrences,
@@ -68,14 +64,6 @@ export default function useMemoizedComponents({
   updateOccurrenceVisibility,
 }: States) {
   const viewType = viewToViewType[view.name];
-
-  const occurrences = useMemo(() => (
-    <Occurrences
-      latchedOccurrenceView={latchedOccurrenceView}
-      viewType={viewType}
-      selectedOccurrences={selectedOccurrences}
-    />
-  ), [latchedOccurrenceView, selectedOccurrences, viewType]);
 
   const days = useMemo(() => (
     <Days
@@ -148,7 +136,6 @@ export default function useMemoizedComponents({
   ]);
 
   return {
-    occurrences,
     days,
     dates,
     list,
