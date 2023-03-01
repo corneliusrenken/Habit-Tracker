@@ -8,7 +8,7 @@ import {
 type States = {
   dateObject: DateObject;
   latchedListView: ListView;
-  occurrenceData: OccurrenceData | undefined;
+  occurrenceData: OccurrenceData;
   selectedHabits: Habit[];
   selectedIndex: number | null;
   updateOccurrenceVisibility: (habitId: number, visible: boolean) => void;
@@ -24,7 +24,7 @@ export default function toggleCurrentHabitVisibility(states: States) {
     updateOccurrenceVisibility,
   } = states;
 
-  if (!occurrenceData || selectedIndex === null || selectedIndex === selectedHabits.length) return;
+  if (selectedIndex === null || selectedIndex === selectedHabits.length) return;
 
   const selectedHabit = selectedHabits[selectedIndex];
   const todaysOccurrences = latchedListView.name === 'yesterday'

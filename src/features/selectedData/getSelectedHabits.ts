@@ -3,8 +3,8 @@ import {
 } from '../../globalTypes';
 
 type States = {
-  habits: Habit[] | undefined;
-  occurrenceData: OccurrenceData | undefined;
+  habits: Habit[];
+  occurrenceData: OccurrenceData;
   dateObject: DateObject;
   listView: ListView;
 };
@@ -15,8 +15,6 @@ export default function getSelectedHabits({
   dateObject,
   listView,
 }: States) {
-  if (!habits || !occurrenceData) return [];
-
   const selectedDate = listView.name === 'yesterday'
     ? dateObject.yesterday.dateString
     : dateObject.today.dateString;

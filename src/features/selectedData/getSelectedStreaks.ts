@@ -6,8 +6,8 @@ import recalculateStreak from '../common/recalculateStreak';
 type States = {
   dateObject: DateObject;
   listView: ListView;
-  occurrenceData: OccurrenceData | undefined;
-  streaks: Streaks | undefined;
+  occurrenceData: OccurrenceData;
+  streaks: Streaks;
 };
 
 export default function getSelectedStreaks({
@@ -16,8 +16,6 @@ export default function getSelectedStreaks({
   occurrenceData,
   streaks,
 }: States) {
-  if (!occurrenceData || !streaks) return {};
-
   if (listView.name !== 'yesterday') return streaks;
 
   const habitIds = Object.keys(streaks).map(Number);

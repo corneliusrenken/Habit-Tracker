@@ -1,7 +1,7 @@
 import { Habit } from '../../../globalTypes';
 
 type States = {
-  habits: Habit[] | undefined;
+  habits: Habit[];
   selectedIndex: number | null;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
 };

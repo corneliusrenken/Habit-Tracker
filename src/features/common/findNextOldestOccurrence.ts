@@ -9,10 +9,8 @@ export default function findNextOldestOccurrence(
   habitId: number,
   previousOldestDate: string,
   currentDate: string,
-  occurrenceData: OccurrenceData | undefined,
+  occurrenceData: OccurrenceData,
 ) {
-  if (!occurrenceData) throw new Error('state should not be undefined');
-
   if (occurrenceData.oldest[habitId] === undefined) {
     throw new Error('no oldest occurrence entry exists for the given habit id');
   }

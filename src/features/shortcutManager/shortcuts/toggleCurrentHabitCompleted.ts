@@ -10,7 +10,7 @@ type States = {
   latchedListView: ListView;
   selectedHabits: Habit[];
   selectedIndex: number | null;
-  occurrenceData: OccurrenceData | undefined;
+  occurrenceData: OccurrenceData;
   updateOccurrenceCompleted: (habitId: number, complete: boolean) => void;
 };
 
@@ -24,7 +24,7 @@ export default function toggleCurrentHabitCompleted(states: States) {
     updateOccurrenceCompleted,
   } = states;
 
-  if (!occurrenceData || selectedIndex === null) return;
+  if (selectedIndex === null) return;
 
   const selectedHabit = selectedHabits[selectedIndex];
   const todaysOccurrences = latchedListView.name === 'yesterday'

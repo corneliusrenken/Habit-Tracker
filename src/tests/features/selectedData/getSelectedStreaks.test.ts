@@ -8,19 +8,19 @@ import {
 } from '../../../globalTypes';
 import PseudoUseState from '../helperFunctions/pseudoUseState';
 
-let streaksState: PseudoUseState<Streaks | undefined>;
-let occurrenceDataState: PseudoUseState<OccurrenceData | undefined>;
+let streaksState: PseudoUseState<Streaks>;
+let occurrenceDataState: PseudoUseState<OccurrenceData>;
 let dateObject: DateObject;
 
 beforeEach(() => {
-  streaksState = new PseudoUseState<Streaks | undefined>({
+  streaksState = new PseudoUseState<Streaks>({
     1: { current: 3, maximum: 3 },
     2: { current: 2, maximum: 2 },
     3: { current: 0, maximum: 2 },
     4: { current: 0, maximum: 2 },
   });
 
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
       1: '2023-02-09',
       2: '2023-02-09',
@@ -69,28 +69,6 @@ beforeEach(() => {
   //                    | 4        | 1       | 2
 
   dateObject = getDateObject(6, getDateFromDateString('2023-02-14'));
-});
-
-test('returns an empty object if the occurrenceData state is undefined', () => {
-  streaksState.setState(undefined);
-
-  expect(getSelectedStreaks({
-    streaks: streaksState.value,
-    occurrenceData: occurrenceDataState.value,
-    dateObject,
-    listView: { name: 'today' },
-  })).toEqual({});
-});
-
-test('returns an empty object if the streaks state is undefined', () => {
-  occurrenceDataState.setState(undefined);
-
-  expect(getSelectedStreaks({
-    streaks: streaksState.value,
-    occurrenceData: occurrenceDataState.value,
-    dateObject,
-    listView: { name: 'today' },
-  })).toEqual({});
 });
 
 test('returns the streaks state if the view is anything but \'yesterday\'', () => {

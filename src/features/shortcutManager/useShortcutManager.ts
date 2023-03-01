@@ -21,10 +21,10 @@ type States = {
   setIgnoreMouse: React.Dispatch<React.SetStateAction<boolean>>;
   dateObject: DateObject;
   latchedListView: ListView;
-  habits: Habit[] | undefined;
+  habits: Habit[];
   inInput: boolean;
   inTransition: boolean;
-  occurrenceData: OccurrenceData | undefined;
+  occurrenceData: OccurrenceData;
   selectedHabits: Habit[];
   selectedIndex: number | null;
   view: View;

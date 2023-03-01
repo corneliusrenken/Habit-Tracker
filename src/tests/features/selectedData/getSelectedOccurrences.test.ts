@@ -7,11 +7,11 @@ import {
 } from '../../../globalTypes';
 import PseudoUseState from '../helperFunctions/pseudoUseState';
 
-let occurrenceDataState: PseudoUseState<OccurrenceData | undefined>;
+let occurrenceDataState: PseudoUseState<OccurrenceData>;
 let dateObject: DateObject;
 
 beforeEach(() => {
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
       1: null,
       2: null,
@@ -22,16 +22,6 @@ beforeEach(() => {
   });
 
   dateObject = getDateObject(6, getDateFromDateString('2023-02-14'));
-});
-
-test('returns an empty array if the occurrence state is undefined', () => {
-  occurrenceDataState.setState(undefined);
-
-  expect(getSelectedOccurrences({
-    occurrenceData: occurrenceDataState.value,
-    dateObject,
-    view: { name: 'today' },
-  })).toEqual([]);
 });
 
 test('evaluates a date as incomplete if no day entry exists', () => {
@@ -51,7 +41,7 @@ test('evaluates a date as incomplete if no day entry exists', () => {
 test('evaluates a date as incomplete if no occurrences exist in the day', () => {
   const today = dateObject.today.dateString;
 
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
       1: null,
       2: null,
@@ -75,7 +65,7 @@ test('evaluates a date as incomplete if no occurrences exist in the day', () => 
 });
 
 test('only uses visible occurrences to evaluate if a day is complete', () => {
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
       1: '2023-02-14',
       2: null,
@@ -147,7 +137,7 @@ test('returns at least 7 occurrences in the array, even if no occurrences exist'
 });
 
 test('always returns an occurrence count divisible by 7, including all dates up to the oldest oldest date, filling up the last row with incomplete occurrences if needed', () => {
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
       1: '2023-02-10',
       2: '2023-02-14',
@@ -177,7 +167,7 @@ test('always returns an occurrence count divisible by 7, including all dates up 
 test('returns the correct date for each date in a month', () => {
   dateObject = getDateObject(6, getDateFromDateString('2023-01-31'));
 
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
       1: '2023-01-01',
       2: null,
@@ -210,7 +200,7 @@ test('if in any view other than focus, a complete date is evaluated based on all
   const viewNames = ['today', 'yesterday', 'selection', 'history'] as const;
 
   viewNames.forEach((viewName) => {
-    occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+    occurrenceDataState = new PseudoUseState<OccurrenceData>({
       oldest: {
         1: '2023-02-07',
         2: '2023-02-10',
@@ -273,7 +263,7 @@ test('if in any view other than focus, a complete date is evaluated based on all
 });
 
 test('if in focus view, a complete date is evaluated based on the day containing a visibile complete occurrence for the focused habit. The occurrences array only includes occurrences based on the oldest date of the focused id', () => {
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
       1: '2023-02-08',
       2: '2023-02-11',
@@ -332,7 +322,7 @@ test('if in focus view, a complete date is evaluated based on the day containing
 });
 
 test('includes occurrences that happen after today\'s date, but only if they are within the current week', () => {
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
       1: '2023-02-14',
       2: null,
@@ -378,7 +368,7 @@ test('includes occurrences that happen after today\'s date, but only if they are
 });
 
 test('if the only oldest date is newer than today\'s date, ignores the oldest date and returns 7 occurrences as if no oldest date existed', () => {
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
       1: '2023-02-20',
       2: null,
