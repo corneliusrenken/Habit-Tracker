@@ -204,7 +204,8 @@ export default function App() {
         occurrences={(
           <Occurrences
             view={view}
-            selectedOccurrences={selectedData.occurrences}
+            dateObject={dateObject}
+            occurrenceData={occurrenceData}
           />
         )}
         days={components.days}
