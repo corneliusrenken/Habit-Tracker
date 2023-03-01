@@ -20,7 +20,7 @@
     }
   }
 
-  &-selected-day-indicator {
+  &-day-indicator {
     width: 50px;
     height: 50px;
     position: absolute;
@@ -50,38 +50,5 @@
       border-color: theme.$secondary;
       box-shadow: 0 0 1px 0px theme.$secondary inset, 0 0 1px 0px theme.$secondary;
     }
-  }
-
-  &-actual-day-indicator {
-    width: 50px;
-    height: 50px;
-    position: absolute;
-
-    // no actual day indicator atm
-    // no actual day indicator atm
-    // no actual day indicator atm
-    // no actual day indicator atm
-
-    // &::before {
-    //   content: '';
-    //   position: absolute;
-    //   left: calc(50% - 7px);
-    //   bottom: -1px;
-    //   width: 14px;
-    //   height: 14px;
-    //   border-radius: 50%;
-    //   background-color: theme.$background;
-    // }
-
-    // &::after {
-    //   content: '';
-    //   position: absolute;
-    //   left: calc(50% - 3px);
-    //   bottom: 3px;
-    //   width: 6px;
-    //   height: 6px;
-    //   border-radius: 50%;
-    //   background-color: theme.$highlight;
-    // }
   }
 }

@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import {
-  SelectedOccurrence,
   View,
   Streaks,
   Habit,
@@ -10,7 +9,6 @@ import {
   viewToViewType,
   DateObject,
 } from '../../globalTypes';
-import Dates from '../dates';
 import List from '../list';
 
 type States = {
@@ -19,7 +17,6 @@ type States = {
   latchedListView: ListView;
   dateObject: DateObject;
   selectedHabits: Habit[];
-  selectedOccurrences: SelectedOccurrence[];
   selectedStreaks: Streaks;
   occurrenceData: OccurrenceData | undefined;
   selectedIndex: number | null;
@@ -44,7 +41,6 @@ export default function useMemoizedComponents({
   latchedListView,
   dateObject,
   selectedHabits,
-  selectedOccurrences,
   selectedStreaks,
   occurrenceData,
   selectedIndex,
@@ -63,14 +59,6 @@ export default function useMemoizedComponents({
   updateOccurrenceVisibility,
 }: States) {
   const viewType = viewToViewType[view.name];
-
-  const dates = useMemo(() => (
-    <Dates
-      view={view}
-      dateObject={dateObject}
-      selectedOccurrences={selectedOccurrences}
-    />
-  ), [view, dateObject, selectedOccurrences]);
 
   const list = useMemo(() => (
     occurrenceData !== undefined
@@ -127,7 +115,6 @@ export default function useMemoizedComponents({
   ]);
 
   return {
-    dates,
     list,
   };
 }
