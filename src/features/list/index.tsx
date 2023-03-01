@@ -6,10 +6,9 @@ import {
   ModalContentGenerator,
   OccurrenceData,
   Streaks,
-  ListView,
   viewToViewType,
+  ListView,
 } from '../../globalTypes';
-import getSelectedHabits from '../selectedData/getSelectedHabits';
 import HabitList from './HabitList';
 import SelectionList from './SelectionList';
 
@@ -18,8 +17,8 @@ type Props = {
   ignoreTabIndices: boolean;
   dateObject: DateObject,
   view: View;
-  habits: Habit[];
-  streaks: Streaks;
+  selectedHabits: Habit[];
+  selectedStreaks: Streaks;
   occurrenceData: OccurrenceData;
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
@@ -41,8 +40,8 @@ function List({
   ignoreTabIndices,
   dateObject,
   view,
-  habits,
-  streaks,
+  selectedHabits,
+  selectedStreaks,
   occurrenceData,
   selectedIndex,
   setSelectedIndex,
@@ -71,13 +70,6 @@ function List({
     return latchedListViewRef.current;
   }, [view]);
 
-  const selectedHabits = useMemo(() => getSelectedHabits({
-    habits,
-    occurrenceData,
-    dateObject,
-    listView: latchedListView,
-  }), [habits, occurrenceData, dateObject, latchedListView]);
-
   return (
     <div className="list" style={{ opacity: viewToViewType[view.name] === 'list' ? 1 : 0 }}>
       {latchedListView.name !== 'selection' ? (
@@ -87,7 +79,7 @@ function List({
           listView={latchedListView}
           occurrenceData={occurrenceData}
           habits={selectedHabits}
-          streaks={streaks}
+          selectedStreaks={selectedStreaks}
           selectedIndex={selectedIndex}
           setSelectedIndex={setSelectedIndex}
           updateOccurrenceCompleted={updateOccurrenceCompleted}

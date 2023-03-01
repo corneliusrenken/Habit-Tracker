@@ -12,7 +12,7 @@ import {
   View,
 } from '../../globalTypes';
 import Modal from '../modal';
-// import useShortcutManager from '../shortcutManager/useShortcutManager';
+import useShortcutManager from '../shortcutManager/useShortcutManager';
 import Layout from '../layout';
 import useDataQueries from '../dataQueries/useDataQueries';
 import useSetLeftAndRightDateMargins from './useSetLeftAndRightDateMargins';
@@ -23,8 +23,7 @@ import Occurrences from '../occurrences';
 import Days from '../days';
 import Dates from '../dates';
 import List from '../list';
-import getSelectedHabits from '../selectedData/getSelectedHabits';
-import getSelectedOccurrences from '../selectedData/getSelectedOccurrences';
+import useSelectedData from '../selectedData/useSelectedData';
 
 export default function App() {
   const queue = useRef(new TaskQueue());
@@ -33,16 +32,17 @@ export default function App() {
   const [dateObject, setDateObject] = useState(() => getDateObject(6));
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const [view, _setView] = useState<View>(() => ({ name: 'today' }));
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [inInput, setInInput] = useState(false);
   const [reorderingList, setReorderingList] = useState(false);
   const [inTransition, setInTransition] = useState(false);
   // eslint-disable-next-line max-len
   const [modalContentGenerator, setModalContentGenerator] = useState<ModalContentGenerator | undefined>(undefined);
-  const [habits, setHabits] = useState<Habit[]>();
-  const [occurrenceData, setOccurrenceData] = useState<OccurrenceData>();
-  const [streaks, setStreaks] = useState<Streaks>();
+  const [habits, setHabits] = useState<Habit[]>([]);
+  const [occurrenceData, setOccurrenceData] = useState<OccurrenceData>({ dates: {}, oldest: {} });
+  const [streaks, setStreaks] = useState<Streaks>({});
   const [ignoreMouse, setIgnoreMouse] = useState(true);
+
   const layoutOptions = useRef({
     minMarginHeight: 50,
     maxListHeight: 600,
@@ -127,45 +127,42 @@ export default function App() {
     setInInput,
   });
 
-  // temp
-  // temp
-  // temp
-  const selectedHabits = getSelectedHabits({
-    habits,
-    listView: view.name === 'yesterday' ? { name: 'yesterday' } : { name: 'today' },
-    dateObject,
-    occurrenceData,
-  });
-  const selectedOccurrences = getSelectedOccurrences({
-    occurrenceData,
-    dateObject,
+  const {
+    selectedHabits,
+    selectedOccurrences,
+    selectedStreaks,
+  } = useSelectedData({
     view,
+    dateObject,
+    occurrenceData,
+    habits,
+    streaks,
   });
 
-  // useShortcutManager({
-  //   modalContentGenerator,
-  //   setIgnoreMouse,
-  //   dateObject,
-  //   latchedListView: view.name === 'yesterday' ? { name: 'yesterday' } : { name: 'today' },
-  //   habits,
-  //   inInput,
-  //   inTransition,
-  //   occurrenceData,
-  //   selectedHabits,
-  //   selectedIndex,
-  //   view,
-  //   setInInput,
-  //   setView,
-  //   setSelectedIndex,
-  //   reorderingList,
-  //   setModalContentGenerator,
-  //   deleteHabit,
-  //   updateOccurrenceCompleted,
-  //   updateOccurrenceVisibility,
-  //   updateHabitListPosition,
-  // });
+  useShortcutManager({
+    modalContentGenerator,
+    setIgnoreMouse,
+    dateObject,
+    latchedListView: view.name === 'yesterday' ? { name: 'yesterday' } : { name: 'today' },
+    habits,
+    inInput,
+    inTransition,
+    occurrenceData,
+    selectedHabits,
+    selectedIndex,
+    view,
+    setInInput,
+    setView,
+    setSelectedIndex,
+    reorderingList,
+    setModalContentGenerator,
+    deleteHabit,
+    updateOccurrenceCompleted,
+    updateOccurrenceVisibility,
+    updateHabitListPosition,
+  });
 
-  if (!habits || !occurrenceData || !streaks) return null;
+  if (occurrenceData.dates[dateObject.today.dateString] === undefined) return null;
 
   return (
     <>
@@ -182,22 +179,21 @@ export default function App() {
         occurrences={(
           <Occurrences
             view={view}
-            dateObject={dateObject}
-            occurrenceData={occurrenceData}
+            selectedOccurrences={selectedOccurrences}
           />
         )}
         days={(
           <Days
             view={view}
             dateObject={dateObject}
-            occurrenceData={occurrenceData}
+            selectedOccurrences={selectedOccurrences}
           />
         )}
         dates={(
           <Dates
             view={view}
             dateObject={dateObject}
-            occurrenceData={occurrenceData}
+            selectedOccurrences={selectedOccurrences}
           />
         )}
         list={(
@@ -206,8 +202,8 @@ export default function App() {
             ignoreTabIndices={modalContentGenerator !== undefined}
             dateObject={dateObject}
             view={view}
-            habits={habits}
-            streaks={streaks}
+            selectedHabits={selectedHabits}
+            selectedStreaks={selectedStreaks}
             occurrenceData={occurrenceData}
             selectedIndex={selectedIndex}
             setSelectedIndex={setSelectedIndex}

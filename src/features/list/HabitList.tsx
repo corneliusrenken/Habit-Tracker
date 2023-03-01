@@ -6,7 +6,6 @@ import {
   OccurrenceData,
   Streaks,
 } from '../../globalTypes';
-import getSelectedStreaks from '../selectedData/getSelectedStreaks';
 import HabitListItem from './HabitListItem';
 
 type Props = {
@@ -15,7 +14,7 @@ type Props = {
   listView: ListView;
   occurrenceData: OccurrenceData;
   habits: Habit[];
-  streaks: Streaks;
+  selectedStreaks: Streaks;
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   updateOccurrenceCompleted: (habitId: number, complete: boolean) => void;
@@ -27,18 +26,11 @@ export default function HabitList({
   listView,
   occurrenceData,
   habits,
-  streaks,
+  selectedStreaks,
   selectedIndex,
   setSelectedIndex,
   updateOccurrenceCompleted,
 }: Props) {
-  const selectedStreaks = getSelectedStreaks({
-    dateObject,
-    listView,
-    occurrenceData,
-    streaks,
-  });
-
   const dayObject = listView.name === 'yesterday' ? dateObject.yesterday : dateObject.today;
 
   return (

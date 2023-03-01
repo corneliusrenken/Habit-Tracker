@@ -5,9 +5,9 @@ import { deleteHabitStateUpdate } from '../stateUpdaters';
 
 type States = {
   queue: TaskQueue;
-  setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
-  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
-  setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
+  setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
+  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData>>;
+  setStreaks: React.Dispatch<React.SetStateAction<Streaks>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
 };

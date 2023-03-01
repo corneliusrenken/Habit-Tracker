@@ -1,23 +1,18 @@
 import React, { memo } from 'react';
-import { DateObject, View, OccurrenceData } from '../../globalTypes';
-import getSelectedOccurrences from '../selectedData/getSelectedOccurrences';
+import { DateObject, View, SelectedOccurrence } from '../../globalTypes';
 
 type Props = {
   view: View;
   dateObject: DateObject;
-  occurrenceData: OccurrenceData;
+  selectedOccurrences: SelectedOccurrence[];
 };
 
-function Dates({ dateObject, view, occurrenceData }: Props) {
+function Dates({ dateObject, view, selectedOccurrences }: Props) {
   const selectedDayIndex = view.name !== 'yesterday'
     ? dateObject.today.weekDayIndex
     : dateObject.yesterday.weekDayIndex;
 
-  const weekOccurrences = getSelectedOccurrences({
-    dateObject,
-    occurrenceData,
-    view,
-  }).slice(-7);
+  const weekOccurrences = selectedOccurrences.slice(-7);
 
   let dayIndicatorClassName = 'dates-day-indicator';
   if (weekOccurrences[selectedDayIndex].complete) dayIndicatorClassName += ' complete';

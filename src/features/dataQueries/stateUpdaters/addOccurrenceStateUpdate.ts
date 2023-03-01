@@ -2,7 +2,7 @@ import { getMinimumDateString } from '../../common/dateStringFunctions';
 import { OccurrenceData } from '../../../globalTypes';
 
 type States = {
-  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
+  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData>>;
 };
 
 export default function addOccurrenceStateUpdate(
@@ -13,8 +13,6 @@ export default function addOccurrenceStateUpdate(
   const { setOccurrenceData } = states;
 
   setOccurrenceData((previousOccurrenceData) => {
-    if (!previousOccurrenceData) throw new Error('state should not be undefined');
-
     if (previousOccurrenceData.dates[date] === undefined) {
       throw new Error('day entry for the passed date doesn\'t exist');
     }

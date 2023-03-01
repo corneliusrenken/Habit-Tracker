@@ -5,12 +5,12 @@ import { generateAddHabitTask } from '../tasks';
 
 type States = {
   queue: TaskQueue;
-  habits: Habit[] | undefined;
-  streaks: Streaks | undefined;
-  occurrenceData: OccurrenceData | undefined;
-  setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
-  setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
-  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
+  habits: Habit[];
+  streaks: Streaks;
+  occurrenceData: OccurrenceData;
+  setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
+  setStreaks: React.Dispatch<React.SetStateAction<Streaks>>;
+  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
 };
 

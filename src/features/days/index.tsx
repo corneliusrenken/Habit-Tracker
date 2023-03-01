@@ -1,24 +1,19 @@
 import React, { memo } from 'react';
 import {
   DateObject,
-  OccurrenceData,
+  SelectedOccurrence,
   View,
   viewToViewType,
 } from '../../globalTypes';
-import getSelectedOccurrences from '../selectedData/getSelectedOccurrences';
 
 type Props = {
   view: View;
   dateObject: DateObject;
-  occurrenceData: OccurrenceData;
+  selectedOccurrences: SelectedOccurrence[];
 };
 
-function Days({ view, dateObject, occurrenceData }: Props) {
-  const weekOccurrences = getSelectedOccurrences({
-    dateObject,
-    occurrenceData,
-    view,
-  }).slice(-7);
+function Days({ view, dateObject, selectedOccurrences }: Props) {
+  const weekOccurrences = selectedOccurrences.slice(-7);
 
   return (
     <div className="days" style={{ opacity: viewToViewType[view.name] === 'list' ? 1 : 0 }}>

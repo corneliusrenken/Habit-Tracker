@@ -1,9 +1,9 @@
 import { Habit, OccurrenceData, Streaks } from '../../../globalTypes';
 
 type States = {
-  setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
-  setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
-  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
+  setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
+  setStreaks: React.Dispatch<React.SetStateAction<Streaks>>;
+  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData>>;
 };
 
 /**
@@ -20,8 +20,6 @@ export default function addHabitStateUpdate(
   } = states;
 
   setHabits((previousHabits) => {
-    if (!previousHabits) throw new Error('state should not be undefined');
-
     if (previousHabits.find((habit) => habit.id === habitId) !== undefined) {
       throw new Error('habit id has to be unique');
     }
@@ -37,8 +35,6 @@ export default function addHabitStateUpdate(
   });
 
   setStreaks((previousStreaks) => {
-    if (!previousStreaks) throw new Error('state should not be undefined');
-
     const newStreaks: Streaks = JSON.parse(JSON.stringify(previousStreaks));
 
     newStreaks[habitId] = { current: 0, maximum: 0 };
@@ -47,8 +43,6 @@ export default function addHabitStateUpdate(
   });
 
   setOccurrenceData((previousOccurrenceData) => {
-    if (!previousOccurrenceData) throw new Error('state should not be undefined');
-
     const newOccurrenceData: OccurrenceData = JSON.parse(JSON.stringify(previousOccurrenceData));
 
     newOccurrenceData.oldest[habitId] = date;

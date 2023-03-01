@@ -2,20 +2,20 @@ import { Habit, OccurrenceData, Streaks } from '../../../../globalTypes';
 import PseudoUseState from '../../helperFunctions/pseudoUseState';
 import { deleteHabitStateUpdate } from '../../../../features/dataQueries/stateUpdaters';
 
-let habitState: PseudoUseState<Habit[] | undefined>;
-let occurrenceDataState: PseudoUseState<OccurrenceData | undefined>;
-let streaksState: PseudoUseState<Streaks | undefined>;
+let habitState: PseudoUseState<Habit[]>;
+let occurrenceDataState: PseudoUseState<OccurrenceData>;
+let streaksState: PseudoUseState<Streaks>;
 let selectedIndexState: PseudoUseState<number | null>;
 let inInputState: PseudoUseState<boolean>;
 
 beforeEach(() => {
-  habitState = new PseudoUseState<Habit[] | undefined>([
+  habitState = new PseudoUseState<Habit[]>([
     { id: 1, name: 'exercise' },
     { id: 2, name: 'read' },
     { id: 3, name: 'sleep' },
   ]);
 
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
       1: '2023-02-16',
       2: '2023-02-13',
@@ -35,7 +35,7 @@ beforeEach(() => {
     },
   });
 
-  streaksState = new PseudoUseState<Streaks | undefined>({
+  streaksState = new PseudoUseState<Streaks>({
     1: { current: 0, maximum: 0 },
     2: { current: 0, maximum: 0 },
     3: { current: 0, maximum: 0 },

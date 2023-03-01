@@ -2,9 +2,9 @@ import React from 'react';
 import { Habit, OccurrenceData, Streaks } from '../../../globalTypes';
 
 type States = {
-  setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
-  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
-  setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
+  setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
+  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData>>;
+  setStreaks: React.Dispatch<React.SetStateAction<Streaks>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -24,8 +24,6 @@ export default function deleteHabitStateUpdate(
   let newHabits: Habit[] = [];
 
   setHabits((previousHabits) => {
-    if (!previousHabits) throw new Error('state should not be undefined');
-
     if (previousHabits.find(({ id }) => id === habitId) === undefined) {
       throw new Error('habit with this id doesn\'t exist');
     }
@@ -38,8 +36,6 @@ export default function deleteHabitStateUpdate(
   });
 
   setOccurrenceData((previousOccurrenceData) => {
-    if (!previousOccurrenceData) throw new Error('state should not be undefined');
-
     const dates = Object.keys(previousOccurrenceData.dates);
 
     const newOccurrenceData: OccurrenceData = JSON.parse(JSON.stringify(previousOccurrenceData));
@@ -54,8 +50,6 @@ export default function deleteHabitStateUpdate(
   });
 
   setStreaks((previousStreaks) => {
-    if (!previousStreaks) throw new Error('state should not be undefined');
-
     const newStreaks: Streaks = JSON.parse(JSON.stringify(previousStreaks));
 
     delete newStreaks[habitId];

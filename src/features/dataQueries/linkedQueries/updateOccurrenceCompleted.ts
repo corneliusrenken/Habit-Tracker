@@ -5,8 +5,8 @@ import { updateOccurrenceStateUpdate } from '../stateUpdaters';
 
 type States = {
   queue: TaskQueue;
-  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
-  setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
+  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData>>;
+  setStreaks: React.Dispatch<React.SetStateAction<Streaks>>;
 };
 
 /**
