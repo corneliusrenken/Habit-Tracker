@@ -21,7 +21,7 @@ type States = {
   setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData>>;
   setStreaks: React.Dispatch<React.SetStateAction<Streaks>>;
-  setView: (nextView: View | ((lastView: View) => View)) => void;
+  setView: React.Dispatch<React.SetStateAction<View>>;
 };
 
 function initializeAfterQueueFinishedRunning({
@@ -39,7 +39,7 @@ function initializeAfterQueueFinishedRunning({
   setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData>>;
   setStreaks: React.Dispatch<React.SetStateAction<Streaks>>;
-  setView: (nextView: View | ((lastView: View) => View)) => void;
+  setView: React.Dispatch<React.SetStateAction<View>>;
 }) {
   if (!queue.running) {
     const newDateObject = getDateObject(6);

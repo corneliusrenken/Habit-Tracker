@@ -1,5 +1,4 @@
 import React, {
-  useCallback,
   useEffect,
   useRef,
   useState,
@@ -31,7 +30,7 @@ export default function App() {
   // using a function in useState makes it's initializer only run once instead of on every cycle
   const [dateObject, setDateObject] = useState(() => getDateObject(6));
   // eslint-disable-next-line @typescript-eslint/naming-convention
-  const [view, _setView] = useState<View>(() => ({ name: 'today' }));
+  const [view, setView] = useState<View>(() => ({ name: 'today' }));
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [inInput, setInInput] = useState(false);
   const [reorderingList, setReorderingList] = useState(false);
@@ -77,19 +76,6 @@ export default function App() {
   if (!inInput && selectedIndex === habits?.length) {
     throw new Error('should always be in input when selected index is equal to habits length');
   }
-
-  const setView = useCallback((nextView: View | ((lastView: View) => View)) => {
-    if (nextView instanceof Function) {
-      nextView = nextView(view); // eslint-disable-line no-param-reassign
-    }
-
-    if (
-      (nextView.name !== view.name)
-      || (nextView.name === 'focus' && view.name === 'focus' && nextView.focusId !== view.focusId)
-    ) {
-      _setView(nextView);
-    }
-  }, [view]);
 
   useDailyInitializer({
     queue: queue.current,

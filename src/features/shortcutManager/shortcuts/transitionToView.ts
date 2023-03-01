@@ -11,7 +11,7 @@ type States = {
   habits: Habit[];
   occurrenceData: OccurrenceData;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  setView: (nextView: View | ((lastView: View) => View)) => void;
+  setView: React.Dispatch<React.SetStateAction<View>>;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
 };
 

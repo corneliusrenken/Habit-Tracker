@@ -10,7 +10,7 @@ type States = {
   setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData>>;
   setStreaks: React.Dispatch<React.SetStateAction<Streaks>>;
-  setView: (nextView: View | ((lastView: View) => View)) => void;
+  setView: React.Dispatch<React.SetStateAction<View>>;
 };
 
 /**
