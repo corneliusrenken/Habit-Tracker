@@ -1,23 +1,26 @@
-import React from 'react';
+import React, { memo, useMemo, useRef } from 'react';
 import {
+  DateObject,
   Habit,
-  ListView,
+  View,
   ModalContentGenerator,
   OccurrenceData,
   Streaks,
-  ViewType,
+  ListView,
+  viewToViewType,
 } from '../../globalTypes';
+import getSelectedHabits from '../selectedData/getSelectedHabits';
 import HabitList from './HabitList';
 import SelectionList from './SelectionList';
 
 type Props = {
   ignoreMouse: boolean;
-  viewType: ViewType;
-  allowTabTraversal: boolean;
-  selectedHabits: Habit[];
+  ignoreTabIndices: boolean;
+  dateObject: DateObject,
+  view: View;
+  habits: Habit[];
   streaks: Streaks;
-  todaysOccurrences: OccurrenceData['dates'][string];
-  latchedListView: ListView;
+  occurrenceData: OccurrenceData;
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   inInput: boolean;
@@ -33,14 +36,14 @@ type Props = {
   updateOccurrenceVisibility: (habitId: number, visible: boolean) => void;
 };
 
-export default function List({
+function List({
   ignoreMouse,
-  viewType,
-  allowTabTraversal,
-  selectedHabits,
+  ignoreTabIndices,
+  dateObject,
+  view,
+  habits,
   streaks,
-  todaysOccurrences,
-  latchedListView,
+  occurrenceData,
   selectedIndex,
   setSelectedIndex,
   inInput,
@@ -55,14 +58,36 @@ export default function List({
   updateOccurrenceCompleted,
   updateOccurrenceVisibility,
 }: Props) {
+  // need the ref for the memo so that it can reference itself
+  const latchedListViewRef = useRef<ListView>({ name: 'today' });
+  const latchedListView: ListView = useMemo(() => {
+    const isListView = view.name === 'today' || view.name === 'yesterday' || view.name === 'selection';
+    const isDifferentToLast = view.name !== latchedListViewRef.current.name;
+
+    if (isListView && isDifferentToLast) {
+      latchedListViewRef.current = view;
+      return view;
+    }
+    return latchedListViewRef.current;
+  }, [view]);
+
+  const selectedHabits = useMemo(() => getSelectedHabits({
+    habits,
+    occurrenceData,
+    dateObject,
+    listView: latchedListView,
+  }), [habits, occurrenceData, dateObject, latchedListView]);
+
   return (
-    <div className="list" style={{ opacity: viewType === 'list' ? 1 : 0 }}>
+    <div className="list" style={{ opacity: viewToViewType[view.name] === 'list' ? 1 : 0 }}>
       {latchedListView.name !== 'selection' ? (
         <HabitList
           ignoreMouse={ignoreMouse}
+          dateObject={dateObject}
+          listView={latchedListView}
+          occurrenceData={occurrenceData}
           habits={selectedHabits}
           streaks={streaks}
-          todaysOccurrences={todaysOccurrences}
           selectedIndex={selectedIndex}
           setSelectedIndex={setSelectedIndex}
           updateOccurrenceCompleted={updateOccurrenceCompleted}
@@ -71,9 +96,10 @@ export default function List({
         <SelectionList
           ignoreMouse={ignoreMouse}
           setModalContentGenerator={setModalContentGenerator}
-          allowTabTraversal={allowTabTraversal}
+          ignoreTabIndices={ignoreTabIndices}
+          dateObject={dateObject}
+          occurrenceData={occurrenceData}
           habits={selectedHabits}
-          todaysOccurrences={todaysOccurrences}
           selectedIndex={selectedIndex}
           setSelectedIndex={setSelectedIndex}
           inInput={inInput}
@@ -90,3 +116,5 @@ export default function List({
     </div>
   );
 }
+
+export default memo(List);

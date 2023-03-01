@@ -50,7 +50,7 @@ export default function transitionToView(viewName: View['name'], states: States)
       dateObject,
       habits,
       occurrenceData,
-      latchedListView: { name: viewName },
+      listView: { name: viewName },
     });
     // anonymous function needed because of typescript weirdness, research later
     setView(() => ({ name: viewName }));

@@ -1,14 +1,20 @@
 import React, { useMemo } from 'react';
-import { Habit, ModalContentGenerator, OccurrenceData } from '../../globalTypes';
+import {
+  DateObject,
+  Habit,
+  ModalContentGenerator,
+  OccurrenceData,
+} from '../../globalTypes';
 import openDeleteHabitModal from '../deleteHabitModal/openDeleteHabitModal';
 import { ElementConstructor } from './ReorderableList';
 import SelectionListItem from './SelectionListItem';
 
 type States = {
   ignoreMouse: boolean;
-  allowTabTraversal: boolean;
+  ignoreTabIndices: boolean;
+  dateObject: DateObject;
+  occurrenceData: OccurrenceData;
   habits: Habit[];
-  todaysOccurrences: OccurrenceData['dates'][string];
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   inInput: boolean;
@@ -23,9 +29,10 @@ type States = {
 
 export default function useMemoizedSelectionListItemConstructors({
   ignoreMouse,
-  allowTabTraversal,
+  ignoreTabIndices,
+  dateObject,
+  occurrenceData,
   habits,
-  todaysOccurrences,
   selectedIndex,
   setSelectedIndex,
   inInput,
@@ -41,12 +48,15 @@ export default function useMemoizedSelectionListItemConstructors({
     habits.map((habit, index) => ({
       id: habit.id,
       elementConstructor: (onMouseDown: React.MouseEventHandler<HTMLButtonElement>) => {
-        const visible = todaysOccurrences[habit.id]?.visible;
-
+        // const visible = occurrenceData.dates[habit.id]?.visible;
+        const visible = (
+          occurrenceData.dates[dateObject.today.dateString][habit.id]
+          && occurrenceData.dates[dateObject.today.dateString][habit.id].visible
+        );
         return (
           <SelectionListItem
             ignoreMouse={ignoreMouse}
-            allowTabTraversal={allowTabTraversal}
+            ignoreTabIndices={ignoreTabIndices}
             name={habit.name}
             move={(e) => {
               onMouseDown(e);
@@ -72,9 +82,10 @@ export default function useMemoizedSelectionListItemConstructors({
     }))
   ), [
     ignoreMouse,
-    allowTabTraversal,
+    ignoreTabIndices,
+    dateObject,
+    occurrenceData,
     habits,
-    todaysOccurrences,
     selectedIndex,
     setSelectedIndex,
     inInput,

@@ -40,21 +40,21 @@ test('returns an empty array if the habits state is undefined', () => {
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'today' },
+    listView: { name: 'today' },
   })).toEqual([]);
 
   expect(getSelectedHabits({
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'yesterday' },
+    listView: { name: 'yesterday' },
   })).toEqual([]);
 
   expect(getSelectedHabits({
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'selection' },
+    listView: { name: 'selection' },
   })).toEqual([]);
 });
 
@@ -65,21 +65,21 @@ test('returns an empty array if the occurrenceData state is undefined', () => {
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'today' },
+    listView: { name: 'today' },
   })).toEqual([]);
 
   expect(getSelectedHabits({
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'yesterday' },
+    listView: { name: 'yesterday' },
   })).toEqual([]);
 
   expect(getSelectedHabits({
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'selection' },
+    listView: { name: 'selection' },
   })).toEqual([]);
 });
 
@@ -107,14 +107,14 @@ test('returns an empty array for today and yesterday view if no visible occurren
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'today' },
+    listView: { name: 'today' },
   })).toEqual([]);
 
   expect(getSelectedHabits({
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'yesterday' },
+    listView: { name: 'yesterday' },
   })).toEqual([]);
 });
 
@@ -133,14 +133,14 @@ test('returns an empty array for today and yesterday view if no day entry exists
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'today' },
+    listView: { name: 'today' },
   })).toEqual([]);
 
   expect(getSelectedHabits({
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'yesterday' },
+    listView: { name: 'yesterday' },
   })).toEqual([]);
 });
 
@@ -166,7 +166,7 @@ test('returns all habits in \'selection\' view, regardless of their visibility o
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'selection' },
+    listView: { name: 'selection' },
   })).toEqual([
     { id: 1, name: 'exercise' },
     { id: 2, name: 'read' },
@@ -197,7 +197,7 @@ test('returns all habits that were visible on today\'s date in \'today\' view, i
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'today' },
+    listView: { name: 'today' },
   })).toEqual([
     { id: 2, name: 'read' },
     { id: 4, name: 'code' },
@@ -226,7 +226,7 @@ test('returns all habits that were visible on yesterday\'s date in \'yesterday\'
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'yesterday' },
+    listView: { name: 'yesterday' },
   })).toEqual([
     { id: 2, name: 'read' },
     { id: 4, name: 'code' },

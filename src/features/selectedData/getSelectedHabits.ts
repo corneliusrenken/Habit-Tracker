@@ -6,26 +6,24 @@ type States = {
   habits: Habit[] | undefined;
   occurrenceData: OccurrenceData | undefined;
   dateObject: DateObject;
-  latchedListView: ListView;
+  listView: ListView;
 };
 
-export default function getSelectedHabits(states: States) {
-  const {
-    habits,
-    occurrenceData,
-    dateObject,
-    latchedListView,
-  } = states;
-
+export default function getSelectedHabits({
+  habits,
+  occurrenceData,
+  dateObject,
+  listView,
+}: States) {
   if (!habits || !occurrenceData) return [];
 
-  const selectedDate = latchedListView.name === 'yesterday'
+  const selectedDate = listView.name === 'yesterday'
     ? dateObject.yesterday.dateString
     : dateObject.today.dateString;
 
   const dayOccurrences = occurrenceData.dates[selectedDate] || {};
 
-  return latchedListView.name === 'selection'
+  return listView.name === 'selection'
     ? habits
     : habits.filter(({ id }) => dayOccurrences[id]?.visible);
 }

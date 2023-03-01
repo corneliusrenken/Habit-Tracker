@@ -9,13 +9,11 @@ type States = {
   view: View,
 };
 
-export default function getSelectedOccurrences(states: States) {
-  const {
-    occurrenceData,
-    dateObject,
-    view,
-  } = states;
-
+export default function getSelectedOccurrences({
+  occurrenceData,
+  dateObject,
+  view,
+}: States) {
   if (!occurrenceData) return [];
 
   const occurences: SelectedOccurrence[] = [];

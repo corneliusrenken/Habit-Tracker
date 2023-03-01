@@ -1,14 +1,20 @@
 import React from 'react';
-import { Habit, ModalContentGenerator, OccurrenceData } from '../../globalTypes';
+import {
+  DateObject,
+  Habit,
+  ModalContentGenerator,
+  OccurrenceData,
+} from '../../globalTypes';
 import AddHabitForm from './AddHabitForm';
 import ReorderableList from './ReorderableList';
 import useMemoizedSelectionListItemConstructors from './useMemoizedSelectionListItemConstructors';
 
 type Props = {
   ignoreMouse: boolean;
-  allowTabTraversal: boolean;
+  ignoreTabIndices: boolean;
+  dateObject: DateObject;
+  occurrenceData: OccurrenceData;
   habits: Habit[];
-  todaysOccurrences: OccurrenceData['dates'][string];
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   inInput: boolean;
@@ -25,9 +31,10 @@ type Props = {
 
 export default function SelectionList({
   ignoreMouse,
-  allowTabTraversal,
+  ignoreTabIndices,
+  dateObject,
+  occurrenceData,
   habits,
-  todaysOccurrences,
   selectedIndex,
   setSelectedIndex,
   inInput,
@@ -43,9 +50,10 @@ export default function SelectionList({
 }: Props) {
   const elementConstructors = useMemoizedSelectionListItemConstructors({
     ignoreMouse,
-    allowTabTraversal,
+    ignoreTabIndices,
+    dateObject,
+    occurrenceData,
     habits,
-    todaysOccurrences,
     selectedIndex,
     setSelectedIndex,
     inInput,
@@ -72,7 +80,7 @@ export default function SelectionList({
         activeClass="being-reordered"
       />
       <AddHabitForm
-        allowTabTraversal={allowTabTraversal}
+        ignoreTabIndices={ignoreTabIndices}
         habits={habits}
         selectedIndex={selectedIndex}
         setSelectedIndex={setSelectedIndex}

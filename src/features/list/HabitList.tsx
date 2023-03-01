@@ -1,12 +1,21 @@
 import React from 'react';
-import { Habit, OccurrenceData, Streaks } from '../../globalTypes';
+import {
+  DateObject,
+  Habit,
+  ListView,
+  OccurrenceData,
+  Streaks,
+} from '../../globalTypes';
+import getSelectedStreaks from '../selectedData/getSelectedStreaks';
 import HabitListItem from './HabitListItem';
 
 type Props = {
   ignoreMouse: boolean;
+  dateObject: DateObject;
+  listView: ListView;
+  occurrenceData: OccurrenceData;
   habits: Habit[];
   streaks: Streaks;
-  todaysOccurrences: OccurrenceData['dates'][string];
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   updateOccurrenceCompleted: (habitId: number, complete: boolean) => void;
@@ -14,17 +23,28 @@ type Props = {
 
 export default function HabitList({
   ignoreMouse,
+  dateObject,
+  listView,
+  occurrenceData,
   habits,
   streaks,
-  todaysOccurrences,
   selectedIndex,
   setSelectedIndex,
   updateOccurrenceCompleted,
 }: Props) {
+  const selectedStreaks = getSelectedStreaks({
+    dateObject,
+    listView,
+    occurrenceData,
+    streaks,
+  });
+
+  const dayObject = listView.name === 'yesterday' ? dateObject.yesterday : dateObject.today;
+
   return (
     <div>
       {habits.map(({ name, id }, index) => {
-        const completed = todaysOccurrences[id].complete;
+        const completed = occurrenceData.dates[dayObject.dateString][id].complete;
         const selected = index === selectedIndex;
 
         return (
@@ -32,7 +52,7 @@ export default function HabitList({
             ignoreMouse={ignoreMouse}
             key={id}
             name={name}
-            streak={streaks[id].current}
+            streak={selectedStreaks[id].current}
             completed={completed}
             selected={selected}
             select={() => setSelectedIndex(index)}

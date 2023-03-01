@@ -5,7 +5,7 @@ import isValidHabitName from './isValidHabitName';
 
 type Props = {
   ignoreMouse: boolean;
-  allowTabTraversal: boolean;
+  ignoreTabIndices: boolean;
   name: string;
   visible: boolean;
   move: React.MouseEventHandler<HTMLButtonElement>;
@@ -21,7 +21,7 @@ type Props = {
 
 export default function SelectionListItem({
   ignoreMouse,
-  allowTabTraversal,
+  ignoreTabIndices,
   name,
   visible,
   move,
@@ -88,7 +88,7 @@ export default function SelectionListItem({
       <div className="list-horizontal-icon-container">
         <Icon
           icon="rename"
-          allowTabTraversal={allowTabTraversal}
+          ignoreTabIndices={ignoreTabIndices}
           onMouseDown={() => {
             const onMouseUp = () => {
               setTimeout(() => { ignoreNextMouseUp.current = false; }, 0);
@@ -108,20 +108,20 @@ export default function SelectionListItem({
         />
         <Icon
           icon="trash"
-          allowTabTraversal={allowTabTraversal}
+          ignoreTabIndices={ignoreTabIndices}
           onClick={openDeleteHabitModal}
           hidden={!selected}
         />
         <Icon
           icon="move"
           classes={['move-icon']}
-          allowTabTraversal={allowTabTraversal}
+          ignoreTabIndices={ignoreTabIndices}
           onMouseDown={move}
           hidden={!selected}
         />
         <Icon
           icon={visible ? 'visible' : 'hidden'}
-          allowTabTraversal={allowTabTraversal}
+          ignoreTabIndices={ignoreTabIndices}
           classes={!visible ? ['greyed-out'] : undefined}
           onClick={toggleVisibility}
         />

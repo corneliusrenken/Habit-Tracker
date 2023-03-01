@@ -78,7 +78,7 @@ test('returns an empty object if the occurrenceData state is undefined', () => {
     streaks: streaksState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'today' },
+    listView: { name: 'today' },
   })).toEqual({});
 });
 
@@ -89,7 +89,7 @@ test('returns an empty object if the streaks state is undefined', () => {
     streaks: streaksState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'today' },
+    listView: { name: 'today' },
   })).toEqual({});
 });
 
@@ -98,14 +98,14 @@ test('returns the streaks state if the view is anything but \'yesterday\'', () =
     streaks: streaksState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'today' },
+    listView: { name: 'today' },
   })).toEqual(streaksState.value);
 
   expect(getSelectedStreaks({
     streaks: streaksState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'selection' },
+    listView: { name: 'selection' },
   })).toEqual(streaksState.value);
 });
 
@@ -115,7 +115,7 @@ test('recalculates streak based on yesterday if view is \'yesterday\'', () => {
     streaks: streaksState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'yesterday' },
+    listView: { name: 'yesterday' },
   })).toEqual({
     1: { current: 3, maximum: 3 },
     2: { current: 2, maximum: 2 },

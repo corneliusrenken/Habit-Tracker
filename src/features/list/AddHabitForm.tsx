@@ -3,7 +3,7 @@ import { Habit } from '../../globalTypes';
 import isValidHabitName from './isValidHabitName';
 
 type Props = {
-  allowTabTraversal: boolean;
+  ignoreTabIndices: boolean;
   habits: Habit[];
   selectedIndex: number | null;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
@@ -13,7 +13,7 @@ type Props = {
 };
 
 export default function AddHabitForm({
-  allowTabTraversal,
+  ignoreTabIndices,
   habits,
   selectedIndex,
   setSelectedIndex,
@@ -48,7 +48,7 @@ export default function AddHabitForm({
       }}
     >
       <input
-        tabIndex={allowTabTraversal ? undefined : -1}
+        tabIndex={ignoreTabIndices ? -1 : undefined}
         ref={habitInputRef}
         type="text"
         placeholder="add habit"
