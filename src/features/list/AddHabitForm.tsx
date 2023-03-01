@@ -24,16 +24,29 @@ export default function AddHabitForm({
   const [habitInput, setHabitInput] = useState('');
   const habitInputRef = useRef<HTMLInputElement>(null);
 
+  const selectedForm = selectedIndex === habits.length;
+
+  // development
+  // development
+  // development
+  if (selectedForm && !inInput) {
+    throw new Error('inInput should never be false when form is selected');
+  }
+
   useEffect(() => {
-    if (selectedIndex === habits.length && inInput) {
+    if (selectedForm) {
       habitInputRef.current?.focus();
     } else {
       habitInputRef.current?.blur();
     }
-  }, [selectedIndex, habits.length, inInput]);
+  }, [selectedForm]);
+
+  let formClassName = '';
+  if (selectedForm) formClassName += 'selected';
 
   return (
     <form
+      className={formClassName}
       style={{ top: `${habits.length * 50}px` }}
       onSubmit={(e) => {
         e.preventDefault();
@@ -54,12 +67,17 @@ export default function AddHabitForm({
         placeholder="add habit"
         value={habitInput}
         onFocus={() => {
+          // if shortcut is used, these states are already set
+          if (selectedForm) return;
           setInInput(true);
           setSelectedIndex(habits.length);
         }}
         onBlur={() => {
-          setInInput(false);
           setHabitInput('');
+
+          // if shortcut is used, these states are already set
+          if (!selectedForm) return;
+          setInInput(false);
           if (habits.length === 0) {
             setSelectedIndex(null);
           } else {
