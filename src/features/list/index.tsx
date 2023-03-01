@@ -14,7 +14,7 @@ import SelectionList from './SelectionList';
 
 type Props = {
   ignoreMouse: boolean;
-  ignoreTabIndices: boolean;
+  disableTabIndex: boolean;
   dateObject: DateObject,
   view: View;
   selectedHabits: Habit[];
@@ -37,7 +37,7 @@ type Props = {
 
 function List({
   ignoreMouse,
-  ignoreTabIndices,
+  disableTabIndex,
   dateObject,
   view,
   selectedHabits,
@@ -88,7 +88,7 @@ function List({
         <SelectionList
           ignoreMouse={ignoreMouse}
           setModalContentGenerator={setModalContentGenerator}
-          ignoreTabIndices={ignoreTabIndices}
+          disableTabIndex={disableTabIndex}
           dateObject={dateObject}
           occurrenceData={occurrenceData}
           habits={selectedHabits}

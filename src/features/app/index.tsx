@@ -185,7 +185,7 @@ export default function App() {
         list={(
           <List
             ignoreMouse={ignoreMouse}
-            ignoreTabIndices={modalContentGenerator !== undefined}
+            disableTabIndex={modalContentGenerator !== undefined}
             dateObject={dateObject}
             view={view}
             selectedHabits={selectedHabits}

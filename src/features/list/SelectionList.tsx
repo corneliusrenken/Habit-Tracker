@@ -11,7 +11,7 @@ import useMemoizedSelectionListItemConstructors from './useMemoizedSelectionList
 
 type Props = {
   ignoreMouse: boolean;
-  ignoreTabIndices: boolean;
+  disableTabIndex: boolean;
   dateObject: DateObject;
   occurrenceData: OccurrenceData;
   habits: Habit[];
@@ -31,7 +31,7 @@ type Props = {
 
 export default function SelectionList({
   ignoreMouse,
-  ignoreTabIndices,
+  disableTabIndex,
   dateObject,
   occurrenceData,
   habits,
@@ -50,7 +50,7 @@ export default function SelectionList({
 }: Props) {
   const elementConstructors = useMemoizedSelectionListItemConstructors({
     ignoreMouse,
-    ignoreTabIndices,
+    disableTabIndex,
     dateObject,
     occurrenceData,
     habits,
@@ -80,7 +80,7 @@ export default function SelectionList({
         activeClass="being-reordered"
       />
       <AddHabitForm
-        ignoreTabIndices={ignoreTabIndices}
+        disableTabIndex={disableTabIndex}
         habits={habits}
         selectedIndex={selectedIndex}
         setSelectedIndex={setSelectedIndex}

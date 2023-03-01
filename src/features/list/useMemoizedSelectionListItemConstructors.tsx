@@ -11,7 +11,7 @@ import SelectionListItem from './SelectionListItem';
 
 type States = {
   ignoreMouse: boolean;
-  ignoreTabIndices: boolean;
+  disableTabIndex: boolean;
   dateObject: DateObject;
   occurrenceData: OccurrenceData;
   habits: Habit[];
@@ -29,7 +29,7 @@ type States = {
 
 export default function useMemoizedSelectionListItemConstructors({
   ignoreMouse,
-  ignoreTabIndices,
+  disableTabIndex,
   dateObject,
   occurrenceData,
   habits,
@@ -56,7 +56,7 @@ export default function useMemoizedSelectionListItemConstructors({
         return (
           <SelectionListItem
             ignoreMouse={ignoreMouse}
-            ignoreTabIndices={ignoreTabIndices}
+            disableTabIndex={disableTabIndex}
             name={habit.name}
             move={(e) => {
               onMouseDown(e);
@@ -82,7 +82,7 @@ export default function useMemoizedSelectionListItemConstructors({
     }))
   ), [
     ignoreMouse,
-    ignoreTabIndices,
+    disableTabIndex,
     dateObject,
     occurrenceData,
     habits,
