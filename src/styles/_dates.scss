@@ -35,7 +35,7 @@
     }
 
     &.yesterday circle {
-      stroke-dasharray: 5;
+      stroke-dasharray: calc(100% / 6);
     }
   }
 }
