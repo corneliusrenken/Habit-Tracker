@@ -13,6 +13,6 @@ export default function renameCurrentHabit(states: States) {
     setInInput,
   } = states;
 
-  if (!habits || selectedIndex === habits.length) return;
+  if (selectedIndex === habits.length) return;
   setInInput(true);
 }

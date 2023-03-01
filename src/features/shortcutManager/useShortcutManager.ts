@@ -52,8 +52,6 @@ export default function useShortcutManager(states: States) {
       reorderingList,
     } = states;
 
-    if (!habits) return;
-
     const { key } = e;
 
     let shortcut: undefined | (() => void);

@@ -166,7 +166,6 @@ export default function useDataQueries(states: States) {
       dateObject.today.dateString,
       {
         queue,
-        streaks,
         occurrenceData,
         setStreaks,
         setOccurrenceData,
@@ -176,7 +175,6 @@ export default function useDataQueries(states: States) {
     dateObject,
     selectedDate,
     queue,
-    streaks,
     occurrenceData,
     setStreaks,
     setOccurrenceData,
