@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import {
-  DateObject, Habit, ListView, ModalContentGenerator, OccurrenceData, View,
+  DateObject, Habit, ModalContentGenerator, OccurrenceData, View,
 } from '../../globalTypes';
 import checkModifierKeyWhitelist from './checkModifierKeyWhitelist';
 import {
@@ -20,7 +20,6 @@ type States = {
   modalContentGenerator: ModalContentGenerator | undefined;
   setIgnoreMouse: React.Dispatch<React.SetStateAction<boolean>>;
   dateObject: DateObject;
-  latchedListView: ListView;
   habits: Habit[];
   inInput: boolean;
   inTransition: boolean;

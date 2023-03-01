@@ -1,13 +1,13 @@
 import {
   DateObject,
   Habit,
-  ListView,
+  View,
   OccurrenceData,
 } from '../../../globalTypes';
 
 type States = {
   dateObject: DateObject;
-  latchedListView: ListView;
+  view: View;
   selectedHabits: Habit[];
   selectedIndex: number | null;
   occurrenceData: OccurrenceData;
@@ -17,7 +17,7 @@ type States = {
 export default function toggleCurrentHabitCompleted(states: States) {
   const {
     dateObject,
-    latchedListView,
+    view,
     selectedHabits,
     selectedIndex,
     occurrenceData,
@@ -27,7 +27,7 @@ export default function toggleCurrentHabitCompleted(states: States) {
   if (selectedIndex === null) return;
 
   const selectedHabit = selectedHabits[selectedIndex];
-  const todaysOccurrences = latchedListView.name === 'yesterday'
+  const todaysOccurrences = view.name === 'yesterday'
     ? occurrenceData.dates[dateObject.yesterday.dateString]
     : occurrenceData.dates[dateObject.today.dateString];
   const currentCompletedState = todaysOccurrences[selectedHabit.id].complete;

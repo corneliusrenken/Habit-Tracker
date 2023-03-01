@@ -129,7 +129,6 @@ export default function App() {
     modalContentGenerator,
     setIgnoreMouse,
     dateObject,
-    latchedListView: view.name === 'yesterday' ? { name: 'yesterday' } : { name: 'today' },
     habits,
     inInput,
     inTransition,
