@@ -49,8 +49,7 @@
     border: 0;
   }
 
-  // selector
-  &-item::after {
+  @mixin selector {
     transition: opacity 200ms;
     content: '';
     position: absolute;
@@ -62,18 +61,37 @@
     opacity: 0;
   }
 
-  &-item.selected::after {
+  @mixin selector-selected {
     opacity: 1;
   }
 
-  &-item.complete::after {
+  @mixin selector-complete {
     background-color: theme.$secondary;
+  }
+
+  &-name::after {
+    @include selector;
+  }
+
+  .selected &-name::after {
+    @include selector-selected;
+  }
+
+  .complete &-name::after {
+    @include selector-complete;
+  }
+
+  form::after {
+    @include selector;
+    right: calc(350px - var(--left-margin, 0px) + 16px);
+  }
+
+  form.selected::after, .selected form::after {
+    @include selector-selected;
   }
 
   &-name {
     @include fonts.main-text-font;
-
-    text-transform: capitalize;
 
     margin-left: var(--left-margin, 0px);
     width: 100%;

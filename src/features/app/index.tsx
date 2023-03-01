@@ -70,13 +70,6 @@ export default function App() {
     }
   }, [ignoreMouse]);
 
-  // development only
-  // development only
-  // development only
-  if (!inInput && selectedIndex === habits?.length) {
-    throw new Error('should always be in input when selected index is equal to habits length');
-  }
-
   useDailyInitializer({
     queue: queue.current,
     dateObject,
