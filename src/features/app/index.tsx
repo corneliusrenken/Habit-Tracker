@@ -9,7 +9,6 @@ import {
   ListView,
   ModalContentGenerator,
   OccurrenceData,
-  OccurrenceView,
   Streaks,
   View,
 } from '../../globalTypes';
@@ -33,7 +32,6 @@ export default function App() {
   // eslint-disable-next-line @typescript-eslint/naming-convention
   const [view, _setView] = useState<View>(() => ({ name: 'today' }));
   const [latchedListView, setLatchedListView] = useState<ListView>({ name: 'today' });
-  const [latchedOccurrenceView, setLatchedOccurrenceView] = useState<OccurrenceView>({ name: 'history' });
   const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
   const [inInput, setInInput] = useState(false);
   const [reorderingList, setReorderingList] = useState(false);
@@ -87,8 +85,6 @@ export default function App() {
     if (nextView.name !== view.name) {
       if (nextView.name === 'today' || nextView.name === 'yesterday' || nextView.name === 'selection') {
         setLatchedListView(nextView);
-      } else {
-        setLatchedOccurrenceView(nextView);
       }
       _setView(nextView);
     }

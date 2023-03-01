@@ -54,7 +54,7 @@ function Occurrences({
 
   const awaitinFirstVisibleRender = useRef(true);
 
-  const occurrences = useMemo(() => {
+  const component = useMemo(() => {
     let animationName = displayingOccurrences ? 'fade-in' : 'fade-out';
 
     if (awaitinFirstVisibleRender.current) {
@@ -98,7 +98,7 @@ function Occurrences({
     );
   }, [displayingOccurrences, displayedOccurrencesMemo, latchedOccurrenceView]);
 
-  return occurrences;
+  return component;
 }
 
 export default memo(Occurrences);
