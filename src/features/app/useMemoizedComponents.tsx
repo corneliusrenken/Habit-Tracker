@@ -11,7 +11,6 @@ import {
   DateObject,
 } from '../../globalTypes';
 import Dates from '../dates';
-import Days from '../days';
 import List from '../list';
 
 type States = {
@@ -64,14 +63,6 @@ export default function useMemoizedComponents({
   updateOccurrenceVisibility,
 }: States) {
   const viewType = viewToViewType[view.name];
-
-  const days = useMemo(() => (
-    <Days
-      viewType={viewType}
-      weekDays={dateObject.weekDays}
-      selectedOccurrences={selectedOccurrences}
-    />
-  ), [viewType, dateObject.weekDays, selectedOccurrences]);
 
   const dates = useMemo(() => (
     <Dates
@@ -136,7 +127,6 @@ export default function useMemoizedComponents({
   ]);
 
   return {
-    days,
     dates,
     list,
   };

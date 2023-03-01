@@ -23,6 +23,7 @@ import TaskQueue from '../taskQueue';
 import getDateObject from '../common/getDateObject';
 import useDailyInitializer from './useDailyInitializer';
 import Occurrences from '../occurrences';
+import Days from '../days';
 
 export default function App() {
   const queue = useRef(new TaskQueue());
@@ -204,7 +205,13 @@ export default function App() {
             occurrenceData={occurrenceData}
           />
         )}
-        days={components.days}
+        days={(
+          <Days
+            view={view}
+            dateObject={dateObject}
+            occurrenceData={occurrenceData}
+          />
+        )}
         dates={components.dates}
         list={components.list}
       />
