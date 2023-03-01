@@ -4,12 +4,10 @@ import { getDateFromDateString, getDateStringFromDate } from './dateStringFuncti
 export default function recalculateStreak(
   habitId: number,
   todayDateString: string,
-  occurrenceData: OccurrenceData | undefined,
+  occurrenceData: OccurrenceData,
 ): Streaks[string] {
   let maximumStreak = 0;
   let currentStreak = 0;
-
-  if (!occurrenceData) throw new Error('states should not be undefined');
 
   if (occurrenceData.oldest[habitId] === undefined) {
     throw new Error('no oldest occurrence entry exists for the given habit id');

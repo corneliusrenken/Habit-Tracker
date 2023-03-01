@@ -1,50 +1,43 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { DateObject, View, SelectedOccurrence } from '../../globalTypes';
 
 type Props = {
-  dateObject: DateObject;
   view: View;
+  dateObject: DateObject;
   selectedOccurrences: SelectedOccurrence[];
 };
 
-export default function Dates({ dateObject, view, selectedOccurrences }: Props) {
+function Dates({ dateObject, view, selectedOccurrences }: Props) {
   const selectedDayIndex = view.name !== 'yesterday'
     ? dateObject.today.weekDayIndex
     : dateObject.yesterday.weekDayIndex;
 
-  const occurrencesForWeek = selectedOccurrences.slice(selectedOccurrences.length - 7);
+  const weekOccurrences = selectedOccurrences.slice(-7);
 
-  let selectedDayIndicatorClassName = 'dates-selected-day-indicator';
-
-  if (occurrencesForWeek[selectedDayIndex].complete) {
-    selectedDayIndicatorClassName += ' complete';
-  }
+  let dayIndicatorClassName = 'dates-day-indicator';
+  if (weekOccurrences[selectedDayIndex].complete) dayIndicatorClassName += ' complete';
 
   return (
     <div className="dates">
-      {occurrencesForWeek.map(({ date, fullDate, complete }) => {
-        let className = 'dates-date';
-        if (complete) className += ' complete';
+      {weekOccurrences.map(({ date, fullDate, complete }) => {
+        let dateClassName = 'dates-date';
+        if (complete) dateClassName += ' complete';
 
         return (
           <div
             key={fullDate}
-            className={className}
+            className={dateClassName}
           >
             {date}
           </div>
         );
       })}
       <div
-        className={selectedDayIndicatorClassName}
+        className={dayIndicatorClassName}
         style={{ left: `calc(${selectedDayIndex} * 50px)` }}
       />
-      {occurrencesForWeek[selectedDayIndex].fullDate === dateObject.today.dateString && (
-        <div
-          className="dates-actual-day-indicator"
-          style={{ left: `calc(${dateObject.today.weekDayIndex} * 50px)` }}
-        />
-      )}
     </div>
   );
 }
+
+export default memo(Dates);

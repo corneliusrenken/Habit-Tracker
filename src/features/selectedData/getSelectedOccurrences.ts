@@ -4,20 +4,16 @@ import {
 import { getDateFromDateString, getDateStringFromDate, getMinimumDateString } from '../common/dateStringFunctions';
 
 type States = {
-  occurrenceData: OccurrenceData | undefined,
+  occurrenceData: OccurrenceData,
   dateObject: DateObject,
   view: View,
 };
 
-export default function getSelectedOccurrences(states: States) {
-  const {
-    occurrenceData,
-    dateObject,
-    view,
-  } = states;
-
-  if (!occurrenceData) return [];
-
+export default function getSelectedOccurrences({
+  occurrenceData,
+  dateObject,
+  view,
+}: States) {
   const occurences: SelectedOccurrence[] = [];
 
   const oldestDateString = view.name !== 'focus'

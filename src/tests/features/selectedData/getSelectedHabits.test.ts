@@ -8,19 +8,19 @@ import {
 } from '../../../globalTypes';
 import PseudoUseState from '../helperFunctions/pseudoUseState';
 
-let habitState: PseudoUseState<Habit[] | undefined>;
-let occurrenceDataState: PseudoUseState<OccurrenceData | undefined>;
+let habitState: PseudoUseState<Habit[]>;
+let occurrenceDataState: PseudoUseState<OccurrenceData>;
 let dateObject: DateObject;
 
 beforeEach(() => {
-  habitState = new PseudoUseState<Habit[] | undefined>([
+  habitState = new PseudoUseState<Habit[]>([
     { id: 1, name: 'exercise' },
     { id: 2, name: 'read' },
     { id: 3, name: 'sleep' },
     { id: 4, name: 'code' },
   ]);
 
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
       1: null,
       2: null,
@@ -33,58 +33,8 @@ beforeEach(() => {
   dateObject = getDateObject(6, getDateFromDateString('2023-02-14'));
 });
 
-test('returns an empty array if the habits state is undefined', () => {
-  habitState.setState(undefined);
-
-  expect(getSelectedHabits({
-    habits: habitState.value,
-    occurrenceData: occurrenceDataState.value,
-    dateObject,
-    latchedListView: { name: 'today' },
-  })).toEqual([]);
-
-  expect(getSelectedHabits({
-    habits: habitState.value,
-    occurrenceData: occurrenceDataState.value,
-    dateObject,
-    latchedListView: { name: 'yesterday' },
-  })).toEqual([]);
-
-  expect(getSelectedHabits({
-    habits: habitState.value,
-    occurrenceData: occurrenceDataState.value,
-    dateObject,
-    latchedListView: { name: 'selection' },
-  })).toEqual([]);
-});
-
-test('returns an empty array if the occurrenceData state is undefined', () => {
-  occurrenceDataState.setState(undefined);
-
-  expect(getSelectedHabits({
-    habits: habitState.value,
-    occurrenceData: occurrenceDataState.value,
-    dateObject,
-    latchedListView: { name: 'today' },
-  })).toEqual([]);
-
-  expect(getSelectedHabits({
-    habits: habitState.value,
-    occurrenceData: occurrenceDataState.value,
-    dateObject,
-    latchedListView: { name: 'yesterday' },
-  })).toEqual([]);
-
-  expect(getSelectedHabits({
-    habits: habitState.value,
-    occurrenceData: occurrenceDataState.value,
-    dateObject,
-    latchedListView: { name: 'selection' },
-  })).toEqual([]);
-});
-
 test('returns an empty array for today and yesterday view if no visible occurrences exist on the respective date', () => {
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
       1: null,
       2: null,
@@ -107,19 +57,19 @@ test('returns an empty array for today and yesterday view if no visible occurren
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'today' },
+    listView: { name: 'today' },
   })).toEqual([]);
 
   expect(getSelectedHabits({
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'yesterday' },
+    listView: { name: 'yesterday' },
   })).toEqual([]);
 });
 
 test('returns an empty array for today and yesterday view if no day entry exists on the respective date', () => {
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
       1: null,
       2: null,
@@ -133,19 +83,19 @@ test('returns an empty array for today and yesterday view if no day entry exists
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'today' },
+    listView: { name: 'today' },
   })).toEqual([]);
 
   expect(getSelectedHabits({
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'yesterday' },
+    listView: { name: 'yesterday' },
   })).toEqual([]);
 });
 
 test('returns all habits in \'selection\' view, regardless of their visibility on the current date, in the same order as they exist in the habit state', () => {
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
       1: null,
       2: null,
@@ -166,7 +116,7 @@ test('returns all habits in \'selection\' view, regardless of their visibility o
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'selection' },
+    listView: { name: 'selection' },
   })).toEqual([
     { id: 1, name: 'exercise' },
     { id: 2, name: 'read' },
@@ -176,7 +126,7 @@ test('returns all habits in \'selection\' view, regardless of their visibility o
 });
 
 test('returns all habits that were visible on today\'s date in \'today\' view, in the same order as they exist in the habit state', () => {
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
       1: null,
       2: null,
@@ -197,7 +147,7 @@ test('returns all habits that were visible on today\'s date in \'today\' view, i
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'today' },
+    listView: { name: 'today' },
   })).toEqual([
     { id: 2, name: 'read' },
     { id: 4, name: 'code' },
@@ -205,7 +155,7 @@ test('returns all habits that were visible on today\'s date in \'today\' view, i
 });
 
 test('returns all habits that were visible on yesterday\'s date in \'yesterday\' view, in the same order as they exist in the habit state', () => {
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
       1: null,
       2: null,
@@ -226,7 +176,7 @@ test('returns all habits that were visible on yesterday\'s date in \'yesterday\'
     habits: habitState.value,
     occurrenceData: occurrenceDataState.value,
     dateObject,
-    latchedListView: { name: 'yesterday' },
+    listView: { name: 'yesterday' },
   })).toEqual([
     { id: 2, name: 'read' },
     { id: 4, name: 'code' },

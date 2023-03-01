@@ -2,10 +2,10 @@ import { OccurrenceData } from '../../../../globalTypes';
 import PseudoUseState from '../../helperFunctions/pseudoUseState';
 import { addOccurrenceStateUpdate } from '../../../../features/dataQueries/stateUpdaters';
 
-let occurrenceDataState: PseudoUseState<OccurrenceData | undefined>;
+let occurrenceDataState: PseudoUseState<OccurrenceData>;
 
 beforeEach(() => {
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
       1: '2023-02-16',
       2: null,

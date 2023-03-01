@@ -20,12 +20,12 @@ type States = {
   queue: TaskQueue;
   dateObject: DateObject;
   view: View;
-  habits: Habit[] | undefined;
-  occurrenceData: OccurrenceData | undefined;
-  streaks: Streaks | undefined;
-  setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
-  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
-  setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
+  habits: Habit[];
+  occurrenceData: OccurrenceData;
+  streaks: Streaks;
+  setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
+  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData>>;
+  setStreaks: React.Dispatch<React.SetStateAction<Streaks>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
 };
@@ -166,7 +166,6 @@ export default function useDataQueries(states: States) {
       dateObject.today.dateString,
       {
         queue,
-        streaks,
         occurrenceData,
         setStreaks,
         setOccurrenceData,
@@ -176,7 +175,6 @@ export default function useDataQueries(states: States) {
     dateObject,
     selectedDate,
     queue,
-    streaks,
     occurrenceData,
     setStreaks,
     setOccurrenceData,

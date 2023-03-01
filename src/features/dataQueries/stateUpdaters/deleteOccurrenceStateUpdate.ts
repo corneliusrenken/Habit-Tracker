@@ -3,8 +3,8 @@ import { OccurrenceData, Streaks } from '../../../globalTypes';
 import recalculateStreak from '../../common/recalculateStreak';
 
 type States = {
-  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
-  setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
+  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData>>;
+  setStreaks: React.Dispatch<React.SetStateAction<Streaks>>;
 };
 
 /**
@@ -22,8 +22,6 @@ export default function deleteOccurrenceStateUpdate(
   let newOccurrenceData: OccurrenceData;
 
   setOccurrenceData((previousOccurrenceData) => {
-    if (!previousOccurrenceData) throw new Error('state should not be undefined');
-
     if (previousOccurrenceData.dates[occurrenceDate] === undefined) {
       throw new Error('day entry does not exist for given date');
     }
@@ -57,8 +55,6 @@ export default function deleteOccurrenceStateUpdate(
   });
 
   setStreaks((previousStreaks) => {
-    if (!previousStreaks) throw new Error('state should not be undefined');
-
     const newStreaks: Streaks = JSON.parse(JSON.stringify(previousStreaks));
 
     newStreaks[habitId] = recalculateStreak(habitId, currentDate, newOccurrenceData);

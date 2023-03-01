@@ -2,11 +2,11 @@ import { OccurrenceData, Streaks } from '../../../../globalTypes';
 import PseudoUseState from '../../helperFunctions/pseudoUseState';
 import { deleteOccurrenceStateUpdate } from '../../../../features/dataQueries/stateUpdaters';
 
-let occurrenceDataState: PseudoUseState<OccurrenceData | undefined>;
-let streaksState: PseudoUseState<Streaks | undefined>;
+let occurrenceDataState: PseudoUseState<OccurrenceData>;
+let streaksState: PseudoUseState<Streaks>;
 
 beforeEach(() => {
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
       1: '2023-02-15',
     },
@@ -17,7 +17,7 @@ beforeEach(() => {
     },
   });
 
-  streaksState = new PseudoUseState<Streaks | undefined>({
+  streaksState = new PseudoUseState<Streaks>({
     1: { current: 1, maximum: 1 },
   });
 });

@@ -2,15 +2,15 @@ import { OccurrenceData, Streaks } from '../../../../globalTypes';
 import PseudoUseState from '../../helperFunctions/pseudoUseState';
 import updateOcccurrenceStateUpdate from '../../../../features/dataQueries/stateUpdaters/updateOccurrenceStateUpdate';
 
-let streaksState: PseudoUseState<Streaks | undefined>;
-let occurrenceDataState: PseudoUseState<OccurrenceData | undefined>;
+let streaksState: PseudoUseState<Streaks>;
+let occurrenceDataState: PseudoUseState<OccurrenceData>;
 
 beforeEach(() => {
-  streaksState = new PseudoUseState<Streaks | undefined>({
+  streaksState = new PseudoUseState<Streaks>({
     1: { current: 0, maximum: 0 },
   });
 
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
       1: '2023-02-10',
     },
@@ -21,8 +21,8 @@ beforeEach(() => {
 });
 
 test('throws an error if the date is not in the dates object', () => {
-  streaksState = new PseudoUseState<Streaks | undefined>({});
-  occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  streaksState = new PseudoUseState<Streaks>({});
+  occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {},
     dates: {},
   });

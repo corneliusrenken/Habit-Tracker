@@ -1,10 +1,10 @@
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import {
   DateObject,
   Habit,
+  ListView,
   OccurrenceData,
   Streaks,
-  ListView,
   View,
 } from '../../globalTypes';
 import getSelectedHabits from './getSelectedHabits';
@@ -12,47 +12,74 @@ import getSelectedOccurrences from './getSelectedOccurrences';
 import getSelectedStreaks from './getSelectedStreaks';
 
 type States = {
-  habits: Habit[] | undefined;
-  occurrenceData: OccurrenceData | undefined;
-  streaks: Streaks | undefined;
-  dateObject: DateObject;
-  latchedListView: ListView;
   view: View;
+  dateObject: DateObject;
+  occurrenceData: OccurrenceData;
+  habits: Habit[];
+  streaks: Streaks;
 };
 
-export default function useSelectedData(states: States) {
-  const {
-    habits,
-    occurrenceData,
-    streaks,
-    dateObject,
-    latchedListView,
-    view,
-  } = states;
+export default function useSelectedData({
+  view,
+  dateObject,
+  occurrenceData,
+  habits,
+  streaks,
+}: States) {
+  // need the ref for the memo so that it can reference itself
+  const latchedListViewRef = useRef<ListView>({ name: 'today' });
+  const latchedListView: ListView = useMemo(() => {
+    const isListView = view.name === 'today' || view.name === 'yesterday' || view.name === 'selection';
+    const isDifferentToLast = view.name !== latchedListViewRef.current.name;
+
+    if (isListView && isDifferentToLast) {
+      latchedListViewRef.current = view;
+      return view;
+    }
+    return latchedListViewRef.current;
+  }, [view]);
+
+  // need the ref for the memo so that it can reference itself
+  // const latchedOccurrenceViewRef = useRef<OccurrenceView>({ name: 'history' });
+  // const latchedOccurrenceView: OccurrenceView = useMemo(() => {
+  //   const isOccurrenceView = view.name === 'history' || view.name === 'focus';
+  //   const isDifferentToLast = view.name !== latchedOccurrenceViewRef.current.name;
+  //   const hasDifferentFocusId = view.name === 'focus'
+  //     && latchedOccurrenceViewRef.current.name === 'focus'
+  //     && view.focusId !== latchedOccurrenceViewRef.current.focusId;
+
+  //   if (isOccurrenceView && (isDifferentToLast || hasDifferentFocusId)) {
+  //     latchedOccurrenceViewRef.current = view;
+  //     return view;
+  //   }
+  //   return latchedOccurrenceViewRef.current;
+  // }, [view]);
 
   const selectedHabits = useMemo(() => getSelectedHabits({
-    habits,
-    occurrenceData,
+    listView: latchedListView,
     dateObject,
-    latchedListView,
+    occurrenceData,
+    habits,
   }), [dateObject, habits, latchedListView, occurrenceData]);
 
+  // refactor this later, don't need to recalculate the whole thing for each view
+  // only need to recalculate the last 7, the rest is latched
   const selectedOccurrences = useMemo(() => getSelectedOccurrences({
-    occurrenceData,
-    dateObject,
     view,
-  }), [dateObject, view, occurrenceData]);
+    dateObject,
+    occurrenceData,
+  }), [dateObject, occurrenceData, view]);
 
   const selectedStreaks = useMemo(() => getSelectedStreaks({
+    listView: latchedListView,
     dateObject,
-    latchedListView,
     occurrenceData,
     streaks,
   }), [dateObject, latchedListView, occurrenceData, streaks]);
 
   return {
-    habits: selectedHabits,
-    occurrences: selectedOccurrences,
-    streaks: selectedStreaks,
+    selectedHabits,
+    selectedOccurrences,
+    selectedStreaks,
   };
 }

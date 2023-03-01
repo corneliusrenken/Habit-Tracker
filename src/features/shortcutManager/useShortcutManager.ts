@@ -21,15 +21,15 @@ type States = {
   setIgnoreMouse: React.Dispatch<React.SetStateAction<boolean>>;
   dateObject: DateObject;
   latchedListView: ListView;
-  habits: Habit[] | undefined;
+  habits: Habit[];
   inInput: boolean;
   inTransition: boolean;
-  occurrenceData: OccurrenceData | undefined;
+  occurrenceData: OccurrenceData;
   selectedHabits: Habit[];
   selectedIndex: number | null;
   view: View;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
-  setView: (nextView: View | ((lastView: View) => View)) => void;
+  setView: React.Dispatch<React.SetStateAction<View>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   reorderingList: boolean;
   setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
@@ -51,8 +51,6 @@ export default function useShortcutManager(states: States) {
       habits,
       reorderingList,
     } = states;
-
-    if (!habits) return;
 
     const { key } = e;
 

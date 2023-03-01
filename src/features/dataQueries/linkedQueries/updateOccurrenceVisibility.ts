@@ -14,10 +14,9 @@ import {
 
 type States = {
   queue: TaskQueue;
-  streaks: Streaks | undefined;
-  occurrenceData: OccurrenceData | undefined;
-  setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
-  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
+  occurrenceData: OccurrenceData;
+  setStreaks: React.Dispatch<React.SetStateAction<Streaks>>;
+  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData>>;
 };
 
 /**
@@ -32,11 +31,8 @@ export default function updateOccurrenceVisibility(
   states: States,
 ) {
   const {
-    queue, streaks, occurrenceData,
+    queue, occurrenceData,
   } = states;
-
-  if (!streaks || !occurrenceData) throw new Error('states should not be undefined');
-
   const occurrencesToday = { ...occurrenceData.dates[occurrenceDate] };
 
   if (occurrencesToday === undefined) throw new Error('no day entry exists for the given date');

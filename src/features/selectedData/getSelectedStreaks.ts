@@ -5,19 +5,18 @@ import recalculateStreak from '../common/recalculateStreak';
 
 type States = {
   dateObject: DateObject;
-  latchedListView: ListView;
-  occurrenceData: OccurrenceData | undefined;
-  streaks: Streaks | undefined;
+  listView: ListView;
+  occurrenceData: OccurrenceData;
+  streaks: Streaks;
 };
 
-export default function getSelectedStreaks(states: States) {
-  const {
-    dateObject, latchedListView, occurrenceData, streaks,
-  } = states;
-
-  if (!occurrenceData || !streaks) return {};
-
-  if (latchedListView.name !== 'yesterday') return streaks;
+export default function getSelectedStreaks({
+  dateObject,
+  listView,
+  occurrenceData,
+  streaks,
+}: States) {
+  if (listView.name !== 'yesterday') return streaks;
 
   const habitIds = Object.keys(streaks).map(Number);
 

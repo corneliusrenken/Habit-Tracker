@@ -1,17 +1,24 @@
-import React from 'react';
-import { SelectedOccurrence, ViewType } from '../../globalTypes';
+import React, { memo } from 'react';
+import {
+  DateObject,
+  SelectedOccurrence,
+  View,
+  viewToViewType,
+} from '../../globalTypes';
 
 type Props = {
-  viewType: ViewType;
-  weekDays: string[];
+  view: View;
+  dateObject: DateObject;
   selectedOccurrences: SelectedOccurrence[];
 };
 
-export default function Days({ viewType, weekDays, selectedOccurrences }: Props) {
+function Days({ view, dateObject, selectedOccurrences }: Props) {
+  const weekOccurrences = selectedOccurrences.slice(-7);
+
   return (
-    <div className="days" style={{ opacity: viewType === 'list' ? 1 : 0 }}>
-      {weekDays.map(((day, index) => {
-        const { complete } = selectedOccurrences[selectedOccurrences.length - 7 + index];
+    <div className="days" style={{ opacity: viewToViewType[view.name] === 'list' ? 1 : 0 }}>
+      {dateObject.weekDays.map(((day, index) => {
+        const { complete } = weekOccurrences[index];
         let className = 'days-day';
         if (complete) className += ' complete';
 
@@ -27,3 +34,5 @@ export default function Days({ viewType, weekDays, selectedOccurrences }: Props)
     </div>
   );
 }
+
+export default memo(Days);

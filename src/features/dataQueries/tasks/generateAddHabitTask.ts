@@ -4,9 +4,9 @@ import { updateHabitStateUpdate } from '../stateUpdaters';
 
 type States = {
   queue: TaskQueue;
-  setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
-  setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
-  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
+  setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
+  setStreaks: React.Dispatch<React.SetStateAction<Streaks>>;
+  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
 };
 

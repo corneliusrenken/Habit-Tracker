@@ -16,7 +16,7 @@ const iconPaths = {
 
 type Props = {
   icon: keyof typeof iconPaths;
-  allowTabTraversal: boolean;
+  disableTabIndex: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   onMouseDown?: React.MouseEventHandler<HTMLButtonElement>;
   classes?: string[];
@@ -24,7 +24,7 @@ type Props = {
 };
 
 export default function Icon({
-  icon, allowTabTraversal, onClick, onMouseDown, classes, hidden,
+  icon, disableTabIndex, onClick, onMouseDown, classes, hidden,
 }: Props) {
   let className = 'icon';
 
@@ -34,7 +34,7 @@ export default function Icon({
 
   return (
     <button
-      tabIndex={allowTabTraversal ? undefined : -1}
+      tabIndex={disableTabIndex ? -1 : undefined}
       type="button"
       className={className}
       onClick={onClick ? (e) => onClick(e) : undefined}

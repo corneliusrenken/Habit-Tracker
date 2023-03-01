@@ -1,71 +1,100 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { OccurrenceView, SelectedOccurrence, ViewType } from '../../globalTypes';
+import React, { memo, useMemo, useRef } from 'react';
+import {
+  View,
+  viewToViewType,
+  OccurrenceView,
+  SelectedOccurrence,
+} from '../../globalTypes';
 
 function getContainerHeight(occurencesLength: number) {
   return Math.ceil(occurencesLength / 7) * 50;
 }
 
 type Props = {
-  latchedOccurrenceView: OccurrenceView;
-  viewType: ViewType;
+  view: View;
   selectedOccurrences: SelectedOccurrence[];
 };
 
-export default function Occurrences({
-  latchedOccurrenceView,
-  viewType,
+const fadeOffsetSeed = [0.1, 0.3, 0.8, 0.6, 0.9, 0.4, 0.2, 0.7, 0.5, 0.0, 1.0];
+
+function Occurrences({
+  view,
   selectedOccurrences,
 }: Props) {
-  const occurrenceContainerRef = useRef<HTMLDivElement>(null);
-  const [firstTimeShowingOccurrences, setFirstTimeShowingOccurrences] = useState(true);
+  // need the ref for the memo so that it can reference itself
+  const latchedOccurrenceViewRef = useRef<OccurrenceView>({ name: 'history' });
+  const latchedOccurrenceView: OccurrenceView = useMemo(() => {
+    const isOccurrenceView = view.name === 'history' || view.name === 'focus';
+    const isDifferentToLast = view.name !== latchedOccurrenceViewRef.current.name;
+    const hasDifferentFocusId = view.name === 'focus'
+      && latchedOccurrenceViewRef.current.name === 'focus'
+      && view.focusId !== latchedOccurrenceViewRef.current.focusId;
 
-  useEffect(() => {
-    if (occurrenceContainerRef.current === null) return;
+    if (isOccurrenceView && (isDifferentToLast || hasDifferentFocusId)) {
+      latchedOccurrenceViewRef.current = view;
+      return view;
+    }
+    return latchedOccurrenceViewRef.current;
+  }, [view]);
 
-    if (firstTimeShowingOccurrences && viewType === 'occurrence') {
-      setFirstTimeShowingOccurrences(false);
-    } else if (firstTimeShowingOccurrences) {
-      return;
+  const displayingOccurrences = viewToViewType[view.name] === 'occurrence';
+
+  const latchedSelectedOccurrencesRef = useRef<SelectedOccurrence[]>([]);
+  const latchedSelectedOccurrences = useMemo(() => {
+    if (displayingOccurrences) {
+      latchedSelectedOccurrencesRef.current = selectedOccurrences;
+      return selectedOccurrences;
+    }
+    return latchedSelectedOccurrencesRef.current;
+  }, [displayingOccurrences, selectedOccurrences]);
+
+  const awaitingFirstVisibleRender = useRef(true);
+
+  const component = useMemo(() => {
+    let animationName = displayingOccurrences ? 'fade-in' : 'fade-out';
+
+    if (awaitingFirstVisibleRender.current) {
+      if (displayingOccurrences) {
+        awaitingFirstVisibleRender.current = false;
+      } else {
+        animationName = '';
+      }
     }
 
-    occurrenceContainerRef.current.style.setProperty(
-      '--occurrence-animation-name',
-      viewType === 'occurrence'
-        ? 'fade-in'
-        : 'fade-out',
+    return (
+      <div
+        className="occurrences"
+        style={{ height: `${getContainerHeight(latchedSelectedOccurrences.length)}px` }}
+      >
+        {latchedSelectedOccurrences
+          .map(({ date, fullDate, complete }, index) => {
+            const row = Math.floor((latchedSelectedOccurrences.length - index - 1) / 7);
+
+            let className = 'occurrences-occurrence';
+            if (complete) className += ' complete';
+
+            const key = `${latchedOccurrenceView.name}-${fullDate}`;
+
+            return (
+              <div
+                key={key}
+                className={className}
+                style={{
+                  animationName,
+                  animationDelay: displayingOccurrences
+                    ? `${38 * row + 100 * fadeOffsetSeed[index % 11]}ms`
+                    : '',
+                }}
+              >
+                {date}
+              </div>
+            );
+          })}
+      </div>
     );
-  }, [firstTimeShowingOccurrences, viewType]);
+  }, [displayingOccurrences, latchedSelectedOccurrences, latchedOccurrenceView]);
 
-  return (
-    <div
-      ref={occurrenceContainerRef}
-      className="occurrences"
-      style={{ height: `${getContainerHeight(selectedOccurrences.length - 7)}px` }}
-    >
-      {selectedOccurrences
-        .slice(0, selectedOccurrences.length - 7)
-        .map(({ date, fullDate, complete }, index) => {
-          const row = Math.floor((selectedOccurrences.length - index - 1) / 7);
-
-          let className = 'occurrences-occurrence';
-          if (complete) className += ' complete';
-
-          const key = `${latchedOccurrenceView.name}-${fullDate}`;
-
-          return (
-            <div
-              key={key}
-              className={className}
-              style={{
-                animationDelay: viewType === 'occurrence'
-                  ? `calc(38ms * ${row} + 150ms * var(--animation-delay-multiplier, 1))`
-                  : '0ms',
-              }}
-            >
-              {date}
-            </div>
-          );
-        })}
-    </div>
-  );
+  return component;
 }
+
+export default memo(Occurrences);

@@ -2,9 +2,9 @@ import { Habit, OccurrenceData, Streaks } from '../../../globalTypes';
 import { Task } from '../../taskQueue';
 
 type States = {
-  setHabits: React.Dispatch<React.SetStateAction<Habit[] | undefined>>;
-  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData | undefined>>;
-  setStreaks: React.Dispatch<React.SetStateAction<Streaks | undefined>>;
+  setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
+  setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData>>;
+  setStreaks: React.Dispatch<React.SetStateAction<Streaks>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
@@ -20,8 +20,6 @@ export default function updateHabitStateUpdate(
     setSelectedIndex,
   } = states;
   setHabits((previousHabits) => {
-    if (!previousHabits) throw new Error('state should not be undefined');
-
     if (previousHabits.find((habit) => habit.id === habitId) === undefined) {
       throw new Error('no habit exists with the given id');
     }
@@ -67,8 +65,6 @@ export default function updateHabitStateUpdate(
 
   if ('id' in updateData) {
     setOccurrenceData((previousOccurrenceData) => {
-      if (!previousOccurrenceData) throw new Error('state should not be undefined');
-
       const habitIds = Object.keys(previousOccurrenceData.oldest).map(Number);
       const dates = Object.keys(previousOccurrenceData.dates);
 
@@ -97,8 +93,6 @@ export default function updateHabitStateUpdate(
     });
 
     setStreaks((previousStreaks) => {
-      if (!previousStreaks) throw new Error('state should not be undefined');
-
       const newStreaks: Streaks = {};
 
       const habitIds = Object.keys(previousStreaks).map(Number);

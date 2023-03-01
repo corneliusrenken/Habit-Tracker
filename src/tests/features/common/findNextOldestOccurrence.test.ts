@@ -3,7 +3,7 @@ import { OccurrenceData } from '../../../globalTypes';
 import PseudoUseState from '../helperFunctions/pseudoUseState';
 
 test('throws an error if the habit id does not have an oldest occurrence entry', () => {
-  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  const occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {},
     dates: {},
   });
@@ -14,7 +14,7 @@ test('throws an error if the habit id does not have an oldest occurrence entry',
 });
 
 test('returns null if no newer occurrences exist', () => {
-  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  const occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: { 1: '2023-02-14' },
     dates: {
       '2023-02-14': { 1: { complete: true, visible: true } },
@@ -27,7 +27,7 @@ test('returns null if no newer occurrences exist', () => {
 });
 
 test('ignores occurrences that are not visible', () => {
-  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  const occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: { 1: '2023-02-14' },
     dates: {
       '2023-02-14': { 1: { complete: true, visible: true } },
@@ -42,7 +42,7 @@ test('ignores occurrences that are not visible', () => {
 });
 
 test('ignores occurrences that are past the \'current date\' argument', () => {
-  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  const occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: { 1: '2023-02-14' },
     dates: {
       '2023-02-14': { 1: { complete: true, visible: true } },
@@ -56,7 +56,7 @@ test('ignores occurrences that are past the \'current date\' argument', () => {
 });
 
 test('ignores occurrences with other habit ids', () => {
-  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  const occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: { 1: '2023-02-14' },
     dates: {
       '2023-02-14': { 1: { complete: true, visible: true } },
@@ -70,7 +70,7 @@ test('ignores occurrences with other habit ids', () => {
 });
 
 test('returns the next oldest occurrence', () => {
-  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  const occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: { 1: '2023-02-14' },
     dates: {
       '2023-02-14': { 1: { complete: true, visible: true } },
@@ -85,7 +85,7 @@ test('returns the next oldest occurrence', () => {
 });
 
 test('returns the next oldest occurrence if it\'s on the current date', () => {
-  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  const occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: { 1: '2023-02-14' },
     dates: {
       '2023-02-14': { 1: { complete: true, visible: true } },

@@ -3,7 +3,7 @@ import { OccurrenceData } from '../../../globalTypes';
 import PseudoUseState from '../helperFunctions/pseudoUseState';
 
 test('throws an error if the habit id does not have an oldest occurrence entry', () => {
-  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  const occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {},
     dates: {},
   });
@@ -14,7 +14,7 @@ test('throws an error if the habit id does not have an oldest occurrence entry',
 });
 
 test('ignores occurrences that happened after the passed date', () => {
-  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  const occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: { 1: '2023-02-10' },
     dates: {
       '2023-02-10': { 1: { complete: true, visible: true } },
@@ -28,7 +28,7 @@ test('ignores occurrences that happened after the passed date', () => {
 });
 
 test('returns 0 for streak values if the oldest date is later than the passed date', () => {
-  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  const occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: { 1: '2023-02-20' },
     dates: { '2023-02-20': { 1: { complete: true, visible: true } } },
   });
@@ -39,7 +39,7 @@ test('returns 0 for streak values if the oldest date is later than the passed da
 });
 
 test('returns 0 for streak values if no occurrences exist for the habit', () => {
-  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  const occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: { 1: null },
     dates: {},
   });
@@ -50,7 +50,7 @@ test('returns 0 for streak values if no occurrences exist for the habit', () => 
 });
 
 test('ignores invisible occurrences when calculating the streak', () => {
-  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  const occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: { 1: '2023-02-08' },
     dates: {
       '2023-02-08': { 1: { complete: true, visible: true } },
@@ -65,7 +65,7 @@ test('ignores invisible occurrences when calculating the streak', () => {
 });
 
 test('ignores incomplete occurrences when calculating the streak', () => {
-  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  const occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: { 1: '2023-02-08' },
     dates: {
       '2023-02-08': { 1: { complete: true, visible: true } },
@@ -80,7 +80,7 @@ test('ignores incomplete occurrences when calculating the streak', () => {
 });
 
 test('returns the correct maximum and current streak when a shorter one occurred before a longer one', () => {
-  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  const occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: { 1: '2023-02-07' },
     dates: {
       '2023-02-07': { 1: { complete: true, visible: true } },
@@ -95,7 +95,7 @@ test('returns the correct maximum and current streak when a shorter one occurred
 });
 
 test('returns the correct maximum and current streak when a longer one occurred before a shorter one', () => {
-  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  const occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: { 1: '2023-02-07' },
     dates: {
       '2023-02-07': { 1: { complete: true, visible: true } },
@@ -110,7 +110,7 @@ test('returns the correct maximum and current streak when a longer one occurred 
 });
 
 test('returns a current streak of 0 if it ended before yesterday', () => {
-  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  const occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: { 1: '2023-02-08' },
     dates: {
       '2023-02-08': { 1: { complete: true, visible: true } },
@@ -123,7 +123,7 @@ test('returns a current streak of 0 if it ended before yesterday', () => {
 });
 
 test('returns the current streak if it ended yesterday', () => {
-  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  const occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: { 1: '2023-02-09' },
     dates: {
       '2023-02-09': { 1: { complete: true, visible: true } },
@@ -136,7 +136,7 @@ test('returns the current streak if it ended yesterday', () => {
 });
 
 test('returns the current streak if it ended today', () => {
-  const occurrenceDataState = new PseudoUseState<OccurrenceData | undefined>({
+  const occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: { 1: '2023-02-10' },
     dates: {
       '2023-02-10': { 1: { complete: true, visible: true } },
