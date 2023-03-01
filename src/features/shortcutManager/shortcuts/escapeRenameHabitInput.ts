@@ -2,10 +2,8 @@ type States = {
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function escapeRenameHabitInput(states: States) {
-  const {
-    setInInput,
-  } = states;
-
+export default function escapeRenameHabitInput({
+  setInInput,
+}: States) {
   setInInput(false);
 }

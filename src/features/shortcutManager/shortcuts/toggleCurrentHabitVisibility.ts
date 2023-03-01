@@ -14,16 +14,14 @@ type States = {
   updateOccurrenceVisibility: (habitId: number, visible: boolean) => void;
 };
 
-export default function toggleCurrentHabitVisibility(states: States) {
-  const {
-    dateObject,
-    view,
-    occurrenceData,
-    selectedHabits,
-    selectedIndex,
-    updateOccurrenceVisibility,
-  } = states;
-
+export default function toggleCurrentHabitVisibility({
+  dateObject,
+  view,
+  occurrenceData,
+  selectedHabits,
+  selectedIndex,
+  updateOccurrenceVisibility,
+}: States) {
   if (selectedIndex === null || selectedIndex === selectedHabits.length) return;
 
   const selectedHabit = selectedHabits[selectedIndex];

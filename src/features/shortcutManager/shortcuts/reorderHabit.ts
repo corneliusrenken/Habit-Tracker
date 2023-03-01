@@ -6,9 +6,14 @@ type States = {
   updateHabitListPosition(habitId: number, listPosition: number): void;
 };
 
-export default function reorderHabit(direction: 1 | -1, states: States) {
-  const { selectedHabits, selectedIndex, updateHabitListPosition } = states;
-
+export default function reorderHabit(
+  direction: 1 | -1,
+  {
+    selectedHabits,
+    selectedIndex,
+    updateHabitListPosition,
+  }: States,
+) {
   if (selectedIndex === null || selectedIndex === selectedHabits.length) return;
 
   const habit = selectedHabits[selectedIndex];

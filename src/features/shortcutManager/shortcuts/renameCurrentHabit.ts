@@ -6,13 +6,11 @@ type States = {
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function renameCurrentHabit(states: States) {
-  const {
-    habits,
-    selectedIndex,
-    setInInput,
-  } = states;
-
+export default function renameCurrentHabit({
+  habits,
+  selectedIndex,
+  setInInput,
+}: States) {
   if (selectedIndex === habits.length) return;
   setInInput(true);
 }
