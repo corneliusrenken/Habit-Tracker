@@ -1,6 +1,7 @@
 import React from 'react';
 import { Habit } from '../../globalTypes';
 import CustomForm from './CustomForm';
+import getInputValidationError from './getInputValidationError';
 
 type Props = {
   habits: Habit[];
@@ -19,21 +20,16 @@ export default function AddHabitForm({
   inInput,
   setInInput,
 }: Props) {
-  // const [habitInput, setHabitInput] = useState('');
-  // const habitInputRef = useRef<HTMLInputElement>(null);
-
-  const selectedForm = selectedIndex === habits.length;
-
   // development
   // development
   // development
-  if (selectedForm && !inInput) {
+  if (selectedIndex === habits.length && !inInput) {
     throw new Error('inInput should never be false when form is selected');
   }
 
   return (
     <CustomForm
-      active={selectedForm}
+      active={selectedIndex === habits.length}
       activeOnClick
       setActive={(active) => {
         if (active) {
@@ -46,72 +42,11 @@ export default function AddHabitForm({
       }}
       placeholder="add habit"
       initialValue=""
-      getInputValidationError={(name) => {
-        if (habits.some((habit) => habit.name === name)) {
-          return 'A habit with that name already exists';
-        }
-        return '';
-      }}
+      getInputValidationError={(name) => getInputValidationError(name, { habits })}
       onSubmit={(name) => {
         addHabit(name);
         setInInput(false);
       }}
     />
   );
-
-  // useEffect(() => {
-  //   if (selectedForm) {
-  //     habitInputRef.current?.focus();
-  //   } else {
-  //     habitInputRef.current?.blur();
-  //   }
-  // }, [selectedForm]);
-
-  // let formClassName = '';
-  // if (selectedForm) formClassName += 'selected';
-
-  // return (
-  //   <form
-  //     className={formClassName}
-  //     style={{ top: `${habits.length * 50}px` }}
-  //     onSubmit={(e) => {
-  //       e.preventDefault();
-  //       const trimmedHabitInput = habitInput.trim();
-  //       const validation = isValidHabitName(trimmedHabitInput, { habits });
-  //       if (validation === true) {
-  //         addHabit(trimmedHabitInput);
-  //         setHabitInput('');
-  //       } else {
-  //         console.error(validation); // eslint-disable-line no-console
-  //       }
-  //     }}
-  //   >
-  //     <input
-  //       tabIndex={disableTabIndex ? -1 : undefined}
-  //       ref={habitInputRef}
-  //       type="text"
-  //       placeholder="add habit"
-  //       value={habitInput}
-  //       onFocus={() => {
-  //         // if shortcut is used, these states are already set
-  //         if (selectedForm) return;
-  //         setInInput(true);
-  //         setSelectedIndex(habits.length);
-  //       }}
-  //       onBlur={() => {
-  //         setHabitInput('');
-
-  //         // if shortcut is used, these states are already set
-  //         if (!selectedForm) return;
-  //         setInInput(false);
-  //         if (habits.length === 0) {
-  //           setSelectedIndex(null);
-  //         } else {
-  //           setSelectedIndex(habits.length - 1);
-  //         }
-  //       }}
-  //       onChange={(e) => setHabitInput(e.target.value)}
-  //     />
-  //   </form>
-  // );
 }

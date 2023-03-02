@@ -42,11 +42,12 @@ export default function CustomForm({
       window.addEventListener('click', clearError);
       window.addEventListener('keydown', clearError);
 
-      setTimeout(clearError, 4000);
+      const timeoutId = setTimeout(clearError, 4000);
 
       return () => {
         window.removeEventListener('click', clearError);
         window.removeEventListener('keydown', clearError);
+        clearTimeout(timeoutId);
       };
     }
   }, [error]);

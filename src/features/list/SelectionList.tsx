@@ -80,7 +80,6 @@ export default function SelectionList({
         activeClass="being-reordered"
       />
       <AddHabitForm
-        disableTabIndex={disableTabIndex}
         habits={habits}
         selectedIndex={selectedIndex}
         setSelectedIndex={setSelectedIndex}
