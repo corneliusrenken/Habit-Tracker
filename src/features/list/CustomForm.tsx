@@ -11,6 +11,7 @@ type Props = {
   initialValue?: string;
   getInputValidationError?: (input: string) => string;
   onSubmit: (input: string) => void;
+  containerClass?: string;
 };
 
 /**
@@ -24,6 +25,7 @@ export default function CustomForm({
   initialValue = '',
   getInputValidationError = () => '',
   onSubmit,
+  containerClass = undefined,
 }: Props) {
   const [error, setError] = useState('');
   const [input, setInput] = useState(initialValue);
@@ -52,6 +54,7 @@ export default function CustomForm({
   if (!active) {
     return (
       <div
+        className={containerClass}
         onClick={!activeOnClick ? undefined : () => {
           if (activeOnClick) {
             setActive(true);
@@ -65,7 +68,9 @@ export default function CustomForm({
 
   if (error) {
     return (
-      <div>
+      <div
+        className={containerClass}
+      >
         <div style={{ color: 'red' }}>{error}</div>
       </div>
     );
@@ -73,10 +78,12 @@ export default function CustomForm({
 
   return (
     <form
+      className={containerClass}
       onSubmit={(e) => {
         e.preventDefault();
         const validationError = getInputValidationError(input);
         if (!validationError) {
+          setInput(initialValue);
           onSubmit(input);
         } else {
           setError(validationError);
@@ -101,4 +108,5 @@ CustomForm.defaultProps = {
   activeOnClick: false,
   initialValue: '',
   getInputValidationError: () => '',
+  containerClass: undefined,
 };
