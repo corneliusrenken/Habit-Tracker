@@ -55,9 +55,12 @@ export default function SelectionListItem({
         }}
         placeholder={name}
         initialValue={name}
-        getInputValidationError={(newName) => getInputValidationError(newName, { habits })}
+        getInputValidationError={(newName) => {
+          if (newName === name) return '';
+          return getInputValidationError(newName, { habits });
+        }}
         onSubmit={(newName) => {
-          renameHabit(newName);
+          if (newName !== name) renameHabit(newName);
           setInInput(false);
         }}
       />

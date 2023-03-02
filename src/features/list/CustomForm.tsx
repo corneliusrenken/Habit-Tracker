@@ -30,6 +30,10 @@ export default function CustomForm({
   const [error, setError] = useState('');
   const [input, setInput] = useState(initialValue);
 
+  useEffect(() => {
+    if (!active) setInput(initialValue);
+  }, [active, initialValue]);
+
   // eslint-disable-next-line consistent-return
   useEffect(() => {
     if (error) {
@@ -84,7 +88,6 @@ export default function CustomForm({
         e.preventDefault();
         const validationError = getInputValidationError(input);
         if (!validationError) {
-          setInput(initialValue);
           onSubmit(input);
         } else {
           setError(validationError);
@@ -97,7 +100,6 @@ export default function CustomForm({
         value={input}
         onChange={(e) => { setInput(e.target.value); }}
         onBlur={() => {
-          setInput(initialValue);
           setActive(false);
         }}
       />
