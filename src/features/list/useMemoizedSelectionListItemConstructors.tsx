@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 import {
   DateObject,
   Habit,
-  ModalContentGenerator,
+  ModalGenerator,
   OccurrenceData,
 } from '../../globalTypes';
 import openDeleteHabitModal from '../deleteHabitModal/openDeleteHabitModal';
@@ -21,7 +21,7 @@ type States = {
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   reorderingList: boolean;
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
-  setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
+  setModal: React.Dispatch<React.SetStateAction<ModalGenerator | undefined>>;
   deleteHabit: (habitId: number) => void;
   updateHabitName: (habitId: number, newName: string) => void;
   updateOccurrenceVisibility: (habitId: number, visible: boolean) => void;
@@ -39,7 +39,7 @@ export default function useMemoizedSelectionListItemConstructors({
   setInInput,
   reorderingList,
   setReorderingList,
-  setModalContentGenerator,
+  setModal,
   deleteHabit,
   updateHabitName,
   updateOccurrenceVisibility,
@@ -68,7 +68,7 @@ export default function useMemoizedSelectionListItemConstructors({
             toggleVisibility={() => updateOccurrenceVisibility(habit.id, !visible)}
             openDeleteHabitModal={() => openDeleteHabitModal(habit, {
               deleteHabit,
-              setModalContentGenerator,
+              setModal,
             })}
             renameHabit={(newName: string) => {
               updateHabitName(habit.id, newName);
@@ -92,7 +92,7 @@ export default function useMemoizedSelectionListItemConstructors({
     setInInput,
     reorderingList,
     setReorderingList,
-    setModalContentGenerator,
+    setModal,
     deleteHabit,
     updateHabitName,
     updateOccurrenceVisibility,

@@ -5,7 +5,7 @@ import React, {
 } from 'react';
 import {
   Habit,
-  ModalContentGenerator,
+  ModalGenerator,
   OccurrenceData,
   Streaks,
   View,
@@ -35,8 +35,7 @@ export default function App() {
   const [inInput, setInInput] = useState(false);
   const [reorderingList, setReorderingList] = useState(false);
   const [inTransition, setInTransition] = useState(false);
-  // eslint-disable-next-line max-len
-  const [modalContentGenerator, setModalContentGenerator] = useState<ModalContentGenerator | undefined>(undefined);
+  const [modal, setModal] = useState<ModalGenerator | undefined>(undefined);
   const [habits, setHabits] = useState<Habit[]>([]);
   const [occurrenceData, setOccurrenceData] = useState<OccurrenceData>({ dates: {}, oldest: {} });
   const [streaks, setStreaks] = useState<Streaks>({});
@@ -119,7 +118,6 @@ export default function App() {
   });
 
   useShortcutManager({
-    modalContentGenerator,
     setIgnoreMouse,
     dateObject,
     habits,
@@ -133,7 +131,8 @@ export default function App() {
     setView,
     setSelectedIndex,
     reorderingList,
-    setModalContentGenerator,
+    modal,
+    setModal,
     deleteHabit,
     updateOccurrenceCompleted,
     updateOccurrenceVisibility,
@@ -145,8 +144,8 @@ export default function App() {
   return (
     <>
       <Modal
-        modalContentGenerator={modalContentGenerator}
-        setModalContentGenerator={setModalContentGenerator}
+        modal={modal}
+        setModal={setModal}
       />
       <Layout
         layoutOptions={layoutOptions.current}
@@ -177,7 +176,7 @@ export default function App() {
         list={(
           <List
             ignoreMouse={ignoreMouse}
-            disableTabIndex={modalContentGenerator !== undefined}
+            disableTabIndex={modal !== undefined}
             dateObject={dateObject}
             view={view}
             selectedHabits={selectedHabits}
@@ -189,7 +188,7 @@ export default function App() {
             setInInput={setInInput}
             reorderingList={reorderingList}
             setReorderingList={setReorderingList}
-            setModalContentGenerator={setModalContentGenerator}
+            setModal={setModal}
             addHabit={addHabit}
             deleteHabit={deleteHabit}
             updateHabitListPosition={updateHabitListPosition}

@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from 'react';
 import {
-  DateObject, Habit, ModalContentGenerator, OccurrenceData, View,
+  DateObject, Habit, ModalGenerator, OccurrenceData, View,
 } from '../../globalTypes';
 import checkModifierKeyWhitelist from './checkModifierKeyWhitelist';
 import {
@@ -17,7 +17,6 @@ import {
 } from './shortcuts';
 
 type States = {
-  modalContentGenerator: ModalContentGenerator | undefined;
   setIgnoreMouse: React.Dispatch<React.SetStateAction<boolean>>;
   dateObject: DateObject;
   habits: Habit[];
@@ -31,7 +30,8 @@ type States = {
   setView: React.Dispatch<React.SetStateAction<View>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   reorderingList: boolean;
-  setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
+  modal: ModalGenerator | undefined;
+  setModal: React.Dispatch<React.SetStateAction<ModalGenerator | undefined>>;
   deleteHabit: (habitId: number) => void;
   updateOccurrenceCompleted: (habitId: number, complete: boolean) => void;
   updateOccurrenceVisibility: (habitId: number, visible: boolean) => void;
@@ -41,7 +41,7 @@ type States = {
 export default function useShortcutManager(states: States) {
   const onKeyDown = useCallback((e: KeyboardEvent) => {
     const {
-      modalContentGenerator,
+      modal,
       setIgnoreMouse,
       view,
       inTransition,
@@ -55,7 +55,7 @@ export default function useShortcutManager(states: States) {
 
     let shortcut: undefined | (() => void);
 
-    if (reorderingList || modalContentGenerator) return;
+    if (reorderingList || modal) return;
 
     if (key === 'ArrowDown' && checkModifierKeyWhitelist(e) && (view.name === 'today' || view.name === 'yesterday' || view.name === 'selection')) shortcut = () => incrementSelectedIndex(1, states);
     if (key === 'ArrowUp' && checkModifierKeyWhitelist(e) && (view.name === 'today' || view.name === 'yesterday' || view.name === 'selection')) shortcut = () => incrementSelectedIndex(-1, states);

@@ -1,18 +1,18 @@
 import React from 'react';
-import { ModalContentGenerator } from '../../globalTypes';
+import { ModalGenerator } from '../../globalTypes';
 
 type Props = {
   habitName: string;
-  allowTabTraversal: boolean;
+  disableTabIndex: boolean;
   onConfirm: () => void;
-  setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
+  setModal: React.Dispatch<React.SetStateAction<ModalGenerator | undefined>>;
 };
 
 export default function HabitRemovalConfirmationModalContent({
   habitName,
-  allowTabTraversal,
+  disableTabIndex,
   onConfirm,
-  setModalContentGenerator,
+  setModal,
 }: Props) {
   return (
     <div className="habit-removal-confirmation-container">
@@ -28,14 +28,14 @@ export default function HabitRemovalConfirmationModalContent({
       </div>
       <div className="habit-removal-confirmation-button-container">
         <button
-          tabIndex={allowTabTraversal ? undefined : -1}
+          tabIndex={disableTabIndex ? -1 : undefined}
           type="button"
-          onClick={() => setModalContentGenerator(undefined)}
+          onClick={() => setModal(undefined)}
         >
           Cancel
         </button>
         <button
-          tabIndex={allowTabTraversal ? undefined : -1}
+          tabIndex={disableTabIndex ? -1 : undefined}
           type="button"
           onClick={() => onConfirm()}
         >

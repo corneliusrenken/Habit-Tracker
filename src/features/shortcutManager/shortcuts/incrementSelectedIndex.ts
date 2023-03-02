@@ -7,14 +7,15 @@ type States = {
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
-export default function incrementSelectedIndex(increment: 1 | -1, states: States) {
-  const {
+export default function incrementSelectedIndex(
+  increment: 1 | -1,
+  {
     view,
     selectedHabits,
     setInInput,
     setSelectedIndex,
-  } = states;
-
+  }: States,
+) {
   setSelectedIndex((oldIndex) => {
     let newIndex: number | null;
 

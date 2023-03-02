@@ -1,9 +1,9 @@
 import React from 'react';
-import { Habit, ModalContentGenerator } from '../../globalTypes';
+import { Habit, ModalGenerator } from '../../globalTypes';
 import HabitRemovalConfirmationModalContent from '.';
 
 type States = {
-  setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
+  setModal: React.Dispatch<React.SetStateAction<ModalGenerator | undefined>>;
   deleteHabit: (habitId: number) => void;
 };
 
@@ -12,17 +12,17 @@ export default function openDeleteHabitModal(
   states: States,
 ) {
   const {
-    setModalContentGenerator, deleteHabit,
+    setModal, deleteHabit,
   } = states;
   // eslint-disable-next-line arrow-body-style
-  const modalContentGenerator = (allowTabTraversal: boolean) => {
+  const modalContentGenerator = (disableTabIndex: boolean) => {
     return (
       <HabitRemovalConfirmationModalContent
         habitName={habit.name}
-        allowTabTraversal={allowTabTraversal}
-        setModalContentGenerator={setModalContentGenerator}
+        disableTabIndex={disableTabIndex}
+        setModal={setModal}
         onConfirm={() => {
-          setModalContentGenerator(undefined);
+          setModal(undefined);
           deleteHabit(habit.id);
         }}
       />
@@ -31,5 +31,5 @@ export default function openDeleteHabitModal(
 
   // https://medium.com/swlh/how-to-store-a-function-with-the-usestate-hook-in-react-8a88dd4eede1
   // (passing a function into a state setter auto-populates passes the inital state as first arg)
-  setModalContentGenerator(() => modalContentGenerator);
+  setModal(() => modalContentGenerator);
 }

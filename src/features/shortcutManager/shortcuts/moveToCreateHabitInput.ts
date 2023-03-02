@@ -6,12 +6,11 @@ type States = {
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
-export default function moveToCreateHabitInput(states: States) {
-  const {
-    habits,
-    setInInput,
-    setSelectedIndex,
-  } = states;
+export default function moveToCreateHabitInput({
+  habits,
+  setInInput,
+  setSelectedIndex,
+}: States) {
   setSelectedIndex(habits.length);
   setInInput(true);
 }

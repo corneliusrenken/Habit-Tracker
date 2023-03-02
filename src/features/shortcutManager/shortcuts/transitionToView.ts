@@ -15,8 +15,9 @@ type States = {
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function transitionToView(viewName: View['name'], states: States) {
-  const {
+export default function transitionToView(
+  viewName: View['name'],
+  {
     selectedHabits,
     selectedIndex,
     dateObject,
@@ -25,7 +26,8 @@ export default function transitionToView(viewName: View['name'], states: States)
     setSelectedIndex,
     setView,
     setInInput,
-  } = states;
+  }: States,
+) {
   if (viewName === 'focus') {
     setView((prevView) => {
       if (

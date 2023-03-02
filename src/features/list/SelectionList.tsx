@@ -2,7 +2,7 @@ import React from 'react';
 import {
   DateObject,
   Habit,
-  ModalContentGenerator,
+  ModalGenerator,
   OccurrenceData,
 } from '../../globalTypes';
 import AddHabitForm from './AddHabitForm';
@@ -21,7 +21,7 @@ type Props = {
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   reorderingList: boolean;
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
-  setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
+  setModal: React.Dispatch<React.SetStateAction<ModalGenerator | undefined>>;
   addHabit: (name: string) => void;
   deleteHabit: (habitId: number) => void;
   updateHabitListPosition: (habitId: number, newPosition: number) => void;
@@ -41,7 +41,7 @@ export default function SelectionList({
   setInInput,
   reorderingList,
   setReorderingList,
-  setModalContentGenerator,
+  setModal,
   addHabit,
   deleteHabit,
   updateHabitListPosition,
@@ -60,7 +60,7 @@ export default function SelectionList({
     setInInput,
     reorderingList,
     setReorderingList,
-    setModalContentGenerator,
+    setModal,
     deleteHabit,
     updateHabitName,
     updateOccurrenceVisibility,

@@ -14,16 +14,14 @@ type States = {
   updateOccurrenceCompleted: (habitId: number, complete: boolean) => void;
 };
 
-export default function toggleCurrentHabitCompleted(states: States) {
-  const {
-    dateObject,
-    view,
-    selectedHabits,
-    selectedIndex,
-    occurrenceData,
-    updateOccurrenceCompleted,
-  } = states;
-
+export default function toggleCurrentHabitCompleted({
+  dateObject,
+  view,
+  selectedHabits,
+  selectedIndex,
+  occurrenceData,
+  updateOccurrenceCompleted,
+}: States) {
   if (selectedIndex === null) return;
 
   const selectedHabit = selectedHabits[selectedIndex];
