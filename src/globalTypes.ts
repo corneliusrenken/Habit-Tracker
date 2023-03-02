@@ -75,4 +75,4 @@ export type DateObject = {
   weekDays: string[],
 };
 
-export type ModalContentGenerator = (allowTabTraversal: boolean) => JSX.Element;
+export type ModalGenerator = (disableTabIndex: boolean) => JSX.Element;

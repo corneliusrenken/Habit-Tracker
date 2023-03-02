@@ -1,10 +1,10 @@
 import openDeleteHabitModal from '../../deleteHabitModal/openDeleteHabitModal';
-import { Habit, ModalContentGenerator } from '../../../globalTypes';
+import { Habit, ModalGenerator } from '../../../globalTypes';
 
 type States = {
   selectedHabits: Habit[];
   selectedIndex: number | null;
-  setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
+  setModal: React.Dispatch<React.SetStateAction<ModalGenerator | undefined>>;
   deleteHabit: (habitId: number) => void;
 };
 

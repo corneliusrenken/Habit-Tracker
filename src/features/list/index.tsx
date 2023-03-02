@@ -3,7 +3,7 @@ import {
   DateObject,
   Habit,
   View,
-  ModalContentGenerator,
+  ModalGenerator,
   OccurrenceData,
   Streaks,
   viewToViewType,
@@ -26,7 +26,7 @@ type Props = {
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   reorderingList: boolean;
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
-  setModalContentGenerator: React.Dispatch<React.SetStateAction<ModalContentGenerator | undefined>>;
+  setModal: React.Dispatch<React.SetStateAction<ModalGenerator | undefined>>;
   addHabit: (name: string) => void;
   deleteHabit: (habitId: number) => void;
   updateHabitListPosition: (habitId: number, newPosition: number) => void;
@@ -49,7 +49,7 @@ function List({
   setInInput,
   reorderingList,
   setReorderingList,
-  setModalContentGenerator,
+  setModal,
   addHabit,
   deleteHabit,
   updateHabitListPosition,
@@ -87,7 +87,7 @@ function List({
       ) : (
         <SelectionList
           ignoreMouse={ignoreMouse}
-          setModalContentGenerator={setModalContentGenerator}
+          setModal={setModal}
           disableTabIndex={disableTabIndex}
           dateObject={dateObject}
           occurrenceData={occurrenceData}
