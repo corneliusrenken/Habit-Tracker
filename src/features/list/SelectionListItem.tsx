@@ -1,7 +1,8 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { Habit } from '../../globalTypes';
 import Icon from '../icon';
-import isValidHabitName from './isValidHabitName';
+import CustomForm from './CustomForm';
+import getInputValidationError from './getInputValidationError';
 
 type Props = {
   ignoreMouse: boolean;
@@ -34,57 +35,36 @@ export default function SelectionListItem({
   setInInput,
   habits,
 }: Props) {
-  const [renameInput, setRenameInput] = useState(name);
-
-  const beingRenamed = selected && inInput;
-
-  useEffect(() => {
-    if (!beingRenamed) setRenameInput(name);
-  }, [beingRenamed, name]);
-
   const ignoreNextMouseUp = useRef(false);
 
-  const inputRef = useRef<HTMLInputElement>(null);
+  const beingRenamed = selected && inInput;
 
   let containerClassName = 'list-item';
   if (selected) containerClassName += ' selected';
 
   return (
     <div className={containerClassName} onMouseEnter={ignoreMouse ? undefined : select}>
-      {!beingRenamed ? (
-        <div className="list-name">{name}</div>
-      ) : (
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            const trimmedRenameInput = renameInput.trim();
-
-            if (trimmedRenameInput === name) {
-              setInInput(false);
-              return;
-            }
-
-            const validation = isValidHabitName(trimmedRenameInput, { habits });
-            if (validation === true) {
-              renameHabit(trimmedRenameInput);
-              setInInput(false);
-            } else {
-              console.error(validation); // eslint-disable-line no-console
-            }
-          }}
-        >
-          <input
-            ref={inputRef}
-            autoFocus // eslint-disable-line jsx-a11y/no-autofocus
-            onBlur={(e) => {
-              e.preventDefault();
-              setInInput(false);
-            }}
-            value={renameInput}
-            onChange={(e) => setRenameInput(e.target.value)}
-          />
-        </form>
-      )}
+      <CustomForm
+        active={beingRenamed}
+        setActive={(active) => {
+          if (active) {
+            setInInput(true);
+          } else {
+            setInInput(false);
+          }
+        }}
+        placeholder={name}
+        initialValue={name}
+        getInputValidationError={(newName) => {
+          if (newName === name) return '';
+          return getInputValidationError(newName, { habits });
+        }}
+        onSubmit={(newName) => {
+          if (newName !== name) renameHabit(newName);
+          setInInput(false);
+        }}
+        containerClass="list-name"
+      />
       <div className="list-horizontal-icon-container">
         <Icon
           icon="rename"
