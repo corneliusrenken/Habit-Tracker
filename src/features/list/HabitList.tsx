@@ -42,7 +42,7 @@ export default function HabitList({
         return (
           <HabitListItem
             ignoreMouse={ignoreMouse}
-            key={id}
+            key={`${listView.name}-${id}`}
             name={name}
             streak={selectedStreaks[id].current}
             completed={completed}
