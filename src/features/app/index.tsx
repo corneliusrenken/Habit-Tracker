@@ -23,6 +23,7 @@ import Days from '../days';
 import Dates from '../dates';
 import List from '../list';
 import useSelectedData from '../selectedData/useSelectedData';
+import scrollSelectedIndexIntoView from './scrollSelectedIndexIntoView';
 
 export default function App() {
   const queue = useRef(new TaskQueue());
@@ -45,6 +46,10 @@ export default function App() {
     minMarginHeight: 50,
     maxListHeight: 600,
   });
+
+  useEffect(() => {
+    if (selectedIndex !== null) scrollSelectedIndexIntoView(selectedIndex);
+  }, [selectedIndex]);
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
