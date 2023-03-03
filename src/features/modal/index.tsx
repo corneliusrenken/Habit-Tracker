@@ -1,5 +1,11 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+} from 'react';
 import { ModalGenerator } from '../../globalTypes';
+import useLatch from '../common/useLatch';
 
 type Props = {
   modal: ModalGenerator | undefined;
@@ -9,15 +15,15 @@ type Props = {
 export default function Modal({ modal, setModal }: Props) {
   const modalBackgroundRef = useRef<HTMLDivElement>(null);
 
-  // need the ref for the memo so that it can reference itself
-  const latchedModalGeneratorRef = useRef<ModalGenerator | undefined>(undefined);
-  const latchedModalGenerator: ModalGenerator | undefined = useMemo(() => {
-    if (modal !== undefined) {
-      latchedModalGeneratorRef.current = modal;
-      return modal;
-    }
-    return latchedModalGeneratorRef.current;
-  }, [modal]);
+  const latchedModal = useLatch<ModalGenerator | undefined>(
+    undefined,
+    useCallback((lastModal) => {
+      if (modal !== undefined) {
+        return modal;
+      }
+      return lastModal;
+    }, [modal]),
+  );
 
   const displayingModal = modal !== undefined;
 
@@ -33,14 +39,14 @@ export default function Modal({ modal, setModal }: Props) {
     : ' hidden';
 
   const modalContent = useMemo(() => {
-    if (latchedModalGenerator === undefined) {
+    if (latchedModal === undefined) {
       return null;
     }
     if (displayingModal) {
-      return latchedModalGenerator(false);
+      return latchedModal(false);
     }
-    return latchedModalGenerator(true);
-  }, [displayingModal, latchedModalGenerator]);
+    return latchedModal(true);
+  }, [displayingModal, latchedModal]);
 
   return (
     // eslint-disable-next-line max-len

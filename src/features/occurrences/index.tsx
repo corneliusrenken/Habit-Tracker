@@ -1,10 +1,16 @@
-import React, { memo, useMemo, useRef } from 'react';
+import React, {
+  memo,
+  useCallback,
+  useMemo,
+  useRef,
+} from 'react';
 import {
   View,
   viewToViewType,
   OccurrenceView,
   SelectedOccurrence,
 } from '../../globalTypes';
+import useLatch from '../common/useLatch';
 
 function getContainerHeight(occurencesLength: number) {
   return Math.ceil(occurencesLength / 7) * 50;
@@ -21,32 +27,35 @@ function Occurrences({
   view,
   selectedOccurrences,
 }: Props) {
-  // need the ref for the memo so that it can reference itself
-  const latchedOccurrenceViewRef = useRef<OccurrenceView>({ name: 'history' });
-  const latchedOccurrenceView: OccurrenceView = useMemo(() => {
-    const isOccurrenceView = view.name === 'history' || view.name === 'focus';
-    const isDifferentToLast = view.name !== latchedOccurrenceViewRef.current.name;
-    const hasDifferentFocusId = view.name === 'focus'
-      && latchedOccurrenceViewRef.current.name === 'focus'
-      && view.focusId !== latchedOccurrenceViewRef.current.focusId;
+  const occurrenceView = useLatch<OccurrenceView>(
+    { name: 'history' },
+    useCallback((lastView) => {
+      const isOccurrenceView = view.name === 'history' || view.name === 'focus';
+      const isDifferentToLast = view.name !== lastView.name;
+      const hasDifferentFocusId = (
+        view.name === 'focus'
+        && lastView.name === 'focus'
+        && view.focusId !== lastView.focusId
+      );
 
-    if (isOccurrenceView && (isDifferentToLast || hasDifferentFocusId)) {
-      latchedOccurrenceViewRef.current = view;
-      return view;
-    }
-    return latchedOccurrenceViewRef.current;
-  }, [view]);
+      if (isOccurrenceView && (isDifferentToLast || hasDifferentFocusId)) {
+        return view;
+      }
+      return lastView;
+    }, [view]),
+  );
 
   const displayingOccurrences = viewToViewType[view.name] === 'occurrence';
 
-  const latchedSelectedOccurrencesRef = useRef<SelectedOccurrence[]>([]);
-  const latchedSelectedOccurrences = useMemo(() => {
-    if (displayingOccurrences) {
-      latchedSelectedOccurrencesRef.current = selectedOccurrences;
-      return selectedOccurrences;
-    }
-    return latchedSelectedOccurrencesRef.current;
-  }, [displayingOccurrences, selectedOccurrences]);
+  const latchedSelectedOccurrences = useLatch<SelectedOccurrence[]>(
+    [],
+    useCallback((lastSelectedOccurrences) => {
+      if (displayingOccurrences) {
+        return selectedOccurrences;
+      }
+      return lastSelectedOccurrences;
+    }, [displayingOccurrences, selectedOccurrences]),
+  );
 
   const awaitingFirstVisibleRender = useRef(true);
 
@@ -73,7 +82,7 @@ function Occurrences({
             let className = 'occurrences-occurrence';
             if (complete) className += ' complete';
 
-            const key = `${latchedOccurrenceView.name}-${fullDate}`;
+            const key = `${occurrenceView.name}-${fullDate}`;
 
             return (
               <div
@@ -92,7 +101,7 @@ function Occurrences({
           })}
       </div>
     );
-  }, [displayingOccurrences, latchedSelectedOccurrences, latchedOccurrenceView]);
+  }, [displayingOccurrences, latchedSelectedOccurrences, occurrenceView]);
 
   return component;
 }

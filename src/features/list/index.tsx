@@ -1,4 +1,4 @@
-import React, { memo, useMemo, useRef } from 'react';
+import React, { memo, useCallback } from 'react';
 import {
   DateObject,
   Habit,
@@ -9,6 +9,7 @@ import {
   viewToViewType,
   ListView,
 } from '../../globalTypes';
+import useLatch from '../common/useLatch';
 import HabitList from './HabitList';
 import SelectionList from './SelectionList';
 
@@ -57,26 +58,23 @@ function List({
   updateOccurrenceCompleted,
   updateOccurrenceVisibility,
 }: Props) {
-  // need the ref for the memo so that it can reference itself
-  const latchedListViewRef = useRef<ListView>({ name: 'today' });
-  const latchedListView: ListView = useMemo(() => {
-    const isListView = view.name === 'today' || view.name === 'yesterday' || view.name === 'selection';
-    const isDifferentToLast = view.name !== latchedListViewRef.current.name;
-
-    if (isListView && isDifferentToLast) {
-      latchedListViewRef.current = view;
-      return view;
-    }
-    return latchedListViewRef.current;
-  }, [view]);
+  const listView = useLatch<ListView>(
+    { name: 'today' },
+    useCallback((prevListView) => {
+      if (view.name === 'today' || view.name === 'yesterday' || view.name === 'selection') {
+        return view;
+      }
+      return prevListView;
+    }, [view]),
+  );
 
   return (
     <div className="list" style={{ opacity: viewToViewType[view.name] === 'list' ? 1 : 0 }}>
-      {latchedListView.name !== 'selection' ? (
+      {listView.name !== 'selection' ? (
         <HabitList
           ignoreMouse={ignoreMouse}
           dateObject={dateObject}
-          listView={latchedListView}
+          listView={listView}
           occurrenceData={occurrenceData}
           habits={selectedHabits}
           selectedStreaks={selectedStreaks}
