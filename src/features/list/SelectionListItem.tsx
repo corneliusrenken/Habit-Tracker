@@ -63,6 +63,7 @@ export default function SelectionListItem({
           if (newName !== name) renameHabit(newName);
           setInInput(false);
         }}
+        containerClass="list-name"
       />
       <div className="list-horizontal-icon-container">
         <Icon

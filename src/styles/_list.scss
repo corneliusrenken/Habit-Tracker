@@ -4,31 +4,31 @@
 .list {
   transition: opacity 600ms;
 
-  form {
-    width: 100%;
-    height: 50px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
+  // form {
+  //   width: 100%;
+  //   height: 50px;
+  //   display: flex;
+  //   flex-direction: row;
+  //   align-items: center;
+  // }
 
-  input {
-    @include fonts.main-text-font;
+  // input {
+  //   @include fonts.main-text-font;
 
-    margin-left: calc(var(--left-margin, 0px) - 8px);
-    margin-right: calc(var(--right-margin, 0px) - 8px);
-    width: calc(100% - var(--left-margin, 0px) - var(--right-margin, 0px) + 16px);
-    height: 34px;
-    padding: 8px;
-    border: 0;
-    caret-color: theme.$foreground;
-    color: theme.$foreground;
-    background-color: transparent;
+  //   margin-left: calc(var(--left-margin, 0px) - 8px);
+  //   margin-right: calc(var(--right-margin, 0px) - 8px);
+  //   width: calc(100% - var(--left-margin, 0px) - var(--right-margin, 0px) + 16px);
+  //   height: 34px;
+  //   padding: 8px;
+  //   border: 0;
+  //   caret-color: theme.$foreground;
+  //   color: theme.$foreground;
+  //   background-color: transparent;
 
-    &::placeholder {
-      color: theme.$secondary;
-    }
-  }
+  //   &::placeholder {
+  //     color: theme.$secondary;
+  //   }
+  // }
 
   .being-reordered {
     z-index: 1;
@@ -57,6 +57,7 @@
     width: 4px;
     border-radius: 50%;
     right: calc(350px - var(--left-margin, 0px) + 8px);
+    transition: right 50ms cubic-bezier(0, .67,.55, 1);
     background-color: theme.$foreground;
     opacity: 0;
   }
@@ -69,31 +70,33 @@
     background-color: theme.$secondary;
   }
 
-  &-name::after {
+  &-item::after,
+  &-add-habit-form::after {
     @include selector;
   }
 
-  .selected &-name::after {
-    @include selector-selected;
-  }
-
-  .complete &-name::after {
-    @include selector-complete;
-  }
-
-  form::after {
-    @include selector;
+  &-add-habit-form::after {
     right: calc(350px - var(--left-margin, 0px) + 16px);
   }
 
-  form.selected::after, .selected form::after {
-    @include selector-selected;
+  &-item.selected::after,
+  &-add-habit-form.selected::after {
+    @include selector-selected();
+  }
+
+  &-item.selected:has(input)::after,
+  &-item.selected:has(.error)::after {
+    right: calc(350px - var(--left-margin, 0px) + 16px);
+  }
+
+  &-item.complete::after,
+  &-add-habit-form.complete::after {
+    @include selector-complete();
   }
 
   &-name {
     @include fonts.main-text-font;
 
-    margin-left: var(--left-margin, 0px);
     width: 100%;
     height: 50px;
     display: flex;
@@ -102,6 +105,10 @@
     white-space: nowrap;
     overflow: hidden;
     color: theme.$foreground;
+
+    &:not(form) {
+      margin-left: var(--left-margin, 0px);
+    }
 
     .complete & {
       color: theme.$secondary;
@@ -121,5 +128,45 @@
 
   &-horizontal-icon-container {
     min-width: fit-content;
+  }
+
+  &-add-habit-form {
+    @include fonts.main-text-font;
+
+    height: 50px;
+    display: flex;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    color: theme.$foreground;
+
+    & .placeholder {
+      width: calc(100% - var(--left-margin, 0px) - var(--right-margin, 0px));
+      margin-left: var(--left-margin, 0px);
+      margin-right: var(--right-margin, 0px);
+      color: theme.$secondary;
+    }
+
+    input {
+      margin-right: calc(var(--right-margin, 0px) - 8px);
+    }
+  };
+
+  input {
+    @include fonts.main-text-font;
+    color: theme.$foreground;
+    background-color: transparent;
+    margin-left: calc(var(--left-margin, 0px) - 8px);
+    padding: 0 6px; // taking into account 2px border of active input
+    height: 40px;
+    width: 100%;
+
+    &::placeholder {
+      color: theme.$secondary;
+    }
+  }
+
+  .error {
+    color: theme.$error;
   }
 }

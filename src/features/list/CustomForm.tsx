@@ -66,7 +66,7 @@ export default function CustomForm({
           }
         }}
       >
-        <div>{placeholder}</div>
+        <div className="placeholder">{placeholder}</div>
       </div>
     );
   }
@@ -76,7 +76,7 @@ export default function CustomForm({
       <div
         className={containerClass}
       >
-        <div style={{ color: 'red' }}>{error}</div>
+        <div className="error">{error}</div>
       </div>
     );
   }
@@ -99,6 +99,7 @@ export default function CustomForm({
         type="text"
         value={input}
         onChange={(e) => { setInput(e.target.value); }}
+        placeholder={placeholder}
         onBlur={() => {
           setActive(false);
         }}

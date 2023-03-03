@@ -47,6 +47,11 @@ export default function AddHabitForm({
         addHabit(name);
         setInInput(false);
       }}
+      containerClass={(
+        selectedIndex === habits.length
+          ? 'list-add-habit-form selected'
+          : 'list-add-habit-form'
+      )}
     />
   );
 }
