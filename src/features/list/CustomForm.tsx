@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 type Props = {
   active: boolean;
@@ -28,13 +28,13 @@ export default function CustomForm({
 }: Props) {
   const [error, setError] = useState('');
   const [input, setInput] = useState(initialValue);
-  const inputRef = React.createRef<HTMLInputElement>();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (active) {
-      inputRef.current?.focus({ preventScroll: true });
+    if (active && inputRef.current) {
+      inputRef.current.focus({ preventScroll: true });
     }
-  }, [active, inputRef]);
+  }, [active]);
 
   useEffect(() => {
     if (!active) setInput(initialValue);
