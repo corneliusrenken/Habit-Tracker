@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/no-autofocus */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useState } from 'react';
@@ -29,6 +28,13 @@ export default function CustomForm({
 }: Props) {
   const [error, setError] = useState('');
   const [input, setInput] = useState(initialValue);
+  const inputRef = React.createRef<HTMLInputElement>();
+
+  useEffect(() => {
+    if (active) {
+      inputRef.current?.focus({ preventScroll: true });
+    }
+  }, [active, inputRef]);
 
   useEffect(() => {
     if (!active) setInput(initialValue);
@@ -95,12 +101,13 @@ export default function CustomForm({
       }}
     >
       <input
-        autoFocus
+        ref={inputRef}
         type="text"
         value={input}
         onChange={(e) => { setInput(e.target.value); }}
         placeholder={placeholder}
-        onBlur={() => {
+        onBlur={(e) => {
+          e.target.focus({ preventScroll: true });
           setActive(false);
         }}
       />
