@@ -4,32 +4,6 @@
 .list {
   transition: opacity 600ms;
 
-  // form {
-  //   width: 100%;
-  //   height: 50px;
-  //   display: flex;
-  //   flex-direction: row;
-  //   align-items: center;
-  // }
-
-  // input {
-  //   @include fonts.main-text-font;
-
-  //   margin-left: calc(var(--left-margin, 0px) - 8px);
-  //   margin-right: calc(var(--right-margin, 0px) - 8px);
-  //   width: calc(100% - var(--left-margin, 0px) - var(--right-margin, 0px) + 16px);
-  //   height: 34px;
-  //   padding: 8px;
-  //   border: 0;
-  //   caret-color: theme.$foreground;
-  //   color: theme.$foreground;
-  //   background-color: transparent;
-
-  //   &::placeholder {
-  //     color: theme.$secondary;
-  //   }
-  // }
-
   .being-reordered {
     z-index: 1;
 
@@ -49,49 +23,36 @@
     border: 0;
   }
 
-  @mixin selector {
-    transition: opacity 200ms;
-    content: '';
-    position: absolute;
-    height: 4px;
-    width: 4px;
-    border-radius: 50%;
-    right: calc(350px - var(--left-margin, 0px) + 8px);
-    transition: right 50ms cubic-bezier(0, .67,.55, 1);
-    background-color: theme.$foreground;
-    opacity: 0;
+  &-item,
+  &-add-habit-form {
+    &:after {
+      content: '';
+      position: absolute;
+      height: 4px;
+      width: 4px;
+      border-radius: 50%;
+      right: calc(350px - var(--left-margin, 0px) + 8px);
+      transition: opacity 200ms, right 200ms cubic-bezier(0, .67,.55, 1);
+      background-color: theme.$foreground;
+      opacity: 0;
+    }
+
+    &.selected:after {
+      opacity: 1;
+    }
+
+    &.complete:after {
+      background-color: theme.$secondary;
+    }
   }
 
-  @mixin selector-selected {
-    opacity: 1;
-  }
-
-  @mixin selector-complete {
-    background-color: theme.$secondary;
-  }
-
-  &-item::after,
-  &-add-habit-form::after {
-    @include selector;
-  }
-
-  &-add-habit-form::after {
+  &-add-habit-form:after {
     right: calc(350px - var(--left-margin, 0px) + 16px);
   }
 
-  &-item.selected::after,
-  &-add-habit-form.selected::after {
-    @include selector-selected();
-  }
-
-  &-item.selected:has(input)::after,
-  &-item.selected:has(.error)::after {
+  &-item.selected:has(input):after,
+  &-item.selected:has(.error):after {
     right: calc(350px - var(--left-margin, 0px) + 16px);
-  }
-
-  &-item.complete::after,
-  &-add-habit-form.complete::after {
-    @include selector-complete();
   }
 
   &-name {
