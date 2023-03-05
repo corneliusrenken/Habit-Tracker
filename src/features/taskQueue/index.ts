@@ -1,4 +1,4 @@
-import DoublyLinkedList from './DoublyLinkedList';
+import LinkedList from './LinkedList';
 
 type TaskTypes = keyof typeof window.electron;
 
@@ -12,12 +12,12 @@ export type Task<TaskType extends TaskTypes> = {
 };
 
 export default class TaskQueue {
-  #queue = new DoublyLinkedList<Task<any>>();
+  #queue = new LinkedList<Task<any>>();
   running = false;
   onFinishedRunning: (() => void)[] = [];
 
   enqueue<TaskType extends TaskTypes>(task: Task<TaskType>) {
-    this.#queue.unshift(task);
+    this.#queue.push(task);
 
     if (!this.running) {
       this.#run();
@@ -25,7 +25,7 @@ export default class TaskQueue {
   }
 
   async #run() {
-    const task = this.#queue.pop();
+    const task = this.#queue.shift();
 
     if (!task) throw new Error('trying to run a task but no more tasks exist');
 
@@ -45,7 +45,7 @@ export default class TaskQueue {
     let current = this.#queue.head;
     while (current) {
       callback(current.value);
-      current = current.prev;
+      current = current.next;
     }
   }
 }
