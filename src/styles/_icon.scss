@@ -10,10 +10,10 @@
   position: relative;
   background-color: transparent;
   border: 0;
-  color: theme.$foreground;
+  color: theme.$primary;
 
   &.greyed-out {
-    color: theme.$secondary;
+    color: theme.$tertiary;
   }
 
   &.hidden {

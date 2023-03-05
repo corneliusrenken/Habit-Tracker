@@ -9,59 +9,59 @@
 // temporary
 // temporary
 
-.modal {
-  color: theme.$foreground;
+// .modal {
+//   color: theme.$foreground;
 
-  position: fixed;
-  z-index: 4;
-  opacity: 0;
-  padding: 16px;
-  border-radius: 8px;
-  background-color: theme.$modal-background;
+//   position: fixed;
+//   z-index: 4;
+//   opacity: 0;
+//   padding: 16px;
+//   border-radius: 8px;
+//   background-color: theme.$modal-background;
 
-  transition: transform 200ms, opacity 200ms;
+//   transition: transform 200ms, opacity 200ms;
 
-  transform: scale(0.9);
-  opacity: 0;
+//   transform: scale(0.9);
+//   opacity: 0;
 
-  box-shadow: 0px 100px 191px rgba(0, 0, 0, 0.09), 0px 37.7577px 57.5809px rgba(0, 0, 0, 0.0454868), 0px 20.3472px 23.9162px rgba(0, 0, 0, 0.0327005), 0px 9.56937px 8.65001px rgba(0, 0, 0, 0.0249797);
+//   box-shadow: 0px 100px 191px rgba(0, 0, 0, 0.09), 0px 37.7577px 57.5809px rgba(0, 0, 0, 0.0454868), 0px 20.3472px 23.9162px rgba(0, 0, 0, 0.0327005), 0px 9.56937px 8.65001px rgba(0, 0, 0, 0.0249797);
 
-  .hidden & {
-    transform: scale(0.9);
-    opacity: 0;
-  }
+//   .hidden & {
+//     transform: scale(0.9);
+//     opacity: 0;
+//   }
 
-  .shown & {
-    transform: scale(1);
-    opacity: 1;
-  }
+//   .shown & {
+//     transform: scale(1);
+//     opacity: 1;
+//   }
 
-  &-background {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 4;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+//   &-background {
+//     position: fixed;
+//     top: 0;
+//     left: 0;
+//     right: 0;
+//     bottom: 0;
+//     z-index: 4;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
 
-    transition: background-color 300ms, backdrop-filter 300ms;
+//     transition: background-color 300ms, backdrop-filter 300ms;
 
-    background-color: rgba(0, 0, 0, 0);
-    backdrop-filter: blur(0);
+//     background-color: rgba(0, 0, 0, 0);
+//     backdrop-filter: blur(0);
 
-    &.hidden {
-      background-color: rgba(0, 0, 0, 0);
-      backdrop-filter: blur(0);
-      pointer-events: none;
-    }
+//     &.hidden {
+//       background-color: rgba(0, 0, 0, 0);
+//       backdrop-filter: blur(0);
+//       pointer-events: none;
+//     }
 
-    &.shown {
-      background-color: rgba(0, 0, 0, 0.02);
-      backdrop-filter: blur(5px);
-    }
-  }
-}
+//     &.shown {
+//       background-color: rgba(0, 0, 0, 0.02);
+//       backdrop-filter: blur(5px);
+//     }
+//   }
+// }
 

@@ -66,7 +66,7 @@ const tempDatabaseFilepath = join(homedir(), 'Downloads', 'tempDatabase.sqlite3'
 
 const database = openDatabase(tempDatabaseFilepath);
 createTables(database);
-// seedDatabase(database, '2022-12-05', ['exercise', 'read', 'sleep'], {
+// seedDatabase(database, '2022-12-05', ['Exercise', 'Read', 'Sleep'], {
 //   loginProbabilityDecimal: 0.8,
 //   habitVisibleProbabilityDecimal: 0.8,
 //   habitCompleteProbabilityDecimal: 0.7,
