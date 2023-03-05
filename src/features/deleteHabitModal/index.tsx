@@ -15,18 +15,15 @@ export default function HabitRemovalConfirmationModalContent({
   setModal,
 }: Props) {
   return (
-    <div className="habit-removal-confirmation-container">
-      <div>
-        Delete&nbsp;
-        <b>{habitName}</b>
-        ?
-      </div>
-      <div
-        className="sub-text"
-      >
+    <>
+      <h1>
+        {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
+        Delete&nbsp;<b>{habitName}</b>?
+      </h1>
+      <small>
         Doing so will irretrievably remove all related data.
-      </div>
-      <div className="habit-removal-confirmation-button-container">
+      </small>
+      <div className="button-group">
         <button
           tabIndex={disableTabIndex ? -1 : undefined}
           type="button"
@@ -39,9 +36,9 @@ export default function HabitRemovalConfirmationModalContent({
           type="button"
           onClick={() => onConfirm()}
         >
-          Delete habit
+          Delete Habit
         </button>
       </div>
-    </div>
+    </>
   );
 }
