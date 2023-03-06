@@ -59,7 +59,8 @@
 
       padding-left: 8px;
 
-      margin: 8px 0;
+      margin-top: 8px;
+      margin-bottom: 16px;
 
       b {
         @include fonts.main-bold;
@@ -73,7 +74,7 @@
 
       padding-left: 8px;
 
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .button-group {
@@ -81,16 +82,16 @@
       margin-left: auto
     }
 
-    button {
+    .dialog-button {
       @include fonts.main;
       background-color: transparent;
       border: none;
       height: 34px;
-      padding: 0 8px;
+      padding-left: 8px;
       outline: none;
 
       &:focus {
-        border-radius: 4px;
+        border-radius: 6px;
         background-color: theme.$background-input;
       }
 
@@ -99,7 +100,5 @@
       }
     }
   }
-
-
 }
 

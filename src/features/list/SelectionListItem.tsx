@@ -1,39 +1,42 @@
 import React, { useRef } from 'react';
-import { Habit } from '../../globalTypes';
-import Icon from '../icon';
+import { Habit, ModalGenerator } from '../../globalTypes';
+import IconButton from './IconButton';
 import CustomForm from './CustomForm';
 import getInputValidationError from './getInputValidationError';
+import createDeleteHabitModalGenerator from '../deleteHabitModal';
 
 type Props = {
   ignoreMouse: boolean;
   disableTabIndex: boolean;
-  name: string;
+  habit: Habit;
   visible: boolean;
   move: React.MouseEventHandler<HTMLButtonElement>;
   selected: boolean;
   select: undefined | (() => void);
   toggleVisibility: () => void;
-  openDeleteHabitModal: () => void;
   renameHabit: (newName: string) => void;
   inInput: boolean;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
   habits: Habit[];
+  setModal: React.Dispatch<React.SetStateAction<ModalGenerator | undefined>>;
+  deleteHabit: (habitId: number) => void;
 };
 
 export default function SelectionListItem({
   ignoreMouse,
   disableTabIndex,
-  name,
+  habit,
   visible,
   move,
   selected,
   select,
   toggleVisibility,
-  openDeleteHabitModal,
   renameHabit,
   inInput,
   setInInput,
   habits,
+  setModal,
+  deleteHabit,
 }: Props) {
   const ignoreNextMouseUp = useRef(false);
 
@@ -53,20 +56,20 @@ export default function SelectionListItem({
             setInInput(false);
           }
         }}
-        placeholder={name}
-        initialValue={name}
+        placeholder={habit.name}
+        initialValue={habit.name}
         getInputValidationError={(newName) => {
-          if (newName === name) return '';
+          if (newName === habit.name) return '';
           return getInputValidationError(newName, { habits });
         }}
         onSubmit={(newName) => {
-          if (newName !== name) renameHabit(newName);
+          if (newName !== habit.name) renameHabit(newName);
           setInInput(false);
         }}
         containerClass="list-name"
       />
       <div className="list-horizontal-icon-container">
-        <Icon
+        <IconButton
           icon="rename"
           disableTabIndex={disableTabIndex}
           onMouseDown={() => {
@@ -86,20 +89,26 @@ export default function SelectionListItem({
           classes={beingRenamed ? ['greyed-out'] : undefined}
           hidden={!selected}
         />
-        <Icon
+        <IconButton
           icon="trash"
           disableTabIndex={disableTabIndex}
-          onClick={openDeleteHabitModal}
+          onClick={() => {
+            const modalGenerator: ModalGenerator = createDeleteHabitModalGenerator(habit, {
+              deleteHabit,
+              setModal,
+            });
+            setModal(() => modalGenerator);
+          }}
           hidden={!selected}
         />
-        <Icon
+        <IconButton
           icon="move"
           classes={['move-icon']}
           disableTabIndex={disableTabIndex}
           onMouseDown={move}
           hidden={!selected}
         />
-        <Icon
+        <IconButton
           icon={visible ? 'visible' : 'hidden'}
           disableTabIndex={disableTabIndex}
           classes={!visible ? ['greyed-out'] : undefined}

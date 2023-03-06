@@ -5,7 +5,6 @@ import {
   ModalGenerator,
   OccurrenceData,
 } from '../../globalTypes';
-import openDeleteHabitModal from '../deleteHabitModal/openDeleteHabitModal';
 import { ElementConstructor } from './ReorderableList';
 import SelectionListItem from './SelectionListItem';
 
@@ -57,7 +56,7 @@ export default function useMemoizedSelectionListItemConstructors({
           <SelectionListItem
             ignoreMouse={ignoreMouse}
             disableTabIndex={disableTabIndex}
-            name={habit.name}
+            habit={habit}
             move={(e) => {
               onMouseDown(e);
               setReorderingList(true);
@@ -66,16 +65,14 @@ export default function useMemoizedSelectionListItemConstructors({
             selected={selectedIndex === index}
             select={reorderingList || inInput ? undefined : () => setSelectedIndex(index)}
             toggleVisibility={() => updateOccurrenceVisibility(habit.id, !visible)}
-            openDeleteHabitModal={() => openDeleteHabitModal(habit, {
-              deleteHabit,
-              setModal,
-            })}
             renameHabit={(newName: string) => {
               updateHabitName(habit.id, newName);
             }}
             inInput={inInput}
             setInInput={setInInput}
             habits={habits}
+            deleteHabit={deleteHabit}
+            setModal={setModal}
           />
         );
       },

@@ -1,4 +1,5 @@
-import openDeleteHabitModal from '../../deleteHabitModal/openDeleteHabitModal';
+import React from 'react';
+import createDeleteHabitModalGenerator from '../../deleteHabitModal';
 import { Habit, ModalGenerator } from '../../../globalTypes';
 
 type States = {
@@ -8,14 +9,19 @@ type States = {
   deleteHabit: (habitId: number) => void;
 };
 
-export default function removeCurrentHabit(states: States) {
-  const {
-    selectedHabits,
-    selectedIndex,
-  } = states;
-
+export default function removeCurrentHabit({
+  selectedHabits,
+  selectedIndex,
+  setModal,
+  deleteHabit,
+}: States) {
   if (selectedIndex === selectedHabits.length || selectedIndex === null) return;
 
   const selectedHabit = selectedHabits[selectedIndex];
-  openDeleteHabitModal(selectedHabit, states);
+
+  const modalGenerator: ModalGenerator = createDeleteHabitModalGenerator(selectedHabit, {
+    deleteHabit,
+    setModal,
+  });
+  setModal(() => modalGenerator);
 }

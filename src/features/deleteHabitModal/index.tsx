@@ -1,5 +1,5 @@
 import React from 'react';
-import { ModalGenerator } from '../../globalTypes';
+import { Habit, ModalGenerator } from '../../globalTypes';
 
 type Props = {
   habitName: string;
@@ -8,7 +8,7 @@ type Props = {
   setModal: React.Dispatch<React.SetStateAction<ModalGenerator | undefined>>;
 };
 
-export default function HabitRemovalConfirmationModalContent({
+function DeleteHabitModal({
   habitName,
   disableTabIndex,
   onConfirm,
@@ -25,6 +25,7 @@ export default function HabitRemovalConfirmationModalContent({
       </small>
       <div className="button-group">
         <button
+          className="dialog-button"
           tabIndex={disableTabIndex ? -1 : undefined}
           type="button"
           onClick={() => setModal(undefined)}
@@ -32,6 +33,7 @@ export default function HabitRemovalConfirmationModalContent({
           Cancel
         </button>
         <button
+          className="dialog-button"
           tabIndex={disableTabIndex ? -1 : undefined}
           type="button"
           onClick={() => onConfirm()}
@@ -41,4 +43,31 @@ export default function HabitRemovalConfirmationModalContent({
       </div>
     </>
   );
+}
+
+type States = {
+  setModal: React.Dispatch<React.SetStateAction<ModalGenerator | undefined>>;
+  deleteHabit: (habitId: number) => void;
+};
+
+export default function createDeleteHabitModalGenerator(
+  habit: Habit,
+  {
+    setModal,
+    deleteHabit,
+  }: States,
+): ModalGenerator {
+  return function deleteHabitModalGenerator(disableTabIndex: boolean) {
+    return (
+      <DeleteHabitModal
+        disableTabIndex={disableTabIndex}
+        habitName={habit.name}
+        setModal={setModal}
+        onConfirm={() => {
+          setModal(undefined);
+          deleteHabit(habit.id);
+        }}
+      />
+    );
+  };
 }
