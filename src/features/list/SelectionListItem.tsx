@@ -104,7 +104,7 @@ export default function SelectionListItem({
         <IconButton
           icon="move"
           classes={['move-icon']}
-          disableTabIndex={disableTabIndex}
+          disableTabIndex // never needs to be tabbed to
           onMouseDown={move}
           hidden={!selected}
         />

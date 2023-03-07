@@ -118,9 +118,16 @@
     color: theme.$primary;
     background-color: transparent;
     margin-left: calc(var(--left-margin, 0px) - 8px);
-    padding: 0 6px; // taking into account 2px border of active input
-    height: 40px;
+    padding: 0 8px; // taking into account 2px border of active input
+    height: 38px;
     width: 100%;
+    outline: none;
+    border: none;
+    border-radius: 6px;
+
+    &:focus {
+      background-color: theme.$background-input;
+    }
 
     &::placeholder {
       color: theme.$tertiary;
@@ -132,17 +139,23 @@
   }
 
   .icon-button {
-    margin: 8px;
+    margin: 6px;
     padding: 0;
-    height: 34px;
-    min-width: 34px;
+    height: 38px;
+    min-width: 38px;
     display: inline-flex;
     justify-content: center;
     align-items: center;
     position: relative;
     background-color: transparent;
     border: 0;
+    border-radius: 6px;
     color: theme.$primary;
+    outline: none;
+
+    &:focus {
+      background-color: theme.$background-input;
+    }
 
     &.greyed-out {
       color: theme.$tertiary;
