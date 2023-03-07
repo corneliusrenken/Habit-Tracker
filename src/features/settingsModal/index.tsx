@@ -23,8 +23,25 @@ function SettingsModal({
         onClick={() => {}}
       />
       <div className="modal-subtext">
+        Start weekn on
+      </div>
+      <select>
+        <option selected>Monday</option>
+        <option>Tuesday</option>
+        <option>Wednesday</option>
+        <option>Thursday</option>
+        <option>Friday</option>
+        <option>Saturday</option>
+        <option>Sunday</option>
+      </select>
+      <div className="modal-subtext">
         Theme
       </div>
+      <select>
+        <option selected>System</option>
+        <option>Light</option>
+        <option>Dark</option>
+      </select>
     </>
   );
 }
