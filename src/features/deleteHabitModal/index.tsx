@@ -16,13 +16,13 @@ function DeleteHabitModal({
 }: Props) {
   return (
     <>
-      <h1>
+      <div className="modal-header">
         {/* eslint-disable-next-line react/jsx-one-expression-per-line */}
         Delete&nbsp;<b>{habitName}</b>?
-      </h1>
-      <small>
+      </div>
+      <div className="modal-subtext">
         Doing so will irretrievably remove all related data.
-      </small>
+      </div>
       <div className="button-group">
         <button
           className="dialog-button"

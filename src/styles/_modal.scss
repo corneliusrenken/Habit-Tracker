@@ -27,6 +27,30 @@
     }
   }
 
+  &-header {
+    @include fonts.main;
+    color: theme.$primary;
+
+    padding-left: 8px;
+
+    margin-top: 8px;
+    margin-bottom: 16px;
+
+    b {
+      @include fonts.main-bold;
+    }
+  }
+
+  &-subtext {
+    @include fonts.sub;
+    color: theme.$secondary;
+    display: block;
+
+    padding-left: 8px;
+
+    margin-bottom: 10px;
+  }
+
   &-container {
     position: fixed;
     width: 350px;
@@ -53,30 +77,6 @@
       opacity: 1;
     }
 
-    h1 {
-      @include fonts.main;
-      color: theme.$primary;
-
-      padding-left: 8px;
-
-      margin-top: 8px;
-      margin-bottom: 16px;
-
-      b {
-        @include fonts.main-bold;
-      }
-    }
-
-    small {
-      @include fonts.sub;
-      color: theme.$secondary;
-      display: block;
-
-      padding-left: 8px;
-
-      margin-bottom: 10px;
-    }
-
     .button-group {
       width: fit-content;
       margin-left: auto
@@ -99,6 +99,37 @@
         @include fonts.main-bold;
       }
     }
+  }
+
+  .path-input {
+    height: 34px;
+    width: 100%;
+    border: none;
+    border-radius: 6px;
+    background-color: theme.$background-input;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    color: theme.$primary;
+
+    &:hover {
+      background-color: theme.$background-input-hover;
+    }
+
+    svg {
+      min-width: 15px;
+      margin: 0 8px;
+    }
+  }
+
+  .path-input-text {
+    @include fonts.main;
+    display: inline-block;
+    padding-left:8px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 }
 
