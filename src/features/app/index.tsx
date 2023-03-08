@@ -24,8 +24,13 @@ import Dates from '../dates';
 import List from '../list';
 import useSelectedData from '../selectedData/useSelectedData';
 import scrollSelectedIndexIntoView from './scrollSelectedIndexIntoView';
+import { Config } from '../../api/config/functions/common/initializeConfig';
 
-export default function App() {
+type Props = {
+  config: Config;
+};
+
+export default function App({ config }: Props) {
   const queue = useRef(new TaskQueue());
   // https://medium.com/swlh/how-to-store-a-function-with-the-usestate-hook-in-react-8a88dd4eede1
   // using a function in useState makes it's initializer only run once instead of on every cycle

@@ -14,7 +14,7 @@ import {
   addOccurrences,
   deleteOccurrence,
   updateOccurrence,
-} from './database';
+} from './functions';
 
 // https://stackoverflow.com/a/67605309
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -43,12 +43,14 @@ type ApiReturnTypes = {
   [key in keyof typeof channelFunctions]: Promise<ReturnType<typeof channelFunctions[key]>>;
 };
 
-export type ExposedDatabaseApi = {
+export type DatabaseApi = {
   [key in keyof typeof channelFunctions]: (...args: ApiParameters[key]) =>ApiReturnTypes[key];
 };
 
 export function setDatabaseIpcHandlers(database: Database) {
   channels.forEach((channel) => {
+    ipcMain.removeHandler(channel);
+
     if (channel === 'initialize-app') {
       ipcMain.handle(channel, (e, ...args: ApiParameters[typeof channel]) => (
         channelFunctions[channel](database, ...args)
