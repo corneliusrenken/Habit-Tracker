@@ -6,7 +6,7 @@ import {
   createTables,
   openDatabase,
   updateOccurrence,
-} from '../../../database';
+} from '../../../api/database/functions';
 
 let db: Database.Database;
 let exerciseHabitId: number;

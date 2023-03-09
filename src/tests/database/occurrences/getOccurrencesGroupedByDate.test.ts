@@ -7,7 +7,7 @@ import {
   deleteHabit,
   getOccurrencesGroupedByDate,
   openDatabase,
-} from '../../../database';
+} from '../../../api/database/functions';
 
 let db: Database.Database;
 let exerciseHabitId: number;

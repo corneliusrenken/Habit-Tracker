@@ -1,5 +1,5 @@
 import Database from 'better-sqlite3';
-import { addHabit, createTables, openDatabase } from '../../../database';
+import { addHabit, createTables, openDatabase } from '../../../api/database/functions';
 
 let db: Database.Database;
 
