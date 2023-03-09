@@ -5,7 +5,7 @@ import {
   createTables,
   openDatabase,
   updateHabit,
-} from '../../../database';
+} from '../../../api/database/functions';
 import checkValidListPositionValues from '../helperFunctions/checkValidListPositionValues';
 
 let db: Database.Database;

@@ -9,14 +9,14 @@
   align-items: center;
 
   &-date {
-    @include fonts.week-date-font;
+    @include fonts.date;
 
     width: 50px;
     text-align: center;
-    color: theme.$foreground;
+    color: theme.$primary;
 
     &.complete {
-      color: theme.$secondary;
+      color: theme.$tertiary;
     }
   }
 
@@ -26,12 +26,12 @@
     position: absolute;
 
     circle {
-      stroke: theme.$foreground;
+      stroke: theme.$primary;
       // transition: stroke-dasharray 600ms;
     }
 
     &.complete circle {
-      stroke: theme.$secondary;
+      stroke: theme.$tertiary;
     }
 
     &.yesterday circle {

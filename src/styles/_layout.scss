@@ -17,7 +17,7 @@
   }
 
   &-bottom-mask {
-    background-color: theme.$background;
+    background-color: theme.$background-main;
     width: 100%;
     height: var(--latched-list-view-margin-height, 0px);
     z-index: 2;
@@ -46,7 +46,7 @@
   &-sticky-group {
     z-index: 2;
     width: 100%;
-    background-color: theme.$background;
+    background-color: theme.$background-main;
 
     .list-view & {
       position: sticky;

@@ -28,7 +28,7 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './features/app';
+import Initializer from './features/initializer';
 import './styles/index.scss';
 
 const root = ReactDOM.createRoot(
@@ -38,6 +38,6 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <div className="draggable-area" />
-    <App />
+    <Initializer />
   </React.StrictMode>,
 );

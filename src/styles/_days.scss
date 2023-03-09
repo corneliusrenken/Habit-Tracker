@@ -10,16 +10,13 @@
   transition: opacity 600ms;
 
   &-day {
-    @include fonts.main-text-font;
-    font-style: normal;
-    font-size: 9px;
-
+    @include fonts.day;
     width: 50px;
     text-align: center;
-    color: theme.$foreground;
+    color: theme.$primary;
 
     &.complete {
-      color: theme.$secondary;
+      color: theme.$tertiary;
     }
   }
 }

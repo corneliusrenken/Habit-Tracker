@@ -1,3 +1,5 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, {
   useCallback,
   useEffect,
@@ -8,11 +10,16 @@ import { ModalGenerator } from '../../globalTypes';
 import useLatch from '../common/useLatch';
 
 type Props = {
-  modal: ModalGenerator | undefined;
-  setModal: React.Dispatch<React.SetStateAction<ModalGenerator | undefined>>;
+  forceOpen: true,
+  modal: ModalGenerator,
+} | {
+  modal: ModalGenerator | undefined,
+  setModal: React.Dispatch<React.SetStateAction<ModalGenerator | undefined>>,
 };
 
-export default function Modal({ modal, setModal }: Props) {
+export default function Modal(props: Props) {
+  const { modal } = props;
+
   const modalBackgroundRef = useRef<HTMLDivElement>(null);
 
   const latchedModal = useLatch<ModalGenerator | undefined>(
@@ -33,11 +40,6 @@ export default function Modal({ modal, setModal }: Props) {
     if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
   }, [displayingModal]);
 
-  let modalBackgroundClassName = 'modal-background';
-  modalBackgroundClassName += displayingModal
-    ? ' shown'
-    : ' hidden';
-
   const modalContent = useMemo(() => {
     if (latchedModal === undefined) {
       return null;
@@ -48,20 +50,26 @@ export default function Modal({ modal, setModal }: Props) {
     return latchedModal(true);
   }, [displayingModal, latchedModal]);
 
+  let modalClassName = 'modal';
+  modalClassName += displayingModal
+    ? ' shown'
+    : ' hidden';
+
   return (
-    // eslint-disable-next-line max-len
-    // eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-static-element-interactions
-    <div
-      ref={modalBackgroundRef}
-      className={modalBackgroundClassName}
-      onClick={(e) => {
-        if (e.target === modalBackgroundRef.current) {
-          setModal(undefined);
-        }
-      }}
-    >
-      <div className="modal">
-        {modalContent}
+    <div className={modalClassName}>
+      <div
+        ref={modalBackgroundRef}
+        className="modal-backdrop"
+        onClick={'forceOpen' in props ? undefined : (e) => {
+          const { setModal } = props;
+          if (e.target === modalBackgroundRef.current) {
+            setModal(undefined);
+          }
+        }}
+      >
+        <div className="modal-container">
+          {modalContent}
+        </div>
       </div>
     </div>
   );

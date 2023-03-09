@@ -9,17 +9,17 @@
   width: 350px;
 
   &-occurrence {
-    @include fonts.week-date-font;
+    @include fonts.date;
 
     width: 50px;
     text-align: center;
     opacity: 0;
     animation-duration: 600ms;
     animation-fill-mode: forwards;
-    color: theme.$foreground;
+    color: theme.$primary;
 
     &.complete {
-      color: theme.$secondary;
+      color: theme.$tertiary;
     }
   }
 

@@ -1,14 +1,40 @@
-@mixin week-date-font {
+@mixin common {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@mixin main {
+  @include common;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+}
+
+@mixin main-bold {
+  @include common;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+@mixin sub {
+  @include common;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+@mixin day {
+  @include common;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 8px;
+  font-weight: 400;
+}
+
+@mixin date {
+  @include common;
   font-family: 'Averia Libre', cursive;
   font-size: 16px;
   font-weight: 400;
   font-style: italic;
-}
-
-@mixin main-text-font {
-  font-family: 'Inter var', sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  -webkit-font-feature-settings: "ss01","cv05","cv07","cv08";
-          font-feature-settings: "ss01","cv05","cv07","cv08";
 }
