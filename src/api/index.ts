@@ -21,7 +21,7 @@ const configApi: ConfigApi = {
 
 const startupApi: StartupApi = {
   'check-if-database-exists': () => ipcRenderer.invoke('check-if-database-exists'),
-  'initialize-database': () => ipcRenderer.invoke('initialize-database'),
+  'initialize-database': (...args) => ipcRenderer.invoke('initialize-database', ...args),
 };
 
 const api = {
