@@ -10,11 +10,11 @@ export default async function checkIfDatabaseExists() {
     _databaseFileName,
   } = await getConfig();
 
-  const databaseFile = join(databaseDirectoryPath, _databaseFolderName, _databaseFileName);
+  const databaseFullPath = join(databaseDirectoryPath, _databaseFolderName, _databaseFileName);
 
   let databaseExists: boolean;
   try {
-    await access(databaseFile);
+    await access(databaseFullPath);
     databaseExists = true;
   } catch {
     databaseExists = false;

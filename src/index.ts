@@ -63,7 +63,7 @@ setStartupIpcHandlers();
   try {
     await access(configPath);
   } catch {
-    initializeConfig();
+    await initializeConfig();
   }
 
   await app.whenReady();

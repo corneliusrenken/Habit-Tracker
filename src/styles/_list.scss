@@ -118,7 +118,7 @@
     color: theme.$primary;
     background-color: transparent;
     margin-left: calc(var(--left-margin, 0px) - 8px);
-    padding: 0 8px; // taking into account 2px border of active input
+    padding: 0 8px;
     height: 38px;
     width: 100%;
     outline: none;
