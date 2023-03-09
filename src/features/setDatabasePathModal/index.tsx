@@ -26,7 +26,7 @@ function SetDatabasePathModal({
       <PathInput
         path={path !== undefined ? path : placeholderPath}
         onClick={async () => {
-          const test = await window.electron['get-directory-path']();
+          const test = await window.electron['choose-directory-path']();
           if (test.filePath) {
             setPath(test.filePath);
           }

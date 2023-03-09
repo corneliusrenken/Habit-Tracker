@@ -40,11 +40,11 @@ type ApiParameters = {
 };
 
 type ApiReturnTypes = {
-  [key in keyof typeof channelFunctions]: Promise<ReturnType<typeof channelFunctions[key]>>;
+  [key in keyof ApiParameters]: Promise<ReturnType<typeof channelFunctions[key]>>;
 };
 
 export type DatabaseApi = {
-  [key in keyof typeof channelFunctions]: (...args: ApiParameters[key]) =>ApiReturnTypes[key];
+  [key in keyof ApiParameters]: (...args: ApiParameters[key]) =>ApiReturnTypes[key];
 };
 
 export function setDatabaseIpcHandlers(database: Database) {

@@ -1,9 +1,9 @@
 import getConfig from './common/getConfig';
 import updateConfig from './common/updateConfig';
-import getDirectoryPath from './common/getDirectoryPath';
+import chooseDirectoryPath from './common/chooseDirectoryPath';
 
 export {
+  chooseDirectoryPath,
   getConfig,
   updateConfig,
-  getDirectoryPath,
 };

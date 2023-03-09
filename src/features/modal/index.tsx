@@ -10,11 +10,16 @@ import { ModalGenerator } from '../../globalTypes';
 import useLatch from '../common/useLatch';
 
 type Props = {
-  modal: ModalGenerator | undefined;
-  setModal: React.Dispatch<React.SetStateAction<ModalGenerator | undefined>>;
+  forceOpen: true,
+  modal: ModalGenerator,
+} | {
+  modal: ModalGenerator | undefined,
+  setModal: React.Dispatch<React.SetStateAction<ModalGenerator | undefined>>,
 };
 
-export default function Modal({ modal, setModal }: Props) {
+export default function Modal(props: Props) {
+  const { modal } = props;
+
   const modalBackgroundRef = useRef<HTMLDivElement>(null);
 
   const latchedModal = useLatch<ModalGenerator | undefined>(
@@ -55,7 +60,8 @@ export default function Modal({ modal, setModal }: Props) {
       <div
         ref={modalBackgroundRef}
         className="modal-backdrop"
-        onClick={(e) => {
+        onClick={'forceOpen' in props ? undefined : (e) => {
+          const { setModal } = props;
           if (e.target === modalBackgroundRef.current) {
             setModal(undefined);
           }

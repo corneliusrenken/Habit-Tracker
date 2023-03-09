@@ -1,6 +1,7 @@
 import { ipcRenderer } from 'electron';
 import { DatabaseApi } from './database';
 import { ConfigApi } from './config';
+import { StartupApi } from './startup';
 
 const databaseApi: DatabaseApi = {
   'initialize-app': (...args) => ipcRenderer.invoke('initialize-app', ...args),
@@ -14,15 +15,19 @@ const databaseApi: DatabaseApi = {
 
 const configApi: ConfigApi = {
   'update-config': (...args) => ipcRenderer.invoke('update-config', ...args),
-  'get-directory-path': () => ipcRenderer.invoke('get-directory-path'),
+  'choose-directory-path': () => ipcRenderer.invoke('choose-directory-path'),
   'get-config': () => ipcRenderer.invoke('get-config'),
+};
+
+const startupApi: StartupApi = {
+  'check-if-database-exists': () => ipcRenderer.invoke('check-if-database-exists'),
+  'initialize-database': () => ipcRenderer.invoke('initialize-database'),
 };
 
 const api = {
   ...databaseApi,
   ...configApi,
-  'open-database': (directoryPath: string) => ipcRenderer.invoke('open-database', directoryPath),
-  'check-database-exists': (directoryPath: string) => ipcRenderer.invoke('check-database-exists', directoryPath),
+  ...startupApi,
 };
 
 export default api;
