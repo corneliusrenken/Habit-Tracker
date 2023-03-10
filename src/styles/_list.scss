@@ -67,6 +67,7 @@
   &-name {
     @include fonts.main;
 
+    white-space: nowrap;
     overflow: hidden;
     color: theme.$primary;
 
@@ -104,7 +105,7 @@
     overflow: hidden;
     color: theme.$primary;
 
-    & .placeholder {
+    & .placeholder, & .error {
       width: calc(100% - var(--left-margin, 0px) - var(--right-margin, 0px));
       margin-left: var(--left-margin, 0px);
       margin-right: var(--right-margin, 0px);
