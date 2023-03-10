@@ -79,6 +79,7 @@ export default function useDataQueries(states: States) {
   ) => (
     deleteHabit(habitId, {
       queue,
+      habits,
       setHabits,
       setOccurrenceData,
       setStreaks,
@@ -87,6 +88,7 @@ export default function useDataQueries(states: States) {
     })
   ), [
     queue,
+    habits,
     setHabits,
     setOccurrenceData,
     setStreaks,
