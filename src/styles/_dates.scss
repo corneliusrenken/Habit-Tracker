@@ -25,17 +25,23 @@
     height: 50px;
     position: absolute;
 
-    circle {
-      stroke: theme.$primary;
-      // transition: stroke-dasharray 600ms;
+    &:after {
+      content: '';
+      position: absolute;
+      left: calc(50% - 2px);
+      bottom: 7px;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background-color: theme.$primary;
     }
 
-    &.complete circle {
-      stroke: theme.$tertiary;
+    &.complete:after {
+      background-color: theme.$tertiary;
     }
 
-    &.yesterday circle {
-      stroke-dasharray: calc(100% / 6);
-    }
+    // &.yesterday:after {
+    //   background-color: theme.$tertiary;
+    // }
   }
 }

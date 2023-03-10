@@ -33,17 +33,7 @@ function Dates({ dateObject, view, selectedOccurrences }: Props) {
           </div>
         );
       })}
-      <svg
-        className={dayIndicatorClassName}
-        style={{ left: `calc(${selectedDayIndex} * 50px)` }}
-      >
-        <circle
-          r="16"
-          cx="25"
-          cy="25"
-          fill="none"
-        />
-      </svg>
+      <div className={dayIndicatorClassName} style={{ left: `${selectedDayIndex * 50}px` }} />
     </div>
   );
 }

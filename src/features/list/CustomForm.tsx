@@ -101,6 +101,7 @@ export default function CustomForm({
       }}
     >
       <input
+        spellCheck={false}
         ref={inputRef}
         type="text"
         value={input}
