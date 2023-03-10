@@ -31,10 +31,10 @@ export default function CustomForm({
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (active && inputRef.current) {
+    if (active && !error && inputRef.current) {
       inputRef.current.focus({ preventScroll: true });
     }
-  }, [active]);
+  }, [active, error]);
 
   useEffect(() => {
     if (!active) setInput(initialValue);
