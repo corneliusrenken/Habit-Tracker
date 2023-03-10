@@ -89,10 +89,14 @@
       height: 38px;
       padding-left: 8px;
       outline: none;
+      border-radius: 6px;
 
       &:focus {
-        border-radius: 6px;
-        background-color: theme.$background-input;
+        background-color: theme.$background-active;
+      }
+
+      &:active {
+        background-color: theme.$background-active-press;
       }
 
       &:last-of-type {
@@ -119,11 +123,11 @@
     outline: none;
 
     &:focus {
-      background-color: theme.$background-input;
+      background-color: theme.$background-active;
     }
 
-    &:hover {
-      background-color: theme.$background-input-hover;
+    &:active {
+      background-color: theme.$background-active-press;
     }
 
     svg {

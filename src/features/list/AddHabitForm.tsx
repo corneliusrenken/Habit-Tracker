@@ -40,7 +40,7 @@ export default function AddHabitForm({
           setInInput(false);
         }
       }}
-      placeholder="add habit"
+      placeholder="Add habit"
       initialValue=""
       getInputValidationError={(name) => getInputValidationError(name, { habits })}
       onSubmit={(name) => {
