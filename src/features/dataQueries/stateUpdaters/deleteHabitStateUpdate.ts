@@ -2,6 +2,7 @@ import React from 'react';
 import { Habit, OccurrenceData, Streaks } from '../../../globalTypes';
 
 type States = {
+  habits: Habit[];
   setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData>>;
   setStreaks: React.Dispatch<React.SetStateAction<Streaks>>;
@@ -14,6 +15,7 @@ export default function deleteHabitStateUpdate(
   states: States,
 ) {
   const {
+    habits,
     setHabits,
     setOccurrenceData,
     setStreaks,
@@ -21,14 +23,12 @@ export default function deleteHabitStateUpdate(
     setInInput,
   } = states;
 
-  let newHabits: Habit[] = [];
-
   setHabits((previousHabits) => {
     if (previousHabits.find(({ id }) => id === habitId) === undefined) {
       throw new Error('habit with this id doesn\'t exist');
     }
 
-    newHabits = JSON.parse(JSON.stringify(previousHabits));
+    let newHabits: Habit[] = JSON.parse(JSON.stringify(previousHabits));
 
     newHabits = newHabits.filter(({ id }) => id !== habitId);
 
@@ -60,10 +60,10 @@ export default function deleteHabitStateUpdate(
   setSelectedIndex((previousSelectedIndex) => {
     if (previousSelectedIndex === null) throw new Error('should never call deleteHabit when selected index is null');
 
-    const newIndex = Math.max(0, Math.min(previousSelectedIndex, newHabits.length - 1));
+    const newHabitCount = habits.length - 1;
+    const newIndex = Math.max(0, Math.min(previousSelectedIndex, newHabitCount - 1));
 
-    // set inInput when selecting the create habit input
-    if (newIndex === newHabits.length) {
+    if (newIndex === 0 && newHabitCount === 0) {
       setInInput(true);
     }
 

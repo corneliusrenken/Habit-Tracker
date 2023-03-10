@@ -5,6 +5,7 @@ import { deleteHabitStateUpdate } from '../stateUpdaters';
 
 type States = {
   queue: TaskQueue;
+  habits: Habit[];
   setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData>>;
   setStreaks: React.Dispatch<React.SetStateAction<Streaks>>;
