@@ -3,6 +3,8 @@
 @use 'variables';
 
 .list {
+  transition: opacity 600ms;
+
   &-item {
     @include fonts.main;
 
