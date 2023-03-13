@@ -11,21 +11,22 @@ function SettingsModal({
 }: Props) {
   return (
     <>
-      <div className="modal-header">
+      <div className="modal-container-header">
         Settings
       </div>
-      <div className="modal-subtext">
+      <div className="modal-container-subtext">
         Save location
       </div>
       <PathInput
         path="/Users/Cornelius/GitHub/habit-tracker/src/features/settingsModal/index.tsx"
         disableTabIndex={disableTabIndex}
         onClick={() => {}}
+        className="modal-container-path-input"
       />
-      <div className="modal-subtext">
-        Start weekn on
+      <div className="modal-container-subtext">
+        Start week on
       </div>
-      <select>
+      {/* <select>
         <option selected>Monday</option>
         <option>Tuesday</option>
         <option>Wednesday</option>
@@ -41,7 +42,7 @@ function SettingsModal({
         <option selected>System</option>
         <option>Light</option>
         <option>Dark</option>
-      </select>
+      </select> */}
     </>
   );
 }
