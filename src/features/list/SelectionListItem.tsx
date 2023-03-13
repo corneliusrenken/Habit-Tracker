@@ -66,55 +66,56 @@ export default function SelectionListItem({
           if (newName !== habit.name) renameHabit(newName);
           setInInput(false);
         }}
-        containerClass="list-name"
+        classNameBeforeAppend="list-item"
+        placeholderClassAppendOverwrite="name"
+        formClassAppendOverwrite="rename-form"
       />
-      <div className="list-horizontal-icon-container">
-        <IconButton
-          icon="rename"
-          disableTabIndex={disableTabIndex}
-          onMouseDown={() => {
-            const onMouseUp = () => {
-              setTimeout(() => { ignoreNextMouseUp.current = false; }, 0);
-              window.removeEventListener('mouseup', onMouseUp);
-            };
+      <IconButton
+        icon="rename"
+        disableTabIndex={disableTabIndex}
+        onMouseDown={() => {
+          const onMouseUp = () => {
+            setTimeout(() => { ignoreNextMouseUp.current = false; }, 0);
+            window.removeEventListener('mouseup', onMouseUp);
+          };
 
-            if (beingRenamed) {
-              ignoreNextMouseUp.current = true;
-              window.addEventListener('mouseup', onMouseUp);
-            }
-          }}
-          onClick={() => {
-            if (!inInput && !ignoreNextMouseUp.current) setInInput(true);
-          }}
-          classes={beingRenamed ? ['greyed-out'] : undefined}
-          hidden={!selected}
-        />
-        <IconButton
-          icon="trash"
-          disableTabIndex={disableTabIndex}
-          onClick={() => {
-            const modalGenerator: ModalGenerator = createDeleteHabitModalGenerator(habit, {
-              deleteHabit,
-              setModal,
-            });
-            setModal(() => modalGenerator);
-          }}
-          hidden={!selected}
-        />
-        <IconButton
-          icon="move"
-          classes={['move-icon']}
-          disableTabIndex // never needs to be tabbed to
-          onMouseDown={move}
-          hidden={!selected}
-        />
-        <IconButton
-          icon={visible ? 'visible' : 'hidden'}
-          disableTabIndex={disableTabIndex}
-          classes={!visible ? ['greyed-out'] : undefined}
-          onClick={toggleVisibility}
-        />
-      </div>
+          if (beingRenamed) {
+            ignoreNextMouseUp.current = true;
+            window.addEventListener('mouseup', onMouseUp);
+          }
+        }}
+        onClick={() => {
+          if (!inInput && !ignoreNextMouseUp.current) setInInput(true);
+        }}
+        className={`list-item-icon-button${beingRenamed ? ' greyed-out' : ''}`}
+        hidden={!selected}
+      />
+      <IconButton
+        icon="trash"
+        disableTabIndex={disableTabIndex}
+        onClick={() => {
+          const modalGenerator: ModalGenerator = createDeleteHabitModalGenerator(habit, {
+            deleteHabit,
+            setModal,
+          });
+          setModal(() => modalGenerator);
+        }}
+        className="list-item-icon-button"
+        hidden={!selected}
+      />
+      <IconButton
+        icon="move"
+        className="list-item-icon-button"
+        disableTabIndex // never needs to be tabbed to
+        onMouseDown={move}
+        hidden={!selected}
+      />
+      <IconButton
+        icon={visible ? 'visible' : 'hidden'}
+        disableTabIndex={disableTabIndex}
+        className={`list-item-icon-button${!visible ? [' greyed-out'] : ''}`}
+        onClick={toggleVisibility}
+      />
     </div>
   );
 }

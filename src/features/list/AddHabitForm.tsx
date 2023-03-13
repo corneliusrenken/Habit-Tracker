@@ -27,31 +27,34 @@ export default function AddHabitForm({
     throw new Error('inInput should never be false when form is selected');
   }
 
+  let className = 'list-item';
+
+  if (selectedIndex === habits.length) className += ' selected';
+
   return (
-    <CustomForm
-      active={selectedIndex === habits.length}
-      activeOnClick
-      setActive={(active) => {
-        if (active) {
-          setSelectedIndex(habits.length);
-          setInInput(true);
-        } else {
-          setSelectedIndex(habits.length !== 0 ? habits.length - 1 : null);
+    <div className={className}>
+      <CustomForm
+        active={selectedIndex === habits.length}
+        activeOnClick
+        setActive={(active) => {
+          if (active) {
+            setSelectedIndex(habits.length);
+            setInInput(true);
+          } else {
+            setSelectedIndex(habits.length !== 0 ? habits.length - 1 : null);
+            setInInput(false);
+          }
+        }}
+        placeholder="Add habit"
+        initialValue=""
+        getInputValidationError={(name) => getInputValidationError(name, { habits })}
+        onSubmit={(name) => {
+          addHabit(name);
           setInInput(false);
-        }
-      }}
-      placeholder="Add habit"
-      initialValue=""
-      getInputValidationError={(name) => getInputValidationError(name, { habits })}
-      onSubmit={(name) => {
-        addHabit(name);
-        setInInput(false);
-      }}
-      containerClass={(
-        selectedIndex === habits.length
-          ? 'list-add-habit-form selected'
-          : 'list-add-habit-form'
-      )}
-    />
+        }}
+        classNameBeforeAppend="list-item"
+        formClassAppendOverwrite="create-form"
+      />
+    </div>
   );
 }

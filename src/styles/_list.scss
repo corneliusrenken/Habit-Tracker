@@ -1,172 +1,92 @@
 @use 'fonts';
 @use 'theme';
+@use 'variables';
 
 .list {
-  transition: opacity 600ms;
-
-  .being-reordered {
-    z-index: 1;
-
-    .move-icon {
-      color: theme.$tertiary;
-    }
-  }
-
   &-item {
+    @include fonts.main;
+
+    color: theme.$primary;
+
     height: 50px;
     width: 350px;
+
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
     align-items: center;
-    position: relative;
-    border: 0;
-    line-height: 38px; // needed for perfect centering
-  }
+    gap: variables.$horizontal-margin;
 
-  &-add-habit-form {
-    line-height: 38px; // needed for perfect centering
-  }
+    &.complete {
+      color: theme.$tertiary;
+    }
 
-  &-item,
-  &-add-habit-form {
-    &:after {
-      z-index: -1;
+    &-name, &-error, &-rename-form, &-create-form, &-placeholder, &-streak {
+      position: relative; // needs explicit position value to render over ::before element
+      line-height: 38px; // needed to center text properly
+    }
+
+    &-name, &-error, &-rename-form, &-create-form, &-placeholder {
+      white-space: nowrap;
+      overflow: hidden;
+      flex-grow: 1;
+    }
+
+    &-name, &-error, &-rename-form, &-create-form, &-placeholder {
+      margin-left: var(--left-margin, 0px);
+    }
+
+    &-create-form, &-placeholder, &-streak {
+      margin-right: var(--right-margin, 0px);
+    }
+
+    &-placeholder { // different than ::placeholder element, used in create habit form
+      color: theme.$tertiary;
+    }
+
+    &-input {
+      width: 100%;
+
+      &::placeholder {
+        color: theme.$tertiary;
+      }
+    }
+
+    &-error {
+      color: theme.$error;
+    }
+
+    &.selected::before { // list item selector
       content: '';
       position: absolute;
-      width: calc(100% + 16px - var(--left-margin, 0px) - var(--right-margin, 0px));
-      left: calc(var(--left-margin, 0px) - 8px);
       height: 38px;
+      left: calc(var(--left-margin, 0px) - variables.$horizontal-margin);
+      width: calc(100% - var(--left-margin, 0px) - var(--right-margin, 0px) + 2 * variables.$horizontal-margin);
+      border-radius: variables.$border-radius;
       background-color: theme.$background-active;
-      border-radius: 6px;
-      opacity: 0;
     }
 
-    &.selected:after {
-      opacity: 1;
-    }
+    &-icon-button {
+      position: relative; // needs explicit position value to render over ::before element
+      $icon-size: 34px;
+      min-width: $icon-size;
+      height: $icon-size;
 
-    // this should only be done in today / yesterday view, not selection
-    // this should only be done in today / yesterday view, not selection
-    // this should only be done in today / yesterday view, not selection
-    // this should only be done in today / yesterday view, not selection
-    &:active:after {
-      background-color: theme.$background-active-press;
-    }
-  }
+      margin: 0 calc((50px - $icon-size - 8px) / 2);
 
-  &-add-habit-form:after {
-    right: calc(350px - var(--left-margin, 0px) + 16px);
-  }
+      display: flex;
+      justify-content: center;
+      align-items: center;
 
-  &-item.selected:has(input):after,
-  &-item.selected:has(.error):after {
-    right: calc(350px - var(--left-margin, 0px) + 16px);
-  }
+      &:last-of-type {
+        margin-right: calc((50px - $icon-size) / 2);
+      }
 
-  &-name {
-    @include fonts.main;
+      &.greyed-out {
+        color: theme.$tertiary;
+      }
 
-    white-space: nowrap;
-    overflow: hidden;
-    color: theme.$primary;
-
-    &:not(form) {
-      margin-left: var(--left-margin, 0px);
-    }
-
-    .complete & {
-      color: theme.$tertiary;
-    }
-  }
-
-  &-streak {
-    @include fonts.main;
-
-    margin: 0 var(--right-margin, 0px);
-    color: theme.$primary;
-
-    .complete & {
-      color: theme.$tertiary;
-    }
-  }
-
-  &-horizontal-icon-container {
-    min-width: fit-content;
-  }
-
-  &-add-habit-form {
-    @include fonts.main;
-
-    height: 50px;
-    display: flex;
-    align-items: center;
-    white-space: nowrap;
-    overflow: hidden;
-    color: theme.$primary;
-
-    & .placeholder, & .error {
-      width: calc(100% - var(--left-margin, 0px) - var(--right-margin, 0px));
-      margin-left: var(--left-margin, 0px);
-      margin-right: var(--right-margin, 0px);
-      color: theme.$tertiary;
-    }
-
-    input {
-      margin-right: calc(var(--right-margin, 0px) - 8px);
-    }
-  };
-
-  form.list-name {
-    padding-left: var(--left-margin, 0px);
-  }
-
-  form.list-add-habit-form {
-    padding-left: var(--left-margin, 0px);
-    padding-right: var(--right-margin, 0px);
-  }
-
-  input {
-    @include fonts.main;
-    outline: none;
-    height: 38px;
-    border: none;
-    margin: 0;
-    width: 100%;
-    padding: 0;
-    color: theme.$primary;
-    background-color: transparent;
-
-    &::placeholder {
-      color: theme.$tertiary;
-    }
-  }
-
-  .error {
-    color: theme.$error;
-  }
-
-  .icon-button {
-    margin: 6px;
-    padding: 0;
-    height: 38px;
-    min-width: 38px;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    background-color: transparent;
-    border: 0;
-    border-radius: 6px;
-    color: theme.$primary;
-    outline: none;
-
-    &.greyed-out {
-      color: theme.$tertiary;
-    }
-
-    &.hidden {
-      display: none;
+      &.hidden {
+        display: none;
+      }
     }
   }
 }

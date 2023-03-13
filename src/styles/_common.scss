@@ -23,6 +23,25 @@ body::-webkit-scrollbar{
   -webkit-app-region: drag;
 }
 
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  outline: none;
+  text-align: left;
+}
+
+input {
+  color: inherit;
+  font: inherit;
+  margin: 0;
+  background-color: transparent;
+  padding: 0;
+  border: 0;
+  outline: none;
+}
+
 body {
   background-color: theme.$background-main;
 }
