@@ -78,6 +78,7 @@ export default function SelectionList({
         }}
         clampMovement
         activeClass="being-reordered"
+        transition="200ms"
       />
       <AddHabitForm
         habits={habits}
