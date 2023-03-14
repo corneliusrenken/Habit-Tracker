@@ -17,10 +17,10 @@ function SetDatabasePathModal({
 
   return (
     <>
-      <div className="modal-header">
+      <div className="modal-container-header">
         Where would you like to save your data?
       </div>
-      <div className="modal-subtext">
+      <div className="modal-container-subtext">
         You can update the location at a later date in the settings
       </div>
       <PathInput
@@ -32,11 +32,11 @@ function SetDatabasePathModal({
           }
         }}
         disableTabIndex={disableTabIndex}
+        className="modal-container-path-input"
       />
-      <div className="button-group">
+      <div className="modal-container-dialog-button-group">
         <button
           disabled={path === undefined}
-          className="dialog-button"
           tabIndex={disableTabIndex ? -1 : undefined}
           type="button"
           onClick={path !== undefined ? () => onConfirm(path) : undefined}

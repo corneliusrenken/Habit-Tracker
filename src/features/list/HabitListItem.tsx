@@ -25,8 +25,8 @@ export default function HabitListItem({
       onClick={toggleCompleted}
       onMouseEnter={ignoreMouse ? undefined : select}
     >
-      <div className="list-name">{name}</div>
-      <div className="list-streak">{streak}</div>
+      <div className="list-item-name">{name}</div>
+      <div className="list-item-streak">{streak}</div>
     </div>
   );
 }

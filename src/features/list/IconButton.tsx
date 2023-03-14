@@ -7,24 +7,22 @@ type Props = {
   disableTabIndex: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   onMouseDown?: React.MouseEventHandler<HTMLButtonElement>;
-  classes?: string[];
+  className?: string;
   hidden?: boolean;
 };
 
 export default function IconButton({
-  icon, disableTabIndex, onClick, onMouseDown, classes, hidden,
+  icon, disableTabIndex, onClick, onMouseDown, className, hidden,
 }: Props) {
-  let className = 'icon-button';
+  let buttonClassName = className || 'icon-button';
 
-  if (classes && classes.length > 0) className += ` ${classes.join(' ')}`;
-
-  if (hidden) className += ' hidden';
+  if (hidden) buttonClassName += ' hidden';
 
   return (
     <button
       tabIndex={disableTabIndex ? -1 : undefined}
       type="button"
-      className={className}
+      className={buttonClassName}
       onClick={onClick ? (e) => onClick(e) : undefined}
       onMouseDown={onMouseDown ? (e) => onMouseDown(e) : undefined}
     >
@@ -36,6 +34,6 @@ export default function IconButton({
 IconButton.defaultProps = {
   onClick: undefined,
   onMouseDown: undefined,
-  classes: undefined,
+  className: undefined,
   hidden: false,
 };

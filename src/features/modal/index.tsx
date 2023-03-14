@@ -51,9 +51,7 @@ export default function Modal(props: Props) {
   }, [displayingModal, latchedModal]);
 
   let modalClassName = 'modal';
-  modalClassName += displayingModal
-    ? ' shown'
-    : ' hidden';
+  if (!displayingModal) modalClassName += ' hidden';
 
   return (
     <div className={modalClassName}>
@@ -66,10 +64,9 @@ export default function Modal(props: Props) {
             setModal(undefined);
           }
         }}
-      >
-        <div className="modal-container">
-          {modalContent}
-        </div>
+      />
+      <div className="modal-container">
+        {modalContent}
       </div>
     </div>
   );

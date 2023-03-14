@@ -3,11 +3,13 @@ import iconPaths from './iconPaths';
 
 type Props = {
   icon: keyof typeof iconPaths;
+  className?: string;
 };
 
-export default function Icon({ icon }: Props) {
+export default function Icon({ icon, className }: Props) {
   return (
     <svg
+      className={className || 'icon'}
       width="15"
       height="15"
       viewBox="0 0 15 15"
@@ -23,3 +25,7 @@ export default function Icon({ icon }: Props) {
     </svg>
   );
 }
+
+Icon.defaultProps = {
+  className: undefined,
+};
