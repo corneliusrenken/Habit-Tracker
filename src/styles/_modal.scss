@@ -37,7 +37,7 @@
 
   &-container {
     position: fixed;
-    width: 350px;
+    width: 400px;
     padding: variables.$vertical-margin variables.$horizontal-margin;
     border-radius: variables.$border-radius;
     background-color: theme.$background-modal;
@@ -64,7 +64,7 @@
       color: theme.$secondary;
 
       margin: variables.$vertical-margin variables.$horizontal-margin;
-      margin-bottom: variables.$vertical-margin-large;
+      margin-top: variables.$vertical-margin-large;
     }
 
     &-dialog-button-group {
@@ -130,6 +130,31 @@
         background-color: theme.$background-active-press;
       }
     }
+
+    &-select {
+      display: flex;
+      gap: variables.$horizontal-margin;
+
+      &-option {
+        height: 38px;
+        line-height: 38px;
+        min-width: 38px;
+        text-align: center;
+        padding: 0 variables.$horizontal-margin;
+        border-radius: variables.$border-radius;
+
+        &:hover {
+          background-color: theme.$background-active;
+        }
+
+        &:active {
+          background-color: theme.$background-active-press;
+        }
+
+        &.selected {
+          background-color: theme.$background-active-press;
+        }
+      }
+    }
   }
 }
-

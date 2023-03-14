@@ -25,6 +25,7 @@ import List from '../list';
 import useSelectedData from '../selectedData/useSelectedData';
 import scrollSelectedIndexIntoView from './scrollSelectedIndexIntoView';
 import { Config } from '../../api/config/defaultConfig';
+import createSettingsModalGenerator from '../settingsModal';
 
 type Props = {
   config: Config;
@@ -152,7 +153,7 @@ export default function App({ config }: Props) {
   return (
     <>
       <Modal
-        modal={modal}
+        modal={createSettingsModalGenerator()}
         setModal={setModal}
       />
       <Layout
