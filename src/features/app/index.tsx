@@ -28,12 +28,13 @@ import { Config } from '../../api/config/defaultConfig';
 import createSettingsModalGenerator from '../settingsModal';
 
 type Props = {
-  config: Config;
+  setConfig: React.Dispatch<React.SetStateAction<Config>>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function App({ config }: Props) {
-  const queue = useRef(new TaskQueue());
+const taskQueue = new TaskQueue();
+
+export default function App({ setConfig }: Props) {
+  const queue = useRef(taskQueue);
   const [dateObject, setDateObject] = useState(() => getDateObject(6));
   const [view, setView] = useState<View>(() => ({ name: 'today' }));
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
@@ -142,6 +143,7 @@ export default function App({ config }: Props) {
     reorderingList,
     modal,
     setModal,
+    setConfig,
     deleteHabit,
     updateOccurrenceCompleted,
     updateOccurrenceVisibility,
@@ -153,7 +155,7 @@ export default function App({ config }: Props) {
   return (
     <>
       <Modal
-        modal={createSettingsModalGenerator()}
+        modal={createSettingsModalGenerator({ setConfig })}
         setModal={setModal}
       />
       <Layout

@@ -1,28 +1,35 @@
 import React from 'react';
 
-type Props = {
-  selectedIndex: number;
-  options: string[];
+type Props<T> = {
   className?: string;
+  options: T[];
+  selectedOption: T;
+  setSelectedOption: (option: T) => void;
 };
 
-export default function Select({ selectedIndex, options, className }: Props) {
+export default function Select<T extends string>({
+  className,
+  options,
+  selectedOption,
+  setSelectedOption,
+}: Props<T>) {
   const classNamePrefix = className || 'select';
 
   return (
     <div
       className={classNamePrefix}
     >
-      {options.map((option, index) => {
+      {options.map((option) => {
         let buttonClassName = `${classNamePrefix}-option`;
 
-        if (index === selectedIndex) buttonClassName += ' selected';
+        if (option === selectedOption) buttonClassName += ' selected';
 
         return (
           <button
             className={buttonClassName}
             type="button"
             key={option}
+            onClick={option === selectedOption ? undefined : () => setSelectedOption(option)}
           >
             {option}
           </button>
