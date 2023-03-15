@@ -1,4 +1,5 @@
 import React, {
+  useContext,
   useEffect,
   useRef,
   useState,
@@ -25,15 +26,18 @@ import List from '../list';
 import useSelectedData from '../selectedData/useSelectedData';
 import scrollSelectedIndexIntoView from './scrollSelectedIndexIntoView';
 import { Config } from '../../api/config/defaultConfig';
+import ConfigContext from '../initializer/ConfigContext';
 
 type Props = {
-  config: Config;
+  setConfig: React.Dispatch<React.SetStateAction<Config>>;
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-export default function App({ config }: Props) {
-  const queue = useRef(new TaskQueue());
-  const [dateObject, setDateObject] = useState(() => getDateObject(6));
+const taskQueue = new TaskQueue();
+
+export default function App({ setConfig }: Props) {
+  const { startWeekOn } = useContext(ConfigContext);
+  const queue = useRef(taskQueue);
+  const [dateObject, setDateObject] = useState(() => getDateObject(startWeekOn));
   const [view, setView] = useState<View>(() => ({ name: 'today' }));
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const [inInput, setInInput] = useState(false);
@@ -141,6 +145,7 @@ export default function App({ config }: Props) {
     reorderingList,
     modal,
     setModal,
+    setConfig,
     deleteHabit,
     updateOccurrenceCompleted,
     updateOccurrenceVisibility,

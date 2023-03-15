@@ -30,7 +30,7 @@ beforeEach(() => {
     dates: {},
   });
 
-  dateObject = getDateObject(6, getDateFromDateString('2023-02-14'));
+  dateObject = getDateObject('Mon', getDateFromDateString('2023-02-14'));
 });
 
 test('returns an empty array for today and yesterday view if no visible occurrences exist on the respective date', () => {

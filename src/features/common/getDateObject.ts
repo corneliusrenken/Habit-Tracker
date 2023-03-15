@@ -1,3 +1,4 @@
+import { Config } from '../../api/config/defaultConfig';
 import { DateObject } from '../../globalTypes';
 import { getDateStringFromDate } from './dateStringFunctions';
 
@@ -39,10 +40,19 @@ function getDayObject(sundayIndex: number, date: Date) {
   };
 }
 
-export default function getDateObject(sundayIndex: number, date = new Date()): DateObject {
-  if (sundayIndex < 0 || sundayIndex > 6) {
-    throw new Error('Sunday index needs to be inclusively between 0 and 6');
-  }
+const weekDayToSundayIndex: { [key in Config['startWeekOn']]: number } = {
+  Mon: 6,
+  Tue: 5,
+  Wed: 4,
+  Thu: 3,
+  Fri: 2,
+  Sat: 1,
+  Sun: 0,
+};
+
+export default function getDateObject(startWeekOn: Config['startWeekOn'], date = new Date()): DateObject {
+  const sundayIndex = weekDayToSundayIndex[startWeekOn];
+
   const yesterday = new Date(date);
   yesterday.setDate(date.getDate() - 1);
   return {

@@ -1,28 +1,35 @@
-import React, { useEffect, useState } from 'react';
+import React, {
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { Config } from '../../api/config/defaultConfig';
 import App from '../app';
 import Modal from '../modal';
 import createSetDatabasePathModalGenerator from '../setDatabasePathModal';
+import ConfigContext from './ConfigContext';
+import tempDefaultConfig from './tempDefaultConfig';
 
 export default function Initializer() {
-  const [config, setConfig] = useState<Config>();
+  const loadedConfig = useRef(false);
+
+  const [config, setConfig] = useState<Config>(tempDefaultConfig);
   const [databaseExists, setDatabaseExists] = useState<boolean>(false);
 
   useEffect(() => {
-    if (!config) {
-      (async () => {
-        const c = await window.electron['get-config']();
-        const dbExists = await window.electron['check-if-database-exists']();
-        if (dbExists) {
-          await window.electron['initialize-database']();
-        }
-        setConfig(c);
-        setDatabaseExists(dbExists);
-      })();
-    }
-  }, [config]);
+    (async () => {
+      const c = await window.electron['get-config']();
+      const dbExists = await window.electron['check-if-database-exists']();
+      if (dbExists) {
+        await window.electron['initialize-database']();
+      }
+      setConfig(c);
+      setDatabaseExists(dbExists);
+      loadedConfig.current = true;
+    })();
+  }, []);
 
-  if (!config) return null;
+  if (!loadedConfig.current) return null;
 
   if (!databaseExists) {
     return (
@@ -47,5 +54,11 @@ export default function Initializer() {
     );
   }
 
-  return <App config={config} />;
+  return (
+    <ConfigContext.Provider value={config}>
+      <App
+        setConfig={setConfig}
+      />
+    </ConfigContext.Provider>
+  );
 }

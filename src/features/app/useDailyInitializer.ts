@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useContext, useEffect, useRef } from 'react';
+import { Config } from '../../api/config/defaultConfig';
 import {
   DateObject,
   Habit,
@@ -7,6 +8,7 @@ import {
   View,
 } from '../../globalTypes';
 import getDateObject from '../common/getDateObject';
+import ConfigContext from '../initializer/ConfigContext';
 import onDateChange from '../onDateChange/onDateChange';
 import TaskQueue from '../taskQueue';
 import initialize from './initialize';
@@ -26,6 +28,7 @@ type States = {
 
 function initializeAfterQueueFinishedRunning({
   queue,
+  startWeekOn,
   setDateObject,
   setSelectedIndex,
   setHabits,
@@ -34,6 +37,7 @@ function initializeAfterQueueFinishedRunning({
   setView,
 }: {
   queue: TaskQueue;
+  startWeekOn: Config['startWeekOn'];
   setDateObject: React.Dispatch<React.SetStateAction<DateObject>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
@@ -42,7 +46,7 @@ function initializeAfterQueueFinishedRunning({
   setView: React.Dispatch<React.SetStateAction<View>>;
 }) {
   if (!queue.running) {
-    const newDateObject = getDateObject(6);
+    const newDateObject = getDateObject(startWeekOn);
     setDateObject(newDateObject);
     initialize(newDateObject.today.dateString, {
       setSelectedIndex,
@@ -58,7 +62,7 @@ function initializeAfterQueueFinishedRunning({
         1,
       );
 
-      const newDateObject = getDateObject(6);
+      const newDateObject = getDateObject(startWeekOn);
       setDateObject(newDateObject);
       initialize(newDateObject.today.dateString, {
         setSelectedIndex,
@@ -85,15 +89,19 @@ export default function useDailyInitializer({
   setStreaks,
   setView,
 }: States) {
+  const { startWeekOn } = useContext(ConfigContext);
+  const lastUsedStartWeekOn = useRef(startWeekOn);
   const firstRender = useRef(true);
   const waitingOnReorderingListOrInInput = useRef(false);
 
+  // initialize after user is no longer in input or reordering list
   useEffect(() => {
     if (waitingOnReorderingListOrInInput.current && !inInput && !reorderingList) {
       waitingOnReorderingListOrInInput.current = false;
 
       initializeAfterQueueFinishedRunning({
         queue,
+        startWeekOn,
         setDateObject,
         setSelectedIndex,
         setHabits,
@@ -105,6 +113,7 @@ export default function useDailyInitializer({
   }, [
     inInput,
     queue,
+    startWeekOn,
     reorderingList,
     setDateObject,
     setHabits,
@@ -114,6 +123,41 @@ export default function useDailyInitializer({
     setView,
   ]);
 
+  // initialize after start week on property in config changes
+  useEffect(() => {
+    if (startWeekOn !== lastUsedStartWeekOn.current) {
+      lastUsedStartWeekOn.current = startWeekOn;
+
+      if (inInput || reorderingList) {
+        waitingOnReorderingListOrInInput.current = true;
+        return;
+      }
+
+      initializeAfterQueueFinishedRunning({
+        queue,
+        startWeekOn,
+        setDateObject,
+        setSelectedIndex,
+        setHabits,
+        setOccurrenceData,
+        setStreaks,
+        setView,
+      });
+    }
+  }, [
+    inInput,
+    queue,
+    startWeekOn,
+    reorderingList,
+    setDateObject,
+    setHabits,
+    setOccurrenceData,
+    setSelectedIndex,
+    setStreaks,
+    setView,
+  ]);
+
+  // initialize on first render
   useEffect(() => {
     if (firstRender.current) {
       firstRender.current = false;
@@ -126,7 +170,17 @@ export default function useDailyInitializer({
         setView,
       });
     }
+  }, [
+    dateObject.today.dateString,
+    setHabits,
+    setOccurrenceData,
+    setSelectedIndex,
+    setStreaks,
+    setView,
+  ]);
 
+  // initialize on date change
+  useEffect(() => {
     const cancelInterval = onDateChange(dateObject.today.dateString, () => {
       if (inInput || reorderingList) {
         waitingOnReorderingListOrInInput.current = true;
@@ -135,6 +189,7 @@ export default function useDailyInitializer({
 
       initializeAfterQueueFinishedRunning({
         queue,
+        startWeekOn,
         setDateObject,
         setSelectedIndex,
         setHabits,
@@ -149,6 +204,7 @@ export default function useDailyInitializer({
     dateObject.today.dateString,
     inInput,
     queue,
+    startWeekOn,
     reorderingList,
     setDateObject,
     setHabits,

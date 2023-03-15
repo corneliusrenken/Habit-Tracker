@@ -8,14 +8,16 @@ export type Config = {
   databaseDirectoryPath: string;
   _databaseFolderName: string;
   _databaseFileName: string;
-  theme: 'system' | 'light' | 'dark';
-  startWeekOn: 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday';
+  theme: 'System' | 'Light' | 'Dark';
+  style: 'Complete' | 'Minimal';
+  startWeekOn: 'Mon' | 'Tue' | 'Wed' | 'Thu' | 'Fri' | 'Sat' | 'Sun';
 };
 
 const defaultConfig: Config = {
   databaseDirectoryPath: join(homedir(), 'Documents'),
-  theme: 'system',
-  startWeekOn: 'monday',
+  theme: 'System',
+  startWeekOn: 'Mon',
+  style: 'Complete',
   _databaseFolderName: 'habit tracker',
   _databaseFileName: 'data.sqlite3',
 };
