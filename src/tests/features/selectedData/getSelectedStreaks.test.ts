@@ -68,7 +68,7 @@ beforeEach(() => {
   //                    | 3        | 2       | 2
   //                    | 4        | 1       | 2
 
-  dateObject = getDateObject(6, getDateFromDateString('2023-02-14'));
+  dateObject = getDateObject('Mon', getDateFromDateString('2023-02-14'));
 });
 
 test('returns the streaks state if the view is anything but \'yesterday\'', () => {

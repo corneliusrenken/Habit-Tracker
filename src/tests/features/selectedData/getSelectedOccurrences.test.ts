@@ -21,7 +21,7 @@ beforeEach(() => {
     dates: {},
   });
 
-  dateObject = getDateObject(6, getDateFromDateString('2023-02-14'));
+  dateObject = getDateObject('Mon', getDateFromDateString('2023-02-14'));
 });
 
 test('evaluates a date as incomplete if no day entry exists', () => {
@@ -113,7 +113,7 @@ test('the last day in the array is the last day of the week', () => {
 });
 
 test('if the current date is a monday, the last day in the array is the last day of last week in yesterday view', () => {
-  dateObject = getDateObject(6, getDateFromDateString('2023-02-13'));
+  dateObject = getDateObject('Mon', getDateFromDateString('2023-02-13'));
   expect(dateObject.today.weekDayIndex).toBe(0);
   expect(dateObject.yesterday.weekDayIndex).toBe(6);
 
@@ -165,7 +165,7 @@ test('always returns an occurrence count divisible by 7, including all dates up 
 });
 
 test('returns the correct date for each date in a month', () => {
-  dateObject = getDateObject(6, getDateFromDateString('2023-01-31'));
+  dateObject = getDateObject('Mon', getDateFromDateString('2023-01-31'));
 
   occurrenceDataState = new PseudoUseState<OccurrenceData>({
     oldest: {
