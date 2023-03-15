@@ -17,6 +17,7 @@ type Props = {
   dates: JSX.Element;
   days: JSX.Element;
   list: JSX.Element;
+  settingsButton: JSX.Element;
 };
 
 export default function Layout({
@@ -29,6 +30,7 @@ export default function Layout({
   dates,
   days,
   list,
+  settingsButton,
 }: Props) {
   const layoutRef = useRef<HTMLDivElement>(null);
   const lastView = useRef<View['name']>('today');
@@ -105,19 +107,24 @@ export default function Layout({
       className="layout list-view"
     >
       <div
+        className="layout-scrollbar"
+      >
+        <Scrollbar
+          view={view}
+          screenHeight={screenHeight}
+        />
+      </div>
+      <div
+        className="layout-settings-button"
+      >
+        {settingsButton}
+      </div>
+      <div
         className="layout-overflow"
       >
         <div
           className="layout-sticky-group"
         >
-          <div
-            className="layout-scrollbar"
-          >
-            <Scrollbar
-              view={view}
-              screenHeight={screenHeight}
-            />
-          </div>
           <div
             className="layout-occurrences"
           >
@@ -139,6 +146,7 @@ export default function Layout({
         >
           {list}
         </div>
+
         <div className="layout-bottom-mask" />
       </div>
     </div>
