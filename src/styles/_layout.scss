@@ -71,21 +71,17 @@
 
   &-scrollbar {
     z-index: 3;
-    height: 50px;
+    height: 75px;
+    position: fixed;
+    right: variables.$horizontal-margin + 18px;
+    bottom: variables.$vertical-margin * 2 + 38px;
+  }
 
-    .list-view & {
-      position: absolute;
-      top: calc(-1 * var(--scroll-offset, 0px) + 100% - 50px);
-    }
-
-    .occurrence-view & {
-      position: sticky;
-      top: calc(50vh - 25px);
-    }
-
-    .in-transition & {
-      transition: top variables.$layout-transition-duration;
-    }
+  &-settings-button {
+    z-index: 3;
+    position: fixed;
+    bottom: variables.$horizontal-margin;
+    right: variables.$vertical-margin;
   }
 
   @mixin centered-component {

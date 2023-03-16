@@ -27,6 +27,8 @@ import useSelectedData from '../selectedData/useSelectedData';
 import scrollSelectedIndexIntoView from './scrollSelectedIndexIntoView';
 import { Config } from '../../api/config/defaultConfig';
 import ConfigContext from '../initializer/ConfigContext';
+import Icon from '../icon';
+import createSettingsModalGenerator from '../settingsModal';
 
 type Props = {
   setConfig: React.Dispatch<React.SetStateAction<Config>>;
@@ -209,6 +211,20 @@ export default function App({ setConfig }: Props) {
             updateOccurrenceCompleted={updateOccurrenceCompleted}
             updateOccurrenceVisibility={updateOccurrenceVisibility}
           />
+        )}
+        settingsButton={(
+          <button
+            type="button"
+            className="settings-button"
+            onClick={() => {
+              const modalGenerator = createSettingsModalGenerator({ setConfig });
+              setModal(() => modalGenerator);
+            }}
+          >
+            <Icon
+              icon="gear"
+            />
+          </button>
         )}
       />
     </>

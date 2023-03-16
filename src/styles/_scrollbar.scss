@@ -6,9 +6,8 @@
   $scrollbar-width: 2px;
 
   margin-left: calc(50vw + 175px + 10px);
-  height: 120%;
+  height: 100%;
   position: relative;
-  top: -10%;
   width: $scrollbar-width;
 
   &-track {
