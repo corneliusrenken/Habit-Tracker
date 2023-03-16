@@ -49,6 +49,7 @@ beforeEach(() => {
 test('throws if the habit id does not exist', () => {
   expect(() => {
     deleteHabitStateUpdate(4, {
+      habits: habitState.value,
       setHabits: habitState.setState.bind(habitState),
       setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
       setStreaks: streaksState.setState.bind(streaksState),
@@ -60,6 +61,7 @@ test('throws if the habit id does not exist', () => {
 
 test('deletes the habit from the habit state', () => {
   deleteHabitStateUpdate(2, {
+    habits: habitState.value,
     setHabits: habitState.setState.bind(habitState),
     setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
     setStreaks: streaksState.setState.bind(streaksState),
@@ -73,6 +75,7 @@ test('deletes the habit from the habit state', () => {
   ]);
 
   deleteHabitStateUpdate(1, {
+    habits: habitState.value,
     setHabits: habitState.setState.bind(habitState),
     setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
     setStreaks: streaksState.setState.bind(streaksState),
@@ -85,6 +88,7 @@ test('deletes the habit from the habit state', () => {
   ]);
 
   deleteHabitStateUpdate(3, {
+    habits: habitState.value,
     setHabits: habitState.setState.bind(habitState),
     setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
     setStreaks: streaksState.setState.bind(streaksState),
@@ -97,6 +101,7 @@ test('deletes the habit from the habit state', () => {
 
 test('deletes the habit from the occurrence data state', () => {
   deleteHabitStateUpdate(2, {
+    habits: habitState.value,
     setHabits: habitState.setState.bind(habitState),
     setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
     setStreaks: streaksState.setState.bind(streaksState),
@@ -123,6 +128,7 @@ test('deletes the habit from the occurrence data state', () => {
 
 test('deletes the habit from the streaks state', () => {
   deleteHabitStateUpdate(2, {
+    habits: habitState.value,
     setHabits: habitState.setState.bind(habitState),
     setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
     setStreaks: streaksState.setState.bind(streaksState),
@@ -139,6 +145,7 @@ test('deletes the habit from the streaks state', () => {
 describe('selected index', () => {
   test('when deleting any habit that is not the last habit, the selected index is not changed', () => {
     deleteHabitStateUpdate(2, {
+      habits: habitState.value,
       setHabits: habitState.setState.bind(habitState),
       setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
       setStreaks: streaksState.setState.bind(streaksState),
@@ -154,6 +161,7 @@ describe('selected index', () => {
     selectedIndexState.setState(2);
 
     deleteHabitStateUpdate(3, {
+      habits: habitState.value,
       setHabits: habitState.setState.bind(habitState),
       setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
       setStreaks: streaksState.setState.bind(streaksState),
@@ -170,6 +178,7 @@ describe('selected index', () => {
     selectedIndexState.setState(0);
 
     deleteHabitStateUpdate(1, {
+      habits: habitState.value,
       setHabits: habitState.setState.bind(habitState),
       setOccurrenceData: occurrenceDataState.setState.bind(occurrenceDataState),
       setStreaks: streaksState.setState.bind(streaksState),
