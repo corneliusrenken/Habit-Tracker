@@ -14,7 +14,7 @@ import {
 import Modal from '../modal';
 import useShortcutManager from '../shortcutManager/useShortcutManager';
 import Layout from '../layout';
-import useDataQueries from '../dataQueries/useDataQueries';
+import useTaskDispatchers from '../tasks/useTaskDispatchers';
 import useSetLeftAndRightDateMargins from './useSetLeftAndRightDateMargins';
 import TaskQueue from '../taskQueue';
 import getDateObject from '../common/getDateObject';
@@ -105,7 +105,7 @@ export default function App({ setConfig }: Props) {
     updateHabitName,
     updateOccurrenceCompleted,
     updateOccurrenceVisibility,
-  } = useDataQueries({
+  } = useTaskDispatchers({
     queue: queue.current,
     dateObject,
     view,

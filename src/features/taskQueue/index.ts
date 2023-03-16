@@ -1,15 +1,5 @@
 import LinkedList from './LinkedList';
-
-type TaskTypes = keyof typeof window.electron;
-
-type TaskArguments = {
-  [type in TaskTypes]: Parameters<typeof window.electron[type]>[0];
-};
-
-export type Task<TaskType extends TaskTypes> = {
-  args: TaskArguments[TaskType]
-  operation: (args: TaskArguments[TaskType]) => Promise<void>;
-};
+import Task, { TaskTypes } from '../tasks/Task';
 
 export default class TaskQueue {
   #queue = new LinkedList<Task<any>>();
@@ -41,7 +31,7 @@ export default class TaskQueue {
     }
   }
 
-  forEachWaitingTask(callback: (task: Task<any>) => void) {
+  forEachWaitingTask(callback: (task: Task<TaskTypes>) => void) {
     let current = this.#queue.head;
     while (current) {
       callback(current.value);
