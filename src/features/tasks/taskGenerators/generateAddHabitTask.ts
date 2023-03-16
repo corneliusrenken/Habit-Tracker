@@ -15,6 +15,9 @@ type States = {
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
 };
 
+/**
+ * @param date YYYY-MM-DD
+ */
 export default function generateAddHabitTask(
   tempId: number,
   name: string,
