@@ -3,6 +3,7 @@ import {
   addHabit,
   deleteHabit,
   updateHabitListPosition,
+  updateConfig,
   updateHabitName,
   updateOccurrenceCompleted,
   updateOccurrenceVisibility,
@@ -15,6 +16,7 @@ import {
   View,
 } from '../../globalTypes';
 import TaskQueue from '../taskQueue';
+import { Config } from '../../api/config/defaultConfig';
 
 type States = {
   queue: TaskQueue;
@@ -28,6 +30,7 @@ type States = {
   setStreaks: React.Dispatch<React.SetStateAction<Streaks>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setInInput: React.Dispatch<React.SetStateAction<boolean>>;
+  setConfig: React.Dispatch<React.SetStateAction<Config>>;
 };
 
 export default function useDataQueries(states: States) {
@@ -43,6 +46,7 @@ export default function useDataQueries(states: States) {
     setStreaks,
     setSelectedIndex,
     setInInput,
+    setConfig,
   } = states;
 
   const selectedDate = view.name === 'yesterday'
@@ -182,6 +186,18 @@ export default function useDataQueries(states: States) {
     setOccurrenceData,
   ]);
 
+  const updateConfigMemo = useCallback((
+    updateData: Partial<Config>,
+  ) => (
+    updateConfig(
+      updateData,
+      { queue, setConfig },
+    )
+  ), [
+    queue,
+    setConfig,
+  ]);
+
   return {
     addHabit: addHabitMemo,
     deleteHabit: deleteHabitMemo,
@@ -189,5 +205,6 @@ export default function useDataQueries(states: States) {
     updateHabitName: updateHabitNameMemo,
     updateOccurrenceCompleted: updateOccurrenceCompletedMemo,
     updateOccurrenceVisibility: updateOccurrenceVisibilityMemo,
+    updateConfig: updateConfigMemo,
   };
 }
