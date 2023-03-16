@@ -146,7 +146,6 @@ export default function Layout({
         >
           {list}
         </div>
-
         <div className="layout-bottom-mask" />
       </div>
     </div>
