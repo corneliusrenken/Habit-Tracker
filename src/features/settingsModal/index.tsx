@@ -7,37 +7,19 @@ import Select from '../modal/Select';
 
 type Props = {
   disableTabIndex: boolean;
-  setConfig: React.Dispatch<React.SetStateAction<Config>>;
+  updateConfig: (updateData: Parameters<typeof window.electron['update-config']>[0]) => void;
 };
-
-// todo: use taskqueue
-// todo: use taskqueue
-// todo: use taskqueue
-// todo: use taskqueue
-// todo: use taskqueue
-function updateConfig(
-  updateData: Partial<Config>,
-  states: {
-    config: Config;
-    setConfig: React.Dispatch<React.SetStateAction<Config>>;
-  },
-) {
-  const { config, setConfig } = states;
-  // technically breaks if updateData is passed keys with undefined as value
-  const newConfig = { ...config, ...updateData };
-  window.electron['update-config'](updateData);
-  setConfig(newConfig);
-}
 
 function SettingsModal({
   disableTabIndex,
-  setConfig,
+  updateConfig,
 }: Props) {
   const config = useContext(ConfigContext);
   const {
     startWeekOn,
     theme,
     style,
+    databaseDirectoryPath,
   } = config;
 
   const weekStartOptions: Config['startWeekOn'][] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -49,9 +31,14 @@ function SettingsModal({
       <div className="modal-container-header">Settings</div>
       <div className="modal-container-subtext">Save location</div>
       <PathInput
-        path="/Users/Cornelius/GitHub/habit-tracker/src/features/settingsModal/index.tsx"
+        path={databaseDirectoryPath}
         disableTabIndex={disableTabIndex}
-        onClick={() => {}}
+        onClick={async () => {
+          const { filePath } = await window.electron['choose-directory-path']();
+          if (filePath) {
+            updateConfig({ databaseDirectoryPath: filePath });
+          }
+        }}
         className="modal-container-path-input"
       />
       <div className="modal-container-subtext">Start week on</div>
@@ -59,36 +46,36 @@ function SettingsModal({
         className="modal-container-select"
         options={weekStartOptions}
         selectedOption={startWeekOn}
-        setSelectedOption={(option) => updateConfig({ startWeekOn: option }, { config, setConfig })}
+        setSelectedOption={(option) => updateConfig({ startWeekOn: option })}
       />
       <div className="modal-container-subtext">Theme</div>
       <Select
         className="modal-container-select"
         options={themeOptions}
         selectedOption={theme}
-        setSelectedOption={(option) => updateConfig({ theme: option }, { config, setConfig })}
+        setSelectedOption={(option) => updateConfig({ theme: option })}
       />
       <div className="modal-container-subtext">Style</div>
       <Select
         className="modal-container-select"
         options={styleOptions}
         selectedOption={style}
-        setSelectedOption={(option) => updateConfig({ style: option }, { config, setConfig })}
+        setSelectedOption={(option) => updateConfig({ style: option })}
       />
     </>
   );
 }
 
 type States = {
-  setConfig: React.Dispatch<React.SetStateAction<Config>>;
+  updateConfig: (updateData: Parameters<typeof window.electron['update-config']>[0]) => void;
 };
 
-export default function createSettingsModalGenerator({ setConfig }: States): ModalGenerator {
-  return function deleteHabitModalGenerator(disableTabIndex: boolean) {
+export default function createSettingsModalGenerator({ updateConfig }: States): ModalGenerator {
+  return function settingsModalGenerator(disableTabIndex: boolean) {
     return (
       <SettingsModal
         disableTabIndex={disableTabIndex}
-        setConfig={setConfig}
+        updateConfig={updateConfig}
       />
     );
   };

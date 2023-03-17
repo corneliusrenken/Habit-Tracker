@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { join } from 'path';
-import { mkdir, unlink } from 'fs/promises';
+import { unlink } from 'fs/promises';
 import { getConfig } from '../../config/functions';
 import openDatabase from '../../database/functions/common/openDatabase';
 import createTables from '../../database/functions/common/createTables';
@@ -11,19 +11,16 @@ import { getDateStringFromDate } from '../../../features/common/dateStringFuncti
 export default async function initializeDatabase(seed = false) {
   const {
     databaseDirectoryPath,
-    _databaseFolderName,
     _databaseFileName,
   } = await getConfig();
 
-  await mkdir(join(databaseDirectoryPath, _databaseFolderName), { recursive: true });
-
-  const databaseFullPath = join(databaseDirectoryPath, _databaseFolderName, _databaseFileName);
+  const databaseFilePath = join(databaseDirectoryPath, _databaseFileName);
 
   if (seed) {
-    await unlink(databaseFullPath);
+    await unlink(databaseFilePath);
   }
 
-  const database = openDatabase(databaseFullPath);
+  const database = openDatabase(databaseFilePath);
   createTables(database);
 
   if (seed) {

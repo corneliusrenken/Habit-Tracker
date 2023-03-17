@@ -11,7 +11,7 @@ export default async function chooseDirectoryPath(): Promise<{
     canceled,
     filePaths,
   } = await dialog.showOpenDialog({
-    defaultPath: databaseDirectoryPath, // check if where a non existent name opens
+    defaultPath: databaseDirectoryPath,
     buttonLabel: 'Select',
     properties: ['openDirectory', 'createDirectory'],
   });

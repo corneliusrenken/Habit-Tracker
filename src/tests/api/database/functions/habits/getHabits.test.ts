@@ -6,7 +6,7 @@ import {
   getHabits,
   openDatabase,
   setUniqueIndexOnListPosition,
-} from '../../../api/database/functions';
+} from '../../../../../api/database/functions';
 import checkValidListPositionValues from '../helperFunctions/checkValidListPositionValues';
 
 let db: Database.Database;

@@ -1,5 +1,4 @@
 import { useCallback, useEffect } from 'react';
-import { Config } from '../../api/config/defaultConfig';
 import {
   DateObject, Habit, ModalGenerator, OccurrenceData, View,
 } from '../../globalTypes';
@@ -35,11 +34,11 @@ type States = {
   reorderingList: boolean;
   modal: ModalGenerator | undefined;
   setModal: React.Dispatch<React.SetStateAction<ModalGenerator | undefined>>;
-  setConfig: React.Dispatch<React.SetStateAction<Config>>;
   deleteHabit: (habitId: number) => void;
   updateOccurrenceCompleted: (habitId: number, complete: boolean) => void;
   updateOccurrenceVisibility: (habitId: number, visible: boolean) => void;
   updateHabitListPosition(habitId: number, listPosition: number): void;
+  updateConfig: (updateData: Parameters<typeof window.electron['update-config']>[0]) => void;
 };
 
 export default function useShortcutManager(states: States) {

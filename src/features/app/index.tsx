@@ -105,6 +105,7 @@ export default function App({ setConfig }: Props) {
     updateHabitName,
     updateOccurrenceCompleted,
     updateOccurrenceVisibility,
+    updateConfig,
   } = useTaskDispatchers({
     queue: queue.current,
     dateObject,
@@ -117,6 +118,7 @@ export default function App({ setConfig }: Props) {
     setStreaks,
     setSelectedIndex,
     setInInput,
+    setConfig,
   });
 
   const {
@@ -147,11 +149,11 @@ export default function App({ setConfig }: Props) {
     reorderingList,
     modal,
     setModal,
-    setConfig,
     deleteHabit,
     updateOccurrenceCompleted,
     updateOccurrenceVisibility,
     updateHabitListPosition,
+    updateConfig,
   });
 
   if (occurrenceData.dates[dateObject.today.dateString] === undefined) return null;
@@ -217,7 +219,7 @@ export default function App({ setConfig }: Props) {
             type="button"
             className="settings-button"
             onClick={() => {
-              const modalGenerator = createSettingsModalGenerator({ setConfig });
+              const modalGenerator = createSettingsModalGenerator({ updateConfig });
               setModal(() => modalGenerator);
             }}
           >

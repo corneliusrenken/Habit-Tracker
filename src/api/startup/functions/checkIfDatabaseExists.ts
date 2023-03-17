@@ -6,15 +6,14 @@ import { getConfig } from '../../config/functions';
 export default async function checkIfDatabaseExists() {
   const {
     databaseDirectoryPath,
-    _databaseFolderName,
     _databaseFileName,
   } = await getConfig();
 
-  const databaseFullPath = join(databaseDirectoryPath, _databaseFolderName, _databaseFileName);
+  const databaseFilePath = join(databaseDirectoryPath, _databaseFileName);
 
   let databaseExists: boolean;
   try {
-    await access(databaseFullPath);
+    await access(databaseFilePath);
     databaseExists = true;
   } catch {
     databaseExists = false;

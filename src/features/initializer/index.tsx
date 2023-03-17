@@ -32,11 +32,13 @@ export default function Initializer() {
   if (!loadedConfig.current) return null;
 
   if (!databaseExists) {
+    const { databaseDirectoryPath } = config;
+
     return (
       <Modal
         forceOpen
         modal={createSetDatabasePathModalGenerator({
-          placeholderPath: config.databaseDirectoryPath,
+          placeholderPath: databaseDirectoryPath,
           onConfirm: async (path: string) => {
             await window.electron['update-config']({
               databaseDirectoryPath: path,
