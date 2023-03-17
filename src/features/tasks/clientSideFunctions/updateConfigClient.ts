@@ -1,3 +1,4 @@
+import overwriteMutuallyDefinedValues from '../../common/overwriteMutuallyDefinedValues';
 import { Config } from '../../../api/config/defaultConfig';
 
 type States = {
@@ -5,10 +6,10 @@ type States = {
 };
 
 export default function updateConfigClient(
-  updateData: Partial<Config>,
+  updateData: Parameters<typeof window.electron['update-config']>[0],
   states: States,
 ) {
   const { setConfig } = states;
 
-  setConfig((previousConfig) => ({ ...previousConfig, ...updateData }));
+  setConfig((previousConfig) => overwriteMutuallyDefinedValues(previousConfig, updateData));
 }

@@ -9,7 +9,7 @@ type States = {
 };
 
 export default function updateConfig(
-  updateData: Partial<Config>,
+  updateData: Parameters<typeof window.electron['update-config']>[0],
   states: States,
 ) {
   updateConfigClient(updateData, states);

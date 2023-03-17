@@ -4,11 +4,13 @@ import { join } from 'path';
 import getConfig from './getConfig';
 import { Config, configPath } from '../../defaultConfig';
 import moveDatabase from './moveDatabase';
+import MutuallyExclusiveUnion from '../../../helpers/MutuallyExclusiveUnion';
+import overwriteMutuallyDefinedValues from '../../../../features/common/overwriteMutuallyDefinedValues';
 
-export default async function updateConfig(updateData: Partial<Config>) {
+export default async function updateConfig(updateData: MutuallyExclusiveUnion<Omit<Config, '_databaseFileName'>>) {
   const oldConfig = await getConfig();
-  // technically breaks if updateData is passed keys with undefined as value
-  const newConfig = { ...oldConfig, ...updateData };
+
+  const newConfig = overwriteMutuallyDefinedValues(oldConfig, updateData);
 
   if (oldConfig.databaseDirectoryPath !== newConfig.databaseDirectoryPath) {
     let databaseExistedAtOldLocation: boolean;

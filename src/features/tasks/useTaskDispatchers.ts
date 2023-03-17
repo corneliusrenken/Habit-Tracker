@@ -187,7 +187,7 @@ export default function useDataQueries(states: States) {
   ]);
 
   const updateConfigMemo = useCallback((
-    updateData: Partial<Config>,
+    updateData: Parameters<typeof window.electron['update-config']>[0],
   ) => (
     updateConfig(
       updateData,

@@ -8,7 +8,7 @@ import Select from '../modal/Select';
 
 type Props = {
   disableTabIndex: boolean;
-  updateConfig: (updateData: Partial<Config>) => void;
+  updateConfig: (updateData: Parameters<typeof window.electron['update-config']>[0]) => void;
 };
 
 function SettingsModal({
@@ -68,7 +68,7 @@ function SettingsModal({
 }
 
 type States = {
-  updateConfig: (updateData: Partial<Config>) => void;
+  updateConfig: (updateData: Parameters<typeof window.electron['update-config']>[0]) => void;
 };
 
 export default function createSettingsModalGenerator({ updateConfig }: States): ModalGenerator {
