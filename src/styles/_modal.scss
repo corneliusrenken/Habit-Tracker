@@ -156,5 +156,29 @@
         }
       }
     }
+
+    &-shortcut {
+      margin: 0 variables.$horizontal-margin;
+      margin-bottom: variables.$vertical-margin;
+
+      display: flex;
+      gap: variables.$horizontal-margin;
+      justify-content: space-between;
+
+      height: 24px;
+      line-height: 24px;
+
+      &-keybinds {
+        display: flex;
+        gap: variables.$horizontal-margin;
+
+        color: theme.$secondary;
+
+        &-keybind {
+          background-color: theme.$background-active;
+          padding: 0 variables.$horizontal-margin;
+        }
+      }
+    }
   }
 }

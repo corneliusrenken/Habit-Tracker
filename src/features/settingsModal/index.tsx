@@ -4,6 +4,7 @@ import { ModalGenerator } from '../../globalTypes';
 import ConfigContext from '../initializer/ConfigContext';
 import PathInput from '../modal/PathInput';
 import Select from '../modal/Select';
+import Shortcut from './Shortcut';
 
 type Props = {
   disableTabIndex: boolean;
@@ -61,6 +62,18 @@ function SettingsModal({
         options={styleOptions}
         selectedOption={style}
         setSelectedOption={(option) => updateConfig({ style: option })}
+      />
+      <div className="modal-container-header">Shortcuts</div>
+      <div className="modal-container-subtext">Universal</div>
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Remove habit"
+        keybinds={[['shift', 'A'], ['B']]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Create habit"
+        keybinds={[['C']]}
       />
     </>
   );
