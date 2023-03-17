@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import {
+  access,
   unlink,
   copyFile,
 } from 'fs/promises';
@@ -28,4 +29,28 @@ export default async function moveDatabase(oldConfig: Config, newConfig: Config)
   setDatabaseIpcHandlers(database);
 
   await unlink(oldDatabaseFilePath);
+
+  // files from pragma are sometimes not cleaned up
+  const walFilePath = `${oldDatabaseFilePath}-wal`;
+  const shmFilePath = `${oldDatabaseFilePath}-shm`;
+
+  let walFileExists = false;
+  let shmFileExists = false;
+
+  try {
+    await access(walFilePath);
+    walFileExists = true;
+  } catch { /* nothing */ }
+
+  try {
+    await access(shmFilePath);
+    shmFileExists = true;
+  } catch { /* nothing */ }
+
+  if (walFileExists) {
+    await unlink(walFilePath);
+  }
+  if (shmFileExists) {
+    await unlink(shmFilePath);
+  }
 }
