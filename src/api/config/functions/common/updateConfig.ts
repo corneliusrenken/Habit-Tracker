@@ -5,9 +5,12 @@ import getConfig from './getConfig';
 import { Config, configPath } from '../../defaultConfig';
 import moveDatabase from './moveDatabase';
 import MutuallyExclusiveUnion from '../../../helpers/MutuallyExclusiveUnion';
+import NonUnderscored from '../../../helpers/NonUnderscored';
 import overwriteMutuallyDefinedValues from '../../../../features/common/overwriteMutuallyDefinedValues';
 
-export default async function updateConfig(updateData: MutuallyExclusiveUnion<Omit<Config, '_databaseFileName'>>) {
+export default async function updateConfig(
+  updateData: MutuallyExclusiveUnion<Pick<Config, keyof NonUnderscored<Config>>>,
+) {
   const oldConfig = await getConfig();
 
   const newConfig = overwriteMutuallyDefinedValues(oldConfig, updateData);
