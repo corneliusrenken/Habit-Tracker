@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import React, { useContext } from 'react';
 import { Config } from '../../api/config/defaultConfig';
 import { ModalGenerator } from '../../globalTypes';
@@ -19,6 +20,7 @@ function SettingsModal({
     startWeekOn,
     theme,
     style,
+    databaseDirectoryPath,
   } = config;
 
   const weekStartOptions: Config['startWeekOn'][] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
@@ -30,9 +32,14 @@ function SettingsModal({
       <div className="modal-container-header">Settings</div>
       <div className="modal-container-subtext">Save location</div>
       <PathInput
-        path="/Users/Cornelius/GitHub/habit-tracker/src/features/settingsModal/index.tsx"
+        path={databaseDirectoryPath}
         disableTabIndex={disableTabIndex}
-        onClick={() => {}}
+        onClick={async () => {
+          const { filePath } = await window.electron['choose-directory-path']();
+          if (filePath) {
+            updateConfig({ databaseDirectoryPath: filePath });
+          }
+        }}
         className="modal-container-path-input"
       />
       <div className="modal-container-subtext">Start week on</div>

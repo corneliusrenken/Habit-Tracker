@@ -6,7 +6,6 @@ export const configPath = join(app.getPath('userData'), 'config.json');
 
 export type Config = {
   databaseDirectoryPath: string;
-  _databaseFolderName: string;
   _databaseFileName: string;
   theme: 'System' | 'Light' | 'Dark';
   style: 'Complete' | 'Minimal';
@@ -18,7 +17,6 @@ const defaultConfig: Config = {
   theme: 'System',
   startWeekOn: 'Mon',
   style: 'Complete',
-  _databaseFolderName: 'habit tracker',
   _databaseFileName: 'data.sqlite3',
 };
 

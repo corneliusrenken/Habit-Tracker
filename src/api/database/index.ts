@@ -47,7 +47,11 @@ export type DatabaseApi = {
   [key in keyof ApiParameters]: (...args: ApiParameters[key]) =>ApiReturnTypes[key];
 };
 
+let lastDatabase: Database | null = null;
+
 export function setDatabaseIpcHandlers(database: Database) {
+  lastDatabase = database;
+
   channels.forEach((channel) => {
     ipcMain.removeHandler(channel);
 
@@ -87,4 +91,11 @@ export function setDatabaseIpcHandlers(database: Database) {
       ));
     }
   });
+}
+
+export function closeDatabase() {
+  if (!lastDatabase) {
+    throw new Error('Tried to close database before ever setting ipc handlers');
+  }
+  if (lastDatabase) lastDatabase.close();
 }

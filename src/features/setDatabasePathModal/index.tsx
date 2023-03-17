@@ -26,9 +26,9 @@ function SetDatabasePathModal({
       <PathInput
         path={path !== undefined ? path : placeholderPath}
         onClick={async () => {
-          const test = await window.electron['choose-directory-path']();
-          if (test.filePath) {
-            setPath(test.filePath);
+          const { filePath } = await window.electron['choose-directory-path']();
+          if (filePath) {
+            setPath(filePath);
           }
         }}
         disableTabIndex={disableTabIndex}
