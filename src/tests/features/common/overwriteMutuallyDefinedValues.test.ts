@@ -35,3 +35,14 @@ test('if the target contains a property with undefined as it\'s value, the sourc
 
   expect(newTarget).toEqual({ a: 4, b: 5, c: 3 });
 });
+
+test('does not mutate the original target or source', () => {
+  const target = { a: 1, b: 2, c: 3 };
+  const source = { a: 4, b: 5 };
+
+  const newTarget = overwriteMutuallyDefinedValues(target, source);
+
+  expect(target).toEqual({ a: 1, b: 2, c: 3 });
+  expect(source).toEqual({ a: 4, b: 5 });
+  expect(newTarget).toEqual({ a: 4, b: 5, c: 3 });
+});
