@@ -1,5 +1,4 @@
 type TaskParameters = {
-  // 'update-config': { updateData: Parameters<typeof window.electron['update-config']>[0] };
   'update-config': Parameters<typeof window.electron['update-config']>[0];
   'add-habit': Parameters<typeof window.electron['add-habit']>[0];
   'add-occurrence': Parameters<typeof window.electron['add-occurrence']>[0];

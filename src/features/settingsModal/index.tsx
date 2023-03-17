@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import React, { useContext } from 'react';
 import { Config } from '../../api/config/defaultConfig';
 import { ModalGenerator } from '../../globalTypes';

@@ -46,3 +46,13 @@ test('does not mutate the original target or source', () => {
   expect(source).toEqual({ a: 4, b: 5 });
   expect(newTarget).toEqual({ a: 4, b: 5, c: 3 });
 });
+
+test('returns a new object', () => {
+  const target = { a: 1, b: 2, c: 3 };
+  const source = { a: 4, b: 5 };
+
+  const newTarget = overwriteMutuallyDefinedValues(target, source);
+
+  expect(newTarget).not.toBe(target);
+  expect(newTarget).not.toBe(source);
+});

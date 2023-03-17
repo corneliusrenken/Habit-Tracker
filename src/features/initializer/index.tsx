@@ -32,7 +32,6 @@ export default function Initializer() {
   if (!loadedConfig.current) return null;
 
   if (!databaseExists) {
-    // eslint-disable-next-line no-underscore-dangle
     const { databaseDirectoryPath } = config;
 
     return (
