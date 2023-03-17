@@ -10,14 +10,20 @@ export default function Shortcut({ className, name, keybinds }: Props) {
   const classNamePrefix = className || 'shortcut';
 
   const keybindElements = keybinds.reduce<JSX.Element[]>((elements, keybind) => {
-    const keybindElement = keybind.map((kb) => (
-      <div
-        key={`${JSON.stringify(keybind)}-${kb}`}
-        className={`${classNamePrefix}-keybinds-keybind`}
-      >
-        {kb}
-      </div>
-    ));
+    const keybindElement = keybind.map((kb) => {
+      let keybindClassName = `${classNamePrefix}-keybinds-keybind`;
+
+      if (kb.length === 1) keybindClassName += ' single';
+
+      return (
+        <div
+          key={`${JSON.stringify(keybind)}-${kb}`}
+          className={keybindClassName}
+        >
+          {kb}
+        </div>
+      );
+    });
     if (elements.length !== 0) {
       const divider = (
         <div

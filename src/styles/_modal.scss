@@ -167,6 +167,7 @@
 
       height: 24px;
       line-height: 24px;
+      text-align: center;
 
       &-keybinds {
         display: flex;
@@ -176,7 +177,15 @@
 
         &-keybind {
           background-color: theme.$background-active;
-          padding: 0 variables.$horizontal-margin;
+
+          &.single {
+            width: 24px;
+            padding: 0;
+          }
+
+          &:not(.single) {
+            padding: 0 variables.$horizontal-margin;
+          }
         }
       }
     }
