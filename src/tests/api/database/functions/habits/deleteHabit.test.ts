@@ -4,7 +4,7 @@ import {
   createTables,
   deleteHabit,
   openDatabase,
-} from '../../../api/database/functions';
+} from '../../../../../api/database/functions';
 
 let db: Database.Database;
 let exerciseHabitId: number;

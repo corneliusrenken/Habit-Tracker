@@ -5,7 +5,7 @@ import {
   createTables,
   openDatabase,
   dropUniqueIndexOnListPosition,
-} from '../../../api/database/functions';
+} from '../../../../../api/database/functions';
 
 let db: Database.Database;
 let updateListPositionStmt: Database.Statement;

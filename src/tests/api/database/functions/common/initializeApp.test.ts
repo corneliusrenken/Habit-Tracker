@@ -6,7 +6,7 @@ import {
   addDay,
   addHabit,
   updateOccurrence,
-} from '../../../api/database/functions';
+} from '../../../../../api/database/functions';
 
 let db: Database.Database;
 let exerciseHabitId: number;
