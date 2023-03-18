@@ -87,7 +87,7 @@ function SettingsModal({
       />
       <Shortcut
         className="modal-container-shortcut"
-        name="View history for currently selected habit"
+        name="View selected habit's history"
         shortcuts={[{ keydownCode: 'KeyF' }]}
       />
       <Shortcut

@@ -52,6 +52,7 @@ export default function Shortcut({ className, name, shortcuts }: Props) {
   return (
     <div className={classNamePrefix}>
       <div className={`${classNamePrefix}-name`}>{name}</div>
+      <div className={`${classNamePrefix}-line`} />
       <div className={`${classNamePrefix}-keybinds`}>
         {keybindElements}
       </div>

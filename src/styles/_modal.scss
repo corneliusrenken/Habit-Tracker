@@ -121,7 +121,6 @@
       justify-content: space-between;
 
       &-path {
-        line-height: 38px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -177,13 +176,20 @@
 
       display: flex;
       gap: variables.$universal-margin;
-      justify-content: space-between;
+      align-items: center;
 
       line-height: 100%;
 
       &-name, &-keybinds {
         height: variables.$keybind-size;
         line-height: variables.$keybind-size;
+      }
+
+      &-line {
+        flex-grow: 1;
+        padding: 0 variables.$universal-margin;
+        background-color: theme.$background-active-press;
+        height: 1px;
       }
 
       &-keybinds {
