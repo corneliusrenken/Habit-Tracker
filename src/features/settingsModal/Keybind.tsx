@@ -13,6 +13,9 @@ type Props = {
 // if you want the shortcut to display a different key than the one that triggers it, add it here
 const keybindTransformers: { [keydownCodeOrKey: string]: string } = {
   Escape: 'esc',
+  ArrowUp: '↑',
+  ArrowDown: '↓',
+  // Comma: ',', not legible
 };
 
 export default function Keybind({

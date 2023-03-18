@@ -3,7 +3,7 @@
 @use 'variables';
 
 .modal {
-  @include fonts.main;
+  @include fonts.sub;
   color: theme.$primary;
 
   z-index: 4;
@@ -38,7 +38,8 @@
   &-container {
     position: fixed;
     width: 400px;
-    padding: variables.$vertical-margin variables.$horizontal-margin;
+    padding: variables.$universal-margin;
+    padding-top: 2 * variables.$universal-margin;
     border-radius: variables.$border-radius;
     background-color: theme.$background-modal;
 
@@ -52,7 +53,9 @@
     }
 
     &-header {
-      margin: variables.$vertical-margin variables.$horizontal-margin;
+      @include fonts.main;
+
+      margin: variables.$vertical-margin-large variables.$universal-margin;
 
       b {
         @include fonts.main-bold;
@@ -60,25 +63,28 @@
     }
 
     &-subtext {
-      @include fonts.sub;
       color: theme.$secondary;
 
-      margin: variables.$vertical-margin variables.$horizontal-margin;
-      margin-top: variables.$vertical-margin-large;
+      margin: variables.$vertical-margin-large variables.$universal-margin;
     }
 
     &-dialog-button-group {
       display: flex;
       justify-content: flex-end;
-      gap: variables.$horizontal-margin;
+      gap: variables.$universal-margin;
+
       margin-top: variables.$vertical-margin-large;
 
       button {
-        padding: variables.$vertical-margin variables.$horizontal-margin;
+        padding: 0 variables.$universal-margin;
+
+        height: variables.$modal-element-height;
+        line-height: variables.$modal-element-height;
+
         border-radius: variables.$border-radius;
 
         &:last-of-type {
-          @include fonts.main-bold;
+          @include fonts.sub-bold;
         }
 
         &:disabled {
@@ -99,15 +105,19 @@
     }
 
     &-path-input {
-      margin: variables.$vertical-margin 0;
-      height: 38px;
-      width: 100%;
       border-radius: variables.$border-radius;
-      padding: variables.$vertical-margin variables.$horizontal-margin;
+
+      margin: variables.$vertical-margin-small 0;
+
+      padding: 0 variables.$universal-margin;
+
+      height: variables.$modal-element-height;
+      line-height: variables.$modal-element-height;
+      width: 100%;
 
       display: flex;
       align-items: center;
-      gap: variables.$horizontal-margin;
+      gap: variables.$universal-margin;
       justify-content: space-between;
 
       &-path {
@@ -133,14 +143,18 @@
 
     &-select {
       display: flex;
-      gap: variables.$horizontal-margin;
+      gap: variables.$universal-margin;
+
+      margin: variables.$vertical-margin-small 0;
 
       &-option {
-        height: 38px;
-        line-height: 38px;
-        min-width: 38px;
+        height: variables.$modal-element-height;
+        line-height: variables.$modal-element-height;
+        min-width: variables.$modal-element-height;
+
         text-align: center;
-        padding: 0 variables.$horizontal-margin;
+
+        padding: 0 variables.$universal-margin;
         border-radius: variables.$border-radius;
 
         &:hover {
@@ -158,34 +172,40 @@
     }
 
     &-shortcut {
-      margin: 0 variables.$horizontal-margin;
-      margin-bottom: variables.$vertical-margin;
+      margin: variables.$vertical-margin-small 0;
+      margin-left: variables.$universal-margin;
 
       display: flex;
-      gap: variables.$horizontal-margin;
+      gap: variables.$universal-margin;
       justify-content: space-between;
 
-      height: 24px;
-      line-height: 24px;
-      text-align: center;
+      line-height: 100%;
+
+      &-name, &-keybinds {
+        height: variables.$keybind-size;
+        line-height: variables.$keybind-size;
+      }
 
       &-keybinds {
         display: flex;
-        gap: variables.$horizontal-margin;
+        gap: variables.$universal-margin;
 
         color: theme.$secondary;
+
+        text-align: center;
 
         &-keybind {
           background-color: theme.$background-active;
 
+          border-radius: variables.$border-radius;
+
           &.single {
-            width: 24px;
-            padding: 0;
+            width: variables.$keybind-size;
             text-transform: capitalize;
           }
 
           &:not(.single) {
-            padding: 0 variables.$horizontal-margin;
+            padding: 0 variables.$universal-margin;
             text-transform: lowercase;
           }
 
@@ -194,6 +214,14 @@
           }
         }
       }
+    }
+
+    &> :first-child {
+      margin-top: 0;
+    }
+
+    &> :last-child {
+      margin-bottom: 0;
     }
   }
 }

@@ -162,6 +162,7 @@ export default function App({ setConfig }: Props) {
     <>
       <Modal
         modal={modal}
+        // modal={createSettingsModalGenerator({ updateConfig })}
         setModal={setModal}
       />
       <Layout

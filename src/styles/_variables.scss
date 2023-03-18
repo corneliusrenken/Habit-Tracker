@@ -4,7 +4,9 @@ $layout-transition-duration: 600ms;
   --layout-transition-duration: #{$layout-transition-duration};
 }
 
-$vertical-margin: 8px;
-$vertical-margin-large: 16px;
-$horizontal-margin: 8px;
+$universal-margin: 8px;
 $border-radius: 6px;
+$vertical-margin-large: 16px;
+$vertical-margin-small: 12px;
+$modal-element-height: 28px;
+$keybind-size: 24px;

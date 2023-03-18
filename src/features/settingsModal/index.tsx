@@ -64,21 +64,67 @@ function SettingsModal({
         setSelectedOption={(option) => updateConfig({ style: option })}
       />
       <div className="modal-container-header">Shortcuts</div>
-      <div className="modal-container-subtext">Universal</div>
+      <div className="modal-container-subtext">Global</div>
       <Shortcut
         className="modal-container-shortcut"
-        name="Remove habit"
-        shortcuts={[{ keydownCode: 'KeyA', altKey: true }, { keydownCode: 'KeyB' }]}
+        name="View today"
+        shortcuts={[{ keydownCode: 'KeyT' }]}
       />
       <Shortcut
         className="modal-container-shortcut"
-        name="Create habit"
-        shortcuts={[{ keydownCode: 'KeyC' }]}
+        name="View yesterday"
+        shortcuts={[{ keydownCode: 'KeyY' }]}
       />
       <Shortcut
         className="modal-container-shortcut"
-        name="Escape popup"
+        name="Edit / view habits"
+        shortcuts={[{ keydownCode: 'KeyE' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="View history"
+        shortcuts={[{ keydownCode: 'KeyH' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="View history for currently selected habit"
+        shortcuts={[{ keydownCode: 'KeyF' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Open settings"
+        shortcuts={[{ keydownCode: 'Comma' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Close popup"
         shortcuts={[{ keydownCode: 'Escape' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Traverse habits"
+        shortcuts={[{ keydownCode: 'ArrowUp' }, { keydownCode: 'ArrowDown' }]}
+      />
+      <div className="modal-container-subtext">While editing habits</div>
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Rename habit"
+        shortcuts={[{ keydownCode: 'KeyR' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Toggle habit visibility"
+        shortcuts={[{ keydownCode: 'KeyV' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Delete habit"
+        shortcuts={[{ keydownCode: 'Backspace' }, { keydownCode: 'Delete' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Move habit"
+        shortcuts={[{ keydownCode: 'ArrowUp', altKey: true }, { keydownCode: 'ArrowDown', altKey: true }]}
       />
     </>
   );
