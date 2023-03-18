@@ -68,12 +68,17 @@ function SettingsModal({
       <Shortcut
         className="modal-container-shortcut"
         name="Remove habit"
-        keybinds={[['shift', 'A'], ['B']]}
+        shortcuts={[{ keydownCode: 'KeyA', altKey: true }, { keydownCode: 'KeyB' }]}
       />
       <Shortcut
         className="modal-container-shortcut"
         name="Create habit"
-        keybinds={[['C']]}
+        shortcuts={[{ keydownCode: 'KeyC' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Escape popup"
+        shortcuts={[{ keydownCode: 'Escape' }]}
       />
     </>
   );

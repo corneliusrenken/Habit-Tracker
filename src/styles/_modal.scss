@@ -181,10 +181,16 @@
           &.single {
             width: 24px;
             padding: 0;
+            text-transform: capitalize;
           }
 
           &:not(.single) {
             padding: 0 variables.$horizontal-margin;
+            text-transform: lowercase;
+          }
+
+          &.pressed {
+            background-color: theme.$background-active-press;
           }
         }
       }

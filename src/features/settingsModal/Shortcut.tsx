@@ -1,41 +1,52 @@
 import React from 'react';
+import Keybind from './Keybind';
 
 type Props = {
   className?: string;
   name: string;
-  keybinds: string[][];
+  shortcuts: {
+    keydownCode: string;
+    altKey?: boolean;
+  }[];
 };
 
-export default function Shortcut({ className, name, keybinds }: Props) {
+export default function Shortcut({ className, name, shortcuts }: Props) {
   const classNamePrefix = className || 'shortcut';
 
-  const keybindElements = keybinds.reduce<JSX.Element[]>((elements, keybind) => {
-    const keybindElement = keybind.map((kb) => {
-      let keybindClassName = `${classNamePrefix}-keybinds-keybind`;
+  const keybindElements = shortcuts.reduce<JSX.Element[]>((elements, shortcut) => {
+    const shortcutElements: JSX.Element[] = [];
 
-      if (kb.length === 1) keybindClassName += ' single';
-
-      return (
-        <div
-          key={`${JSON.stringify(keybind)}-${kb}`}
-          className={keybindClassName}
-        >
-          {kb}
-        </div>
+    if (shortcut.altKey) {
+      shortcutElements.push(
+        <Keybind
+          key={`${JSON.stringify(shortcut)}-alt`}
+          className={`${classNamePrefix}-keybinds-keybind`}
+          keydownKey="Alt"
+        />,
       );
-    });
+    }
+
+    shortcutElements.push(
+      <Keybind
+        key={shortcut.keydownCode}
+        className={`${classNamePrefix}-keybinds-keybind`}
+        keydownCode={shortcut.keydownCode}
+      />,
+    );
+
     if (elements.length !== 0) {
-      const divider = (
+      // divider
+      shortcutElements.unshift(
         <div
-          key={`${JSON.stringify(keybind)}-divider`}
+          key={`${JSON.stringify(shortcut)}-divider`}
           className={`${classNamePrefix}-keybinds-divider`}
         >
           or
-        </div>
+        </div>,
       );
-      keybindElement.unshift(divider);
     }
-    return elements.concat(keybindElement);
+
+    return elements.concat(shortcutElements);
   }, []);
 
   return (
