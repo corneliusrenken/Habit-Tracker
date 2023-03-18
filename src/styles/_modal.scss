@@ -69,6 +69,8 @@
     }
 
     &-dialog-button-group {
+      @include fonts.main;
+
       display: flex;
       justify-content: flex-end;
       gap: variables.$universal-margin;
@@ -84,7 +86,7 @@
         border-radius: variables.$border-radius;
 
         &:last-of-type {
-          @include fonts.sub-bold;
+          @include fonts.main-bold;
         }
 
         &:disabled {
