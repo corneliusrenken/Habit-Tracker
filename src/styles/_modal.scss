@@ -133,8 +133,12 @@
         min-width: fit-content;
       }
 
-      &:hover {
+      &:focus {
         background-color: theme.$background-active;
+      }
+
+      &:hover {
+        background-color: theme.$background-active-hover;
       }
 
       &:active {
@@ -158,8 +162,12 @@
         padding: 0 variables.$universal-margin;
         border-radius: variables.$border-radius;
 
-        &:hover {
+        &:focus {
           background-color: theme.$background-active;
+        }
+
+        &:hover {
+          background-color: theme.$background-active-hover;
         }
 
         &:active {
