@@ -55,17 +55,29 @@
     &-header {
       @include fonts.main;
 
-      margin: variables.$vertical-margin-large variables.$universal-margin;
+      margin: 0 variables.$universal-margin;
+      margin-top: variables.$vertical-margin-section;
+      margin-bottom: variables.$vertical-margin-small;
 
       b {
         @include fonts.main-bold;
       }
     }
 
+    // descriptor for header
     &-subtext {
       color: theme.$secondary;
 
-      margin: variables.$vertical-margin-large variables.$universal-margin;
+      margin: 0 variables.$universal-margin;
+      margin-bottom: variables.$vertical-margin-large;
+    }
+
+    &-subheading {
+      color: theme.$secondary;
+
+      margin: 0 variables.$universal-margin;
+      margin-top: variables.$vertical-margin-large;
+      margin-bottom: variables.$vertical-margin-small;
     }
 
     &-dialog-button-group {
@@ -211,6 +223,8 @@
         text-align: center;
 
         &-keybind {
+          @include fonts.keybind;
+
           background-color: theme.$background-active;
 
           border-radius: variables.$border-radius;

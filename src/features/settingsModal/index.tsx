@@ -30,7 +30,7 @@ function SettingsModal({
   return (
     <>
       <div className="modal-container-header">Settings</div>
-      <div className="modal-container-subtext">Save location</div>
+      <div className="modal-container-subheading">Save location</div>
       <PathInput
         path={databaseDirectoryPath}
         disableTabIndex={disableTabIndex}
@@ -42,21 +42,21 @@ function SettingsModal({
         }}
         className="modal-container-path-input"
       />
-      <div className="modal-container-subtext">Start week on</div>
+      <div className="modal-container-subheading">Start week on</div>
       <Select
         className="modal-container-select"
         options={weekStartOptions}
         selectedOption={startWeekOn}
         setSelectedOption={(option) => updateConfig({ startWeekOn: option })}
       />
-      <div className="modal-container-subtext">Theme</div>
+      <div className="modal-container-subheading">Theme</div>
       <Select
         className="modal-container-select"
         options={themeOptions}
         selectedOption={theme}
         setSelectedOption={(option) => updateConfig({ theme: option })}
       />
-      <div className="modal-container-subtext">Style</div>
+      <div className="modal-container-subheading">Style</div>
       <Select
         className="modal-container-select"
         options={styleOptions}
@@ -64,21 +64,16 @@ function SettingsModal({
         setSelectedOption={(option) => updateConfig({ style: option })}
       />
       <div className="modal-container-header">Shortcuts</div>
-      <div className="modal-container-subtext">Global</div>
+      <div className="modal-container-subheading">Global</div>
       <Shortcut
         className="modal-container-shortcut"
-        name="View today"
+        name="Go to today"
         shortcuts={[{ keydownCode: 'KeyT' }]}
       />
       <Shortcut
         className="modal-container-shortcut"
-        name="View yesterday"
+        name="Go to yesterday"
         shortcuts={[{ keydownCode: 'KeyY' }]}
-      />
-      <Shortcut
-        className="modal-container-shortcut"
-        name="Edit / view habits"
-        shortcuts={[{ keydownCode: 'KeyE' }]}
       />
       <Shortcut
         className="modal-container-shortcut"
@@ -87,12 +82,17 @@ function SettingsModal({
       />
       <Shortcut
         className="modal-container-shortcut"
-        name="View selected habit's history"
+        name="View current habit's history"
         shortcuts={[{ keydownCode: 'KeyF' }]}
       />
       <Shortcut
         className="modal-container-shortcut"
-        name="Open settings"
+        name="Edit habits"
+        shortcuts={[{ keydownCode: 'KeyE' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Open settings & shortcuts"
         shortcuts={[{ keydownCode: 'Comma' }]}
       />
       <Shortcut
@@ -105,7 +105,7 @@ function SettingsModal({
         name="Traverse habits"
         shortcuts={[{ keydownCode: 'ArrowUp' }, { keydownCode: 'ArrowDown' }]}
       />
-      <div className="modal-container-subtext">While editing habits</div>
+      <div className="modal-container-subheading">While editing habits</div>
       <Shortcut
         className="modal-container-shortcut"
         name="Rename habit"
