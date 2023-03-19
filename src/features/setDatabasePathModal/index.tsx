@@ -21,7 +21,7 @@ function SetDatabasePathModal({
         Where would you like to save your data?
       </div>
       <div className="modal-container-subtext">
-        You can update the location at a later date in the settings
+        The location can later be updated in the settings
       </div>
       <PathInput
         path={path !== undefined ? path : placeholderPath}

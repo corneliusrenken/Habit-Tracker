@@ -218,6 +218,7 @@ export default function App({ setConfig }: Props) {
           <button
             type="button"
             className="settings-button"
+            tabIndex={modal !== undefined ? -1 : undefined}
             onClick={() => {
               const modalGenerator = createSettingsModalGenerator({ updateConfig });
               setModal(() => modalGenerator);

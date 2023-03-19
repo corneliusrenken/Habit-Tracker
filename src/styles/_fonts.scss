@@ -23,8 +23,22 @@ $serif: 'Averia Libre', cursive;
 @mixin sub {
   @include common;
   font-family: $sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 400;
+}
+
+@mixin sub-bold {
+  @include common;
+  font-family: $sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+@mixin keybind {
+  @include common;
+  font-family: $sans-serif;
+  font-size: 13px;
+  font-weight: 500;
 }
 
 @mixin day {

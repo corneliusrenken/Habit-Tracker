@@ -73,15 +73,15 @@
     z-index: 3;
     height: 75px;
     position: fixed;
-    right: variables.$horizontal-margin + 18px;
-    bottom: variables.$vertical-margin * 2 + 38px;
+    right: variables.$universal-margin + 18px;
+    bottom: variables.$universal-margin * 2 + 38px;
   }
 
   &-settings-button {
     z-index: 3;
     position: fixed;
-    bottom: variables.$horizontal-margin;
-    right: variables.$vertical-margin;
+    bottom: variables.$universal-margin;
+    right: variables.$universal-margin;
   }
 
   @mixin centered-component {

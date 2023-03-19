@@ -4,7 +4,30 @@ $layout-transition-duration: 600ms;
   --layout-transition-duration: #{$layout-transition-duration};
 }
 
-$vertical-margin: 8px;
-$vertical-margin-large: 16px;
-$horizontal-margin: 8px;
+$universal-margin: 8px;
 $border-radius: 6px;
+// $vertical-margin-section: 40px;
+// $vertical-margin-large: 18px;
+// $vertical-margin-small: 8px;
+$modal-element-height: 31px;
+$keybind-size: 24px;
+
+// using golden ratio starting from 8
+$vertical-margin-1: 8px;
+$vertical-margin-2: 13px;
+// $vertical-margin-3: 21px;
+$vertical-margin-3: 17px;
+$vertical-margin-4: 34px;
+$vertical-margin-5: 55px;
+
+// $vertical-margin-1: 6px;
+// $vertical-margin-2: 10px;
+// $vertical-margin-3: 16px;
+// $vertical-margin-4: 26px;
+// $vertical-margin-5: 42px;
+
+// 8px
+// 13px (Golden ratio)
+// 21px (Golden ratio)
+// 34px (Golden ratio)
+// 55px (Golden ratio)

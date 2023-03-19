@@ -26,6 +26,7 @@ export default function Select<T extends string>({
 
         return (
           <button
+            tabIndex={option === selectedOption ? -1 : undefined}
             className={buttonClassName}
             type="button"
             key={option}

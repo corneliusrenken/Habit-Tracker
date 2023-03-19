@@ -4,6 +4,7 @@ import { ModalGenerator } from '../../globalTypes';
 import ConfigContext from '../initializer/ConfigContext';
 import PathInput from '../modal/PathInput';
 import Select from '../modal/Select';
+import Shortcut from './Shortcut';
 
 type Props = {
   disableTabIndex: boolean;
@@ -29,7 +30,7 @@ function SettingsModal({
   return (
     <>
       <div className="modal-container-header">Settings</div>
-      <div className="modal-container-subtext">Save location</div>
+      <div className="modal-container-subheading">Save location</div>
       <PathInput
         path={databaseDirectoryPath}
         disableTabIndex={disableTabIndex}
@@ -41,26 +42,89 @@ function SettingsModal({
         }}
         className="modal-container-path-input"
       />
-      <div className="modal-container-subtext">Start week on</div>
+      <div className="modal-container-subheading">Start week on</div>
       <Select
         className="modal-container-select"
         options={weekStartOptions}
         selectedOption={startWeekOn}
         setSelectedOption={(option) => updateConfig({ startWeekOn: option })}
       />
-      <div className="modal-container-subtext">Theme</div>
+      <div className="modal-container-subheading">Theme</div>
       <Select
         className="modal-container-select"
         options={themeOptions}
         selectedOption={theme}
         setSelectedOption={(option) => updateConfig({ theme: option })}
       />
-      <div className="modal-container-subtext">Style</div>
+      <div className="modal-container-subheading">Style</div>
       <Select
         className="modal-container-select"
         options={styleOptions}
         selectedOption={style}
         setSelectedOption={(option) => updateConfig({ style: option })}
+      />
+      <div className="modal-container-header">Shortcuts</div>
+      <div className="modal-container-subheading">Global</div>
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Go to today"
+        shortcuts={[{ keydownCode: 'KeyT' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Go to yesterday"
+        shortcuts={[{ keydownCode: 'KeyY' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="View history"
+        shortcuts={[{ keydownCode: 'KeyH' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="View current habit's history"
+        shortcuts={[{ keydownCode: 'KeyF' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Edit habits"
+        shortcuts={[{ keydownCode: 'KeyE' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Open settings & shortcuts"
+        shortcuts={[{ keydownCode: 'Comma' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Close popup"
+        shortcuts={[{ keydownCode: 'Escape' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Traverse habits"
+        shortcuts={[{ keydownCode: 'ArrowUp' }, { keydownCode: 'ArrowDown' }]}
+      />
+      <div className="modal-container-subheading">While editing habits</div>
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Rename habit"
+        shortcuts={[{ keydownCode: 'KeyR' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Toggle habit visibility"
+        shortcuts={[{ keydownCode: 'KeyV' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Delete habit"
+        shortcuts={[{ keydownCode: 'Backspace' }, { keydownCode: 'Delete' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Move habit"
+        shortcuts={[{ keydownCode: 'ArrowUp', altKey: true }, { keydownCode: 'ArrowDown', altKey: true }]}
       />
     </>
   );

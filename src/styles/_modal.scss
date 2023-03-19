@@ -3,7 +3,7 @@
 @use 'variables';
 
 .modal {
-  @include fonts.main;
+  @include fonts.sub;
   color: theme.$primary;
 
   z-index: 4;
@@ -38,7 +38,8 @@
   &-container {
     position: fixed;
     width: 400px;
-    padding: variables.$vertical-margin variables.$horizontal-margin;
+    padding: variables.$universal-margin;
+    padding-top: 2 * variables.$universal-margin;
     border-radius: variables.$border-radius;
     background-color: theme.$background-modal;
 
@@ -52,29 +53,48 @@
     }
 
     &-header {
-      margin: variables.$vertical-margin variables.$horizontal-margin;
+      @include fonts.main;
+
+      margin: 0 variables.$universal-margin;
+      margin-top: variables.$vertical-margin-4;
+      margin-bottom: variables.$vertical-margin-2;
 
       b {
         @include fonts.main-bold;
       }
     }
 
+    // descriptor for header
     &-subtext {
-      @include fonts.sub;
       color: theme.$secondary;
 
-      margin: variables.$vertical-margin variables.$horizontal-margin;
-      margin-top: variables.$vertical-margin-large;
+      margin: 0 variables.$universal-margin;
+      margin-bottom: variables.$vertical-margin-2;
+    }
+
+    &-subheading {
+      color: theme.$secondary;
+
+      margin: 0 variables.$universal-margin;
+      margin-top: variables.$vertical-margin-3;
+      margin-bottom: variables.$vertical-margin-1;
     }
 
     &-dialog-button-group {
+      @include fonts.main;
+
       display: flex;
       justify-content: flex-end;
-      gap: variables.$horizontal-margin;
-      margin-top: variables.$vertical-margin-large;
+      gap: variables.$universal-margin;
+
+      margin-top: variables.$vertical-margin-3;
 
       button {
-        padding: variables.$vertical-margin variables.$horizontal-margin;
+        padding: 0 variables.$universal-margin;
+
+        height: variables.$modal-element-height;
+        line-height: variables.$modal-element-height;
+
         border-radius: variables.$border-radius;
 
         &:last-of-type {
@@ -99,19 +119,22 @@
     }
 
     &-path-input {
-      margin: variables.$vertical-margin 0;
-      height: 38px;
-      width: 100%;
       border-radius: variables.$border-radius;
-      padding: variables.$vertical-margin variables.$horizontal-margin;
+
+      margin: variables.$vertical-margin-1 0;
+
+      padding: 0 variables.$universal-margin;
+
+      height: variables.$modal-element-height;
+      line-height: variables.$modal-element-height;
+      width: 100%;
 
       display: flex;
       align-items: center;
-      gap: variables.$horizontal-margin;
+      gap: variables.$universal-margin;
       justify-content: space-between;
 
       &-path {
-        line-height: 38px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -122,8 +145,12 @@
         min-width: fit-content;
       }
 
-      &:hover {
+      &:focus {
         background-color: theme.$background-active;
+      }
+
+      &:hover {
+        background-color: theme.$background-active-hover;
       }
 
       &:active {
@@ -133,18 +160,26 @@
 
     &-select {
       display: flex;
-      gap: variables.$horizontal-margin;
+      gap: variables.$universal-margin;
+
+      margin: variables.$vertical-margin-1 0;
 
       &-option {
-        height: 38px;
-        line-height: 38px;
-        min-width: 38px;
+        height: variables.$modal-element-height;
+        line-height: variables.$modal-element-height;
+        min-width: variables.$modal-element-height;
+
         text-align: center;
-        padding: 0 variables.$horizontal-margin;
+
+        padding: 0 variables.$universal-margin;
         border-radius: variables.$border-radius;
 
-        &:hover {
+        &:focus {
           background-color: theme.$background-active;
+        }
+
+        &:hover {
+          background-color: theme.$background-active-hover;
         }
 
         &:active {
@@ -155,6 +190,68 @@
           background-color: theme.$background-active-press;
         }
       }
+    }
+
+    &-shortcut {
+      margin: variables.$vertical-margin-1 0;
+      margin-left: variables.$universal-margin;
+
+      display: flex;
+      gap: variables.$universal-margin;
+      align-items: center;
+
+      line-height: 100%;
+
+      &-name, &-keybinds {
+        height: variables.$keybind-size;
+        line-height: variables.$keybind-size;
+      }
+
+      &-line {
+        flex-grow: 1;
+        padding: 0 variables.$universal-margin;
+        background-color: theme.$background-active;
+        height: 1px;
+      }
+
+      &-keybinds {
+        display: flex;
+        gap: variables.$universal-margin;
+
+        color: theme.$secondary;
+
+        text-align: center;
+
+        &-keybind {
+          @include fonts.keybind;
+
+          background-color: theme.$background-active;
+
+          border-radius: variables.$border-radius;
+
+          &.single {
+            width: variables.$keybind-size;
+            text-transform: capitalize;
+          }
+
+          &:not(.single) {
+            padding: 0 variables.$universal-margin;
+            text-transform: lowercase;
+          }
+
+          &.pressed {
+            background-color: theme.$background-active-press;
+          }
+        }
+      }
+    }
+
+    &> :first-child {
+      margin-top: 0;
+    }
+
+    &> :last-child {
+      margin-bottom: 0;
     }
   }
 }

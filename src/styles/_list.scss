@@ -14,7 +14,7 @@
 
     display: flex;
     align-items: center;
-    gap: variables.$horizontal-margin;
+    gap: variables.$universal-margin;
 
     &.complete {
       color: theme.$tertiary;
@@ -60,8 +60,8 @@
       content: '';
       position: absolute;
       height: 38px;
-      left: calc(var(--left-margin, 0px) - variables.$horizontal-margin);
-      width: calc(100% - var(--left-margin, 0px) - var(--right-margin, 0px) + 2 * variables.$horizontal-margin);
+      left: calc(var(--left-margin, 0px) - variables.$universal-margin);
+      width: calc(100% - var(--left-margin, 0px) - var(--right-margin, 0px) + 2 * variables.$universal-margin);
       border-radius: variables.$border-radius;
       background-color: theme.$background-active;
     }
