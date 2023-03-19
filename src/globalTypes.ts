@@ -41,17 +41,17 @@ export type SelectedOccurrence = {
 };
 
 export type View = { name: 'today' }
-| { name: 'yesterday' }
-| { name: 'selection' }
-| { name: 'history' }
-| { name: 'focus'; focusId: number; };
+  | { name: 'yesterday' }
+  | { name: 'selection' }
+  | { name: 'history' }
+  | { name: 'focus'; focusId: number; };
 
 export type ListView = { name: 'today' }
-| { name: 'yesterday' }
-| { name: 'selection' };
+  | { name: 'yesterday' }
+  | { name: 'selection' };
 
 export type OccurrenceView = { name: 'history' }
-| { name: 'focus'; focusId: number; };
+  | { name: 'focus'; focusId: number; };
 
 export type ViewType = 'occurrence' | 'list';
 

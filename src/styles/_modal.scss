@@ -56,8 +56,8 @@
       @include fonts.main;
 
       margin: 0 variables.$universal-margin;
-      margin-top: variables.$vertical-margin-section;
-      margin-bottom: variables.$vertical-margin-small;
+      margin-top: variables.$vertical-margin-4;
+      margin-bottom: variables.$vertical-margin-2;
 
       b {
         @include fonts.main-bold;
@@ -69,15 +69,15 @@
       color: theme.$secondary;
 
       margin: 0 variables.$universal-margin;
-      margin-bottom: variables.$vertical-margin-large;
+      margin-bottom: variables.$vertical-margin-2;
     }
 
     &-subheading {
       color: theme.$secondary;
 
       margin: 0 variables.$universal-margin;
-      margin-top: variables.$vertical-margin-large;
-      margin-bottom: variables.$vertical-margin-small;
+      margin-top: variables.$vertical-margin-3;
+      margin-bottom: variables.$vertical-margin-1;
     }
 
     &-dialog-button-group {
@@ -87,7 +87,7 @@
       justify-content: flex-end;
       gap: variables.$universal-margin;
 
-      margin-top: variables.$vertical-margin-large;
+      margin-top: variables.$vertical-margin-3;
 
       button {
         padding: 0 variables.$universal-margin;
@@ -121,7 +121,7 @@
     &-path-input {
       border-radius: variables.$border-radius;
 
-      margin: variables.$vertical-margin-small 0;
+      margin: variables.$vertical-margin-1 0;
 
       padding: 0 variables.$universal-margin;
 
@@ -162,7 +162,7 @@
       display: flex;
       gap: variables.$universal-margin;
 
-      margin: variables.$vertical-margin-small 0;
+      margin: variables.$vertical-margin-1 0;
 
       &-option {
         height: variables.$modal-element-height;
@@ -193,7 +193,7 @@
     }
 
     &-shortcut {
-      margin: variables.$vertical-margin-small 0;
+      margin: variables.$vertical-margin-1 0;
       margin-left: variables.$universal-margin;
 
       display: flex;
@@ -210,7 +210,7 @@
       &-line {
         flex-grow: 1;
         padding: 0 variables.$universal-margin;
-        background-color: theme.$background-active-press;
+        background-color: theme.$background-active;
         height: 1px;
       }
 
