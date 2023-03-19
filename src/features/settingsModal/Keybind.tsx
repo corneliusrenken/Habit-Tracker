@@ -67,9 +67,11 @@ export default function Keybind({
       : keydownKey;
   }
 
+  if (displayedKeybind.length === 1) keybindClassName += ' single';
+
   return (
     <div
-      className={`${keybindClassName}${displayedKeybind.length === 1 ? ' single' : ''}`}
+      className={keybindClassName}
     >
       {displayedKeybind}
     </div>
