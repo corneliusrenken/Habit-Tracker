@@ -1,7 +1,8 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { View, viewToViewType } from '../../globalTypes';
 
 type Props = {
+  freezeScroll: boolean;
   view: View;
   occurrences: JSX.Element;
   days: JSX.Element;
@@ -12,6 +13,7 @@ type Props = {
 const verticalMargin = '200px';
 
 export default function Layout({
+  freezeScroll,
   view,
   occurrences,
   days,
@@ -26,6 +28,35 @@ export default function Layout({
 
   const viewType = viewToViewType[view.name];
   layoutClassName += ` ${viewType}`;
+  if (freezeScroll) layoutClassName += ' frozen';
+
+  // temp using useMemo so that this triggers before height is set to 100vh, scrollDst is always 0
+  useMemo(() => {
+    if (freezeScroll) {
+      let scrollDistance: number;
+      if (viewType === 'list') {
+        scrollDistance = window.scrollY;
+      } else {
+        scrollDistance = document.body.scrollHeight - window.scrollY - window.innerHeight;
+      }
+
+      document.documentElement.style.setProperty('--layout-scroll-distance', `${scrollDistance}px`);
+    }
+  }, [freezeScroll]);
+
+  useEffect(() => {
+    if (!freezeScroll) {
+      const lastScrollDistance = parseInt(
+        document.documentElement.style.getPropertyValue('--layout-scroll-distance'),
+        10,
+      );
+      if (viewType === 'list') {
+        window.scrollTo(0, lastScrollDistance);
+      } else {
+        window.scrollTo(0, document.body.scrollHeight - lastScrollDistance - window.innerHeight);
+      }
+    }
+  }, [freezeScroll]);
 
   useEffect(() => {
     if (viewType === 'occurrence') {
@@ -37,6 +68,26 @@ export default function Layout({
 
   return (
     <>
+      <div
+        style={{
+          position: 'fixed',
+          height: '1px',
+          top: 'calc(50vh - 26px)',
+          left: 0,
+          right: 0,
+          backgroundColor: 'rgba(0, 0, 255, 0.5)',
+        }}
+      />
+      <div
+        style={{
+          position: 'fixed',
+          height: '1px',
+          top: 'calc(50vh + 24px)',
+          left: 0,
+          right: 0,
+          backgroundColor: 'rgba(0, 0, 255, 0.5)',
+        }}
+      />
       <div
         style={{
           position: 'fixed',

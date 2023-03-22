@@ -2,51 +2,130 @@
 @use 'theme';
 
 .layout {
-  overflow: hidden;
+  width: 350px;
+  left: calc(50vw - 175px);
+
   position: relative;
 
+  $transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin, 0px));
+
+  &.frozen {
+    height: 100vh;
+    overflow: hidden;
+  }
+
   &.list {
+    padding-top: var(--layout-vertical-margin, 0px);
     padding-bottom: var(--layout-vertical-margin, 0px);
+
+    @keyframes l {
+      0% { top: $transition-distance; }
+      100% { top: 0; }
+    }
+
+    animation: l 1s forwards;
   }
 
   &.occurrence {
-    padding-bottom: calc(50vh - 25px); // use padding instead of margin so that list is still displayed with overflow hidden
+    padding-bottom: calc(50vh - 25px);
+
+    @keyframes o {
+      0% { top: calc(-1 * $transition-distance); }
+      100% { top: 0; }
+    }
+
+    animation: o 1s forwards;
   }
 
   &-occurrences {
+    background-color: rgba(0, 255, 0, 0.5);
     min-height: calc(50vh - 25px);
+
+    .list & {
+      position: absolute;
+      bottom: calc(100% - var(--layout-vertical-margin, 0px) - 50px);
+    }
+
+    .frozen.list & {
+      position: absolute;
+      bottom: calc(100% - var(--layout-vertical-margin, 0px) - 50px + var(--layout-scroll-distance, 0px));
+    }
+
+    .occurrence & {
+      position: relative;
+    }
+
+    .frozen.occurrence & {
+      position: absolute;
+      bottom: calc(50vh - 25px + 50px - var(--layout-scroll-distance, 0px));
+    }
+  }
+
+  &-days {
+    .list & {
+      position: sticky;
+      top: var(--layout-vertical-margin, 0px);
+    }
+
+    .frozen.list & {
+      position: absolute;
+      top: var(--layout-vertical-margin, 0px);
+    }
+
+    .occurrence & {
+      position: absolute;
+      bottom: calc(50vh - 25px + 50px);
+    }
+
+    .frozen.occurrence & {
+      position: absolute;
+      bottom: calc(50vh - 25px + 50px - var(--layout-scroll-distance, 0px));
+    }
+  }
+
+  &-dates {
+    background-color: rgba(255, 0, 0, 0.5);
+    .list & {
+      position: sticky;
+      top: calc(var(--layout-vertical-margin, 0px) + 50px);
+    }
+
+    .frozen.list & {
+      position: absolute;
+      top: calc(var(--layout-vertical-margin, 0px) + 50px);
+    }
 
     .occurrence & {
       position: relative;
       bottom: 0px;
     }
 
-    .list & {
+    .frozen.occurrence & {
       position: absolute;
-      bottom: calc(100% - var(--layout-vertical-margin, 0px) - 50px);
+      bottom: calc(50vh - 25px - var(--layout-scroll-distance, 0px));
     }
-  }
-
-  &-days {
-    position: sticky;
-
-    .list & {
-      margin-top: var(--layout-vertical-margin, 0px);
-    }
-
-    .occurrence & {
-      position: absolute;
-      bottom: calc(50vh - 25px);
-    }
-  }
-
-  &-dates {
-    position: sticky;
   }
 
   &-list {
+    background-color: rgba(255, 255, 0, 0.5);
+    .list & {
+      position: relative;
+    }
+
+    .frozen.list & {
+      position: absolute;
+      top: calc(var(--layout-vertical-margin, 0px) + 100px - var(--layout-scroll-distance, 0px));
+    }
+
     .occurrence & {
       position: absolute;
+      height: calc(50vh - 25px);
+      overflow: hidden;
+    }
+
+    .frozen.occurrence & {
+      position: absolute;
+      top: calc(50vh - 25px + 50px + var(--layout-scroll-distance, 0px));
     }
   }
 }
