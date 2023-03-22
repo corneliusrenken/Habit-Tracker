@@ -37,6 +37,10 @@
     animation: o 1s forwards;
   }
 
+  &.first-render {
+    animation-duration: 0s;
+  }
+
   &-occurrences {
     background-color: rgba(0, 255, 0, 0.5);
     min-height: calc(50vh - 25px);

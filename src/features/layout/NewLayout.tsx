@@ -1,5 +1,6 @@
-import React, { useEffect, useMemo } from 'react';
-import { View, viewToViewType } from '../../globalTypes';
+import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import { View, viewToViewType, ViewType } from '../../globalTypes';
+import useLatch from '../common/useLatch';
 
 type Props = {
   freezeScroll: boolean;
@@ -20,15 +21,30 @@ export default function Layout({
   dates,
   list,
 }: Props) {
+  const firstRender = useRef(true);
+
+  const viewType = viewToViewType[view.name];
+
+  useLatch<ViewType>('list', useCallback(
+    (oldViewType) => {
+      if (oldViewType !== viewType) {
+        firstRender.current = false;
+        return viewType;
+      }
+      return oldViewType;
+    },
+    [viewType],
+  ));
+
   useEffect(() => {
     document.documentElement.style.setProperty('--layout-vertical-margin', verticalMargin);
   }, []);
 
   let layoutClassName = 'layout';
 
-  const viewType = viewToViewType[view.name];
   layoutClassName += ` ${viewType}`;
   if (freezeScroll) layoutClassName += ' frozen';
+  if (firstRender.current) layoutClassName += ' first-render';
 
   // temp using useMemo so that this triggers before height is set to 100vh, scrollDst is always 0
   useMemo(() => {
@@ -65,7 +81,7 @@ export default function Layout({
 
   return (
     <>
-      {/* <div
+      <div
         style={{
           position: 'fixed',
           height: '1px',
@@ -104,8 +120,10 @@ export default function Layout({
           right: 0,
           backgroundColor: 'rgba(0, 0, 255, 0.5)',
         }}
-      /> */}
-      <div className={layoutClassName}>
+      />
+      <div
+        className={layoutClassName}
+      >
         <div className="layout-occurrences">{occurrences}</div>
         <div className="layout-days">{days}</div>
         <div className="layout-dates">{dates}</div>
