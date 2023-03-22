@@ -37,7 +37,8 @@ export default function Layout({
       if (viewType === 'list') {
         scrollDistance = window.scrollY;
       } else {
-        scrollDistance = document.body.scrollHeight - window.scrollY - window.innerHeight;
+        // scrollDistance = document.body.scrollHeight - window.scrollY - window.innerHeight;
+        scrollDistance = window.scrollY;
       }
 
       document.documentElement.style.setProperty('--layout-scroll-distance', `${scrollDistance}px`);
@@ -50,11 +51,7 @@ export default function Layout({
         document.documentElement.style.getPropertyValue('--layout-scroll-distance'),
         10,
       );
-      if (viewType === 'list') {
-        window.scrollTo(0, lastScrollDistance);
-      } else {
-        window.scrollTo(0, document.body.scrollHeight - lastScrollDistance - window.innerHeight);
-      }
+      window.scrollTo(0, lastScrollDistance);
     }
   }, [freezeScroll]);
 
@@ -68,7 +65,7 @@ export default function Layout({
 
   return (
     <>
-      <div
+      {/* <div
         style={{
           position: 'fixed',
           height: '1px',
@@ -107,7 +104,7 @@ export default function Layout({
           right: 0,
           backgroundColor: 'rgba(0, 0, 255, 0.5)',
         }}
-      />
+      /> */}
       <div className={layoutClassName}>
         <div className="layout-occurrences">{occurrences}</div>
         <div className="layout-days">{days}</div>

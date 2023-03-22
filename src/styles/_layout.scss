@@ -56,8 +56,9 @@
     }
 
     .frozen.occurrence & {
-      position: absolute;
-      bottom: calc(50vh - 25px + 50px - var(--layout-scroll-distance, 0px));
+      position: relative;
+      // bottom: calc(50vh - 25px + 50px - var(--layout-scroll-distance, 0px));
+      top: calc(0px - var(--layout-scroll-distance, 0px));
     }
   }
 
@@ -78,8 +79,8 @@
     }
 
     .frozen.occurrence & {
-      position: absolute;
-      bottom: calc(50vh - 25px + 50px - var(--layout-scroll-distance, 0px));
+      position: relative;
+      top: calc(-50px - var(--layout-scroll-distance, 0px));
     }
   }
 
@@ -101,8 +102,8 @@
     }
 
     .frozen.occurrence & {
-      position: absolute;
-      bottom: calc(50vh - 25px - var(--layout-scroll-distance, 0px));
+      position: relative;
+      top: calc(-50px - var(--layout-scroll-distance, 0px));
     }
   }
 
@@ -124,8 +125,8 @@
     }
 
     .frozen.occurrence & {
-      position: absolute;
-      top: calc(50vh - 25px + 50px + var(--layout-scroll-distance, 0px));
+      position: relative;
+      top: calc(-50px - var(--layout-scroll-distance, 0px));
     }
   }
 }
