@@ -29,6 +29,7 @@ import { Config } from '../../api/config/defaultConfig';
 import ConfigContext from '../initializer/ConfigContext';
 import Icon from '../icon';
 import createSettingsModalGenerator from '../settingsModal';
+import NewLayout from '../layout/NewLayout';
 
 type Props = {
   setConfig: React.Dispatch<React.SetStateAction<Config>>;
@@ -51,14 +52,9 @@ export default function App({ setConfig }: Props) {
   const [streaks, setStreaks] = useState<Streaks>({});
   const [ignoreMouse, setIgnoreMouse] = useState(true);
 
-  const layoutOptions = useRef({
-    minMarginHeight: 50,
-    maxListHeight: 600,
-  });
-
-  useEffect(() => {
-    if (selectedIndex !== null) scrollSelectedIndexIntoView(selectedIndex);
-  }, [selectedIndex]);
+  // useEffect(() => {
+  //   if (selectedIndex !== null) scrollSelectedIndexIntoView(selectedIndex);
+  // }, [selectedIndex]);
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
@@ -164,7 +160,58 @@ export default function App({ setConfig }: Props) {
         modal={modal}
         setModal={setModal}
       />
-      <Layout
+      <NewLayout
+        setInTransition={setInTransition}
+        freezeScroll={modal !== undefined}
+        view={view}
+        listHeight={(view.name === 'selection' ? selectedHabits.length + 1 : selectedHabits.length) * 50}
+        occurrenceHeight={((selectedOccurrences.length - 7) / 7) * 50}
+        occurrences={(
+          <Occurrences
+            view={view}
+            selectedOccurrences={selectedOccurrences}
+          />
+        )}
+        days={(
+          <Days
+            view={view}
+            dateObject={dateObject}
+            selectedOccurrences={selectedOccurrences}
+          />
+        )}
+        dates={(
+          <Dates
+            view={view}
+            dateObject={dateObject}
+            selectedOccurrences={selectedOccurrences}
+          />
+        )}
+        list={(
+          <List
+            ignoreMouse={ignoreMouse}
+            disableTabIndex={modal !== undefined}
+            dateObject={dateObject}
+            view={view}
+            selectedHabits={selectedHabits}
+            selectedStreaks={selectedStreaks}
+            occurrenceData={occurrenceData}
+            selectedIndex={selectedIndex}
+            setSelectedIndex={setSelectedIndex}
+            inInput={inInput}
+            setInInput={setInInput}
+            reorderingList={reorderingList}
+            setReorderingList={setReorderingList}
+            setModal={setModal}
+            addHabit={addHabit}
+            deleteHabit={deleteHabit}
+            updateHabitListPosition={updateHabitListPosition}
+            updateHabitName={updateHabitName}
+            updateOccurrenceCompleted={updateOccurrenceCompleted}
+            updateOccurrenceVisibility={updateOccurrenceVisibility}
+          />
+        )}
+      />
+      {/* <Layout
         layoutOptions={layoutOptions.current}
         view={view}
         listRows={view.name === 'selection' ? selectedHabits.length + 1 : selectedHabits.length}
@@ -228,8 +275,8 @@ export default function App({ setConfig }: Props) {
               icon="gear"
             />
           </button>
-        )}
-      />
+        )} */}
+      {/* /> */}
     </>
   );
 }

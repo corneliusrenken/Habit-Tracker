@@ -43,11 +43,7 @@ export default function Layout({
   const [displayedViewType, setDisplayedViewType] = useState<ViewType>(viewToViewType[view.name]);
   const [frozen, setFrozen] = useState(freezeScroll);
 
-  const firstRender = React.useRef(true);
-
-  useEffect(() => {
-    firstRender.current = false;
-  }, []);
+  const initialRender = React.useRef(true);
 
   useEffect(() => {
     document.documentElement.style.setProperty('--list-height', `${listHeight}px`);
@@ -62,6 +58,7 @@ export default function Layout({
     const nextViewType = viewToViewType[view.name];
     setDisplayedViewType(nextViewType);
     if (displayedViewType !== nextViewType) {
+      initialRender.current = false;
       if (displayedViewType === 'list') {
         document.documentElement.style.setProperty('--transition-scroll-distance', `${window.scrollY}px`);
       } else {
@@ -99,7 +96,7 @@ export default function Layout({
 
   layoutClassName += ` ${displayedViewType}`;
   if (frozen) layoutClassName += ' frozen';
-  if (firstRender.current) layoutClassName += ' first-render';
+  if (initialRender.current) layoutClassName += ' initial-render';
 
   return (
     <>

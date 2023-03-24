@@ -69,7 +69,10 @@ function List({
   );
 
   return (
-    <div className="list" style={{ opacity: viewToViewType[view.name] === 'list' ? 1 : 0 }}>
+    <div
+      className="list"
+      style={{ opacity: viewToViewType[view.name] === 'list' ? 1 : 0 }}
+    >
       {listView.name !== 'selection' ? (
         <HabitList
           ignoreMouse={ignoreMouse}

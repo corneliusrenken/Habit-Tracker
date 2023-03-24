@@ -16,7 +16,10 @@ function Days({ view, dateObject, selectedOccurrences }: Props) {
   const weekOccurrences = selectedOccurrences.slice(-7);
 
   return (
-    <div className="days" style={{ opacity: viewToViewType[view.name] === 'list' ? 1 : 0 }}>
+    <div
+      className="days"
+      style={{ opacity: viewToViewType[view.name] === 'list' ? 1 : 0 }}
+    >
       {dateObject.weekDays.map(((day, index) => {
         const { complete } = weekOccurrences[index];
         let className = 'days-day';
