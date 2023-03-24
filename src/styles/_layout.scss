@@ -1,137 +1,75 @@
 @use 'variables';
 @use 'theme';
 
+body {
+  --layout-vertical-margin: 200px; // currently bugged, can't use % values, breaks in top calculation of scroll list
+  --occurrence-height: 1000px;
+  --list-height: 1000px;
+}
+
+$transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin));
+
 .layout {
-  width: 350px;
-  left: calc(50vw - 175px);
-
-  position: relative;
-
-  $transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin, 0px));
-
-  &.frozen {
-    height: 100vh;
-    overflow: hidden;
-  }
+  contain: paint; // instead of overflow hidden, allows sticky child
 
   &.list {
-    padding-top: var(--layout-vertical-margin, 0px);
-    padding-bottom: var(--layout-vertical-margin, 0px);
-
-    @keyframes l {
-      0% { top: $transition-distance; }
-      100% { top: 0; }
-    }
-
-    animation: l 1s forwards;
+    height: calc(100px + var(--list-height) + 2 * var(--layout-vertical-margin));
   }
 
   &.occurrence {
-    padding-bottom: calc(50vh - 25px);
-
-    @keyframes o {
-      0% { top: calc(-1 * $transition-distance); }
-      100% { top: 0; }
-    }
-
-    animation: o 1s forwards;
+    height: calc(var(--occurrence-height) + 25px + 50vh);
   }
 
-  &.first-render {
-    animation-duration: 0s;
+  &.frozen {
+    height: 100vh;
+  }
+
+  &-scroll {
+    position: relative;
+
+    width: 350px;
+    left: calc(50vw - 175px);
+
+    .list & {
+      top: calc(var(--layout-vertical-margin) - var(--occurrence-height) + 50px);
+
+    }
+
+    .list.frozen & {
+      top: calc(var(--layout-vertical-margin) - var(--occurrence-height) + 50px - var(--scroll-distance));
+    }
+
+    .occurrence & {
+      top: 0px;
+    }
+
+    .occurrence.frozen & {
+      top: calc(-1 * var(--scroll-distance));
+    }
   }
 
   &-occurrences {
     background-color: rgba(0, 255, 0, 0.5);
     min-height: calc(50vh - 25px);
-
-    .list & {
-      position: absolute;
-      bottom: calc(100% - var(--layout-vertical-margin, 0px) - 50px);
-    }
-
-    .frozen.list & {
-      position: absolute;
-      bottom: calc(100% - var(--layout-vertical-margin, 0px) - 50px + var(--layout-scroll-distance, 0px));
-    }
-
-    .occurrence & {
-      position: relative;
-    }
-
-    .frozen.occurrence & {
-      position: relative;
-      // bottom: calc(50vh - 25px + 50px - var(--layout-scroll-distance, 0px));
-      top: calc(0px - var(--layout-scroll-distance, 0px));
-    }
+    height: var(--occurrence-height);
+    position: sticky;
+    top: calc(var(--layout-vertical-margin) - var(--occurrence-height) + 50px);
   }
 
-  &-days {
-    .list & {
-      position: sticky;
-      top: var(--layout-vertical-margin, 0px);
-    }
+  // &-days {
 
-    .frozen.list & {
-      position: absolute;
-      top: var(--layout-vertical-margin, 0px);
-    }
-
-    .occurrence & {
-      position: absolute;
-      bottom: calc(50vh - 25px + 50px);
-    }
-
-    .frozen.occurrence & {
-      position: relative;
-      top: calc(-50px - var(--layout-scroll-distance, 0px));
-    }
-  }
+  // }
 
   &-dates {
     background-color: rgba(255, 0, 0, 0.5);
-    .list & {
-      position: sticky;
-      top: calc(var(--layout-vertical-margin, 0px) + 50px);
-    }
-
-    .frozen.list & {
-      position: absolute;
-      top: calc(var(--layout-vertical-margin, 0px) + 50px);
-    }
-
-    .occurrence & {
-      position: relative;
-      bottom: 0px;
-    }
-
-    .frozen.occurrence & {
-      position: relative;
-      top: calc(-50px - var(--layout-scroll-distance, 0px));
-    }
+    height: 50px;
+    position: sticky;
+    top: calc(var(--layout-vertical-margin) + 50px);
   }
 
   &-list {
     background-color: rgba(255, 255, 0, 0.5);
-    .list & {
-      position: relative;
-    }
-
-    .frozen.list & {
-      position: absolute;
-      top: calc(var(--layout-vertical-margin, 0px) + 100px - var(--layout-scroll-distance, 0px));
-    }
-
-    .occurrence & {
-      position: absolute;
-      height: calc(50vh - 25px);
-      overflow: hidden;
-    }
-
-    .frozen.occurrence & {
-      position: relative;
-      top: calc(-50px - var(--layout-scroll-distance, 0px));
-    }
+    height: var(--list-height);
   }
 }
 

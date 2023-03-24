@@ -11,8 +11,6 @@ type Props = {
   list: JSX.Element;
 };
 
-const verticalMargin = '200px';
-
 export default function Layout({
   freezeScroll,
   view,
@@ -21,30 +19,12 @@ export default function Layout({
   dates,
   list,
 }: Props) {
-  const firstRender = useRef(true);
-
   const viewType = viewToViewType[view.name];
-
-  useLatch<ViewType>('list', useCallback(
-    (oldViewType) => {
-      if (oldViewType !== viewType) {
-        firstRender.current = false;
-        return viewType;
-      }
-      return oldViewType;
-    },
-    [viewType],
-  ));
-
-  useEffect(() => {
-    document.documentElement.style.setProperty('--layout-vertical-margin', verticalMargin);
-  }, []);
 
   let layoutClassName = 'layout';
 
   layoutClassName += ` ${viewType}`;
   if (freezeScroll) layoutClassName += ' frozen';
-  if (firstRender.current) layoutClassName += ' first-render';
 
   // temp using useMemo so that this triggers before height is set to 100vh, scrollDst is always 0
   useMemo(() => {
@@ -57,14 +37,14 @@ export default function Layout({
         scrollDistance = window.scrollY;
       }
 
-      document.documentElement.style.setProperty('--layout-scroll-distance', `${scrollDistance}px`);
+      document.documentElement.style.setProperty('--scroll-distance', `${scrollDistance}px`);
     }
   }, [freezeScroll]);
 
   useEffect(() => {
     if (!freezeScroll) {
       const lastScrollDistance = parseInt(
-        document.documentElement.style.getPropertyValue('--layout-scroll-distance'),
+        document.documentElement.style.getPropertyValue('--scroll-distance'),
         10,
       );
       window.scrollTo(0, lastScrollDistance);
@@ -104,7 +84,7 @@ export default function Layout({
       <div
         style={{
           position: 'fixed',
-          height: verticalMargin,
+          height: 'var(--layout-vertical-margin)',
           top: 0,
           left: 0,
           right: 0,
@@ -114,7 +94,7 @@ export default function Layout({
       <div
         style={{
           position: 'fixed',
-          height: verticalMargin,
+          height: 'var(--layout-vertical-margin)',
           bottom: 0,
           left: 0,
           right: 0,
@@ -124,10 +104,12 @@ export default function Layout({
       <div
         className={layoutClassName}
       >
-        <div className="layout-occurrences">{occurrences}</div>
-        <div className="layout-days">{days}</div>
-        <div className="layout-dates">{dates}</div>
-        <div className="layout-list">{list}</div>
+        <div className="layout-scroll">
+          <div className="layout-occurrences" />
+          {/* <div className="layout-days">{days}</div> */}
+          <div className="layout-dates" />
+          <div className="layout-list" />
+        </div>
       </div>
     </>
   );
