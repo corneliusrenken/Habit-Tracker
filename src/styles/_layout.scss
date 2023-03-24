@@ -2,15 +2,16 @@
 @use 'theme';
 
 body {
-  --layout-vertical-margin: 200px; // currently bugged, can't use % values, breaks in top calculation of scroll list
-  --occurrence-height: 1000px;
-  --list-height: 1000px;
+  --layout-vertical-margin: 20vh;
 }
 
 $transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin));
 
 .layout {
+  position: relative;
   contain: paint; // instead of overflow hidden, allows sticky child
+
+  min-height: 100vh;
 
   &.list {
     height: calc(100px + var(--list-height) + 2 * var(--layout-vertical-margin));
@@ -24,6 +25,14 @@ $transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin))
     height: 100vh;
   }
 
+  &-freeze {
+    position: relative;
+
+    .frozen & {
+      top: calc(-1 * var(--freeze-scroll-distance));
+    }
+  }
+
   &-scroll {
     position: relative;
 
@@ -33,23 +42,49 @@ $transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin))
     .list & {
       top: calc(var(--layout-vertical-margin) - var(--occurrence-height) + 50px);
 
-    }
+      @keyframes to-list {
+        0% {
+          top: calc(
+            var(--layout-vertical-margin)
+            - var(--occurrence-height)
+            + 50px
+            + $transition-distance
+            + var(--transition-scroll-distance)
+          );
+        }
+        100% {
+          top: calc(var(--layout-vertical-margin) - var(--occurrence-height) + 50px);
+        }
+      }
 
-    .list.frozen & {
-      top: calc(var(--layout-vertical-margin) - var(--occurrence-height) + 50px - var(--scroll-distance));
+      animation-name: to-list;
     }
 
     .occurrence & {
       top: 0px;
+
+      @keyframes to-occurrence {
+        0% {
+          top: calc(-1 * $transition-distance - var(--transition-scroll-distance));
+        }
+        100% {
+          top: 0px;
+        }
+      }
+
+      animation-name: to-occurrence;
     }
 
-    .occurrence.frozen & {
-      top: calc(-1 * var(--scroll-distance));
+    animation-duration: 0.6s;
+
+    .first-render & {
+      animation-duration: 0s;
     }
+
+    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1.0);
   }
 
   &-occurrences {
-    background-color: rgba(0, 255, 0, 0.5);
     min-height: calc(50vh - 25px);
     height: var(--occurrence-height);
     position: sticky;
@@ -61,14 +96,12 @@ $transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin))
   // }
 
   &-dates {
-    background-color: rgba(255, 0, 0, 0.5);
     height: 50px;
     position: sticky;
     top: calc(var(--layout-vertical-margin) + 50px);
   }
 
   &-list {
-    background-color: rgba(255, 255, 0, 0.5);
     height: var(--list-height);
   }
 }
