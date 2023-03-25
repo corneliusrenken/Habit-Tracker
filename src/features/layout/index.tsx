@@ -97,52 +97,31 @@ export default function Layout({
   if (initialRender.current) layoutClassName += ' initial-render';
 
   return (
-    <>
-      <div style={{
-        position: 'fixed',
-        top: 'var(--layout-vertical-margin, 0px)',
-        left: 0,
-        right: 0,
-        backgroundColor: 'black',
-        zIndex: 1000,
-        height: '1px',
-      }}/>
-      <div style={{
-        position: 'fixed',
-        top: 'calc(50vh - 25px)',
-        left: 0,
-        right: 0,
-        backgroundColor: 'cyan',
-        zIndex: 1000,
-        height: '50px',
-        opacity: 0.2,
-      }}/>
-      <div className={layoutClassName}>
-        <div className="layout-freeze">
-          <div className="layout-scroll">
-            <div className="layout-occurrences-and-days">
-              <div className="layout-occurrences" style={{ position: 'absolute', bottom: 0 }}>{occurrences}</div>
-              <div className="layout-days" style={{ position: 'absolute', bottom: 0 }}>{days}</div>
-              <div
-                className="layout-mask"
-                style={{
-                  height: 'var(--layout-vertical-margin, 0px)',
-                  bottom: 'calc(50px + var(--layout-vertical-margin, 0px) - 100vh)',
-                }}
-              />
-              <div
-                className="layout-mask"
-                style={{
-                  height: 'calc(var(--layout-vertical-margin, 0px) + 100px)',
-                  bottom: '-50px',
-                }}
-              />
-            </div>
-            <div className="layout-dates">{dates}</div>
-            <div className="layout-list">{list}</div>
+    <div className={layoutClassName}>
+      <div className="layout-freeze">
+        <div className="layout-scroll">
+          <div className="layout-occurrences-and-days">
+            <div className="layout-occurrences" style={{ position: 'absolute', bottom: 0 }}>{occurrences}</div>
+            <div className="layout-days" style={{ position: 'absolute', bottom: 0 }}>{days}</div>
+            <div
+              className="layout-mask"
+              style={{
+                height: 'var(--layout-vertical-margin, 0px)',
+                bottom: 'calc(50px + var(--layout-vertical-margin, 0px) - 100vh)',
+              }}
+            />
+            <div
+              className="layout-mask"
+              style={{
+                height: 'calc(var(--layout-vertical-margin, 0px) + 100px)',
+                bottom: '-50px',
+              }}
+            />
           </div>
+          <div className="layout-dates">{dates}</div>
+          <div className="layout-list">{list}</div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

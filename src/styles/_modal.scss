@@ -61,7 +61,7 @@
     // transition: transform 100ms, opacity 100ms;
 
     .hidden & {
-      transform: scale(0.95);
+      // transform: scale(0.95);
       opacity: 0;
     }
 

@@ -51,9 +51,9 @@ export default function App({ setConfig }: Props) {
   const [streaks, setStreaks] = useState<Streaks>({});
   const [ignoreMouse, setIgnoreMouse] = useState(true);
 
-  // useEffect(() => {
-  //   if (selectedIndex !== null) scrollSelectedIndexIntoView(selectedIndex);
-  // }, [selectedIndex]);
+  useEffect(() => {
+    if (selectedIndex !== null) scrollSelectedIndexIntoView(selectedIndex);
+  }, [selectedIndex]);
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
