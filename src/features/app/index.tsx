@@ -29,7 +29,6 @@ import { Config } from '../../api/config/defaultConfig';
 import ConfigContext from '../initializer/ConfigContext';
 import Icon from '../icon';
 import createSettingsModalGenerator from '../settingsModal';
-import NewLayout from '../layout/NewLayout';
 
 type Props = {
   setConfig: React.Dispatch<React.SetStateAction<Config>>;
@@ -160,7 +159,7 @@ export default function App({ setConfig }: Props) {
         modal={modal}
         setModal={setModal}
       />
-      <NewLayout
+      <Layout
         setInTransition={setInTransition}
         freezeScroll={modal !== undefined}
         view={view}

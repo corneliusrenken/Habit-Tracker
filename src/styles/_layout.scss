@@ -88,7 +88,6 @@ $transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin, 
 
   &-occurrences-and-days {
     position: sticky;
-    min-height: calc(50vh - 25px);
     height: var(--occurrence-height, 0px);
     top: calc(var(--layout-vertical-margin, 0px) - var(--occurrence-height, 0px) + 50px);
 
