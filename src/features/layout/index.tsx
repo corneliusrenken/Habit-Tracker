@@ -7,6 +7,7 @@ import React, {
 import { View, viewToViewType, ViewType } from '../../globalTypes';
 import useLatch from '../common/useLatch';
 import Scrollbar from '../scrollbar';
+import triggerElementReflow from './triggerElementReflow';
 
 type Props = {
   setInTransition: React.Dispatch<React.SetStateAction<boolean>>;
@@ -21,13 +22,33 @@ type Props = {
   settingsButton: JSX.Element;
 };
 
-function onTransition(setInTransition: React.Dispatch<React.SetStateAction<boolean>>) {
+type States = {
+  layoutElement: HTMLDivElement;
+  setInTransition: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+function transition(
+  displayedViewType: ViewType,
+  nextViewType: ViewType,
+  scrollDistance: { fromTop: number; fromBottom: number },
+  { layoutElement, setInTransition }: States,
+) {
   setInTransition(true);
+
+  layoutElement.classList.remove(displayedViewType);
+  layoutElement.classList.add(nextViewType);
+
+  document.documentElement.style.setProperty('--transition-scroll-distance', `${displayedViewType === 'list' ? scrollDistance.fromTop : scrollDistance.fromBottom}px`);
+
+  triggerElementReflow(layoutElement);
+
+  window.scrollTo({
+    top: nextViewType === 'list' ? 0 : document.body.scrollHeight,
+  });
 
   const onAnimationEnd = () => {
     setInTransition(false);
     document.documentElement.style.removeProperty('--transition-scroll-distance');
-
     document.documentElement.removeEventListener('animationend', onAnimationEnd);
   };
 
@@ -46,40 +67,59 @@ export default function Layout({
   list,
   settingsButton,
 }: Props) {
-  const [displayedViewType, setDisplayedViewType] = useState<ViewType>(viewToViewType[view.name]);
-  const [scrollHeight, setScrollHeight] = useState(0);
+  const [displayedView, setDisplayedView] = useState<View>(view);
+  const [scrollPos, setScrollPos] = useState(0);
 
+  const layoutRef = React.useRef<HTMLDivElement>(null);
   const initialRender = React.useRef(true);
 
   useEffect(() => {
     const onScroll = () => {
-      setScrollHeight(window.scrollY);
+      setScrollPos(window.scrollY);
     };
 
     onScroll();
 
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
-  }, [listHeight, occurrenceHeight, displayedViewType]);
+  }, [listHeight, occurrenceHeight, displayedView]);
 
   useEffect(() => {
+    const nextView = view;
+
+    const scrollDistanceFromTop = window.scrollY;
+    const scrollDistanceFromBottom = document.body.scrollHeight - window.scrollY - window.innerHeight; // eslint-disable-line max-len
+
+    document.documentElement.style.setProperty('--list-height', `${listHeight}px`);
+    document.documentElement.style.setProperty('--occurrence-height', `max(50vh - 25px, ${occurrenceHeight}px)`);
+
+    if (
+      (nextView.name === 'focus' && displayedView.name === 'focus' && nextView.focusId === displayedView.focusId)
+      || (nextView.name === displayedView.name)
+    ) return; // if no change in view, do nothing
+
+    initialRender.current = false;
+
+    const displayedViewType = viewToViewType[displayedView.name];
     const nextViewType = viewToViewType[view.name];
-    setDisplayedViewType(nextViewType);
+
     if (displayedViewType !== nextViewType) {
-      initialRender.current = false;
-      if (displayedViewType === 'list') {
-        document.documentElement.style.setProperty('--transition-scroll-distance', `${window.scrollY}px`);
-      } else {
-        const distanceFromBottom = document.body.scrollHeight - window.scrollY - window.innerHeight;
-        document.documentElement.style.setProperty('--transition-scroll-distance', `${distanceFromBottom}px`);
-      }
-      onTransition(setInTransition);
+      if (!layoutRef.current) throw new Error('Can\'t transition as layout ref is not set');
+
+      transition(
+        displayedViewType,
+        nextViewType,
+        { fromTop: scrollDistanceFromTop, fromBottom: scrollDistanceFromBottom },
+        { layoutElement: layoutRef.current, setInTransition },
+      );
     } else if (displayedViewType === 'list') {
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0 });
     } else {
-      window.scrollTo(0, document.body.scrollHeight);
+      window.scrollTo({ top: document.body.scrollHeight });
     }
-  }, [view, displayedViewType, setInTransition]);
+
+    setDisplayedView(nextView);
+  }, [view, setInTransition, listHeight, occurrenceHeight, displayedView]);
 
   useMemo(() => {
     if (freezeScroll) {
@@ -97,34 +137,23 @@ export default function Layout({
 
   let layoutClassName = 'layout';
 
-  useEffect(() => {
-    if (displayedViewType === 'occurrence') {
-      window.scrollTo(0, document.body.scrollHeight);
-    } else {
-      window.scrollTo(0, 0);
-    }
-  }, [displayedViewType]);
-
-  layoutClassName += ` ${displayedViewType}`;
+  layoutClassName += ` ${viewToViewType[displayedView.name]}`;
   if (freezeScroll) layoutClassName += ' frozen';
   if (initialRender.current) layoutClassName += ' initial-render';
 
   const upperMaskAppearancePercentage = useLatch<number>(
-    Math.min(1, scrollHeight / 25),
+    Math.min(1, scrollPos / 25),
     useCallback((lastPercentage) => {
       if (freezeScroll) return lastPercentage;
-      return Math.min(1, scrollHeight / 25);
-    }, [scrollHeight, freezeScroll]),
+      return Math.min(1, scrollPos / 25);
+    }, [scrollPos, freezeScroll]),
   );
 
   return (
     <>
       <div
+        ref={layoutRef}
         className={layoutClassName}
-        style={{
-          '--list-height': `${listHeight}px`,
-          '--occurrence-height': `max(50vh - 25px, ${occurrenceHeight}px)`,
-        } as React.CSSProperties}
       >
         <div className="layout-freeze">
           <div className="layout-scroll">
@@ -155,7 +184,7 @@ export default function Layout({
       </div>
       <div className="layout-scrollbar">
         <Scrollbar
-          viewType={displayedViewType}
+          viewType={viewToViewType[displayedView.name]}
           listHeight={listHeight}
           occurrenceHeight={occurrenceHeight}
           freeze={freezeScroll}
