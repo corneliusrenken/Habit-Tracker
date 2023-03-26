@@ -1,33 +1,44 @@
 import React, { useEffect, useState } from 'react';
-import { View, viewToViewType } from '../../globalTypes';
+import { ViewType } from '../../globalTypes';
 import getScreenPercentage from './getScreenPercentage';
 import getScrollPercentage from './getScrollPercentage';
 
 type Props = {
-  view: View;
-  screenHeight: number;
+  viewType: ViewType;
+  listHeight: number;
+  occurrenceHeight: number;
+  freeze: boolean;
 };
 
 export default function Scrollbar({
-  view,
-  screenHeight,
+  viewType,
+  listHeight,
+  occurrenceHeight,
+  freeze,
 }: Props) {
   const [scrollPercentage, setScrollPercentage] = useState(() => getScrollPercentage());
   const [screenPercentage, setScreenPercentage] = useState(() => getScreenPercentage());
 
   useEffect(() => {
+    if (freeze) return;
+    setScreenPercentage(getScreenPercentage());
     setScrollPercentage(getScrollPercentage());
+  }, [freeze, listHeight, occurrenceHeight, viewType]);
+
+  useEffect(() => {
+    if (freeze) return;
 
     function onScroll() {
       setScrollPercentage(getScrollPercentage());
     }
 
     window.addEventListener('scroll', onScroll);
+    // eslint-disable-next-line consistent-return
     return () => window.removeEventListener('scroll', onScroll);
-  }, [screenHeight]);
+  }, [freeze]);
 
   useEffect(() => {
-    setScreenPercentage(getScreenPercentage());
+    if (freeze) return;
 
     function onZoomOrResize() {
       setScreenPercentage(getScreenPercentage());
@@ -35,15 +46,16 @@ export default function Scrollbar({
 
     window.addEventListener('zoom', onZoomOrResize);
     window.addEventListener('resize', onZoomOrResize);
+    // eslint-disable-next-line consistent-return
     return () => {
       window.removeEventListener('zoom', onZoomOrResize);
       window.removeEventListener('resize', onZoomOrResize);
     };
-  }, [screenHeight]);
+  }, [freeze]);
 
   const barTravelDistance = (100 - screenPercentage) / 100;
 
-  const scrollbarStyle = viewToViewType[view.name] === 'list'
+  const scrollbarStyle = viewType === 'list'
     ? { top: `${scrollPercentage.fromTop * barTravelDistance}%` }
     : { top: `${100 - screenPercentage - scrollPercentage.fromBottom * barTravelDistance}%` };
 

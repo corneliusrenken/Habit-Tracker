@@ -209,6 +209,21 @@ export default function App({ setConfig }: Props) {
             updateOccurrenceVisibility={updateOccurrenceVisibility}
           />
         )}
+        settingsButton={(
+          <button
+            type="button"
+            className="settings-button"
+            tabIndex={modal !== undefined ? -1 : undefined}
+            onClick={() => {
+              const modalGenerator = createSettingsModalGenerator({ updateConfig });
+              setModal(() => modalGenerator);
+            }}
+          >
+            <Icon
+              icon="gear"
+            />
+          </button>
+        )}
       />
       {/* <Layout
         layoutOptions={layoutOptions.current}
