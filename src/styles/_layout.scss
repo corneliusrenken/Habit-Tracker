@@ -92,7 +92,7 @@ $transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin, 
     height: var(--occurrence-height, 0px);
     top: calc(var(--layout-vertical-margin, 0px) - var(--occurrence-height, 0px) + 50px);
 
-    & > :not(.layout-mask) {
+    .layout-occurrences, .layout-days {
       position: absolute;
       z-index: 3;
       @include center-horizontally;
@@ -104,6 +104,19 @@ $transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin, 
       backdrop-filter: blur(7px);
       left: 0;
       right: 0;
+    }
+
+    .layout-scroll-indicator {
+      position: absolute;
+      height: 50px;
+      left: calc(50vw + 175px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      // color: theme.$tertiary;
+
+      transition: opacity 0.1s ease-in-out;
     }
   }
 
@@ -126,18 +139,9 @@ $transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin, 
   }
 }
 
-.layout-scrollbar {
-  position: fixed;
-  z-index: 3;
-  height: 100px;
-  right: calc(variables.$universal-margin + 18px);
-  bottom: calc(100% - 100vh + 38px + 2 * variables.$universal-margin);
-}
-
 .layout-settings-button {
   position: fixed;
   z-index: 3;
   right: variables.$universal-margin;
   bottom: calc(100% - 100vh + variables.$universal-margin);
 }
-

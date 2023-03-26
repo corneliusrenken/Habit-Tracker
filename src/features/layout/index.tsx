@@ -6,7 +6,8 @@ import React, {
 } from 'react';
 import { View, viewToViewType, ViewType } from '../../globalTypes';
 import useLatch from '../common/useLatch';
-import Scrollbar from '../scrollbar';
+import Icon from '../icon';
+import getScreenPercentage from './getScreenPercentage';
 import triggerElementReflow from './triggerElementReflow';
 
 type Props = {
@@ -69,6 +70,7 @@ export default function Layout({
 }: Props) {
   const [displayedView, setDisplayedView] = useState<View>(view);
   const [scrollPos, setScrollPos] = useState(0);
+  const [scrollable, setScrollable] = useState(() => getScreenPercentage() < 100);
 
   const layoutRef = React.useRef<HTMLDivElement>(null);
   const initialRender = React.useRef(true);
@@ -82,6 +84,21 @@ export default function Layout({
 
     window.addEventListener('scroll', onScroll);
     return () => window.removeEventListener('scroll', onScroll);
+  }, [listHeight, displayedView]); // only needed in list view so no occurrenceHeight dependency
+
+  useEffect(() => {
+    function onZoomOrResize() {
+      setScrollable(getScreenPercentage() < 100);
+    }
+
+    onZoomOrResize();
+
+    window.addEventListener('zoom', onZoomOrResize);
+    window.addEventListener('resize', onZoomOrResize);
+    return () => {
+      window.removeEventListener('zoom', onZoomOrResize);
+      window.removeEventListener('resize', onZoomOrResize);
+    };
   }, [listHeight, occurrenceHeight, displayedView]);
 
   useEffect(() => {
@@ -149,6 +166,8 @@ export default function Layout({
     }, [scrollPos, freezeScroll]),
   );
 
+  const scrolledToEndOfDocument = scrollPos === document.body.scrollHeight - window.innerHeight;
+
   return (
     <>
       <div
@@ -176,19 +195,29 @@ export default function Layout({
                   WebkitMaskImage: 'linear-gradient(to top, black 90%, transparent)',
                 }}
               />
+              <div
+                className="layout-scroll-indicator"
+                style={{
+                  opacity: scrollPos !== 0 && viewToViewType[displayedView.name] === 'list' && scrollable ? 1 : 0,
+                  bottom: '-50px',
+                }}
+              >
+                <Icon icon="double arrow up" />
+              </div>
+              <div
+                className="layout-scroll-indicator"
+                style={{
+                  opacity: !scrolledToEndOfDocument && viewToViewType[displayedView.name] === 'list' && scrollable ? 1 : 0,
+                  bottom: 'calc(50px + 2 * var(--layout-vertical-margin, 0px) - 100vh)',
+                }}
+              >
+                <Icon icon="double arrow down" />
+              </div>
             </div>
             <div className="layout-dates">{dates}</div>
             <div className="layout-list">{list}</div>
           </div>
         </div>
-      </div>
-      <div className="layout-scrollbar">
-        <Scrollbar
-          viewType={viewToViewType[displayedView.name]}
-          listHeight={listHeight}
-          occurrenceHeight={occurrenceHeight}
-          freeze={freezeScroll}
-        />
       </div>
       <div className="layout-settings-button">
         {settingsButton}
