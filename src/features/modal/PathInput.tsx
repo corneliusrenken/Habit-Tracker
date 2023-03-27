@@ -3,25 +3,33 @@ import Icon from '../icon';
 
 type Props = {
   path: string,
-  onClick: React.MouseEventHandler<HTMLButtonElement>,
+  setPath: (path: string) => void,
   disableTabIndex: boolean;
   className?: string;
 };
 
 export default function PathInput({
   path,
-  onClick,
+  setPath,
   disableTabIndex,
   className,
 }: Props) {
+  const [dialogWindowOpen, setDialogWindowOpen] = React.useState(false);
   const classNamePrefix = className || 'path-input';
 
   return (
     <button
       type="button"
       className={classNamePrefix}
-      onClick={onClick}
       tabIndex={disableTabIndex ? -1 : undefined}
+      onClick={dialogWindowOpen ? undefined : async () => {
+        setDialogWindowOpen(true);
+        const { filePath } = await window.electron['choose-directory-path']();
+        setDialogWindowOpen(false);
+        if (filePath) {
+          setPath(filePath);
+        }
+      }}
     >
       <div className={`${classNamePrefix}-path`}>
         {path}
