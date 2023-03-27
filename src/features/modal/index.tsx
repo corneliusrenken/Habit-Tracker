@@ -53,12 +53,6 @@ export default function Modal(props: Props) {
   let modalClassName = 'modal';
   if (!displayingModal) modalClassName += ' hidden';
 
-  useMemo(() => {
-    if (!displayingModal) {
-      document.documentElement.style.setProperty('--modal-scroll-distance-before-closing', `${window.scrollY}px`);
-    }
-  }, [displayingModal]);
-
   useEffect(() => {
     if (displayingModal) {
       window.scrollTo({ top: 0 });

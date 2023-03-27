@@ -72,7 +72,7 @@ export default function Layout({
   settingsButton,
 }: Props) {
   const [displayedView, setDisplayedView] = useState<View>(view);
-  const [scrollPos, setScrollPos] = useState(0);
+  const [scrollPos, setScrollPos] = useState(window.scrollY);
   const [scrollable, setScrollable] = useState(() => getScreenPercentage() < 100);
 
   const layoutRef = React.useRef<HTMLDivElement>(null);
@@ -93,6 +93,7 @@ export default function Layout({
   useEffect(() => {
     function onZoomOrResize() {
       setScrollable(getScreenPercentage() < 100);
+      setScrollPos(window.scrollY);
     }
 
     onZoomOrResize();
