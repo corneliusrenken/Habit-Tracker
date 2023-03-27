@@ -72,18 +72,18 @@ function SettingsModal({
       />
       <Shortcut
         className="modal-container-shortcut"
+        name="Edit habits"
+        shortcuts={[{ keydownCode: 'KeyE' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
         name="View history"
         shortcuts={[{ keydownCode: 'KeyH' }]}
       />
       <Shortcut
         className="modal-container-shortcut"
-        name="View current habit's history"
+        name="View selected habit's history"
         shortcuts={[{ keydownCode: 'KeyF' }]}
-      />
-      <Shortcut
-        className="modal-container-shortcut"
-        name="Edit habits"
-        shortcuts={[{ keydownCode: 'KeyE' }]}
       />
       <Shortcut
         className="modal-container-shortcut"
@@ -113,6 +113,11 @@ function SettingsModal({
       />
       <Shortcut
         className="modal-container-shortcut"
+        name="Create new habit"
+        shortcuts={[{ keydownCode: 'KeyC' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
         name="Delete habit"
         shortcuts={[{ keydownCode: 'Backspace' }, { keydownCode: 'Delete' }]}
       />
@@ -120,6 +125,17 @@ function SettingsModal({
         className="modal-container-shortcut"
         name="Move habit"
         shortcuts={[{ keydownCode: 'ArrowUp', altKey: true }, { keydownCode: 'ArrowDown', altKey: true }]}
+      />
+      <div className="modal-container-subheading">While renaming or creating habits</div>
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Confirm"
+        shortcuts={[{ keydownCode: 'Enter' }]}
+      />
+      <Shortcut
+        className="modal-container-shortcut"
+        name="Cancel"
+        shortcuts={[{ keydownCode: 'Escape' }]}
       />
     </>
   );
