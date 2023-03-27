@@ -41,6 +41,8 @@ $transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin, 
   &-scroll {
     position: relative;
 
+    will-change: top;
+
     .list & {
       top: calc(var(--layout-vertical-margin, 0px) - var(--occurrence-height, 0px) + 50px);
 

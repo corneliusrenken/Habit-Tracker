@@ -25,6 +25,7 @@ type Props = {
 
 type States = {
   layoutElement: HTMLDivElement;
+  scrollElement: HTMLDivElement;
   setInTransition: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
@@ -32,13 +33,14 @@ function transition(
   displayedViewType: ViewType,
   nextViewType: ViewType,
   scrollDistance: { fromTop: number; fromBottom: number },
-  { layoutElement, setInTransition }: States,
+  { layoutElement, scrollElement, setInTransition }: States,
 ) {
   setInTransition(true);
 
+  // have to remove and add the classes manually before the next render for the element reflow
+  layoutElement.classList.remove('initial-render');
   layoutElement.classList.remove(displayedViewType);
   layoutElement.classList.add(nextViewType);
-
   document.documentElement.style.setProperty('--transition-scroll-distance', `${displayedViewType === 'list' ? scrollDistance.fromTop : scrollDistance.fromBottom}px`);
 
   triggerElementReflow(layoutElement);
@@ -47,7 +49,8 @@ function transition(
     top: nextViewType === 'list' ? 0 : document.body.scrollHeight,
   });
 
-  const onAnimationEnd = () => {
+  const onAnimationEnd = (e: AnimationEvent) => {
+    if (e.target !== scrollElement) return;
     setInTransition(false);
     document.documentElement.style.removeProperty('--transition-scroll-distance');
     document.documentElement.removeEventListener('animationend', onAnimationEnd);
@@ -73,6 +76,7 @@ export default function Layout({
   const [scrollable, setScrollable] = useState(() => getScreenPercentage() < 100);
 
   const layoutRef = React.useRef<HTMLDivElement>(null);
+  const scrollRef = React.useRef<HTMLDivElement>(null);
   const initialRender = React.useRef(true);
 
   useEffect(() => {
@@ -121,13 +125,13 @@ export default function Layout({
     const nextViewType = viewToViewType[view.name];
 
     if (displayedViewType !== nextViewType) {
-      if (!layoutRef.current) throw new Error('Can\'t transition as layout ref is not set');
+      if (!layoutRef.current || !scrollRef.current) throw new Error('Can\'t transition with refs not set');
 
       transition(
         displayedViewType,
         nextViewType,
         { fromTop: scrollDistanceFromTop, fromBottom: scrollDistanceFromBottom },
-        { layoutElement: layoutRef.current, setInTransition },
+        { layoutElement: layoutRef.current, scrollElement: scrollRef.current, setInTransition },
       );
     } else if (displayedViewType === 'list') {
       window.scrollTo({ top: 0 });
@@ -170,12 +174,9 @@ export default function Layout({
 
   return (
     <>
-      <div
-        ref={layoutRef}
-        className={layoutClassName}
-      >
+      <div ref={layoutRef} className={layoutClassName}>
         <div className="layout-freeze">
-          <div className="layout-scroll">
+          <div className="layout-scroll" ref={scrollRef}>
             <div className="layout-occurrences-and-days">
               <div className="layout-occurrences" style={{ position: 'absolute', bottom: 0 }}>{occurrences}</div>
               <div className="layout-days" style={{ position: 'absolute', bottom: 0 }}>{days}</div>
