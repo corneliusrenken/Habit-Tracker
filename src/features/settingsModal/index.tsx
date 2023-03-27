@@ -33,13 +33,8 @@ function SettingsModal({
       <div className="modal-container-subheading">Save location</div>
       <PathInput
         path={databaseDirectoryPath}
+        setPath={(path) => updateConfig({ databaseDirectoryPath: path })}
         disableTabIndex={disableTabIndex}
-        onClick={async () => {
-          const { filePath } = await window.electron['choose-directory-path']();
-          if (filePath) {
-            updateConfig({ databaseDirectoryPath: filePath });
-          }
-        }}
         className="modal-container-path-input"
       />
       <div className="modal-container-subheading">Start week on</div>

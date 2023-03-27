@@ -25,12 +25,7 @@ function SetDatabasePathModal({
       </div>
       <PathInput
         path={path !== undefined ? path : placeholderPath}
-        onClick={async () => {
-          const { filePath } = await window.electron['choose-directory-path']();
-          if (filePath) {
-            setPath(filePath);
-          }
-        }}
+        setPath={setPath}
         disableTabIndex={disableTabIndex}
         className="modal-container-path-input"
       />
