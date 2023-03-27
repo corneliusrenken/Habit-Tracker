@@ -51,7 +51,7 @@ function Occurrences({
     [],
     useCallback((lastSelectedOccurrences) => {
       if (displayingOccurrences) {
-        return selectedOccurrences;
+        return selectedOccurrences.slice(0, -7);
       }
       return lastSelectedOccurrences;
     }, [displayingOccurrences, selectedOccurrences]),

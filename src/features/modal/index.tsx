@@ -53,6 +53,12 @@ export default function Modal(props: Props) {
   let modalClassName = 'modal';
   if (!displayingModal) modalClassName += ' hidden';
 
+  useEffect(() => {
+    if (displayingModal) {
+      window.scrollTo({ top: 0 });
+    }
+  }, [displayingModal]);
+
   return (
     <div className={modalClassName}>
       <div

@@ -51,11 +51,6 @@ export default function App({ setConfig }: Props) {
   const [streaks, setStreaks] = useState<Streaks>({});
   const [ignoreMouse, setIgnoreMouse] = useState(true);
 
-  const layoutOptions = useRef({
-    minMarginHeight: 50,
-    maxListHeight: 600,
-  });
-
   useEffect(() => {
     if (selectedIndex !== null) scrollSelectedIndexIntoView(selectedIndex);
   }, [selectedIndex]);
@@ -165,11 +160,11 @@ export default function App({ setConfig }: Props) {
         setModal={setModal}
       />
       <Layout
-        layoutOptions={layoutOptions.current}
-        view={view}
-        listRows={view.name === 'selection' ? selectedHabits.length + 1 : selectedHabits.length}
-        occurrenceRows={Math.ceil((selectedOccurrences.length - 7) / 7)}
         setInTransition={setInTransition}
+        freezeScroll={modal !== undefined}
+        view={view}
+        listHeight={(view.name === 'selection' ? selectedHabits.length + 1 : selectedHabits.length) * 50}
+        occurrenceHeight={((selectedOccurrences.length - 7) / 7) * 50}
         occurrences={(
           <Occurrences
             view={view}
