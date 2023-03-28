@@ -15,7 +15,6 @@ import Modal from '../modal';
 import useShortcutManager from '../shortcutManager/useShortcutManager';
 import Layout from '../layout';
 import useTaskDispatchers from '../tasks/useTaskDispatchers';
-import useSetLeftAndRightDateMargins from './useSetLeftAndRightDateMargins';
 import TaskQueue from '../taskQueue';
 import getDateObject from '../common/getDateObject';
 import useDailyInitializer from './useDailyInitializer';
@@ -104,8 +103,6 @@ export default function App({ setConfig }: Props) {
     setStreaks,
     setView,
   });
-
-  useSetLeftAndRightDateMargins({ view, dateObject });
 
   const {
     addHabit,

@@ -2,6 +2,8 @@
 @use 'theme';
 @use 'variables';
 
+$list-outer-margin: 21px;
+
 .list {
   transition: opacity 600ms;
 
@@ -33,11 +35,11 @@
     }
 
     &-name, &-error, &-rename-form, &-create-form, &-placeholder {
-      margin-left: var(--left-margin, 0px);
+      margin-left: $list-outer-margin;
     }
 
     &-create-form, &-placeholder, &-streak {
-      margin-right: var(--right-margin, 0px);
+      margin-right: $list-outer-margin;
     }
 
     &-placeholder { // different than ::placeholder element, used in create habit form
@@ -60,8 +62,8 @@
       content: '';
       position: absolute;
       height: 38px;
-      left: calc(var(--left-margin, 0px) - variables.$universal-margin);
-      width: calc(100% - var(--left-margin, 0px) - var(--right-margin, 0px) + 2 * variables.$universal-margin);
+      left: calc(20px - variables.$universal-margin);
+      width: calc(100% - 2 * $list-outer-margin + 2 * variables.$universal-margin);
       border-radius: variables.$border-radius;
       background-color: theme.$background-active;
     }
