@@ -71,7 +71,10 @@ export default function Modal(props: Props) {
           }
         }}
       />
-      <div className="modal-container">
+      <div
+        className="modal-container"
+        key={displayingModal.toString()} // modal is re-rendered -> tab index is reset
+      >
         {modalContent}
       </div>
     </div>

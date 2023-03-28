@@ -51,6 +51,20 @@ export default function App({ setConfig }: Props) {
   const [streaks, setStreaks] = useState<Streaks>({});
   const [ignoreMouse, setIgnoreMouse] = useState(true);
 
+  // for development
+  // for development
+  // for development
+  // for development
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (document.activeElement !== document.querySelector('body')) {
+        console.log('focused element', document.activeElement);
+      }
+    }, 500);
+
+    return () => clearInterval(intervalId);
+  }, []);
+
   useEffect(() => {
     if (selectedIndex !== null) scrollSelectedIndexIntoView(selectedIndex);
   }, [selectedIndex]);
@@ -188,7 +202,6 @@ export default function App({ setConfig }: Props) {
         list={(
           <List
             ignoreMouse={ignoreMouse}
-            disableTabIndex={modal !== undefined}
             dateObject={dateObject}
             view={view}
             selectedHabits={selectedHabits}
@@ -213,7 +226,7 @@ export default function App({ setConfig }: Props) {
           <button
             type="button"
             className="settings-button"
-            tabIndex={modal !== undefined ? -1 : undefined}
+            tabIndex={-1}
             onClick={() => {
               const modalGenerator = createSettingsModalGenerator({ updateConfig });
               setModal(() => modalGenerator);

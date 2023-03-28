@@ -39,6 +39,7 @@ function SettingsModal({
       />
       <div className="modal-container-subheading">Start week on</div>
       <Select
+        disableTabIndex={disableTabIndex}
         className="modal-container-select"
         options={weekStartOptions}
         selectedOption={startWeekOn}
@@ -46,6 +47,7 @@ function SettingsModal({
       />
       <div className="modal-container-subheading">Theme</div>
       <Select
+        disableTabIndex={disableTabIndex}
         className="modal-container-select"
         options={themeOptions}
         selectedOption={theme}
@@ -53,6 +55,7 @@ function SettingsModal({
       />
       <div className="modal-container-subheading">Style</div>
       <Select
+        disableTabIndex={disableTabIndex}
         className="modal-container-select"
         options={styleOptions}
         selectedOption={style}

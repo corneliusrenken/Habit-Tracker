@@ -22,6 +22,7 @@ body::-webkit-scrollbar{
   right: 0;
   height: 50px;
   -webkit-app-region: drag;
+  z-index: 5;
 }
 
 button, input {
