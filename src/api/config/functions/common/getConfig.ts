@@ -1,4 +1,4 @@
-import { readFile } from 'fs/promises';
+import { readFile } from 'atomically';
 import { Config, configPath } from '../../defaultConfig';
 
 export default async function getConfig(): Promise<Config> {

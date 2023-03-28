@@ -54,15 +54,15 @@ export default function App({ setConfig }: Props) {
   // for development
   // for development
   // for development
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      if (document.activeElement !== document.querySelector('body')) {
-        console.log('focused element', document.activeElement);
-      }
-    }, 500);
+  // useEffect(() => {
+  //   const intervalId = setInterval(() => {
+  //     if (document.activeElement !== document.querySelector('body')) {
+  //       console.log('focused element', document.activeElement);
+  //     }
+  //   }, 500);
 
-    return () => clearInterval(intervalId);
-  }, []);
+  //   return () => clearInterval(intervalId);
+  // }, []);
 
   useEffect(() => {
     if (selectedIndex !== null) scrollSelectedIndexIntoView(selectedIndex);

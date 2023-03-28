@@ -2,8 +2,8 @@
 import {
   access,
   unlink,
-  copyFile,
 } from 'fs/promises';
+import { readFile, writeFile } from 'atomically';
 import { join } from 'path';
 import { closeDatabase, setDatabaseIpcHandlers } from '../../../database';
 import { openDatabase } from '../../../database/functions';
@@ -23,7 +23,7 @@ export default async function moveDatabase(oldConfig: Config, newConfig: Config)
   // need to close database so changes are written to disk
   closeDatabase();
 
-  await copyFile(oldDatabaseFilePath, newDatabaseFilePath);
+  await writeFile(newDatabaseFilePath, await readFile(oldDatabaseFilePath));
 
   const database = openDatabase(newDatabaseFilePath);
   setDatabaseIpcHandlers(database);

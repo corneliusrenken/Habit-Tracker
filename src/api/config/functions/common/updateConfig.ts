@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
-import { writeFile, access } from 'fs/promises';
+import { access } from 'fs/promises';
+import { writeFile } from 'atomically';
 import { join } from 'path';
 import getConfig from './getConfig';
 import { Config, configPath } from '../../defaultConfig';

@@ -1,4 +1,4 @@
-import { writeFile } from 'fs/promises';
+import { writeFile } from 'atomically';
 import defaultConfig, { configPath } from '../../defaultConfig';
 
 export default async function initializeConfig() {
