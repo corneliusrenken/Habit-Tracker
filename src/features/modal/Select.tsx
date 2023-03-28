@@ -3,6 +3,7 @@ import React from 'react';
 type Props<T> = {
   className?: string;
   options: T[];
+  disableTabIndex?: boolean;
   selectedOption: T;
   setSelectedOption: (option: T) => void;
 };
@@ -10,6 +11,7 @@ type Props<T> = {
 export default function Select<T extends string>({
   className,
   options,
+  disableTabIndex,
   selectedOption,
   setSelectedOption,
 }: Props<T>) {
@@ -26,7 +28,7 @@ export default function Select<T extends string>({
 
         return (
           <button
-            tabIndex={option === selectedOption ? -1 : undefined}
+            tabIndex={disableTabIndex || option === selectedOption ? -1 : undefined}
             className={buttonClassName}
             type="button"
             key={option}
@@ -42,4 +44,5 @@ export default function Select<T extends string>({
 
 Select.defaultProps = {
   className: undefined,
+  disableTabIndex: undefined,
 };

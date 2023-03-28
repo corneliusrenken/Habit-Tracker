@@ -3,3 +3,4 @@
 2: masks
 3: occurrences, days, dates, scrollbar
 4: modal
+5: draggable window bar

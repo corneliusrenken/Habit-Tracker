@@ -11,7 +11,6 @@ import useMemoizedSelectionListItemConstructors from './useMemoizedSelectionList
 
 type Props = {
   ignoreMouse: boolean;
-  disableTabIndex: boolean;
   dateObject: DateObject;
   occurrenceData: OccurrenceData;
   habits: Habit[];
@@ -31,7 +30,6 @@ type Props = {
 
 export default function SelectionList({
   ignoreMouse,
-  disableTabIndex,
   dateObject,
   occurrenceData,
   habits,
@@ -50,7 +48,6 @@ export default function SelectionList({
 }: Props) {
   const elementConstructors = useMemoizedSelectionListItemConstructors({
     ignoreMouse,
-    disableTabIndex,
     dateObject,
     occurrenceData,
     habits,
@@ -64,6 +61,7 @@ export default function SelectionList({
     deleteHabit,
     updateHabitName,
     updateOccurrenceVisibility,
+
   });
 
   return (

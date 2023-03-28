@@ -70,7 +70,7 @@
 
       margin: 0 variables.$universal-margin;
       margin-top: variables.$vertical-margin-5;
-      margin-bottom: variables.$vertical-margin-2;
+      margin-bottom: variables.$vertical-margin-1;
 
       b {
         @include fonts.main-bold;
@@ -82,7 +82,7 @@
       color: theme.$secondary;
 
       margin: 0 variables.$universal-margin;
-      margin-bottom: variables.$vertical-margin-2;
+      margin-bottom: variables.$vertical-margin-3;
     }
 
     &-subheading {
@@ -119,8 +119,12 @@
         }
 
         &:not(:disabled) {
-          &:hover {
+          &:focus {
             background-color: theme.$background-active;
+          }
+
+          &:hover {
+            background-color: theme.$background-active-hover;
           }
 
           &:active {

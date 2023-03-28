@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
 
 type Props = {
@@ -20,13 +18,15 @@ export default function HabitListItem({
   if (selected) containerClassName += ' selected';
 
   return (
-    <div
+    <button
+      type="button"
+      tabIndex={-1}
       className={containerClassName}
       onClick={toggleCompleted}
       onMouseEnter={ignoreMouse ? undefined : select}
     >
       <div className="list-item-name">{name}</div>
       <div className="list-item-streak">{streak}</div>
-    </div>
+    </button>
   );
 }

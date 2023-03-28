@@ -7,7 +7,6 @@ import createDeleteHabitModalGenerator from '../deleteHabitModal';
 
 type Props = {
   ignoreMouse: boolean;
-  disableTabIndex: boolean;
   habit: Habit;
   visible: boolean;
   move: React.MouseEventHandler<HTMLButtonElement>;
@@ -24,7 +23,6 @@ type Props = {
 
 export default function SelectionListItem({
   ignoreMouse,
-  disableTabIndex,
   habit,
   visible,
   move,
@@ -72,7 +70,6 @@ export default function SelectionListItem({
       />
       <IconButton
         icon="rename"
-        disableTabIndex={disableTabIndex}
         onMouseDown={() => {
           const onMouseUp = () => {
             setTimeout(() => { ignoreNextMouseUp.current = false; }, 0);
@@ -92,7 +89,6 @@ export default function SelectionListItem({
       />
       <IconButton
         icon="trash"
-        disableTabIndex={disableTabIndex}
         onClick={() => {
           const modalGenerator: ModalGenerator = createDeleteHabitModalGenerator(habit, {
             deleteHabit,
@@ -106,13 +102,11 @@ export default function SelectionListItem({
       <IconButton
         icon="move"
         className="list-item-icon-button"
-        disableTabIndex // never needs to be tabbed to
         onMouseDown={move}
         hidden={!selected}
       />
       <IconButton
         icon={visible ? 'visible' : 'hidden'}
-        disableTabIndex={disableTabIndex}
         className={`list-item-icon-button${!visible ? [' greyed-out'] : ''}`}
         onClick={toggleVisibility}
       />

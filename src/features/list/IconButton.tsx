@@ -4,7 +4,6 @@ import iconPaths from '../icon/iconPaths';
 
 type Props = {
   icon: keyof typeof iconPaths;
-  disableTabIndex: boolean;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   onMouseDown?: React.MouseEventHandler<HTMLButtonElement>;
   className?: string;
@@ -12,7 +11,7 @@ type Props = {
 };
 
 export default function IconButton({
-  icon, disableTabIndex, onClick, onMouseDown, className, hidden,
+  icon, onClick, onMouseDown, className, hidden,
 }: Props) {
   let buttonClassName = className || 'icon-button';
 
@@ -20,7 +19,7 @@ export default function IconButton({
 
   return (
     <button
-      tabIndex={disableTabIndex ? -1 : undefined}
+      tabIndex={-1}
       type="button"
       className={buttonClassName}
       onClick={onClick ? (e) => onClick(e) : undefined}
