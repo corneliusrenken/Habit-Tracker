@@ -61,7 +61,6 @@ export default function SelectionList({
     deleteHabit,
     updateHabitName,
     updateOccurrenceVisibility,
-
   });
 
   return (
