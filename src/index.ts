@@ -1,4 +1,5 @@
 import { app, BrowserWindow } from 'electron';
+import windowStateKeeper from 'electron-window-state';
 import { access } from 'fs/promises';
 import { setConfigIpcHandlers } from './api/config';
 import { configPath } from './api/config/defaultConfig';
@@ -18,10 +19,17 @@ if (require('electron-squirrel-startup')) {
 }
 
 const createWindow = (): void => {
+  const mainWindowState = windowStateKeeper({
+    defaultWidth: 1050,
+    defaultHeight: 700,
+  });
+
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    height: 700,
-    width: 1050,
+    x: mainWindowState.x,
+    y: mainWindowState.y,
+    width: mainWindowState.width,
+    height: mainWindowState.height,
     backgroundColor: '#1e1eFF', // set to be theme background later
     webPreferences: {
       preload: MAIN_WINDOW_PRELOAD_WEBPACK_ENTRY,
@@ -37,6 +45,8 @@ const createWindow = (): void => {
 
   // Open the DevTools.
   mainWindow.webContents.openDevTools();
+
+  mainWindowState.manage(mainWindow);
 };
 
 // Quit when all windows are closed, except on macOS. There, it's common
