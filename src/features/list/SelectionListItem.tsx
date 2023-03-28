@@ -101,7 +101,7 @@ export default function SelectionListItem({
       />
       <IconButton
         icon="move"
-        className="list-item-icon-button"
+        className="list-item-icon-button move-icon"
         onMouseDown={move}
         hidden={!selected}
       />
