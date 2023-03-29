@@ -1,4 +1,5 @@
 import { ipcMain } from 'electron';
+import { ParametersExceptFirst } from '../helpers/ParametersExceptFirst';
 import {
   chooseDirectoryPath,
   getConfig,
@@ -14,26 +15,32 @@ const channelFunctions = {
 const channels = Object.keys(channelFunctions) as (keyof typeof channelFunctions)[];
 
 type ApiParameters = {
-  [key in keyof typeof channelFunctions]: Parameters<typeof channelFunctions[key]>;
+  [key in keyof typeof channelFunctions]: ParametersExceptFirst<typeof channelFunctions[key]>;
 };
 
-export type ConfigApi = typeof channelFunctions;
+type ApiReturnTypes = {
+  [key in keyof ApiParameters]: Promise<ReturnType<typeof channelFunctions[key]>>;
+};
+
+export type ConfigApi = {
+  [key in keyof ApiParameters]: (...args: ApiParameters[key]) =>ApiReturnTypes[key];
+};
 
 export function setConfigIpcHandlers() {
   channels.forEach((channel) => {
     if (channel === 'update-config') {
       ipcMain.handle(channel, (e, ...args: ApiParameters[typeof channel]) => (
-        channelFunctions[channel](...args)
+        channelFunctions[channel](e, ...args)
+      ));
+    }
+    if (channel === 'get-config') {
+      ipcMain.handle(channel, () => (
+        channelFunctions[channel]()
       ));
     }
     if (channel === 'choose-directory-path') {
       ipcMain.handle(channel, (e, ...args: ApiParameters[typeof channel]) => (
-        channelFunctions[channel](...args)
-      ));
-    }
-    if (channel === 'get-config') {
-      ipcMain.handle(channel, (e, ...args: ApiParameters[typeof channel]) => (
-        channelFunctions[channel](...args)
+        channelFunctions[channel](e, ...args)
       ));
     }
   });

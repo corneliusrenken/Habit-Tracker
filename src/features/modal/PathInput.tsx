@@ -17,10 +17,13 @@ export default function PathInput({
   const [dialogWindowOpen, setDialogWindowOpen] = React.useState(false);
   const classNamePrefix = className || 'path-input';
 
+  let buttonClassName = classNamePrefix;
+  if (dialogWindowOpen) buttonClassName += ' dialog-open';
+
   return (
     <button
       type="button"
-      className={classNamePrefix}
+      className={buttonClassName}
       tabIndex={disableTabIndex ? -1 : undefined}
       onClick={dialogWindowOpen ? undefined : async () => {
         setDialogWindowOpen(true);
