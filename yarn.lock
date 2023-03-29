@@ -1929,6 +1929,14 @@ at-least-node@^1.0.0:
   resolved "https://registry.yarnpkg.com/at-least-node/-/at-least-node-1.0.0.tgz#602cd4b46e844ad4effc92a8011a3c46e0238dc2"
   integrity sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==
 
+atomically@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/atomically/-/atomically-2.0.1.tgz#a9f1775340ced8db6ecf88160df9a0393fdd0055"
+  integrity sha512-sxBhVZUFBFhqSAsYMM3X2oaUi2NVDJ8U026FsIusM8gYXls9AYs/eXzgGrufs1Qjpkxi9zunds+75QUFz+m7UQ==
+  dependencies:
+    stubborn-fs "^1.2.4"
+    when-exit "^2.0.0"
+
 author-regex@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/author-regex/-/author-regex-1.0.0.tgz#d08885be6b9bbf9439fe087c76287245f0a81450"
@@ -7413,6 +7421,11 @@ strip-outer@^1.0.1:
   dependencies:
     escape-string-regexp "^1.0.2"
 
+stubborn-fs@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/stubborn-fs/-/stubborn-fs-1.2.4.tgz#7b03f0e8c57272d86cbed0bdbd6d6b75dbd8f2e9"
+  integrity sha512-KRa4nIRJ8q6uApQbPwYZVhOof8979fw4xbajBWa5kPJFa4nyY3aFaMWVyIVCDnkNCCG/3HLipUZ4QaNlYsmX1w==
+
 style-loader@^3.0.0:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/style-loader/-/style-loader-3.3.1.tgz#057dfa6b3d4d7c7064462830f9113ed417d38575"
@@ -8053,6 +8066,11 @@ whatwg-url@^5.0.0:
   dependencies:
     tr46 "~0.0.3"
     webidl-conversions "^3.0.0"
+
+when-exit@^2.0.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/when-exit/-/when-exit-2.1.0.tgz#0f7b5d7d5f00ea2c4b131b546c444cca2c4ffba7"
+  integrity sha512-H85ulNwUBU1e6PGxkWUDgxnbohSXD++ah6Xw1VHAN7CtypcbZaC4aYjQ+C2PMVaDkURDuOinNAT+Lnz3utWXxQ==
 
 which-boxed-primitive@^1.0.2:
   version "1.0.2"

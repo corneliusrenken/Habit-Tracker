@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { join } from 'path';
-import { unlink } from 'fs/promises';
+import { unlink, readFile } from 'fs/promises';
 import { getConfig } from '../../config/functions';
 import openDatabase from '../../database/functions/common/openDatabase';
 import createTables from '../../database/functions/common/createTables';
@@ -17,7 +17,10 @@ export default async function initializeDatabase(seed = false) {
   const databaseFilePath = join(databaseDirectoryPath, _databaseFileName);
 
   if (seed) {
-    await unlink(databaseFilePath);
+    try {
+      await readFile(databaseFilePath);
+      await unlink(databaseFilePath);
+    } catch { /* nothing */ }
   }
 
   const database = openDatabase(databaseFilePath);
