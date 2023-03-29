@@ -77,7 +77,7 @@ export default function Layout({
 
   const layoutRef = React.useRef<HTMLDivElement>(null);
   const scrollRef = React.useRef<HTMLDivElement>(null);
-  const initialRender = React.useRef(true);
+  const initialRender = React.useRef(true); // used to disable css animations until view type change
 
   useEffect(() => {
     const onScroll = () => {
@@ -120,13 +120,13 @@ export default function Layout({
       || (nextView.name === displayedView.name)
     ) return; // if no change in view, do nothing
 
-    initialRender.current = false;
-
     const displayedViewType = viewToViewType[displayedView.name];
     const nextViewType = viewToViewType[view.name];
 
     if (displayedViewType !== nextViewType) {
       if (!layoutRef.current || !scrollRef.current) throw new Error('Can\'t transition with refs not set');
+
+      initialRender.current = false;
 
       transition(
         displayedViewType,
