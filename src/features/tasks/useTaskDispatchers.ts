@@ -1,4 +1,5 @@
 import { useCallback } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import {
   addHabit,
   deleteHabit,
@@ -33,6 +34,11 @@ type States = {
   setConfig: React.Dispatch<React.SetStateAction<Config>>;
 };
 
+// Refactor TODO: create a custom hook that takes
+// - dispatcher, showBoundary, states
+// and returns
+// - the memoized version including error handling etc.
+
 export default function useDataQueries(states: States) {
   const {
     queue,
@@ -49,24 +55,35 @@ export default function useDataQueries(states: States) {
     setConfig,
   } = states;
 
+  const { showBoundary } = useErrorBoundary();
+
   const selectedDate = view.name === 'yesterday'
     ? dateObject.yesterday.dateString
     : dateObject.today.dateString;
 
   const addHabitMemo = useCallback((
     name: string,
-  ) => (
-    addHabit(name, dateObject.today.dateString, {
-      queue,
-      habits,
-      streaks,
-      occurrenceData,
-      setHabits,
-      setStreaks,
-      setOccurrenceData,
-      setSelectedIndex,
-    })
-  ), [
+  ) => {
+    try {
+      addHabit(name, dateObject.today.dateString, {
+        queue,
+        habits,
+        streaks,
+        occurrenceData,
+        setHabits,
+        setStreaks,
+        setOccurrenceData,
+        setSelectedIndex,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        showBoundary(error);
+      } else {
+        showBoundary(new Error('Unknown error in task dispatcher'));
+      }
+    }
+  }, [
+    showBoundary,
     dateObject.today.dateString,
     queue,
     habits,
@@ -80,17 +97,26 @@ export default function useDataQueries(states: States) {
 
   const deleteHabitMemo = useCallback((
     habitId: number,
-  ) => (
-    deleteHabit(habitId, {
-      queue,
-      habits,
-      setHabits,
-      setOccurrenceData,
-      setStreaks,
-      setSelectedIndex,
-      setInInput,
-    })
-  ), [
+  ) => {
+    try {
+      deleteHabit(habitId, {
+        queue,
+        habits,
+        setHabits,
+        setOccurrenceData,
+        setStreaks,
+        setSelectedIndex,
+        setInInput,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        showBoundary(error);
+      } else {
+        showBoundary(new Error('Unknown error in task dispatcher'));
+      }
+    }
+  }, [
+    showBoundary,
     queue,
     habits,
     setHabits,
@@ -103,15 +129,24 @@ export default function useDataQueries(states: States) {
   const updateHabitListPositionMemo = useCallback((
     habitId: number,
     newPosition: number,
-  ) => (
-    updateHabitListPosition(habitId, newPosition, {
-      queue,
-      setHabits,
-      setOccurrenceData,
-      setStreaks,
-      setSelectedIndex,
-    })
-  ), [
+  ) => {
+    try {
+      updateHabitListPosition(habitId, newPosition, {
+        queue,
+        setHabits,
+        setOccurrenceData,
+        setStreaks,
+        setSelectedIndex,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        showBoundary(error);
+      } else {
+        showBoundary(new Error('Unknown error in task dispatcher'));
+      }
+    }
+  }, [
+    showBoundary,
     queue,
     setHabits,
     setOccurrenceData,
@@ -122,15 +157,24 @@ export default function useDataQueries(states: States) {
   const updateHabitNameMemo = useCallback((
     habitId: number,
     newName: string,
-  ) => (
-    updateHabitName(habitId, newName, {
-      queue,
-      setHabits,
-      setOccurrenceData,
-      setStreaks,
-      setSelectedIndex,
-    })
-  ), [
+  ) => {
+    try {
+      updateHabitName(habitId, newName, {
+        queue,
+        setHabits,
+        setOccurrenceData,
+        setStreaks,
+        setSelectedIndex,
+      });
+    } catch (error) {
+      if (error instanceof Error) {
+        showBoundary(error);
+      } else {
+        showBoundary(new Error('Unknown error in task dispatcher'));
+      }
+    }
+  }, [
+    showBoundary,
     queue,
     setHabits,
     setOccurrenceData,
@@ -141,19 +185,28 @@ export default function useDataQueries(states: States) {
   const updateOccurrenceCompletedMemo = useCallback((
     habitId: number,
     complete: boolean,
-  ) => (
-    updateOccurrenceCompleted(
-      habitId,
-      complete,
-      selectedDate,
-      dateObject.today.dateString,
-      {
-        queue,
-        setOccurrenceData,
-        setStreaks,
-      },
-    )
-  ), [
+  ) => {
+    try {
+      updateOccurrenceCompleted(
+        habitId,
+        complete,
+        selectedDate,
+        dateObject.today.dateString,
+        {
+          queue,
+          setOccurrenceData,
+          setStreaks,
+        },
+      );
+    } catch (error) {
+      if (error instanceof Error) {
+        showBoundary(error);
+      } else {
+        showBoundary(new Error('Unknown error in task dispatcher'));
+      }
+    }
+  }, [
+    showBoundary,
     dateObject,
     selectedDate,
     queue,
@@ -164,20 +217,29 @@ export default function useDataQueries(states: States) {
   const updateOccurrenceVisibilityMemo = useCallback((
     habitId: number,
     visible: boolean,
-  ) => (
-    updateOccurrenceVisibility(
-      habitId,
-      visible,
-      selectedDate,
-      dateObject.today.dateString,
-      {
-        queue,
-        occurrenceData,
-        setStreaks,
-        setOccurrenceData,
-      },
-    )
-  ), [
+  ) => {
+    try {
+      updateOccurrenceVisibility(
+        habitId,
+        visible,
+        selectedDate,
+        dateObject.today.dateString,
+        {
+          queue,
+          occurrenceData,
+          setStreaks,
+          setOccurrenceData,
+        },
+      );
+    } catch (error) {
+      if (error instanceof Error) {
+        showBoundary(error);
+      } else {
+        showBoundary(new Error('Unknown error in task dispatcher'));
+      }
+    }
+  }, [
+    showBoundary,
     dateObject,
     selectedDate,
     queue,
@@ -188,12 +250,21 @@ export default function useDataQueries(states: States) {
 
   const updateConfigMemo = useCallback((
     updateData: Parameters<typeof window.electron['update-config']>[0],
-  ) => (
-    updateConfig(
-      updateData,
-      { queue, setConfig },
-    )
-  ), [
+  ) => {
+    try {
+      updateConfig(
+        updateData,
+        { queue, setConfig },
+      );
+    } catch (error) {
+      if (error instanceof Error) {
+        showBoundary(error);
+      } else {
+        showBoundary(new Error('Unknown error in task dispatcher'));
+      }
+    }
+  }, [
+    showBoundary,
     queue,
     setConfig,
   ]);

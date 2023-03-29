@@ -28,6 +28,8 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { ErrorBoundary } from 'react-error-boundary';
+import ErrorFallback from './features/errorFallback';
 import Initializer from './features/initializer';
 import './styles/index.scss';
 
@@ -38,10 +40,14 @@ const root = ReactDOM.createRoot(
 root.render(
   // <>
   //   <div className="draggable-area" />
-  //   <Initializer />
+  //   <ErrorBoundary FallbackComponent={ErrorFallback}>
+  //     <Initializer />
+  //   </ErrorBoundary>
   // </>,
   <React.StrictMode>
     <div className="draggable-area" />
-    <Initializer />
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <Initializer />
+    </ErrorBoundary>
   </React.StrictMode>,
 );

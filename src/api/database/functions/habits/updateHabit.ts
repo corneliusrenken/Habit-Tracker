@@ -19,7 +19,7 @@ export default function updateHabit(
   const habitPreUpdate = getHabitByIdStmt.get(habitId);
 
   if (habitPreUpdate === undefined) {
-    throw new Error('Error: No habit exists with this id');
+    throw new Error('No habit exists with this id');
   }
 
   if (('name' in updateData && habitPreUpdate.name === updateData.name)
@@ -37,7 +37,7 @@ export default function updateHabit(
   const habitCount = getHabitCountStmt.get().count;
 
   if (updateData.listPosition < 0 || updateData.listPosition >= habitCount) {
-    throw new Error('Error: List position is out of range. The value needs to inclusively be between 0 and the count of all habits - 1');
+    throw new Error('List position is out of range. The value needs to inclusively be between 0 and the count of all habits - 1');
   }
 
   // can't be 0 as that would've been caught by the above if statement

@@ -6,6 +6,7 @@ import {
 } from '../../globalTypes';
 
 type States = {
+  showBoundary: (error: any) => void;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
   setOccurrenceData: React.Dispatch<React.SetStateAction<OccurrenceData>>;
@@ -16,11 +17,17 @@ type States = {
 /**
  * @param date YYYY-MM-DD
  */
-export default async function initialize(date: string, states: States) {
-  const {
-    setSelectedIndex, setHabits, setOccurrenceData, setStreaks, setView,
-  } = states;
-
+export default async function initialize(
+  date: string,
+  {
+    showBoundary,
+    setSelectedIndex,
+    setHabits,
+    setOccurrenceData,
+    setStreaks,
+    setView,
+  }: States,
+) {
   try {
     const {
       habits,
@@ -41,6 +48,10 @@ export default async function initialize(date: string, states: States) {
     });
     setStreaks(streaks);
   } catch (error) {
-    throw new Error('Failed to initialize application');
+    if (error instanceof Error) {
+      showBoundary(error);
+    } else {
+      showBoundary(new Error('Failed to initialize application'));
+    }
   }
 }

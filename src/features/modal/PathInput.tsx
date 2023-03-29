@@ -1,4 +1,5 @@
 import React = require('react');
+import { useErrorBoundary } from 'react-error-boundary';
 import Icon from '../icon';
 
 type Props = {
@@ -17,6 +18,8 @@ export default function PathInput({
   const [dialogWindowOpen, setDialogWindowOpen] = React.useState(false);
   const classNamePrefix = className || 'path-input';
 
+  const { showBoundary } = useErrorBoundary();
+
   let buttonClassName = classNamePrefix;
   if (dialogWindowOpen) buttonClassName += ' dialog-open';
 
@@ -27,10 +30,18 @@ export default function PathInput({
       tabIndex={disableTabIndex ? -1 : undefined}
       onClick={dialogWindowOpen ? undefined : async () => {
         setDialogWindowOpen(true);
-        const { filePath } = await window.electron['choose-directory-path']();
-        setDialogWindowOpen(false);
-        if (filePath) {
-          setPath(filePath);
+        try {
+          const { filePath } = await window.electron['choose-directory-path']();
+          setDialogWindowOpen(false);
+          if (filePath) {
+            setPath(filePath);
+          }
+        } catch (error) {
+          if (error instanceof Error) {
+            showBoundary(error);
+          } else {
+            showBoundary(new Error('Unknown error in task dispatcher'));
+          }
         }
       }}
     >

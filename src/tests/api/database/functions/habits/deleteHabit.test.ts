@@ -22,7 +22,7 @@ afterEach(() => {
 });
 
 test('throws an error if the habit to delete does not exist', () => {
-  expect(() => deleteHabit(db, { habitId: 1234 })).toThrow('Error: No habit exists with this id');
+  expect(() => deleteHabit(db, { habitId: 1234 })).toThrow('No habit exists with this id');
 });
 
 test('habit no longer exists in the database after being removed', () => {

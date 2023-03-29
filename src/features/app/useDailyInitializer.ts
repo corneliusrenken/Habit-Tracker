@@ -1,4 +1,5 @@
 import { useContext, useEffect, useRef } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import { Config } from '../../api/config/defaultConfig';
 import {
   DateObject,
@@ -29,6 +30,7 @@ type States = {
 function initializeAfterQueueFinishedRunning({
   queue,
   startWeekOn,
+  showBoundary,
   setDateObject,
   setSelectedIndex,
   setHabits,
@@ -38,6 +40,7 @@ function initializeAfterQueueFinishedRunning({
 }: {
   queue: TaskQueue;
   startWeekOn: Config['startWeekOn'];
+  showBoundary: (error: any) => void;
   setDateObject: React.Dispatch<React.SetStateAction<DateObject>>;
   setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
   setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
@@ -49,6 +52,7 @@ function initializeAfterQueueFinishedRunning({
     const newDateObject = getDateObject(startWeekOn);
     setDateObject(newDateObject);
     initialize(newDateObject.today.dateString, {
+      showBoundary,
       setSelectedIndex,
       setHabits,
       setOccurrenceData,
@@ -65,6 +69,7 @@ function initializeAfterQueueFinishedRunning({
       const newDateObject = getDateObject(startWeekOn);
       setDateObject(newDateObject);
       initialize(newDateObject.today.dateString, {
+        showBoundary,
         setSelectedIndex,
         setHabits,
         setOccurrenceData,
@@ -89,7 +94,9 @@ export default function useDailyInitializer({
   setStreaks,
   setView,
 }: States) {
+  const { showBoundary } = useErrorBoundary();
   const { startWeekOn } = useContext(ConfigContext);
+
   const lastUsedStartWeekOn = useRef(startWeekOn);
   const firstRender = useRef(true);
   const waitingOnReorderingListOrInInput = useRef(false);
@@ -102,6 +109,7 @@ export default function useDailyInitializer({
       initializeAfterQueueFinishedRunning({
         queue,
         startWeekOn,
+        showBoundary,
         setDateObject,
         setSelectedIndex,
         setHabits,
@@ -111,6 +119,7 @@ export default function useDailyInitializer({
       });
     }
   }, [
+    showBoundary,
     inInput,
     queue,
     startWeekOn,
@@ -136,6 +145,7 @@ export default function useDailyInitializer({
       initializeAfterQueueFinishedRunning({
         queue,
         startWeekOn,
+        showBoundary,
         setDateObject,
         setSelectedIndex,
         setHabits,
@@ -145,6 +155,7 @@ export default function useDailyInitializer({
       });
     }
   }, [
+    showBoundary,
     inInput,
     queue,
     startWeekOn,
@@ -163,6 +174,7 @@ export default function useDailyInitializer({
       firstRender.current = false;
 
       initialize(dateObject.today.dateString, {
+        showBoundary,
         setSelectedIndex,
         setHabits,
         setOccurrenceData,
@@ -171,6 +183,7 @@ export default function useDailyInitializer({
       });
     }
   }, [
+    showBoundary,
     dateObject.today.dateString,
     setHabits,
     setOccurrenceData,
@@ -190,6 +203,7 @@ export default function useDailyInitializer({
       initializeAfterQueueFinishedRunning({
         queue,
         startWeekOn,
+        showBoundary,
         setDateObject,
         setSelectedIndex,
         setHabits,
@@ -201,6 +215,7 @@ export default function useDailyInitializer({
 
     return cancelInterval;
   }, [
+    showBoundary,
     dateObject.today.dateString,
     inInput,
     queue,

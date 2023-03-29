@@ -12,7 +12,7 @@ export default function addHabit(database: Database, options: { name: string, da
   const getDayStmt = database.prepare('SELECT id FROM days WHERE date = ?');
   const day = getDayStmt.get(date);
   if (day === undefined) {
-    throw new Error('Error: No day entry exists with the passed date');
+    throw new Error('No day entry exists with the passed date');
   }
 
   const addHabitStmt = database.prepare(`

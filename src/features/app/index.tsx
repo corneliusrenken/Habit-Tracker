@@ -4,6 +4,7 @@ import React, {
   useRef,
   useState,
 } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import {
   Habit,
   ModalGenerator,
@@ -33,11 +34,10 @@ type Props = {
   setConfig: React.Dispatch<React.SetStateAction<Config>>;
 };
 
-const taskQueue = new TaskQueue();
-
 export default function App({ setConfig }: Props) {
+  const { showBoundary } = useErrorBoundary();
+  const queue = useRef(new TaskQueue(showBoundary)); // initializer ran every render, look into this
   const { startWeekOn } = useContext(ConfigContext);
-  const queue = useRef(taskQueue);
   const [dateObject, setDateObject] = useState(() => getDateObject(startWeekOn));
   const [view, setView] = useState<View>(() => ({ name: 'today' }));
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);

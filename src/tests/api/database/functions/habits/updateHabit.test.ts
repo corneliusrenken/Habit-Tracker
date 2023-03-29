@@ -29,8 +29,8 @@ test('doesn\'t throw when the changed value is the same as the original', () => 
 });
 
 test('throws an error if the habit to update does not exist', () => {
-  expect(() => updateHabit(db, { habitId: 1234, updateData: { name: 'new name' } })).toThrow('Error: No habit exists with this id');
-  expect(() => updateHabit(db, { habitId: 1234, updateData: { listPosition: 1 } })).toThrow('Error: No habit exists with this id');
+  expect(() => updateHabit(db, { habitId: 1234, updateData: { name: 'new name' } })).toThrow('No habit exists with this id');
+  expect(() => updateHabit(db, { habitId: 1234, updateData: { listPosition: 1 } })).toThrow('No habit exists with this id');
 });
 
 describe('updating name', () => {
@@ -66,8 +66,8 @@ describe('updating list position', () => {
   });
 
   test('throws an error if the new list position is out of range (less than 0 or greater than habit length - 1)', () => {
-    expect(() => updateHabit(db, { habitId: originalHabit.id, updateData: { listPosition: -1 } })).toThrow('Error: List position is out of range. The value needs to inclusively be between 0 and the count of all habits - 1');
-    expect(() => updateHabit(db, { habitId: originalHabit.id, updateData: { listPosition: 3 } })).toThrow('Error: List position is out of range. The value needs to inclusively be between 0 and the count of all habits - 1');
+    expect(() => updateHabit(db, { habitId: originalHabit.id, updateData: { listPosition: -1 } })).toThrow('List position is out of range. The value needs to inclusively be between 0 and the count of all habits - 1');
+    expect(() => updateHabit(db, { habitId: originalHabit.id, updateData: { listPosition: 3 } })).toThrow('List position is out of range. The value needs to inclusively be between 0 and the count of all habits - 1');
   });
 
   test('updates the habit\'s list position, and only the list position', () => {

@@ -21,7 +21,7 @@ const addDay = (date: string) => {
 };
 
 test('if the days table doesn\'t contain an entry with the date passed into the addHabit function, the function should throw an error', () => {
-  expect(() => addHabit(db, { name: 'exercise', date: '2023-01-17' })).toThrow('Error: No day entry exists with the passed date');
+  expect(() => addHabit(db, { name: 'exercise', date: '2023-01-17' })).toThrow('No day entry exists with the passed date');
 });
 
 test('adding a habit with a pre-existing name will throw an error', () => {

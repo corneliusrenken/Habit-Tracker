@@ -20,7 +20,7 @@ export default function deleteOccurrence(
   const occurrenceBeforeDeletion = getOccurrenceStmt.get(date, habitId);
 
   if (occurrenceBeforeDeletion === undefined) {
-    throw new Error('Error: No occurrence matches the given habit id / date');
+    throw new Error('No occurrence matches the given habit id / date');
   }
 
   const deleteOccurrenceStmt = database.prepare(`

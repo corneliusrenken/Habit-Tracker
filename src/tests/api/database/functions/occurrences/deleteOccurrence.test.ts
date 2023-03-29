@@ -25,8 +25,8 @@ afterEach(() => {
 });
 
 test('throws an error if the occurrence to delete does not exist', () => {
-  expect(() => deleteOccurrence(db, { habitId: 1234, date: '2023-01-19' })).toThrow('Error: No occurrence matches the given habit id / date');
-  expect(() => deleteOccurrence(db, { habitId: exerciseHabitId, date: '2023-01-20' })).toThrow('Error: No occurrence matches the given habit id / date');
+  expect(() => deleteOccurrence(db, { habitId: 1234, date: '2023-01-19' })).toThrow('No occurrence matches the given habit id / date');
+  expect(() => deleteOccurrence(db, { habitId: exerciseHabitId, date: '2023-01-20' })).toThrow('No occurrence matches the given habit id / date');
 });
 
 test('occurrence no longer exists in the database after being removed', () => {
