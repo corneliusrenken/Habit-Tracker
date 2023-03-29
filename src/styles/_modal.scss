@@ -42,6 +42,8 @@
     position: relative;
     z-index: 4;
 
+    -webkit-app-region: no-drag;
+
     .hidden & {
       position: absolute;
     }
