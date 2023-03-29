@@ -173,6 +173,11 @@
       &:active {
         background-color: theme.$background-active-press;
       }
+
+      &.dialog-open {
+        background-color: theme.$background-active-hover;
+        color: theme.$secondary;
+      }
     }
 
     &-select {
@@ -204,7 +209,7 @@
         }
 
         &.selected {
-          background-color: theme.$background-active-press;
+          background-color: theme.$background-active-hover;
         }
       }
     }

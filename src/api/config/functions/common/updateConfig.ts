@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+import { IpcMainInvokeEvent } from 'electron';
 import { access } from 'fs/promises';
 import { writeFile } from 'atomically';
 import { join } from 'path';
@@ -10,6 +11,7 @@ import NonUnderscored from '../../../helpers/NonUnderscored';
 import overwriteMutuallyDefinedValues from '../../../../features/common/overwriteMutuallyDefinedValues';
 
 export default async function updateConfig(
+  e: IpcMainInvokeEvent,
   updateData: MutuallyExclusiveUnion<Pick<Config, keyof NonUnderscored<Config>>>,
 ) {
   const oldConfig = await getConfig();

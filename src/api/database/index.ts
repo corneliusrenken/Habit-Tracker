@@ -6,6 +6,7 @@
 
 import { Database } from 'better-sqlite3';
 import { ipcMain } from 'electron';
+import { ParametersExceptFirst } from '../helpers/ParametersExceptFirst';
 import {
   initializeApp,
   addHabit,
@@ -15,10 +16,6 @@ import {
   deleteOccurrence,
   updateOccurrence,
 } from './functions';
-
-// https://stackoverflow.com/a/67605309
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type ParametersExceptFirst<F> = F extends (arg0: any, ...rest: infer R) => any ? R : never;
 
 const channelFunctions = {
   'initialize-app': initializeApp,
