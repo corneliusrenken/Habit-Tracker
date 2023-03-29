@@ -22,7 +22,10 @@ export default class TaskQueue {
   async #run() {
     const task = this.#queue.shift();
 
-    if (!task) throw new Error('trying to run a task but no more tasks exist');
+    if (!task) {
+      this.showErrorBoundery(new Error('trying to run a task but no more tasks exist'));
+      return;
+    }
 
     this.running = true;
 
