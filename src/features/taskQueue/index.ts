@@ -29,7 +29,11 @@ export default class TaskQueue {
     try {
       await task.operation(task.args);
     } catch (error) {
-      this.showErrorBoundery(new Error('Failed during task operation'));
+      if (error instanceof Error) {
+        this.showErrorBoundery(error);
+      } else {
+        this.showErrorBoundery(new Error('Failed during task operation'));
+      }
     }
 
     if (this.#queue.size) {
