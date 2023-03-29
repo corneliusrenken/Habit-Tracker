@@ -36,6 +36,10 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
+  // <>
+  //   <div className="draggable-area" />
+  //   <Initializer />
+  // </>,
   <React.StrictMode>
     <div className="draggable-area" />
     <Initializer />

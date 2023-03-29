@@ -49,6 +49,13 @@ export type DatabaseApi = {
 
 let lastDatabase: Database | null = null;
 
+export function getCurrentDatabaseConnection() {
+  if (!lastDatabase) {
+    throw new Error('Tried to get database before ever setting ipc handlers');
+  }
+  return lastDatabase;
+}
+
 export function setDatabaseIpcHandlers(database: Database) {
   lastDatabase = database;
 
@@ -91,11 +98,4 @@ export function setDatabaseIpcHandlers(database: Database) {
       ));
     }
   });
-}
-
-export function closeDatabase() {
-  if (!lastDatabase) {
-    throw new Error('Tried to close database before ever setting ipc handlers');
-  }
-  if (lastDatabase) lastDatabase.close();
 }

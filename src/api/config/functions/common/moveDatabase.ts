@@ -3,9 +3,8 @@ import {
   access,
   unlink,
 } from 'fs/promises';
-import { readFile, writeFile } from 'atomically';
 import { join } from 'path';
-import { closeDatabase, setDatabaseIpcHandlers } from '../../../database';
+import { getCurrentDatabaseConnection, setDatabaseIpcHandlers } from '../../../database';
 import { openDatabase } from '../../../database/functions';
 import { Config } from '../../defaultConfig';
 
@@ -20,13 +19,17 @@ export default async function moveDatabase(oldConfig: Config, newConfig: Config)
     newConfig._databaseFileName,
   );
 
-  // need to close database so changes are written to disk
-  closeDatabase();
+  const currentDatabase = getCurrentDatabaseConnection();
 
-  await writeFile(newDatabaseFilePath, await readFile(oldDatabaseFilePath));
+  // using copyFile, renameFile, or readFile/writeFile caused the database to not copy correctly,
+  // backup seems to work (creates a copy of the db)
+  await currentDatabase.backup(newDatabaseFilePath);
 
-  const database = openDatabase(newDatabaseFilePath);
-  setDatabaseIpcHandlers(database);
+  currentDatabase.close();
+
+  const newDatabase = openDatabase(newDatabaseFilePath);
+
+  setDatabaseIpcHandlers(newDatabase);
 
   await unlink(oldDatabaseFilePath);
 
@@ -34,23 +37,13 @@ export default async function moveDatabase(oldConfig: Config, newConfig: Config)
   const walFilePath = `${oldDatabaseFilePath}-wal`;
   const shmFilePath = `${oldDatabaseFilePath}-shm`;
 
-  let walFileExists = false;
-  let shmFileExists = false;
-
   try {
     await access(walFilePath);
-    walFileExists = true;
+    await unlink(walFilePath);
   } catch { /* nothing */ }
 
   try {
     await access(shmFilePath);
-    shmFileExists = true;
-  } catch { /* nothing */ }
-
-  if (walFileExists) {
-    await unlink(walFilePath);
-  }
-  if (shmFileExists) {
     await unlink(shmFilePath);
-  }
+  } catch { /* nothing */ }
 }
