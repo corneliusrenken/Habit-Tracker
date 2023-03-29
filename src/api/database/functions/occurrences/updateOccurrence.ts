@@ -30,7 +30,7 @@ export default function updateOccurrence(
   } | undefined = getOccurrenceStmt.get(habitId, date);
 
   if (occurrencePreUpdate === undefined) {
-    throw new Error('Error: No occurrence matches the given habit id / date');
+    throw new Error('No occurrence matches the given habit id / date');
   }
 
   if (('visible' in updateData && occurrencePreUpdate.visible === Number(updateData.visible))

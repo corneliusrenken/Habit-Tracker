@@ -10,7 +10,7 @@ export default function deleteHabit(database: Database, options: { habitId: numb
   const habitToDelete = getHabitByIdStmt.get(habitId);
 
   if (habitToDelete === undefined) {
-    throw new Error('Error: No habit exists with this id');
+    throw new Error('No habit exists with this id');
   }
 
   const deleteHabitStmt = database.prepare('DELETE FROM habits WHERE id = ?');
