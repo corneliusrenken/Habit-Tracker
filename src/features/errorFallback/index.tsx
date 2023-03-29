@@ -7,9 +7,14 @@ export default function ErrorFallback({
 }: FallbackProps) {
   return (
     <div className="error-fallback">
-      <div>Error</div>
-      {error instanceof Error && <div>{error.message}</div>}
-      <button type="button" onClick={resetErrorBoundary}>Reload app</button>
+      <div className="container">
+        <div className="title">Error</div>
+        {(error instanceof Error
+          ? <div className="error-message">{error.message}</div>
+          : <div className="error-message">Unknown error</div>
+        )}
+        <button type="button" onClick={resetErrorBoundary} className="reload-button">Reload app</button>
+      </div>
     </div>
   );
 }
