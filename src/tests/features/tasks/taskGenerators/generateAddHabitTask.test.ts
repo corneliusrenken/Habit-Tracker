@@ -13,13 +13,15 @@ let streaksState: PseudoUseState<Streaks>;
 let occurrenceDataState: PseudoUseState<OccurrenceData>;
 let selectedIndexState: PseudoUseState<number | null>;
 
+const errorHandlerMock = jest.fn();
+
 beforeEach(() => {
   window.electron = {
     ...window.electron,
     'add-habit': jest.fn(async ({ name }) => ({ id: 999, name })),
   };
 
-  queue = new TaskQueue();
+  queue = new TaskQueue(errorHandlerMock);
 
   habitState = new PseudoUseState<Habit[]>([
     { id: 1, name: 'exercise' },

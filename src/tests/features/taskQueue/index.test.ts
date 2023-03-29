@@ -4,8 +4,10 @@ let queue: TaskQueue;
 
 const sleep = (ms: number) => new Promise((resolve) => { setTimeout(resolve, ms); });
 
+const errorHandlerMock = jest.fn();
+
 beforeEach(() => {
-  queue = new TaskQueue();
+  queue = new TaskQueue(errorHandlerMock);
 });
 
 test('enqueue adds a task to the queue and runs the task if no other tasks are currently running', () => {

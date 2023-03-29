@@ -19,7 +19,7 @@ type ApiParameters = {
 };
 
 type ApiReturnTypes = {
-  [key in keyof ApiParameters]: Promise<ReturnType<typeof channelFunctions[key]>>;
+  [key in keyof ApiParameters]: ReturnType<typeof channelFunctions[key]>;
 };
 
 export type ConfigApi = {
