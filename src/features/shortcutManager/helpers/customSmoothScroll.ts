@@ -19,12 +19,16 @@ export default function customSmoothScroll(
   }
 
   function animate(cookie: number) {
-    if (!activeScrollInfo) return; // return if scroll was cancelled
-    if (activeScrollInfo?.cookie !== cookie) return; // return if new scroll started
+    if (!activeScrollInfo) return;
+    if (activeScrollInfo?.cookie !== cookie) return;
 
     const { lastY } = activeScrollInfo;
 
-    if (window.scrollY !== lastY) return; // cancel scroll if user has scrolled during animation
+    // cancel scroll if user has scrolled during animation
+    if (window.scrollY !== lastY) {
+      activeScrollInfo = null;
+      return;
+    }
 
     const currentTime = performance.now();
     const elapsed = currentTime - startTime;

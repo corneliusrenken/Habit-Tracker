@@ -44,7 +44,7 @@ export default function scrollSelectedIndexIntoView(selectedIndex: number) {
     scrollAmount = selectedItemBounds.bottom - listBounds.bottom;
   }
 
-  const speed = interpolateTValueClamped(scrollAmount, 100, 300, 75, 200);
+  const speed = interpolateTValueClamped(Math.abs(scrollAmount), 100, 300, 75, 200);
 
   if (scrollAmount !== 0) {
     customSmoothScroll(
