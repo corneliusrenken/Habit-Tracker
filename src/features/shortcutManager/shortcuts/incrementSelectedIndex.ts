@@ -1,4 +1,5 @@
 import { Habit, View } from '../../../globalTypes';
+import scrollSelectedIndexIntoView from '../helpers/scrollSelectedIndexIntoView';
 
 type States = {
   view: View;
@@ -40,6 +41,9 @@ export default function incrementSelectedIndex(
       setInInput(false);
     }
 
+    if (newIndex !== null) {
+      scrollSelectedIndexIntoView(newIndex);
+    }
     return newIndex;
   });
 }
