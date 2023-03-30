@@ -1,12 +1,6 @@
 type BezierCurve = { x1: number, y1: number, x2: number, y2: number };
 
-let activeScrollInfo: null | {
-  start: number,
-  target: number,
-  direction: 1 | -1,
-  startTime: number,
-  lastY: number,
-} = null;
+let activeScrollInfo: null | { lastY: number, cookie: number };
 
 export default function customSmoothScroll(
   y: number,
@@ -14,34 +8,21 @@ export default function customSmoothScroll(
   refreshRate: number,
   curve: BezierCurve,
 ) {
-  if (activeScrollInfo?.target === y) return;
+  const startTime = performance.now();
+  const startY = window.scrollY;
 
-  const isActive = activeScrollInfo !== null;
-
-  const currentY = window.scrollY;
-  const direction = y - currentY > 0 ? 1 : -1;
-
-  activeScrollInfo = {
-    start: currentY,
-    target: y,
-    direction,
-    startTime: performance.now(),
-    lastY: currentY,
-  };
-
-  if (isActive) return;
+  activeScrollInfo = { lastY: startY, cookie: Math.random() };
 
   function ease(t: number): number {
     const { y1, y2 } = curve;
     return 3 * (1 - t) ** 2 * t * y1 + 3 * (1 - t) * t ** 2 * y2 + t ** 3;
   }
 
-  function animate() {
-    if (activeScrollInfo === null) return;
+  function animate(cookie: number) {
+    if (!activeScrollInfo) return; // return if scroll was cancelled
+    if (activeScrollInfo?.cookie !== cookie) return; // return if new scroll started
 
-    const {
-      start, target, startTime, lastY,
-    } = activeScrollInfo;
+    const { lastY } = activeScrollInfo;
 
     if (window.scrollY !== lastY) return; // cancel scroll if user has scrolled during animation
 
@@ -50,16 +31,16 @@ export default function customSmoothScroll(
 
     const t = Math.min(1, elapsed / duration);
 
-    const changeY = target - start;
-    const newY = Math.round(start + changeY * ease(t));
+    const changeY = y - startY;
+    const newY = Math.round(startY + changeY * ease(t));
     window.scrollTo({ top: newY });
     activeScrollInfo.lastY = newY;
     if (t < 1) {
-      setTimeout(animate, refreshRate);
+      setTimeout(() => animate(cookie), refreshRate);
     } else {
       activeScrollInfo = null;
     }
   }
 
-  animate();
+  animate(activeScrollInfo.cookie);
 }
