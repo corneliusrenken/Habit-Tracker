@@ -49,6 +49,13 @@ export default function App({ setConfig }: Props) {
   const [streaks, setStreaks] = useState<Streaks>({});
   const [ignoreMouse, setIgnoreMouse] = useState(true);
 
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     if (view.name === 'today') setView({ name: 'selection' });
+  //     else setView({ name: 'today' });
+  //   }, 600);
+  // }, [view]);
+
   // for development
   // for development
   // for development

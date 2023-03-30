@@ -2,7 +2,9 @@
 @use 'theme';
 @use 'variables';
 
-$list-outer-margin: 21px;
+$selector-padding: 15px;
+$list-content-padding: 21px;
+$icon-width: 42px; // 42 to align icons with dates
 
 .list {
   transition: opacity 600ms;
@@ -22,15 +24,21 @@ $list-outer-margin: 21px;
       color: theme.$tertiary;
     }
 
-    transition: width 200ms;
+    &.selected {
+      transition: width 400ms;
+    }
 
     &.being-renamed {
-      width: 500px; // normal width + 3 icons out of bounds
+      width: calc(350px + 3 * $icon-width + 3 * variables.$universal-margin);
     }
 
     &-name, &-error, &-rename-form, &-create-form, &-placeholder, &-streak {
       position: relative; // needs explicit position value to render over ::before element
       line-height: 38px; // needed to center text properly
+    }
+
+    &-rename-form, &-create-form {
+      line-height: 26px; // slightly smaller looks better when highlighting
     }
 
     &-name, &-error, &-rename-form, &-create-form, &-placeholder {
@@ -41,11 +49,11 @@ $list-outer-margin: 21px;
     }
 
     &-name, &-error, &-rename-form, &-create-form, &-placeholder {
-      margin-left: $list-outer-margin;
+      margin-left: $list-content-padding;
     }
 
     &-create-form, &-placeholder, &-streak {
-      margin-right: $list-outer-margin;
+      margin-right: $list-content-padding;
     }
 
     &-placeholder { // different than ::placeholder element, used in create habit form
@@ -68,26 +76,23 @@ $list-outer-margin: 21px;
       content: '';
       position: absolute;
       height: 38px;
-      left: calc(20px - variables.$universal-margin);
-      width: calc(350px - 2 * $list-outer-margin + 2 * variables.$universal-margin);
+      left: calc($list-content-padding - $selector-padding);
+      width: calc(350px - 2 * $list-content-padding + 2 * $selector-padding);
       border-radius: variables.$border-radius;
       background-color: theme.$background-active;
     }
 
     &-icon-button {
       position: relative; // needs explicit position value to render over ::before element
-      $icon-size: 38px;
-      min-width: $icon-size;
-      height: $icon-size;
-
-      margin: 0 calc((50px - $icon-size - 8px) / 2);
+      height: 38px;
+      min-width: $icon-width;
 
       display: flex;
       justify-content: center;
       align-items: center;
 
       &:last-of-type {
-        margin-right: calc((50px - $icon-size) / 2);
+        margin-right: calc((50px - $icon-width) / 2);
       }
 
       &.greyed-out, .being-reordered &.move-icon {
@@ -98,10 +103,26 @@ $list-outer-margin: 21px;
         display: none;
       }
 
-      transition: opacity 300ms;
+      .selected & {
+        transition: opacity 300ms;
 
-      .being-renamed &:not(.rename-icon) {
-        opacity: 0;
+        @for $index from 0 through 3 {
+          &:nth-of-type(#{1 + $index}) {
+            transition-delay: $index * 75ms;
+          }
+        }
+      }
+
+      .being-renamed & {
+        @for $index from 0 through 3 {
+          &:nth-of-type(#{4 - $index}) {
+            transition-delay: $index * 50ms;
+          }
+        }
+
+        &:not(.rename-icon) {
+          opacity: 0;
+        }
       }
     }
   }
