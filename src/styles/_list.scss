@@ -22,6 +22,12 @@ $list-outer-margin: 21px;
       color: theme.$tertiary;
     }
 
+    transition: width 200ms;
+
+    &.being-renamed {
+      width: 500px; // normal width + 3 icons out of bounds
+    }
+
     &-name, &-error, &-rename-form, &-create-form, &-placeholder, &-streak {
       position: relative; // needs explicit position value to render over ::before element
       line-height: 38px; // needed to center text properly
@@ -63,7 +69,7 @@ $list-outer-margin: 21px;
       position: absolute;
       height: 38px;
       left: calc(20px - variables.$universal-margin);
-      width: calc(100% - 2 * $list-outer-margin + 2 * variables.$universal-margin);
+      width: calc(350px - 2 * $list-outer-margin + 2 * variables.$universal-margin);
       border-radius: variables.$border-radius;
       background-color: theme.$background-active;
     }
@@ -90,6 +96,12 @@ $list-outer-margin: 21px;
 
       &.hidden {
         display: none;
+      }
+
+      transition: opacity 300ms;
+
+      .being-renamed &:not(.rename-icon) {
+        opacity: 0;
       }
     }
   }
