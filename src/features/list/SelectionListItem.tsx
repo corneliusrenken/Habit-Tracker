@@ -42,6 +42,7 @@ export default function SelectionListItem({
 
   let containerClassName = 'list-item';
   if (selected) containerClassName += ' selected';
+  if (beingRenamed) containerClassName += ' being-renamed';
 
   return (
     <div className={containerClassName} onMouseEnter={ignoreMouse ? undefined : select}>
@@ -84,7 +85,7 @@ export default function SelectionListItem({
         onClick={() => {
           if (!inInput && !ignoreNextMouseUp.current) setInInput(true);
         }}
-        className={`list-item-icon-button${beingRenamed ? ' greyed-out' : ''}`}
+        className={`list-item-icon-button rename-icon${beingRenamed ? ' greyed-out' : ''}`}
         hidden={!selected}
       />
       <IconButton
