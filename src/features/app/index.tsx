@@ -24,7 +24,6 @@ import Days from '../days';
 import Dates from '../dates';
 import List from '../list';
 import useSelectedData from '../selectedData/useSelectedData';
-// import scrollSelectedIndexIntoView from './scrollSelectedIndexIntoView';
 import { Config } from '../../api/config/defaultConfig';
 import ConfigContext from '../initializer/ConfigContext';
 import Icon from '../icon';
@@ -63,10 +62,6 @@ export default function App({ setConfig }: Props) {
 
   //   return () => clearInterval(intervalId);
   // }, []);
-
-  // useEffect(() => {
-  //   if (selectedIndex !== null) scrollSelectedIndexIntoView(selectedIndex);
-  // }, [selectedIndex]);
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
