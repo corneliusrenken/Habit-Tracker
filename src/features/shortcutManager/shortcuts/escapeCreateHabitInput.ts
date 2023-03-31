@@ -13,10 +13,10 @@ export default function escapeCreateHabitInput({
   setSelectedIndex,
 }: States) {
   setInInput(false);
+  scrollSelectedIndexIntoView(habits.length - 1, { behavior: 'instant' });
   if (habits.length === 0) {
     setSelectedIndex(null);
   } else {
     setSelectedIndex(habits.length - 1);
-    scrollSelectedIndexIntoView(habits.length - 1, { behavior: 'instant' });
   }
 }
