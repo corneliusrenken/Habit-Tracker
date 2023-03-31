@@ -28,12 +28,14 @@ import { Config } from '../../api/config/defaultConfig';
 import ConfigContext from '../initializer/ConfigContext';
 import Icon from '../icon';
 import createSettingsModalGenerator from '../settingsModal';
+import getLaunchAnimationTime from '../common/getLaunchAnimationTime';
 
 type Props = {
   setConfig: React.Dispatch<React.SetStateAction<Config>>;
 };
 
 export default function App({ setConfig }: Props) {
+  const [launchAnimationActive, setLaunchAnimationActive] = useState(true);
   const { showBoundary } = useErrorBoundary();
   const queue = useRef(new TaskQueue(showBoundary)); // initializer ran every render, look into this
   const { startWeekOn } = useContext(ConfigContext);
@@ -48,6 +50,12 @@ export default function App({ setConfig }: Props) {
   const [occurrenceData, setOccurrenceData] = useState<OccurrenceData>({ dates: {}, oldest: {} });
   const [streaks, setStreaks] = useState<Streaks>({});
   const [ignoreMouse, setIgnoreMouse] = useState(true);
+
+  useEffect(() => {
+    const launchAnimationTime = getLaunchAnimationTime();
+    const postAnimationWait = 300;
+    setTimeout(() => setLaunchAnimationActive(false), launchAnimationTime + postAnimationWait);
+  }, []);
 
   // useEffect(() => {
   //   setTimeout(() => {
@@ -141,7 +149,7 @@ export default function App({ setConfig }: Props) {
     streaks,
   });
 
-  useShortcutManager({
+  useShortcutManager(launchAnimationActive, {
     setIgnoreMouse,
     dateObject,
     habits,
@@ -168,13 +176,15 @@ export default function App({ setConfig }: Props) {
 
   return (
     <>
+      {launchAnimationActive && <div className="mouse-blocker" style={{ position: 'fixed', inset: 0, zIndex: 5 }} />}
       <Modal
         modal={modal}
         setModal={setModal}
       />
       <Layout
+        launchAnimationActive={launchAnimationActive}
         setInTransition={setInTransition}
-        freezeScroll={modal !== undefined}
+        freezeScroll={launchAnimationActive || modal !== undefined}
         view={view}
         listHeight={(view.name === 'selection' ? selectedHabits.length + 1 : selectedHabits.length) * 50}
         occurrenceHeight={((selectedOccurrences.length - 7) / 7) * 50}

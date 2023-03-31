@@ -116,9 +116,9 @@ $transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin, 
       justify-content: center;
       align-items: center;
 
-      // color: theme.$tertiary;
-
-      transition: opacity 0.1s ease-in-out;
+      .launch-animation & {
+        opacity: 0;
+      }
     }
   }
 
@@ -146,4 +146,8 @@ $transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin, 
   z-index: 3;
   right: variables.$universal-margin;
   bottom: calc(100% - 100vh + variables.$universal-margin);
+
+  &.hidden {
+    display: none;
+  }
 }

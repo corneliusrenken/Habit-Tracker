@@ -6,6 +6,7 @@ import {
   OccurrenceData,
   Streaks,
 } from '../../globalTypes';
+import getLaunchAnimationDelays from './getLaunchAnimationDelays';
 import HabitListItem from './HabitListItem';
 
 type Props = {
@@ -49,6 +50,8 @@ export default function HabitList({
             selected={selected}
             select={() => setSelectedIndex(index)}
             toggleCompleted={() => updateOccurrenceCompleted(id, !completed)}
+            // don't really need this post launch but fine for now
+            style={{ '--launch-animation-offset': `${getLaunchAnimationDelays(habits.length)[index]}ms` } as React.CSSProperties}
           />
         );
       })}

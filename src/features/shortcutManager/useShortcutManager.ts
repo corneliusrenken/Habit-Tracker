@@ -41,7 +41,7 @@ type States = {
   updateConfig: (updateData: Parameters<typeof window.electron['update-config']>[0]) => void;
 };
 
-export default function useShortcutManager(states: States) {
+export default function useShortcutManager(disabled: boolean, states: States) {
   const onKeyDown = useCallback((e: KeyboardEvent) => {
     const {
       modal,
@@ -96,7 +96,9 @@ export default function useShortcutManager(states: States) {
   }, [states]);
 
   useEffect(() => {
+    if (disabled) return;
     window.addEventListener('keydown', onKeyDown);
+    // eslint-disable-next-line consistent-return
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [onKeyDown]);
+  }, [onKeyDown, disabled]);
 }

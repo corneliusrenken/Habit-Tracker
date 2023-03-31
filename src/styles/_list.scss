@@ -6,6 +6,26 @@ $selector-padding: 15px;
 $list-content-padding: 21px;
 $icon-width: 42px; // 42 to align icons with dates
 
+@keyframes list-launch-animation {
+  0% {
+    filter: blur(7px);
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@mixin list-launch {
+  opacity: 0;
+  animation-name: list-launch-animation;
+  // animation-duration: 0.5 * variables.$launch-animation-time;
+  animation-delay: var(--launch-animation-offset);
+  animation-duration: calc(variables.$launch-animation-time - var(--launch-animation-offset) * 1.1);
+  animation-timing-function: cubic-bezier(.47,.14,.58,.79);
+  animation-fill-mode: forwards;
+}
+
 .list {
   transition: opacity 600ms;
 
@@ -19,6 +39,10 @@ $icon-width: 42px; // 42 to align icons with dates
     display: flex;
     align-items: center;
     gap: variables.$universal-margin;
+
+    .launch-animation & {
+      @include list-launch;
+    }
 
     &.complete {
       color: theme.$tertiary;
@@ -72,7 +96,7 @@ $icon-width: 42px; // 42 to align icons with dates
       color: theme.$error;
     }
 
-    &.selected::before { // list item selector
+    &.selected:before { // list item selector
       content: '';
       position: absolute;
       height: 38px;
@@ -80,6 +104,10 @@ $icon-width: 42px; // 42 to align icons with dates
       width: calc(350px - 2 * $list-content-padding + 2 * $selector-padding);
       border-radius: variables.$border-radius;
       background-color: theme.$background-active;
+    }
+
+    .launch-animation &.selected:before {
+      display: none;
     }
 
     &-icon-button {

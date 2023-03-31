@@ -1,3 +1,9 @@
+$launch-animation-time: 1900ms;
+
+:root {
+  --launch-animation-time: #{$launch-animation-time};
+}
+
 $universal-margin: 8px;
 $border-radius: 6px;
 // $vertical-margin-section: 40px;
