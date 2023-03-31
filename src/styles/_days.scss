@@ -2,19 +2,9 @@
 @use 'theme';
 @use 'variables';
 
-@keyframes day-launch-animation {
-  0% {
-    filter: blur(7px);
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
 @mixin day-launch {
   opacity: 0;
-  animation-name: day-launch-animation;
+  animation-name: launch-animation;
   $delay: 200ms;
   animation-delay: $delay;
   animation-duration: variables.$launch-animation-time - $delay;

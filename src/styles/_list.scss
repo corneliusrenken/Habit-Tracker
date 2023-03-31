@@ -6,19 +6,9 @@ $selector-padding: 15px;
 $list-content-padding: 21px;
 $icon-width: 42px; // 42 to align icons with dates
 
-@keyframes list-launch-animation {
-  0% {
-    filter: blur(7px);
-  }
-
-  100% {
-    opacity: 1;
-  }
-}
-
 @mixin list-launch {
   opacity: 0;
-  animation-name: list-launch-animation;
+  animation-name: launch-animation;
   // animation-duration: 0.5 * variables.$launch-animation-time;
   animation-delay: var(--launch-animation-offset);
   animation-duration: calc(variables.$launch-animation-time - var(--launch-animation-offset) * 1.1);
