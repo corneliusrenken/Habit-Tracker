@@ -9,7 +9,6 @@ $icon-width: 42px; // 42 to align icons with dates
 @mixin list-launch {
   opacity: 0;
   animation-name: launch-animation;
-  // animation-duration: 0.5 * variables.$launch-animation-time;
   animation-delay: var(--launch-animation-offset);
   animation-duration: calc(variables.$launch-animation-time - var(--launch-animation-offset) * 1.1);
   animation-timing-function: cubic-bezier(.47,.14,.58,.79);

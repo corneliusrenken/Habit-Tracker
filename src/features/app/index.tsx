@@ -57,13 +57,6 @@ export default function App({ setConfig }: Props) {
     setTimeout(() => setLaunchAnimationActive(false), launchAnimationTime + postAnimationWait);
   }, []);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     if (view.name === 'today') setView({ name: 'selection' });
-  //     else setView({ name: 'today' });
-  //   }, 600);
-  // }, [view]);
-
   // for development
   // for development
   // for development
@@ -176,7 +169,7 @@ export default function App({ setConfig }: Props) {
 
   return (
     <>
-      {launchAnimationActive && <div className="mouse-blocker" style={{ position: 'fixed', inset: 0, zIndex: 5 }} />}
+      {launchAnimationActive && <div className="launch-mouse-blocker" style={{ position: 'fixed', inset: 0, zIndex: 5 }} />}
       <Modal
         modal={modal}
         setModal={setModal}
