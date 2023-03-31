@@ -1,5 +1,16 @@
 @use 'fonts';
 @use 'theme';
+@use 'variables';
+
+@mixin day-launch {
+  opacity: 0;
+  animation-name: launch-animation;
+  $delay: 200ms;
+  animation-delay: $delay;
+  animation-duration: variables.$launch-animation-time - $delay;
+  animation-timing-function: cubic-bezier(.36,.07,.88,.88);
+  animation-fill-mode: forwards;
+}
 
 .days {
   position: relative;
@@ -17,6 +28,10 @@
 
     &.complete {
       color: theme.$tertiary;
+    }
+
+    .launch-animation & {
+      @include day-launch;
     }
   }
 }

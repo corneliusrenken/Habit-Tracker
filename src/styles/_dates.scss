@@ -1,5 +1,14 @@
 @use 'fonts';
 @use 'theme';
+@use 'variables';
+
+@mixin date-launch {
+  opacity: 0;
+  animation-name: launch-animation;
+  animation-duration: variables.$launch-animation-time;
+  animation-timing-function: cubic-bezier(.47,.14,.58,.79);
+  animation-fill-mode: forwards;
+}
 
 .dates {
   position: relative;
@@ -17,6 +26,10 @@
 
     &.complete {
       color: theme.$tertiary;
+    }
+
+    .launch-animation & {
+      @include date-launch;
     }
   }
 
@@ -38,6 +51,11 @@
 
     &.complete:after {
       background-color: theme.$tertiary;
+    }
+
+    .launch-animation &:after {
+      // @include date-launch;
+      display: none;
     }
 
     // &.yesterday:after {

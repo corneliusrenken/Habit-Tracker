@@ -38,3 +38,13 @@ button, input {
 body {
   background-color: theme.$background-main;
 }
+
+@keyframes launch-animation {
+  0% {
+    filter: blur(7px);
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

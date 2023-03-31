@@ -8,10 +8,18 @@ type Props = {
   selected: boolean;
   select: () => void;
   toggleCompleted: () => void;
+  style?: React.CSSProperties;
 };
 
 export default function HabitListItem({
-  ignoreMouse, name, streak, completed, selected, select, toggleCompleted,
+  ignoreMouse,
+  name,
+  streak,
+  completed,
+  selected,
+  select,
+  toggleCompleted,
+  style,
 }: Props) {
   let containerClassName = 'list-item';
   if (completed) containerClassName += ' complete';
@@ -24,9 +32,14 @@ export default function HabitListItem({
       className={containerClassName}
       onClick={toggleCompleted}
       onMouseEnter={ignoreMouse ? undefined : select}
+      style={style}
     >
       <div className="list-item-name">{name}</div>
       <div className="list-item-streak">{streak}</div>
     </button>
   );
 }
+
+HabitListItem.defaultProps = {
+  style: {},
+};

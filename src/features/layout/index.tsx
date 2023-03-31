@@ -10,19 +10,6 @@ import Icon from '../icon';
 import getScreenPercentage from './getScreenPercentage';
 import triggerElementReflow from './triggerElementReflow';
 
-type Props = {
-  setInTransition: React.Dispatch<React.SetStateAction<boolean>>;
-  freezeScroll: boolean;
-  view: View;
-  listHeight: number;
-  occurrenceHeight: number;
-  occurrences: JSX.Element;
-  days: JSX.Element;
-  dates: JSX.Element;
-  list: JSX.Element;
-  settingsButton: JSX.Element;
-};
-
 type States = {
   layoutElement: HTMLDivElement;
   scrollElement: HTMLDivElement;
@@ -59,7 +46,22 @@ function transition(
   document.documentElement.addEventListener('animationend', onAnimationEnd);
 }
 
+type Props = {
+  launchAnimationActive: boolean;
+  setInTransition: React.Dispatch<React.SetStateAction<boolean>>;
+  freezeScroll: boolean;
+  view: View;
+  listHeight: number;
+  occurrenceHeight: number;
+  occurrences: JSX.Element;
+  days: JSX.Element;
+  dates: JSX.Element;
+  list: JSX.Element;
+  settingsButton: JSX.Element;
+};
+
 export default function Layout({
+  launchAnimationActive,
   setInTransition,
   freezeScroll,
   view,
@@ -104,7 +106,7 @@ export default function Layout({
       window.removeEventListener('zoom', onZoomOrResize);
       window.removeEventListener('resize', onZoomOrResize);
     };
-  }, [listHeight, occurrenceHeight, displayedView]);
+  }, [listHeight, occurrenceHeight, displayedView, launchAnimationActive]);
 
   useEffect(() => {
     const nextView = view;
@@ -162,6 +164,7 @@ export default function Layout({
   layoutClassName += ` ${viewToViewType[displayedView.name]}`;
   if (freezeScroll) layoutClassName += ' frozen';
   if (initialRender.current) layoutClassName += ' initial-render';
+  if (launchAnimationActive) layoutClassName += ' launch-animation';
 
   const upperMaskAppearancePercentage = useLatch<number>(
     Math.min(1, scrollPos / 25),
@@ -221,7 +224,7 @@ export default function Layout({
           </div>
         </div>
       </div>
-      <div className="layout-settings-button">
+      <div className={`layout-settings-button${launchAnimationActive ? ' hidden' : ''}`}>
         {settingsButton}
       </div>
     </>
