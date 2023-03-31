@@ -17,6 +17,6 @@ export default function escapeCreateHabitInput({
     setSelectedIndex(null);
   } else {
     setSelectedIndex(habits.length - 1);
-    scrollSelectedIndexIntoView(habits.length - 1);
+    scrollSelectedIndexIntoView(habits.length - 1, { behavior: 'instant' });
   }
 }

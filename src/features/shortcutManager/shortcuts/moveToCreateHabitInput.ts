@@ -13,6 +13,6 @@ export default function moveToCreateHabitInput({
   setSelectedIndex,
 }: States) {
   setSelectedIndex(habits.length);
-  scrollSelectedIndexIntoView(habits.length);
+  scrollSelectedIndexIntoView(habits.length, { behavior: 'smooth' });
   setInInput(true);
 }

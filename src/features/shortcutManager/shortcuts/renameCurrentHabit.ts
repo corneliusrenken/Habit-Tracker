@@ -1,4 +1,5 @@
 import { Habit } from '../../../globalTypes';
+import scrollSelectedIndexIntoView from '../helpers/scrollSelectedIndexIntoView';
 
 type States = {
   habits: Habit[];
@@ -11,6 +12,7 @@ export default function renameCurrentHabit({
   selectedIndex,
   setInInput,
 }: States) {
-  if (selectedIndex === habits.length) return;
+  if (selectedIndex === habits.length || selectedIndex === null) return;
   setInInput(true);
+  scrollSelectedIndexIntoView(selectedIndex, { behavior: 'instant' });
 }

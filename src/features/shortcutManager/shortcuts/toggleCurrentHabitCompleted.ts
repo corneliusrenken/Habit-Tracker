@@ -4,6 +4,7 @@ import {
   View,
   OccurrenceData,
 } from '../../../globalTypes';
+import scrollSelectedIndexIntoView from '../helpers/scrollSelectedIndexIntoView';
 
 type States = {
   dateObject: DateObject;
@@ -30,4 +31,5 @@ export default function toggleCurrentHabitCompleted({
     : occurrenceData.dates[dateObject.today.dateString];
   const currentCompletedState = todaysOccurrences[selectedHabit.id].complete;
   updateOccurrenceCompleted(selectedHabit.id, !currentCompletedState);
+  scrollSelectedIndexIntoView(selectedIndex, { behavior: 'instant' });
 }

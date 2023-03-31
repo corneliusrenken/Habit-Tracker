@@ -1,3 +1,4 @@
+import getElementsDistanceFromListBounds from '../../common/getElementsDistanceFromListBounds';
 import getVerticalMarginHeight from '../../common/getVerticalMarginHeight';
 import customSmoothScroll from './customSmoothScroll';
 
@@ -13,24 +14,22 @@ function interpolateTValueClamped(
   return (clampedTNormalized * (newMax - newMin)) + newMin;
 }
 
-export default function scrollSelectedIndexIntoView(selectedIndex: number) {
+export default function scrollSelectedIndexIntoView(
+  selectedIndex: number,
+  options: { behavior: 'smooth' | 'instant' },
+) {
   const verticalMarginHeight = getVerticalMarginHeight();
-
   const selectedListItemPosition = verticalMarginHeight + 100 + selectedIndex * 50 - window.scrollY;
   const selectedItemBounds = {
     top: selectedListItemPosition,
     bottom: selectedListItemPosition + 50,
   };
-  const listBounds = {
-    top: verticalMarginHeight + 100,
-    bottom: window.innerHeight - verticalMarginHeight,
-  };
-  let scrollAmount = 0;
-  if (selectedItemBounds.top < listBounds.top) {
-    scrollAmount = selectedItemBounds.top - listBounds.top;
-  }
-  if (selectedItemBounds.bottom > listBounds.bottom) {
-    scrollAmount = selectedItemBounds.bottom - listBounds.bottom;
+
+  const scrollAmount = getElementsDistanceFromListBounds(selectedItemBounds);
+
+  if (options.behavior === 'instant') {
+    window.scrollBy(0, scrollAmount);
+    return;
   }
 
   const speed = interpolateTValueClamped(Math.abs(scrollAmount), 100, 300, 75, 200);

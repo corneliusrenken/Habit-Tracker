@@ -1,6 +1,7 @@
 import React from 'react';
 import createDeleteHabitModalGenerator from '../../deleteHabitModal';
 import { Habit, ModalGenerator } from '../../../globalTypes';
+import scrollSelectedIndexIntoView from '../helpers/scrollSelectedIndexIntoView';
 
 type States = {
   selectedHabits: Habit[];
@@ -24,4 +25,5 @@ export default function removeCurrentHabit({
     setModal,
   });
   setModal(() => modalGenerator);
+  scrollSelectedIndexIntoView(selectedIndex, { behavior: 'instant' });
 }
