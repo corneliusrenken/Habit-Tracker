@@ -4,6 +4,7 @@ import {
   View,
   OccurrenceData,
 } from '../../../globalTypes';
+import scrollSelectedIndexIntoView from '../helpers/scrollSelectedIndexIntoView';
 
 type States = {
   dateObject: DateObject;
@@ -32,4 +33,5 @@ export default function toggleCurrentHabitVisibility({
     ? false
     : todaysOccurrences[selectedHabit.id].visible;
   updateOccurrenceVisibility(selectedHabit.id, !currentVisibility);
+  scrollSelectedIndexIntoView(selectedIndex, { behavior: 'instant' });
 }

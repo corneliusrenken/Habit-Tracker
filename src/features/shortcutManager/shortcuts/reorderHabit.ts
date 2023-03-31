@@ -1,4 +1,5 @@
 import { Habit } from '../../../globalTypes';
+import scrollSelectedIndexIntoView from '../helpers/scrollSelectedIndexIntoView';
 
 type States = {
   selectedHabits: Habit[];
@@ -22,4 +23,5 @@ export default function reorderHabit(
   const newPosition = Math.max(0, Math.min(selectedHabits.length - 1, selectedIndex + direction));
 
   if (oldPosition !== newPosition) updateHabitListPosition(habit.id, newPosition);
+  scrollSelectedIndexIntoView(newPosition, { behavior: 'instant' });
 }

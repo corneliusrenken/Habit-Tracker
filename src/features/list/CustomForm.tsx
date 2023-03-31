@@ -1,6 +1,7 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React, { useEffect, useRef, useState } from 'react';
+import getElementsDistanceFromListBounds from '../common/getElementsDistanceFromListBounds';
 
 type Props = {
   active: boolean;
@@ -121,6 +122,11 @@ export default function CustomForm({
         ref={inputRef}
         type="text"
         value={input}
+        onKeyDown={(e) => {
+          const bounds = (e.target as HTMLInputElement).getBoundingClientRect();
+          const distance = getElementsDistanceFromListBounds(bounds);
+          window.scrollBy(0, distance);
+        }}
         onChange={(e) => { setInput(e.target.value); }}
         placeholder={placeholder}
         onBlur={(e) => {

@@ -42,7 +42,7 @@ export default function incrementSelectedIndex(
     }
 
     if (newIndex !== null) {
-      scrollSelectedIndexIntoView(newIndex);
+      scrollSelectedIndexIntoView(newIndex, { behavior: 'smooth' });
     }
     return newIndex;
   });
