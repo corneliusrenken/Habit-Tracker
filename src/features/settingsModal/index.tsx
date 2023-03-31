@@ -19,13 +19,11 @@ function SettingsModal({
   const {
     startWeekOn,
     theme,
-    style,
     databaseDirectoryPath,
   } = config;
 
   const weekStartOptions: Config['startWeekOn'][] = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
   const themeOptions: Config['theme'][] = ['System', 'Light', 'Dark'];
-  const styleOptions: Config['style'][] = ['Complete', 'Minimal'];
 
   return (
     <>
@@ -52,14 +50,6 @@ function SettingsModal({
         options={themeOptions}
         selectedOption={theme}
         setSelectedOption={(option) => updateConfig({ theme: option })}
-      />
-      <div className="modal-container-subheading">Style</div>
-      <Select
-        disableTabIndex={disableTabIndex}
-        className="modal-container-select"
-        options={styleOptions}
-        selectedOption={style}
-        setSelectedOption={(option) => updateConfig({ style: option })}
       />
       <div className="modal-container-header">Shortcuts</div>
       <div className="modal-container-subheading">Global</div>

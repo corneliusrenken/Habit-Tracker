@@ -206,12 +206,12 @@
           background-color: theme.$background-active-hover;
         }
 
-        &:active {
-          background-color: theme.$background-active-press;
-        }
-
         &.selected {
           background-color: theme.$background-active-hover;
+        }
+
+        &:active {
+          background-color: theme.$background-active-press;
         }
       }
     }
