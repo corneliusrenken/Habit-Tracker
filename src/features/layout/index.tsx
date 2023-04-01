@@ -1,13 +1,12 @@
 import React, {
-  useCallback,
   useEffect,
   useMemo,
   useState,
 } from 'react';
 import { View, viewToViewType, ViewType } from '../../globalTypes';
-import useLatch from '../common/useLatch';
 import Icon from '../icon';
 import getScreenPercentage from './getScreenPercentage';
+import Masks from './Masks';
 import triggerElementReflow from './triggerElementReflow';
 
 type States = {
@@ -166,15 +165,12 @@ export default function Layout({
   if (initialRender.current) layoutClassName += ' initial-render';
   if (launchAnimationActive) layoutClassName += ' launch-animation';
 
-  const upperMaskAppearancePercentage = useLatch<number>(
-    Math.min(1, scrollPos / 25),
-    useCallback((lastPercentage) => {
-      if (freezeScroll) return lastPercentage;
-      return Math.min(1, scrollPos / 25);
-    }, [scrollPos, freezeScroll]),
-  );
-
   const scrolledToEndOfDocument = scrollPos === document.body.scrollHeight - window.innerHeight;
+
+  let scrollIndicatorClassName = 'layout-scroll-indicator';
+  if (scrolledToEndOfDocument || viewToViewType[displayedView.name] === 'occurrence' || !scrollable) {
+    scrollIndicatorClassName += ' hidden';
+  }
 
   return (
     <>
@@ -184,40 +180,8 @@ export default function Layout({
             <div className="layout-occurrences-and-days">
               <div className="layout-occurrences" style={{ position: 'absolute', bottom: 0 }}>{occurrences}</div>
               <div className="layout-days" style={{ position: 'absolute', bottom: 0 }}>{days}</div>
-              <div
-                className="layout-mask"
-                style={{
-                  height: `calc(var(--layout-vertical-margin, 0px) + 100px + ${25 * upperMaskAppearancePercentage}px)`,
-                  bottom: `-${50 + 25 * upperMaskAppearancePercentage}px`,
-                  WebkitMaskImage: `linear-gradient(to bottom, black ${100 - 10 * upperMaskAppearancePercentage}%, transparent)`,
-                }}
-              />
-              <div
-                className="layout-mask"
-                style={{
-                  height: 'var(--layout-vertical-margin, 0px)',
-                  bottom: 'calc(50px + var(--layout-vertical-margin, 0px) - 100vh)',
-                  WebkitMaskImage: 'linear-gradient(to top, black 90%, transparent)',
-                }}
-              />
-              <div
-                className="layout-scroll-indicator"
-                style={{
-                  opacity: scrollPos !== 0 && viewToViewType[displayedView.name] === 'list' && scrollable ? 1 : 0,
-                  bottom: '-50px',
-                }}
-              >
-                <Icon icon="double arrow up" />
-              </div>
-              <div
-                className="layout-scroll-indicator"
-                style={{
-                  opacity: !scrolledToEndOfDocument && viewToViewType[displayedView.name] === 'list' && scrollable ? 1 : 0,
-                  bottom: 'calc(50px + 2 * var(--layout-vertical-margin, 0px) - 100vh)',
-                }}
-              >
-                <Icon icon="double arrow down" />
-              </div>
+              <Masks freezeScroll={freezeScroll} scrollPos={scrollPos} />
+              <div className={scrollIndicatorClassName}><Icon icon="chevron down" /></div>
             </div>
             <div className="layout-dates">{dates}</div>
             <div className="layout-list">{list}</div>
