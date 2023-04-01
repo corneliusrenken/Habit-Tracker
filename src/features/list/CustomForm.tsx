@@ -123,7 +123,9 @@ export default function CustomForm({
         type="text"
         value={input}
         onKeyDown={(e) => {
-          const bounds = (e.target as HTMLInputElement).getBoundingClientRect();
+          const inputElement = e.target as HTMLInputElement;
+          const formElement = inputElement.parentElement as HTMLFormElement;
+          const bounds = formElement.getBoundingClientRect();
           const distance = getElementsDistanceFromListBounds(bounds);
           window.scrollBy(0, distance);
         }}

@@ -51,7 +51,10 @@ $icon-width: 42px; // 42 to align icons with dates
     }
 
     &-rename-form, &-create-form {
-      line-height: 26px; // slightly smaller looks better when highlighting
+      line-height: 22px; // slightly smaller looks better when highlighting
+      height: 50px; // form height important for scrolling into view when being typed into
+      display: flex;
+      align-items: center;
     }
 
     &-name, &-error, &-rename-form, &-create-form, &-placeholder {
@@ -74,11 +77,27 @@ $icon-width: 42px; // 42 to align icons with dates
     }
 
     &-input {
+      padding-top: 1px;
       width: 100%;
+      border-bottom: 1px solid theme.$primary;
 
       &::placeholder {
         color: theme.$tertiary;
       }
+
+      // .list-item-create-form & {
+      //   @keyframes input-width-expand {
+      //     from {
+      //       width: 33%;
+      //     }
+
+      //     to {
+      //       width: 100%;
+      //     }
+      //   }
+
+      //   animation: input-width-expand 400ms;
+      // }
     }
 
     &-error {
