@@ -1,12 +1,6 @@
 import React, { useCallback } from 'react';
 import useLatch from '../common/useLatch';
 
-// goal:
-// top and bottom margins have a full white mask
-// behind dates and days, there's a mask that prevents click but has no color
-// behind dates, days, and extending downwards, there's a mask ignoring click but has fade color
-// - bonus: this mask should allow greyed out elements to be just as visible behind it as black el
-
 type Props = {
   freezeScroll: boolean;
   scrollPos: number;
