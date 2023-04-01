@@ -100,23 +100,35 @@ $transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin, 
       @include center-horizontally;
     }
 
-    .layout-mask {
+    .mask {
       position: absolute;
-      background-color: theme.$background-main-translucent;
-      backdrop-filter: blur(7px);
       left: 0;
       right: 0;
+
+      &.full {
+        background-color: theme.$background-main;
+      }
+
+      &.translucent {
+        pointer-events: none;
+        background-color: theme.$background-main-translucent;
+        backdrop-filter: blur(7px);
+        // backdrop-filter: brightness(0%) blur(7px);
+      }
     }
 
     .layout-scroll-indicator {
       position: absolute;
       height: 50px;
-      left: calc(50vw + 175px);
+      width: 50px;
+      left: calc(50vw - 25px);
+      bottom: calc(2 * var(--layout-vertical-margin, 0px) - 100vh);
       display: flex;
       justify-content: center;
       align-items: center;
+      color: theme.$primary;
 
-      .launch-animation & {
+      .launch-animation &, &.hidden {
         opacity: 0;
       }
     }
