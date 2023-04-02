@@ -12,6 +12,7 @@ import {
   OccurrenceData,
 } from '../../globalTypes';
 import SelectionListItem from './SelectionListItem';
+import getVerticalMarginHeight from '../common/getVerticalMarginHeight';
 
 type ReorderInfo = {
   active: false;
@@ -21,8 +22,10 @@ type ReorderInfo = {
   position: number;
   initialMousePosition: { x: number; y: number };
   deltaMousePosition: { x: number; y: number };
+  actualMousePosition: { x: number; y: number };
   initialScroll: number;
   deltaScroll: number;
+  actualScroll: number;
 };
 
 function checkForReorder(
@@ -35,10 +38,26 @@ function checkForReorder(
   }
 
   const {
-    position, deltaMousePosition, deltaScroll,
+    position, deltaMousePosition, deltaScroll, actualMousePosition,
   } = reorderInfo;
 
-  const distanceFromInitMousePosition = deltaMousePosition.y + deltaScroll;
+  let distanceFromInitMousePosition = deltaMousePosition.y + deltaScroll;
+
+  // reorder shouldn't happen when mouse is moving beyond the top or bottom of the list
+  const verticalMarginHeight = getVerticalMarginHeight();
+  const listBounds = {
+    top: verticalMarginHeight + 100,
+    bottom: window.innerHeight - verticalMarginHeight,
+  };
+  const { y } = actualMousePosition;
+
+  if (y < listBounds.top) {
+    const outOfBoundsAmt = listBounds.top - y;
+    distanceFromInitMousePosition += outOfBoundsAmt;
+  } else if (y > listBounds.bottom) {
+    const outOfBoundsAmt = y - listBounds.bottom;
+    distanceFromInitMousePosition -= outOfBoundsAmt;
+  }
 
   // how far you have to drag before the list item changes position
   // based on a item height of 50, min 25
@@ -50,9 +69,6 @@ function checkForReorder(
   }
 
   let posChange = 1 + Math.floor((Math.abs(distanceFromInitMousePosition) - changeThreshold) / 50);
-
-  // should move by 2, because 83 is greater than 30 + 1 * 50
-  // so calculation should be distance - changeThreshold / 50
 
   const changeDirection = distanceFromInitMousePosition > 0 ? 1 : -1;
 
@@ -149,7 +165,9 @@ export default function ReorderableList({
         position,
         deltaMousePosition: { x: 0, y: 0 },
         initialMousePosition: { x: clientX, y: clientY },
+        actualMousePosition: { x: clientX, y: clientY },
         initialScroll: window.scrollY,
+        actualScroll: window.scrollY,
         deltaScroll: 0,
       });
 
@@ -200,7 +218,11 @@ export default function ReorderableList({
       const onScroll = () => {
         const { initialScroll } = reorderInfo;
         const deltaScroll = window.scrollY - initialScroll;
-        const updatedReorderInfo = { ...reorderInfo, deltaScroll };
+        const updatedReorderInfo = {
+          ...reorderInfo,
+          deltaScroll,
+          actualScroll: window.scrollY,
+        };
 
         const {
           newReorderInfo,
@@ -223,7 +245,11 @@ export default function ReorderableList({
           y: clientY - reorderInfo.initialMousePosition.y,
         };
 
-        const updatedReorderInfo = { ...reorderInfo, deltaMousePosition };
+        const updatedReorderInfo = {
+          ...reorderInfo,
+          deltaMousePosition,
+          actualMousePosition: { x: clientX, y: clientY },
+        };
 
         const {
           newReorderInfo,
