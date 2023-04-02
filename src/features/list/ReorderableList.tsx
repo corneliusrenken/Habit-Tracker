@@ -5,13 +5,7 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import {
-  DateObject,
-  Habit,
-  ModalGenerator,
-  OccurrenceData,
-} from '../../globalTypes';
-import SelectionListItem from './SelectionListItem';
+import { Habit } from '../../globalTypes';
 import getVerticalMarginHeight from '../common/getVerticalMarginHeight';
 
 type ReorderInfo = {
@@ -97,39 +91,18 @@ function checkForReorder(
 }
 
 type Props = {
-  ignoreMouse: boolean;
-  dateObject: DateObject;
-  occurrenceData: OccurrenceData;
+  // eslint-disable-next-line max-len
+  prepopulatedListItem: (habit: Habit, position: number, style: React.CSSProperties, reorder: (e: React.MouseEvent) => void) => JSX.Element;
   habits: Habit[];
-  selectedIndex: number | null;
-  setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
-  inInput: boolean;
-  setInInput: React.Dispatch<React.SetStateAction<boolean>>;
-  reorderingList: boolean;
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
-  setModal: React.Dispatch<React.SetStateAction<ModalGenerator | undefined>>;
-  deleteHabit: (habitId: number) => void;
   updateHabitListPosition: (habitId: number, newPosition: number) => void;
-  updateHabitName: (habitId: number, newName: string) => void;
-  updateOccurrenceVisibility: (habitId: number, visible: boolean) => void;
 };
 
 export default function ReorderableList({
-  ignoreMouse,
-  dateObject,
-  occurrenceData,
+  prepopulatedListItem,
   habits,
-  selectedIndex,
-  setSelectedIndex,
-  inInput,
-  setInInput,
-  reorderingList,
   setReorderingList,
-  setModal,
-  deleteHabit,
   updateHabitListPosition,
-  updateHabitName,
-  updateOccurrenceVisibility,
 }: Props) {
   const [reorderInfo, setReorderInfo] = useState<ReorderInfo>({ active: false });
 
@@ -156,11 +129,6 @@ export default function ReorderableList({
         delete style.transition;
       }
 
-      const visible = (
-        occurrenceData.dates[dateObject.today.dateString][habit.id]
-        && occurrenceData.dates[dateObject.today.dateString][habit.id].visible
-      );
-
       const startReordering = ({ clientX, clientY }: React.MouseEvent) => setReorderInfo({
         active: true,
         id: habit.id,
@@ -173,46 +141,9 @@ export default function ReorderableList({
         deltaScroll: 0,
       });
 
-      return (
-        <SelectionListItem
-          key={habit.id}
-          style={style}
-          ignoreMouse={ignoreMouse}
-          habit={habit}
-          move={(e) => {
-            startReordering(e);
-            setReorderingList(true);
-          }}
-          visible={visible}
-          selected={selectedIndex === position}
-          select={reorderingList || inInput ? undefined : () => setSelectedIndex(position)}
-          toggleVisibility={() => updateOccurrenceVisibility(habit.id, !visible)}
-          renameHabit={(newName: string) => updateHabitName(habit.id, newName)}
-          inInput={inInput}
-          setInInput={setInInput}
-          habits={habits}
-          deleteHabit={deleteHabit}
-          setModal={setModal}
-        />
-      );
+      return prepopulatedListItem(habit, position, style, startReordering);
     });
-  }, [
-    dateObject.today.dateString,
-    deleteHabit,
-    habits,
-    ignoreMouse,
-    inInput,
-    occurrenceData.dates,
-    reorderInfo,
-    reorderingList,
-    selectedIndex,
-    setInInput,
-    setModal,
-    setReorderingList,
-    setSelectedIndex,
-    updateHabitName,
-    updateOccurrenceVisibility,
-  ]);
+  }, [habits, prepopulatedListItem, reorderInfo]);
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {

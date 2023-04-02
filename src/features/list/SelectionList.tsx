@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   DateObject,
   Habit,
@@ -7,6 +7,7 @@ import {
 } from '../../globalTypes';
 import AddHabitForm from './AddHabitForm';
 import ReorderableList from './ReorderableList';
+import SelectionListItem from './SelectionListItem';
 
 type Props = {
   ignoreMouse: boolean;
@@ -45,24 +46,63 @@ export default function SelectionList({
   updateHabitName,
   updateOccurrenceVisibility,
 }: Props) {
+  const prepopulatedListItem = useCallback((
+    habit: Habit,
+    position: number,
+    style: React.CSSProperties,
+    reorder: (e: React.MouseEvent) => void,
+  ) => {
+    const visible = (
+      occurrenceData.dates[dateObject.today.dateString][habit.id]
+      && occurrenceData.dates[dateObject.today.dateString][habit.id].visible
+    );
+
+    return (
+      <SelectionListItem
+        key={habit.id}
+        style={style}
+        ignoreMouse={ignoreMouse}
+        habit={habit}
+        move={(e) => {
+          reorder(e);
+          setReorderingList(true);
+        }}
+        visible={visible}
+        selected={selectedIndex === position}
+        select={reorderingList || inInput ? undefined : () => setSelectedIndex(position)}
+        toggleVisibility={() => updateOccurrenceVisibility(habit.id, !visible)}
+        renameHabit={(newName: string) => updateHabitName(habit.id, newName)}
+        inInput={inInput}
+        setInInput={setInInput}
+        habits={habits}
+        deleteHabit={deleteHabit}
+        setModal={setModal}
+      />
+    );
+  }, [
+    dateObject.today.dateString,
+    deleteHabit,
+    habits,
+    ignoreMouse,
+    inInput,
+    occurrenceData.dates,
+    reorderingList,
+    selectedIndex,
+    setInInput,
+    setModal,
+    setReorderingList,
+    setSelectedIndex,
+    updateHabitName,
+    updateOccurrenceVisibility,
+  ]);
+
   return (
     <>
       <ReorderableList
-        ignoreMouse={ignoreMouse}
-        dateObject={dateObject}
-        occurrenceData={occurrenceData}
+        prepopulatedListItem={prepopulatedListItem}
         habits={habits}
-        selectedIndex={selectedIndex}
-        setSelectedIndex={setSelectedIndex}
-        inInput={inInput}
-        setInInput={setInInput}
-        reorderingList={reorderingList}
         setReorderingList={setReorderingList}
-        setModal={setModal}
-        deleteHabit={deleteHabit}
         updateHabitListPosition={updateHabitListPosition}
-        updateHabitName={updateHabitName}
-        updateOccurrenceVisibility={updateOccurrenceVisibility}
       />
       <AddHabitForm
         habits={habits}
