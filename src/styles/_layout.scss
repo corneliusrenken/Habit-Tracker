@@ -148,8 +148,6 @@ $transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin, 
     position: relative;
 
     height: var(--list-height, 0px);
-    position: relative;
-    z-index: 0;
   }
 }
 

@@ -144,13 +144,15 @@ export default function ReorderableList({
         position: 'absolute',
         top: `${position * 50}px`,
         left: '0px',
-        transition: 'top 0.2s ease, left 0.2s ease',
+        zIndex: 0,
+        transition: 'top 0.2s ease, left 0.2s ease, z-index 0.2s step-end',
       };
 
       if (reorderInfo.active && reorderInfo.id === habit.id) {
         const { deltaMousePosition, deltaScroll } = reorderInfo;
         style.top = `${position * 50 + deltaMousePosition.y + deltaScroll}px`;
         style.left = `${deltaMousePosition.x}px`;
+        style.zIndex = 3;
         delete style.transition;
       }
 
