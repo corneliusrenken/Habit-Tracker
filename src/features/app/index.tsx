@@ -170,13 +170,6 @@ export default function App({ setConfig }: Props) {
   if (occurrenceData.dates[dateObject.today.dateString] === undefined) return null;
 
   return (
-    <ReorderableList
-      habits={habits}
-      setHabits={setHabits}
-    />
-  );
-
-  return (
     <>
       {launchAnimationActive && <div className="launch-mouse-blocker" style={{ position: 'fixed', inset: 0, zIndex: 5 }} />}
       <Modal

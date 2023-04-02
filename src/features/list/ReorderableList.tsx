@@ -5,7 +5,13 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { Habit } from '../../globalTypes';
+import {
+  DateObject,
+  Habit,
+  ModalGenerator,
+  OccurrenceData,
+} from '../../globalTypes';
+import SelectionListItem from './SelectionListItem';
 
 type ReorderInfo = {
   active: false;
@@ -22,9 +28,10 @@ type ReorderInfo = {
 function checkForReorder(
   habits: Habit[],
   reorderInfo: ReorderInfo,
-): { newHabits: Habit[]; newReorderInfo: ReorderInfo } {
+  updateHabitListPosition: (habitId: number, newPosition: number) => void,
+): { newReorderInfo: ReorderInfo } {
   if (!reorderInfo.active) {
-    return { newHabits: habits, newReorderInfo: reorderInfo };
+    return { newReorderInfo: reorderInfo };
   }
 
   const {
@@ -36,11 +43,10 @@ function checkForReorder(
   // how far you have to drag before the list item changes position
   // based on a item height of 50, min 25
   // having it right on 25 makes it feel a bit jumpy going back and forth
-  // const changeThreshold = 30;
-  const changeThreshold = 25;
+  const changeThreshold = 30;
 
   if (Math.abs(distanceFromInitMousePosition) <= changeThreshold) {
-    return { newHabits: habits, newReorderInfo: reorderInfo };
+    return { newReorderInfo: reorderInfo };
   }
 
   let posChange = 1 + Math.floor((Math.abs(distanceFromInitMousePosition) - changeThreshold) / 50);
@@ -61,29 +67,7 @@ function checkForReorder(
     Math.max(minPosChange, posChange),
   );
 
-  const newHabits: Habit[] = [];
-
-  if (posChange > 0) {
-    habits.forEach((habit, index) => {
-      if (index === position) {
-        newHabits[index + posChange] = habit;
-      } else if (index > position && index <= position + posChange) {
-        newHabits[index - 1] = habit;
-      } else {
-        newHabits[index] = habit;
-      }
-    });
-  } else {
-    habits.forEach((habit, index) => {
-      if (index === position) {
-        newHabits[index + posChange] = habit;
-      } else if (index < position && index >= position + posChange) {
-        newHabits[index + 1] = habit;
-      } else {
-        newHabits[index] = habit;
-      }
-    });
-  }
+  updateHabitListPosition(reorderInfo.id, position + posChange);
 
   const newReorderInfo = (
     JSON.parse(JSON.stringify(reorderInfo)) as Extract<ReorderInfo, { active: true }>
@@ -93,40 +77,75 @@ function checkForReorder(
   newReorderInfo.initialMousePosition.y += posChange * 50;
   newReorderInfo.deltaMousePosition.y -= posChange * 50;
 
-  return { newHabits, newReorderInfo };
+  return { newReorderInfo };
 }
 
 type Props = {
+  ignoreMouse: boolean;
+  dateObject: DateObject;
+  occurrenceData: OccurrenceData;
   habits: Habit[];
-  setHabits: React.Dispatch<React.SetStateAction<Habit[]>>;
+  selectedIndex: number | null;
+  setSelectedIndex: React.Dispatch<React.SetStateAction<number | null>>;
+  inInput: boolean;
+  setInInput: React.Dispatch<React.SetStateAction<boolean>>;
+  reorderingList: boolean;
+  setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
+  setModal: React.Dispatch<React.SetStateAction<ModalGenerator | undefined>>;
+  deleteHabit: (habitId: number) => void;
+  updateHabitListPosition: (habitId: number, newPosition: number) => void;
+  updateHabitName: (habitId: number, newName: string) => void;
+  updateOccurrenceVisibility: (habitId: number, visible: boolean) => void;
 };
 
-export default function ReorderableList({ habits, setHabits }: Props) {
+export default function ReorderableList({
+  ignoreMouse,
+  dateObject,
+  occurrenceData,
+  habits,
+  selectedIndex,
+  setSelectedIndex,
+  inInput,
+  setInInput,
+  reorderingList,
+  setReorderingList,
+  setModal,
+  deleteHabit,
+  updateHabitListPosition,
+  updateHabitName,
+  updateOccurrenceVisibility,
+}: Props) {
   const [reorderInfo, setReorderInfo] = useState<ReorderInfo>({ active: false });
 
   const elements = useMemo(() => {
     // sort by id to ensure order of elements in dom is consistent
     const habitsSortedById = [...habits].sort((a, b) => a.id - b.id);
 
-    return habitsSortedById.map(({ name, id }) => {
-      const position = habits.findIndex((habit) => habit.id === id);
+    return habitsSortedById.map((habit) => {
+      const position = habits.findIndex(({ id }) => habit.id === id);
 
       const style: React.CSSProperties = {
+        position: 'absolute',
         top: `${position * 50}px`,
         left: '0px',
         transition: 'top 0.2s ease, left 0.2s ease',
       };
 
-      if (reorderInfo.active && reorderInfo.id === id) {
+      if (reorderInfo.active && reorderInfo.id === habit.id) {
         const { deltaMousePosition, deltaScroll } = reorderInfo;
         style.top = `${position * 50 + deltaMousePosition.y + deltaScroll}px`;
         style.left = `${deltaMousePosition.x}px`;
         delete style.transition;
       }
 
+      const visible = (
+        occurrenceData.dates[dateObject.today.dateString][habit.id]
+        && occurrenceData.dates[dateObject.today.dateString][habit.id].visible
+      );
+
       const startReordering = ({ clientX, clientY }: React.MouseEvent) => setReorderInfo({
         active: true,
-        id,
+        id: habit.id,
         position,
         deltaMousePosition: { x: 0, y: 0 },
         initialMousePosition: { x: clientX, y: clientY },
@@ -135,34 +154,45 @@ export default function ReorderableList({ habits, setHabits }: Props) {
       });
 
       return (
-        <div
-          key={id}
-          style={{
-            ...style,
-            position: 'absolute',
-            display: 'flex',
-            justifyContent: 'space-between',
-            width: '350px',
-            backgroundColor: 'lightpink',
-            padding: '10px 10px',
-            height: '50px',
+        <SelectionListItem
+          key={habit.id}
+          style={style}
+          ignoreMouse={ignoreMouse}
+          habit={habit}
+          move={(e) => {
+            startReordering(e);
+            setReorderingList(true);
           }}
-        >
-          {name}
-          <button
-            type="button"
-            onMouseDown={startReordering}
-            style={{
-              backgroundColor: 'lightgrey',
-              padding: '5px',
-            }}
-          >
-            move
-          </button>
-        </div>
+          visible={visible}
+          selected={selectedIndex === position}
+          select={reorderingList || inInput ? undefined : () => setSelectedIndex(position)}
+          toggleVisibility={() => updateOccurrenceVisibility(habit.id, !visible)}
+          renameHabit={(newName: string) => updateHabitName(habit.id, newName)}
+          inInput={inInput}
+          setInInput={setInInput}
+          habits={habits}
+          deleteHabit={deleteHabit}
+          setModal={setModal}
+        />
       );
     });
-  }, [habits, reorderInfo]);
+  }, [
+    dateObject.today.dateString,
+    deleteHabit,
+    habits,
+    ignoreMouse,
+    inInput,
+    occurrenceData.dates,
+    reorderInfo,
+    reorderingList,
+    selectedIndex,
+    setInInput,
+    setModal,
+    setReorderingList,
+    setSelectedIndex,
+    updateHabitName,
+    updateOccurrenceVisibility,
+  ]);
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
@@ -172,16 +202,17 @@ export default function ReorderableList({ habits, setHabits }: Props) {
         const deltaScroll = window.scrollY - initialScroll;
         const updatedReorderInfo = { ...reorderInfo, deltaScroll };
 
-        const { newHabits, newReorderInfo } = checkForReorder(habits, updatedReorderInfo);
+        const {
+          newReorderInfo,
+        } = checkForReorder(habits, updatedReorderInfo, updateHabitListPosition);
 
-        setHabits(newHabits);
         setReorderInfo(newReorderInfo);
       };
 
       window.addEventListener('scroll', onScroll);
       return () => window.removeEventListener('scroll', onScroll);
     }
-  }, [reorderInfo, habits, setHabits]);
+  }, [reorderInfo, habits, updateHabitListPosition]);
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
@@ -194,9 +225,10 @@ export default function ReorderableList({ habits, setHabits }: Props) {
 
         const updatedReorderInfo = { ...reorderInfo, deltaMousePosition };
 
-        const { newHabits, newReorderInfo } = checkForReorder(habits, updatedReorderInfo);
+        const {
+          newReorderInfo,
+        } = checkForReorder(habits, updatedReorderInfo, updateHabitListPosition);
 
-        setHabits(newHabits);
         setReorderInfo(newReorderInfo);
       };
 
@@ -214,23 +246,11 @@ export default function ReorderableList({ habits, setHabits }: Props) {
         document.removeEventListener('mousemove', onMouseMove);
       };
     }
-  }, [habits, reorderInfo, setHabits]);
+  }, [habits, reorderInfo, updateHabitListPosition]);
 
   return (
-    <>
-      {reorderInfo.active && (
-        <div style={{ position: 'fixed', top: 0, right: 0, margin: '10px' }}>
-          <div>{`id: ${reorderInfo.id}`}</div>
-          <div>{`position: ${reorderInfo.position}`}</div>
-          <div>{`ΔMousePosition: ${reorderInfo.deltaMousePosition.x}, ${reorderInfo.deltaMousePosition.y}`}</div>
-          <div>{`initialMousePosition: ${reorderInfo.initialMousePosition.x}, ${reorderInfo.initialMousePosition.y}`}</div>
-          <div>{`initialScroll: ${reorderInfo.initialScroll}`}</div>
-          <div>{`ΔScroll: ${reorderInfo.deltaScroll}`}</div>
-        </div>
-      )}
-      <div style={{ position: 'relative', width: '350px', height: `${habits.length * 50}px` }}>
-        {elements}
-      </div>
-    </>
+    <div style={{ position: 'relative', width: '350px', height: `${habits.length * 50}px` }}>
+      {elements}
+    </div>
   );
 }

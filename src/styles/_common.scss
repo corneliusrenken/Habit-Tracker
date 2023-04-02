@@ -37,11 +37,6 @@ button, input {
 
 body {
   background-color: theme.$background-main;
-  // temp
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
 }
 
 @keyframes launch-animation {

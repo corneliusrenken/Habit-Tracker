@@ -7,7 +7,6 @@ import {
 } from '../../globalTypes';
 import AddHabitForm from './AddHabitForm';
 import ReorderableList from './ReorderableList';
-import useMemoizedSelectionListItemConstructors from './useMemoizedSelectionListItemConstructors';
 
 type Props = {
   ignoreMouse: boolean;
@@ -46,36 +45,24 @@ export default function SelectionList({
   updateHabitName,
   updateOccurrenceVisibility,
 }: Props) {
-  const elementConstructors = useMemoizedSelectionListItemConstructors({
-    ignoreMouse,
-    dateObject,
-    occurrenceData,
-    habits,
-    selectedIndex,
-    setSelectedIndex,
-    inInput,
-    setInInput,
-    reorderingList,
-    setReorderingList,
-    setModal,
-    deleteHabit,
-    updateHabitName,
-    updateOccurrenceVisibility,
-  });
-
   return (
     <>
       <ReorderableList
-        elementConstructors={elementConstructors}
-        height={50}
-        width={350}
-        onIndexChange={(newIndicesById, changedId) => {
-          updateHabitListPosition(changedId, newIndicesById[changedId]);
-          setReorderingList(false);
-        }}
-        clampMovement
-        activeClass="being-reordered"
-        transition="200ms"
+        ignoreMouse={ignoreMouse}
+        dateObject={dateObject}
+        occurrenceData={occurrenceData}
+        habits={habits}
+        selectedIndex={selectedIndex}
+        setSelectedIndex={setSelectedIndex}
+        inInput={inInput}
+        setInInput={setInInput}
+        reorderingList={reorderingList}
+        setReorderingList={setReorderingList}
+        setModal={setModal}
+        deleteHabit={deleteHabit}
+        updateHabitListPosition={updateHabitListPosition}
+        updateHabitName={updateHabitName}
+        updateOccurrenceVisibility={updateOccurrenceVisibility}
       />
       <AddHabitForm
         habits={habits}
