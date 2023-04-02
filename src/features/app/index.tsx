@@ -1,7 +1,6 @@
 import React, {
   useContext,
   useEffect,
-  useMemo,
   useRef,
   useState,
 } from 'react';
@@ -30,7 +29,6 @@ import ConfigContext from '../initializer/ConfigContext';
 import Icon from '../icon';
 import createSettingsModalGenerator from '../settingsModal';
 import getLaunchAnimationTime from '../common/getLaunchAnimationTime';
-import ReorderableList from '../list/ReorderableList';
 
 type Props = {
   setConfig: React.Dispatch<React.SetStateAction<Config>>;

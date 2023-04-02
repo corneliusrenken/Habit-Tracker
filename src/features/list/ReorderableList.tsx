@@ -234,6 +234,7 @@ export default function ReorderableList({
 
       const onMouseUp = () => {
         setReorderInfo({ active: false });
+        setReorderingList(false);
         document.removeEventListener('mouseup', onMouseUp);
         document.removeEventListener('mousemove', onMouseMove);
       };
@@ -246,7 +247,7 @@ export default function ReorderableList({
         document.removeEventListener('mousemove', onMouseMove);
       };
     }
-  }, [habits, reorderInfo, updateHabitListPosition]);
+  }, [habits, reorderInfo, setReorderingList, updateHabitListPosition]);
 
   return (
     <div style={{ position: 'relative', width: '350px', height: `${habits.length * 50}px` }}>
