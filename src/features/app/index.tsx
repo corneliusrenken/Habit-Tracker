@@ -170,66 +170,10 @@ export default function App({ setConfig }: Props) {
   if (occurrenceData.dates[dateObject.today.dateString] === undefined) return null;
 
   return (
-    <>
-      <button
-        type="button"
-        style={{ position: 'fixed', bottom: 0, left: 0, zIndex: 100, padding: '20px', margin: '20px', backgroundColor: 'lightblue' }}
-        onClick={() => setHabits((prevHabits) => {
-          const newHabits = [...prevHabits];
-          for (let i = newHabits.length - 1; i > 0; i -= 1) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [newHabits[i], newHabits[j]] = [newHabits[j], newHabits[i]];
-          }
-          return newHabits;
-        })}
-      >
-        jumble list
-      </button>
-      <button
-        type="button"
-        style={{ position: 'fixed', bottom: 0, left: 200, zIndex: 100, padding: '20px', margin: '20px', backgroundColor: 'lightpink' }}
-        onClick={() => setHabits((prevHabits) => prevHabits.map((habit) => ({ ...habit, name: `${habit.name}0` })))}
-      >
-        jumble names
-      </button>
-      <button
-        type="button"
-        style={{ position: 'fixed', bottom: 0, left: 400, zIndex: 100, padding: '20px', margin: '20px', backgroundColor: 'lightgreen' }}
-        onClick={() => setHabits((prevHabits) => {
-          const newHabits = [...prevHabits];
-          newHabits.splice(2, 1);
-          return newHabits;
-        })}
-      >
-        delete third
-      </button>
-      <button
-        type="button"
-        style={{ position: 'fixed', bottom: 0, left: 600, zIndex: 100, padding: '20px', margin: '20px', backgroundColor: 'lightyellow' }}
-        onClick={() => setHabits((prevHabits) => {
-          const newHabits = [...prevHabits];
-          newHabits.splice(2, 0, { id: Math.random(), name: 'new habit' });
-          return newHabits;
-        })}
-      >
-        add in third position
-      </button>
-      <button
-        type="button"
-        style={{ position: 'fixed', bottom: 0, left: 800, zIndex: 100, padding: '20px', margin: '20px', backgroundColor: 'lightseagreen' }}
-        onClick={() => setHabits((prevHabits) => {
-          const newHabits = [...prevHabits];
-          newHabits.splice(prevHabits.length, 0, { id: Math.random(), name: 'new habit' });
-          return newHabits;
-        })}
-      >
-        add in last position
-      </button>
-      <ReorderableList
-        habits={habits}
-        setHabits={setHabits}
-      />
-    </>
+    <ReorderableList
+      habits={habits}
+      setHabits={setHabits}
+    />
   );
 
   return (

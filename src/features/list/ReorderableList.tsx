@@ -8,13 +8,14 @@ import React, {
 import { Habit } from '../../globalTypes';
 
 type ReorderInfo = {
-  id: null;
+  active: false;
 } | {
+  active: true;
   id: number;
   position: number;
-  restingPosition: { x: number; y: number };
-  deltaPosition: { x: number; y: number };
-  initialScrollPosition: number;
+  initialMousePosition: { x: number; y: number };
+  deltaMousePosition: { x: number; y: number };
+  initialScroll: number;
   deltaScroll: number;
 };
 
@@ -22,23 +23,32 @@ function checkForReorder(
   habits: Habit[],
   reorderInfo: ReorderInfo,
 ): { newHabits: Habit[]; newReorderInfo: ReorderInfo } {
-  if (reorderInfo.id === null) {
+  if (!reorderInfo.active) {
     return { newHabits: habits, newReorderInfo: reorderInfo };
   }
 
   const {
-    position, deltaPosition, deltaScroll,
+    position, deltaMousePosition, deltaScroll,
   } = reorderInfo;
 
-  const distanceFromRestingPosition = deltaPosition.y + deltaScroll;
+  const distanceFromInitMousePosition = deltaMousePosition.y + deltaScroll;
 
-  if (Math.abs(distanceFromRestingPosition) < 25) {
+  // how far you have to drag before the list item changes position
+  // based on a item height of 50, min 25
+  // having it right on 25 makes it feel a bit jumpy going back and forth
+  // const changeThreshold = 30;
+  const changeThreshold = 25;
+
+  if (Math.abs(distanceFromInitMousePosition) <= changeThreshold) {
     return { newHabits: habits, newReorderInfo: reorderInfo };
   }
 
-  let posChange = Math.floor((Math.abs(distanceFromRestingPosition) + 25) / 50);
+  let posChange = 1 + Math.floor((Math.abs(distanceFromInitMousePosition) - changeThreshold) / 50);
 
-  const changeDirection = distanceFromRestingPosition > 0 ? 1 : -1;
+  // should move by 2, because 83 is greater than 30 + 1 * 50
+  // so calculation should be distance - changeThreshold / 50
+
+  const changeDirection = distanceFromInitMousePosition > 0 ? 1 : -1;
 
   posChange *= changeDirection;
 
@@ -75,11 +85,13 @@ function checkForReorder(
     });
   }
 
-  const newReorderInfo: ReorderInfo = { ...reorderInfo };
+  const newReorderInfo = (
+    JSON.parse(JSON.stringify(reorderInfo)) as Extract<ReorderInfo, { active: true }>
+  );
 
   newReorderInfo.position += posChange;
-  newReorderInfo.restingPosition.y += posChange * 50;
-  newReorderInfo.deltaPosition.y -= posChange * 50;
+  newReorderInfo.initialMousePosition.y += posChange * 50;
+  newReorderInfo.deltaMousePosition.y -= posChange * 50;
 
   return { newHabits, newReorderInfo };
 }
@@ -90,7 +102,7 @@ type Props = {
 };
 
 export default function ReorderableList({ habits, setHabits }: Props) {
-  const [reorderInfo, setReorderInfo] = useState<ReorderInfo>({ id: null });
+  const [reorderInfo, setReorderInfo] = useState<ReorderInfo>({ active: false });
 
   const elements = useMemo(() => {
     // sort by id to ensure order of elements in dom is consistent
@@ -105,19 +117,20 @@ export default function ReorderableList({ habits, setHabits }: Props) {
         transition: 'top 0.2s ease, left 0.2s ease',
       };
 
-      if (reorderInfo.id === id) {
-        const { deltaPosition, deltaScroll } = reorderInfo;
-        style.top = `${position * 50 + deltaPosition.y + deltaScroll}px`;
-        style.left = `${deltaPosition.x}px`;
+      if (reorderInfo.active && reorderInfo.id === id) {
+        const { deltaMousePosition, deltaScroll } = reorderInfo;
+        style.top = `${position * 50 + deltaMousePosition.y + deltaScroll}px`;
+        style.left = `${deltaMousePosition.x}px`;
         delete style.transition;
       }
 
       const startReordering = ({ clientX, clientY }: React.MouseEvent) => setReorderInfo({
+        active: true,
         id,
         position,
-        deltaPosition: { x: 0, y: 0 },
-        restingPosition: { x: clientX, y: clientY },
-        initialScrollPosition: window.scrollY,
+        deltaMousePosition: { x: 0, y: 0 },
+        initialMousePosition: { x: clientX, y: clientY },
+        initialScroll: window.scrollY,
         deltaScroll: 0,
       });
 
@@ -130,6 +143,9 @@ export default function ReorderableList({ habits, setHabits }: Props) {
             display: 'flex',
             justifyContent: 'space-between',
             width: '350px',
+            backgroundColor: 'lightpink',
+            padding: '10px 10px',
+            height: '50px',
           }}
         >
           {name}
@@ -150,10 +166,10 @@ export default function ReorderableList({ habits, setHabits }: Props) {
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
-    if (reorderInfo.id) {
+    if (reorderInfo.active) {
       const onScroll = () => {
-        const { initialScrollPosition } = reorderInfo;
-        const deltaScroll = window.scrollY - initialScrollPosition;
+        const { initialScroll } = reorderInfo;
+        const deltaScroll = window.scrollY - initialScroll;
         const updatedReorderInfo = { ...reorderInfo, deltaScroll };
 
         const { newHabits, newReorderInfo } = checkForReorder(habits, updatedReorderInfo);
@@ -169,14 +185,14 @@ export default function ReorderableList({ habits, setHabits }: Props) {
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
-    if (reorderInfo.id !== null) {
+    if (reorderInfo.active) {
       const onMouseMove = ({ clientX, clientY }: MouseEvent) => {
-        const deltaPosition = {
-          x: clientX - reorderInfo.restingPosition.x,
-          y: clientY - reorderInfo.restingPosition.y,
+        const deltaMousePosition = {
+          x: clientX - reorderInfo.initialMousePosition.x,
+          y: clientY - reorderInfo.initialMousePosition.y,
         };
 
-        const updatedReorderInfo = { ...reorderInfo, deltaPosition };
+        const updatedReorderInfo = { ...reorderInfo, deltaMousePosition };
 
         const { newHabits, newReorderInfo } = checkForReorder(habits, updatedReorderInfo);
 
@@ -185,7 +201,7 @@ export default function ReorderableList({ habits, setHabits }: Props) {
       };
 
       const onMouseUp = () => {
-        setReorderInfo({ id: null });
+        setReorderInfo({ active: false });
         document.removeEventListener('mouseup', onMouseUp);
         document.removeEventListener('mousemove', onMouseMove);
       };
@@ -201,8 +217,20 @@ export default function ReorderableList({ habits, setHabits }: Props) {
   }, [habits, reorderInfo, setHabits]);
 
   return (
-    <div style={{ position: 'relative' }}>
-      {elements}
-    </div>
+    <>
+      {reorderInfo.active && (
+        <div style={{ position: 'fixed', top: 0, right: 0, margin: '10px' }}>
+          <div>{`id: ${reorderInfo.id}`}</div>
+          <div>{`position: ${reorderInfo.position}`}</div>
+          <div>{`ΔMousePosition: ${reorderInfo.deltaMousePosition.x}, ${reorderInfo.deltaMousePosition.y}`}</div>
+          <div>{`initialMousePosition: ${reorderInfo.initialMousePosition.x}, ${reorderInfo.initialMousePosition.y}`}</div>
+          <div>{`initialScroll: ${reorderInfo.initialScroll}`}</div>
+          <div>{`ΔScroll: ${reorderInfo.deltaScroll}`}</div>
+        </div>
+      )}
+      <div style={{ position: 'relative', width: '350px', height: `${habits.length * 50}px` }}>
+        {elements}
+      </div>
+    </>
   );
 }
