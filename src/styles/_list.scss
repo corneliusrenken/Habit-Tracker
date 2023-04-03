@@ -23,7 +23,6 @@ $icon-width: 42px; // 42 to align icons with dates
     @include fonts.main;
     color: theme.$primary;
 
-    position: relative;
     z-index: 0;
 
     height: 50px;

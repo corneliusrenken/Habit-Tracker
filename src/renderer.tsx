@@ -38,16 +38,16 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <>
-    <div className="draggable-area" />
-    <ErrorBoundary FallbackComponent={ErrorFallback}>
-      <Initializer />
-    </ErrorBoundary>
-  </>,
-  // <React.StrictMode>
+  // <>
   //   <div className="draggable-area" />
   //   <ErrorBoundary FallbackComponent={ErrorFallback}>
   //     <Initializer />
   //   </ErrorBoundary>
-  // </React.StrictMode>,
+  // </>,
+  <React.StrictMode>
+    <div className="draggable-area" />
+    <ErrorBoundary FallbackComponent={ErrorFallback}>
+      <Initializer />
+    </ErrorBoundary>
+  </React.StrictMode>,
 );
