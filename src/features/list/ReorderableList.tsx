@@ -1,5 +1,3 @@
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable arrow-body-style */
 import React, {
   useEffect,
   useMemo,
@@ -14,7 +12,7 @@ type ReorderInfo = {
   active: true;
   id: number;
   position: number;
-  initialMousePosition: { x: number; y: number };
+  restingMousePosition: { x: number; y: number };
   deltaMousePosition: { x: number; y: number };
   actualMousePosition: { x: number; y: number };
   initialScroll: number;
@@ -35,7 +33,7 @@ function checkForReorder(
     position, deltaMousePosition, deltaScroll, actualMousePosition,
   } = reorderInfo;
 
-  let distanceFromInitMousePosition = deltaMousePosition.y + deltaScroll;
+  let distanceFromRestMousePosition = deltaMousePosition.y + deltaScroll;
 
   // reorder shouldn't happen when mouse is moving beyond the top or bottom of the list
   const verticalMarginHeight = getVerticalMarginHeight();
@@ -47,10 +45,10 @@ function checkForReorder(
 
   if (y < listBounds.top) {
     const outOfBoundsAmt = listBounds.top - y;
-    distanceFromInitMousePosition += outOfBoundsAmt;
+    distanceFromRestMousePosition += outOfBoundsAmt;
   } else if (y > listBounds.bottom) {
     const outOfBoundsAmt = y - listBounds.bottom;
-    distanceFromInitMousePosition -= outOfBoundsAmt;
+    distanceFromRestMousePosition -= outOfBoundsAmt;
   }
 
   // how far you have to drag before the list item changes position
@@ -58,13 +56,13 @@ function checkForReorder(
   // having it right on 25 makes it feel a bit jumpy going back and forth
   const changeThreshold = 30;
 
-  if (Math.abs(distanceFromInitMousePosition) <= changeThreshold) {
+  if (Math.abs(distanceFromRestMousePosition) <= changeThreshold) {
     return { newReorderInfo: reorderInfo };
   }
 
-  let posChange = 1 + Math.floor((Math.abs(distanceFromInitMousePosition) - changeThreshold) / 50);
+  let posChange = 1 + Math.floor((Math.abs(distanceFromRestMousePosition) - changeThreshold) / 50);
 
-  const changeDirection = distanceFromInitMousePosition > 0 ? 1 : -1;
+  const changeDirection = distanceFromRestMousePosition > 0 ? 1 : -1;
 
   posChange *= changeDirection;
 
@@ -84,7 +82,7 @@ function checkForReorder(
   );
 
   newReorderInfo.position += posChange;
-  newReorderInfo.initialMousePosition.y += posChange * 50;
+  newReorderInfo.restingMousePosition.y += posChange * 50;
   newReorderInfo.deltaMousePosition.y -= posChange * 50;
 
   return { newReorderInfo };
@@ -119,23 +117,21 @@ export default function ReorderableList({
       const beingReordered = reorderInfo.active && reorderInfo.id === habit.id;
       const position = habits.findIndex(({ id }) => habit.id === id);
 
-      const styleAdditions: React.CSSProperties = {
-        top: `${position * 50}px`,
-        left: '0px',
-      };
-
-      if (beingReordered) {
-        const { deltaMousePosition, deltaScroll } = reorderInfo;
-        styleAdditions.top = `${position * 50 + deltaMousePosition.y + deltaScroll}px`;
-        styleAdditions.left = `${deltaMousePosition.x}px`;
-      }
+      const styleAdditions: React.CSSProperties = beingReordered
+        ? {
+          top: `${position * 50 + reorderInfo.deltaMousePosition.y + reorderInfo.deltaScroll}px`,
+          left: `${reorderInfo.deltaMousePosition.x}px`,
+        } : {
+          top: `${position * 50}px`,
+          left: '0px',
+        };
 
       const startReordering = ({ clientX, clientY }: React.MouseEvent) => setReorderInfo({
         active: true,
         id: habit.id,
         position,
         deltaMousePosition: { x: 0, y: 0 },
-        initialMousePosition: { x: clientX, y: clientY },
+        restingMousePosition: { x: clientX, y: clientY },
         actualMousePosition: { x: clientX, y: clientY },
         initialScroll: window.scrollY,
         actualScroll: window.scrollY,
@@ -184,8 +180,8 @@ export default function ReorderableList({
     if (reorderInfo.active) {
       const onMouseMove = ({ clientX, clientY }: MouseEvent) => {
         const deltaMousePosition = {
-          x: clientX - reorderInfo.initialMousePosition.x,
-          y: clientY - reorderInfo.initialMousePosition.y,
+          x: clientX - reorderInfo.restingMousePosition.x,
+          y: clientY - reorderInfo.restingMousePosition.y,
         };
 
         const updatedReorderInfo = {
