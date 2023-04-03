@@ -51,6 +51,10 @@ $icon-width: 42px; // 42 to align icons with dates
       transition: none;
     }
 
+    &.selected {
+      z-index: 3; // when reordering with shortcut, selected item is always on top
+    }
+
     .launch-animation & {
       @include list-launch;
     }
@@ -95,27 +99,11 @@ $icon-width: 42px; // 42 to align icons with dates
     }
 
     &-input {
-      padding-top: 1px;
       width: 100%;
-      border-bottom: 1px solid theme.$primary;
 
       &::placeholder {
         color: theme.$tertiary;
       }
-
-      // .list-item-create-form & {
-      //   @keyframes input-width-expand {
-      //     from {
-      //       width: 33%;
-      //     }
-
-      //     to {
-      //       width: 100%;
-      //     }
-      //   }
-
-      //   animation: input-width-expand 400ms;
-      // }
     }
 
     &-error {
@@ -134,6 +122,10 @@ $icon-width: 42px; // 42 to align icons with dates
 
     .launch-animation &.selected:before {
       display: none;
+    }
+
+    &:has(.list-item-error):before {
+      background-color: theme.$background-error;
     }
 
     &-icon-button {
