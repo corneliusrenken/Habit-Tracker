@@ -24,6 +24,6 @@ export default function removeCurrentHabit({
     deleteHabit,
     setModal,
   });
-  setModal(() => modalGenerator);
   scrollSelectedIndexIntoView(selectedIndex, { behavior: 'instant' });
+  setModal(() => modalGenerator);
 }

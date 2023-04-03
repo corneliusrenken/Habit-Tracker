@@ -1,19 +1,11 @@
-import React, { useCallback } from 'react';
-import useLatch from '../common/useLatch';
+import React from 'react';
 
 type Props = {
-  freezeScroll: boolean;
   scrollPos: number;
 };
 
-export default function Masks({ freezeScroll, scrollPos }: Props) {
-  const translucentMaskExpandPercentage = useLatch<number>(
-    Math.min(1, scrollPos / 25),
-    useCallback((lastPercentage) => {
-      if (freezeScroll) return lastPercentage;
-      return Math.min(1, scrollPos / 25);
-    }, [scrollPos, freezeScroll]),
-  );
+export default function Masks({ scrollPos }: Props) {
+  const translucentMaskExpandPercentage = Math.min(1, scrollPos / 25);
 
   return (
     <div className="masks">

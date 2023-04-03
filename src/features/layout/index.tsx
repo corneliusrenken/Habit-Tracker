@@ -1,11 +1,9 @@
 import React, {
   useEffect,
-  useMemo,
   useState,
 } from 'react';
 import { View, viewToViewType, ViewType } from '../../globalTypes';
 import Icon from '../icon';
-import getScreenPercentage from './getScreenPercentage';
 import Masks from './Masks';
 import triggerElementReflow from './triggerElementReflow';
 
@@ -45,6 +43,12 @@ function transition(
   document.documentElement.addEventListener('animationend', onAnimationEnd);
 }
 
+function checkToDisplayScrollIndicator() {
+  const scrollable = document.documentElement.scrollHeight > window.innerHeight;
+  const scrolledToBottom = window.scrollY + window.innerHeight >= document.body.scrollHeight;
+  return scrollable && !scrolledToBottom;
+}
+
 type Props = {
   launchAnimationActive: boolean;
   setInTransition: React.Dispatch<React.SetStateAction<boolean>>;
@@ -74,39 +78,15 @@ export default function Layout({
 }: Props) {
   const [displayedView, setDisplayedView] = useState<View>(view);
   const [scrollPos, setScrollPos] = useState(window.scrollY);
-  const [scrollable, setScrollable] = useState(() => getScreenPercentage() < 100);
+  const [displayScrollIndicator, setDisplayScrollIndicator] = useState(() => (
+    checkToDisplayScrollIndicator()
+  ));
 
   const layoutRef = React.useRef<HTMLDivElement>(null);
   const scrollRef = React.useRef<HTMLDivElement>(null);
   const initialRender = React.useRef(true); // used to disable css animations until view type change
 
-  useEffect(() => {
-    const onScroll = () => {
-      setScrollPos(window.scrollY);
-    };
-
-    onScroll();
-
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, [listHeight, displayedView]); // only needed in list view so no occurrenceHeight dependency
-
-  useEffect(() => {
-    function onZoomOrResize() {
-      setScrollable(getScreenPercentage() < 100);
-      setScrollPos(window.scrollY);
-    }
-
-    onZoomOrResize();
-
-    window.addEventListener('zoom', onZoomOrResize);
-    window.addEventListener('resize', onZoomOrResize);
-    return () => {
-      window.removeEventListener('zoom', onZoomOrResize);
-      window.removeEventListener('resize', onZoomOrResize);
-    };
-  }, [listHeight, occurrenceHeight, displayedView, launchAnimationActive]);
-
+  // handle view transitions
   useEffect(() => {
     const nextView = view;
 
@@ -144,43 +124,58 @@ export default function Layout({
     setDisplayedView(nextView);
   }, [view, setInTransition, listHeight, occurrenceHeight, displayedView]);
 
-  useMemo(() => {
-    if (freezeScroll) {
-      document.documentElement.style.setProperty('--freeze-scroll-distance', `${window.scrollY}px`);
-    }
-  }, [freezeScroll]);
-
+  // scroll to scrollPos that existed previous to freezing scroll
   useEffect(() => {
     if (!freezeScroll) {
-      const lastScrollDistance = document.documentElement.style.getPropertyValue('--freeze-scroll-distance');
-      document.documentElement.style.removeProperty('--freeze-scroll-distance');
-      window.scrollTo(0, parseInt(lastScrollDistance, 10));
+      window.scrollTo(0, scrollPos);
     }
-  }, [freezeScroll]);
+  }, [freezeScroll, scrollPos]);
+
+  // update scrollPos and displayScrollIndicator on resize, zoom, and scroll, unless frozen
+  // needs to happen after transition
+  useEffect(() => {
+    const onResizeZoomScroll = () => {
+      if (freezeScroll) return;
+      setScrollPos(window.scrollY);
+      setDisplayScrollIndicator(checkToDisplayScrollIndicator());
+    };
+
+    onResizeZoomScroll();
+
+    window.addEventListener('resize', onResizeZoomScroll);
+    window.addEventListener('zoom', onResizeZoomScroll);
+    window.addEventListener('scroll', onResizeZoomScroll);
+    return () => {
+      window.removeEventListener('resize', onResizeZoomScroll);
+      window.removeEventListener('zoom', onResizeZoomScroll);
+      window.removeEventListener('scroll', onResizeZoomScroll);
+    };
+  }, [freezeScroll, listHeight, occurrenceHeight]);
 
   let layoutClassName = 'layout';
-
   layoutClassName += ` ${viewToViewType[displayedView.name]}`;
   if (freezeScroll) layoutClassName += ' frozen';
   if (initialRender.current) layoutClassName += ' initial-render';
   if (launchAnimationActive) layoutClassName += ' launch-animation';
 
-  const scrolledToEndOfDocument = scrollPos === document.body.scrollHeight - window.innerHeight;
-
   let scrollIndicatorClassName = 'layout-scroll-indicator';
-  if (scrolledToEndOfDocument || viewToViewType[displayedView.name] === 'occurrence' || !scrollable) {
-    scrollIndicatorClassName += ' hidden';
-  }
+  if (!displayScrollIndicator) scrollIndicatorClassName += ' hidden';
 
   return (
     <>
-      <div ref={layoutRef} className={layoutClassName}>
+      <div
+        ref={layoutRef}
+        className={layoutClassName}
+        style={{
+          '--freeze-scroll-distance': `${scrollPos}px`,
+        } as React.CSSProperties}
+      >
         <div className="layout-freeze">
           <div className="layout-scroll" ref={scrollRef}>
             <div className="layout-occurrences-and-days">
               <div className="layout-occurrences" style={{ position: 'absolute', bottom: 0 }}>{occurrences}</div>
               <div className="layout-days" style={{ position: 'absolute', bottom: 0 }}>{days}</div>
-              <Masks freezeScroll={freezeScroll} scrollPos={scrollPos} />
+              <Masks scrollPos={scrollPos} />
               <div className={scrollIndicatorClassName}><Icon icon="chevron down" /></div>
             </div>
             <div className="layout-dates">{dates}</div>
