@@ -35,7 +35,7 @@ export default function HabitList({
   const dayObject = listView.name === 'yesterday' ? dateObject.yesterday : dateObject.today;
 
   return (
-    <div>
+    <>
       {habits.map(({ name, id }, index) => {
         const completed = occurrenceData.dates[dayObject.dateString][id].complete;
         const selected = index === selectedIndex;
@@ -55,6 +55,6 @@ export default function HabitList({
           />
         );
       })}
-    </div>
+    </>
   );
 }

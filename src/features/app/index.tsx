@@ -35,7 +35,7 @@ type Props = {
 };
 
 export default function App({ setConfig }: Props) {
-  const [launchAnimationActive, setLaunchAnimationActive] = useState(true);
+  const [launchAnimationActive, setLaunchAnimationActive] = useState(false);
   const { showBoundary } = useErrorBoundary();
   const queue = useRef(new TaskQueue(showBoundary)); // initializer ran every render, look into this
   const { startWeekOn } = useContext(ConfigContext);

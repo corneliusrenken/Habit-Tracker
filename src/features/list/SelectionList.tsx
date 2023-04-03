@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {
   DateObject,
   Habit,
@@ -7,7 +7,7 @@ import {
 } from '../../globalTypes';
 import AddHabitForm from './AddHabitForm';
 import ReorderableList from './ReorderableList';
-import useMemoizedSelectionListItemConstructors from './useMemoizedSelectionListItemConstructors';
+import SelectionListItem from './SelectionListItem';
 
 type Props = {
   ignoreMouse: boolean;
@@ -46,36 +46,65 @@ export default function SelectionList({
   updateHabitName,
   updateOccurrenceVisibility,
 }: Props) {
-  const elementConstructors = useMemoizedSelectionListItemConstructors({
-    ignoreMouse,
-    dateObject,
-    occurrenceData,
-    habits,
-    selectedIndex,
-    setSelectedIndex,
-    inInput,
-    setInInput,
-    reorderingList,
-    setReorderingList,
-    setModal,
+  const prepopulatedListItem = useCallback((
+    habit: Habit,
+    position: number,
+    reorder: (e: React.MouseEvent) => void,
+    styleAdditions: React.CSSProperties = {},
+    classNameAdditions = '',
+  ) => {
+    const visible = (
+      occurrenceData.dates[dateObject.today.dateString][habit.id]
+      && occurrenceData.dates[dateObject.today.dateString][habit.id].visible
+    );
+
+    return (
+      <SelectionListItem
+        key={habit.id}
+        styleAdditions={styleAdditions}
+        classNameAdditions={classNameAdditions}
+        ignoreMouse={ignoreMouse}
+        habit={habit}
+        move={(e) => {
+          reorder(e);
+          setReorderingList(true);
+        }}
+        visible={visible}
+        selected={selectedIndex === position}
+        select={reorderingList || inInput ? undefined : () => setSelectedIndex(position)}
+        toggleVisibility={() => updateOccurrenceVisibility(habit.id, !visible)}
+        renameHabit={(newName: string) => updateHabitName(habit.id, newName)}
+        inInput={inInput}
+        setInInput={setInInput}
+        habits={habits}
+        deleteHabit={deleteHabit}
+        setModal={setModal}
+      />
+    );
+  }, [
+    dateObject.today.dateString,
     deleteHabit,
+    habits,
+    ignoreMouse,
+    inInput,
+    occurrenceData.dates,
+    reorderingList,
+    selectedIndex,
+    setInInput,
+    setModal,
+    setReorderingList,
+    setSelectedIndex,
     updateHabitName,
     updateOccurrenceVisibility,
-  });
+  ]);
 
   return (
     <>
       <ReorderableList
-        elementConstructors={elementConstructors}
-        height={50}
-        width={350}
-        onIndexChange={(newIndicesById, changedId) => {
-          updateHabitListPosition(changedId, newIndicesById[changedId]);
-          setReorderingList(false);
-        }}
-        clampMovement
-        activeClass="being-reordered"
-        transition="200ms"
+        prepopulatedListItem={prepopulatedListItem}
+        habits={habits}
+        setReorderingList={setReorderingList}
+        updateHabitListPosition={updateHabitListPosition}
       />
       <AddHabitForm
         habits={habits}

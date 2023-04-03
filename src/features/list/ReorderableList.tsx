@@ -1,208 +1,227 @@
-import React, { useEffect, useRef, useState } from 'react';
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable arrow-body-style */
+import React, {
+  useEffect,
+  useMemo,
+  useState,
+} from 'react';
+import { Habit } from '../../globalTypes';
+import getVerticalMarginHeight from '../common/getVerticalMarginHeight';
 
-export type ElementConstructor = {
+type ReorderInfo = {
+  active: false;
+} | {
+  active: true;
   id: number;
-  elementConstructor: (onMouseDown: React.MouseEventHandler<HTMLButtonElement>) => JSX.Element;
+  position: number;
+  initialMousePosition: { x: number; y: number };
+  deltaMousePosition: { x: number; y: number };
+  actualMousePosition: { x: number; y: number };
+  initialScroll: number;
+  deltaScroll: number;
+  actualScroll: number;
 };
 
-function calculateNewIndices(
-  oldIndex: number,
-  newIndex: number,
-  elementStartingIndices: ElementIndices,
-) {
-  const newIndices: ElementIndices = {};
+function checkForReorder(
+  habits: Habit[],
+  reorderInfo: ReorderInfo,
+  updateHabitListPosition: (habitId: number, newPosition: number) => void,
+): { newReorderInfo: ReorderInfo } {
+  if (!reorderInfo.active) {
+    return { newReorderInfo: reorderInfo };
+  }
 
-  const indexDifference = newIndex - oldIndex;
+  const {
+    position, deltaMousePosition, deltaScroll, actualMousePosition,
+  } = reorderInfo;
 
-  Object.entries(elementStartingIndices).forEach(([id, startingIndex]) => {
-    if (startingIndex === oldIndex) {
-      newIndices[id] = newIndex;
-    } else if (indexDifference > 0 && startingIndex > oldIndex && startingIndex <= newIndex) {
-      newIndices[id] = startingIndex - 1;
-    } else if (indexDifference < 0 && startingIndex < oldIndex && startingIndex >= newIndex) {
-      newIndices[id] = startingIndex + 1;
-    } else {
-      newIndices[id] = startingIndex;
-    }
-  });
+  let distanceFromInitMousePosition = deltaMousePosition.y + deltaScroll;
 
-  return newIndices;
+  // reorder shouldn't happen when mouse is moving beyond the top or bottom of the list
+  const verticalMarginHeight = getVerticalMarginHeight();
+  const listBounds = {
+    top: verticalMarginHeight + 100,
+    bottom: window.innerHeight - verticalMarginHeight,
+  };
+  const { y } = actualMousePosition;
+
+  if (y < listBounds.top) {
+    const outOfBoundsAmt = listBounds.top - y;
+    distanceFromInitMousePosition += outOfBoundsAmt;
+  } else if (y > listBounds.bottom) {
+    const outOfBoundsAmt = y - listBounds.bottom;
+    distanceFromInitMousePosition -= outOfBoundsAmt;
+  }
+
+  // how far you have to drag before the list item changes position
+  // based on a item height of 50, min 25
+  // having it right on 25 makes it feel a bit jumpy going back and forth
+  const changeThreshold = 30;
+
+  if (Math.abs(distanceFromInitMousePosition) <= changeThreshold) {
+    return { newReorderInfo: reorderInfo };
+  }
+
+  let posChange = 1 + Math.floor((Math.abs(distanceFromInitMousePosition) - changeThreshold) / 50);
+
+  const changeDirection = distanceFromInitMousePosition > 0 ? 1 : -1;
+
+  posChange *= changeDirection;
+
+  const maxPosition = habits.length - 1;
+  const maxPosChange = maxPosition - position;
+  const minPosChange = -position;
+
+  posChange = Math.min(
+    maxPosChange,
+    Math.max(minPosChange, posChange),
+  );
+
+  updateHabitListPosition(reorderInfo.id, position + posChange);
+
+  const newReorderInfo = (
+    JSON.parse(JSON.stringify(reorderInfo)) as Extract<ReorderInfo, { active: true }>
+  );
+
+  newReorderInfo.position += posChange;
+  newReorderInfo.initialMousePosition.y += posChange * 50;
+  newReorderInfo.deltaMousePosition.y -= posChange * 50;
+
+  return { newReorderInfo };
 }
 
-type ElementIndices = { [id: string]: number };
-
 type Props = {
-  elementConstructors: ElementConstructor[];
-  height: number;
-  width: number;
-  onIndexChange: (newIndicesById: ElementIndices, changedId: number) => any;
-  transition?: string;
-  activeClass?: string;
-  inactiveClass?: string;
-  clampMovement?: boolean;
+  prepopulatedListItem: (
+    habit: Habit,
+    position: number,
+    reorder: (e: React.MouseEvent) => void,
+    styleAdditions?: React.CSSProperties,
+    classNameAdditions?: string,
+  ) => JSX.Element;
+  habits: Habit[];
+  setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
+  updateHabitListPosition: (habitId: number, newPosition: number) => void;
 };
 
 export default function ReorderableList({
-  elementConstructors,
-  height,
-  width,
-  onIndexChange,
-  transition,
-  activeClass,
-  inactiveClass,
-  clampMovement,
+  prepopulatedListItem,
+  habits,
+  setReorderingList,
+  updateHabitListPosition,
 }: Props) {
-  const [startingMouseOffsetY, setStartingMouseOffsetY] = useState(0);
-  const [mouseOffsetY, setMouseOffsetY] = useState(0);
-  const [startingScrollOffset, setStartingScrollOffset] = useState(0);
-  const [reorderId, setReorderId] = useState<number | undefined>();
-  const [elementStartingIndices, setElementStartingIndices] = useState<ElementIndices>({});
-  const [elementCurrentIndices, setElementCurrentIndices] = useState<ElementIndices>({});
+  const [reorderInfo, setReorderInfo] = useState<ReorderInfo>({ active: false });
 
-  const listContainerRef = useRef<HTMLDivElement>(null);
+  const elements = useMemo(() => {
+    // sort by id to ensure order of elements in dom is consistent preventing rerender on move
+    const habitsSortedById = [...habits].sort((a, b) => a.id - b.id);
 
-  useEffect(() => {
-    if (reorderId === undefined) return;
+    return habitsSortedById.map((habit) => {
+      const beingReordered = reorderInfo.active && reorderInfo.id === habit.id;
+      const position = habits.findIndex(({ id }) => habit.id === id);
 
-    const onMouseMove = (e: MouseEvent) => {
-      const startingIndex = elementStartingIndices[reorderId];
-      const currentIndex = elementCurrentIndices[reorderId];
-      const dstFromOrigin = e.clientY - startingMouseOffsetY;
-      const scrollOffset = window.scrollY - startingScrollOffset;
-      const dstFromRestingPosition = (
-        dstFromOrigin + scrollOffset - (currentIndex - startingIndex) * height
-      );
-      const listPositionsFromRestingPosition = dstFromRestingPosition / height;
+      const styleAdditions: React.CSSProperties = {
+        top: `${position * 50}px`,
+        left: '0px',
+      };
 
-      setMouseOffsetY(dstFromOrigin);
-
-      if (currentIndex < elementConstructors.length - 1 && listPositionsFromRestingPosition > 0.5) {
-        setElementCurrentIndices(calculateNewIndices(
-          startingIndex,
-          Math.min(
-            currentIndex + Math.round(listPositionsFromRestingPosition),
-            elementConstructors.length - 1,
-          ),
-          elementStartingIndices,
-        ));
-      } else if (currentIndex > 0 && listPositionsFromRestingPosition < -0.5) {
-        setElementCurrentIndices(calculateNewIndices(
-          startingIndex,
-          Math.max(
-            currentIndex + Math.round(listPositionsFromRestingPosition),
-            0,
-          ),
-          elementStartingIndices,
-        ));
+      if (beingReordered) {
+        const { deltaMousePosition, deltaScroll } = reorderInfo;
+        styleAdditions.top = `${position * 50 + deltaMousePosition.y + deltaScroll}px`;
+        styleAdditions.left = `${deltaMousePosition.x}px`;
       }
-    };
 
-    const onMouseUp = (e: MouseEvent) => {
-      if (e.button !== 0) return;
-      onIndexChange(elementCurrentIndices, reorderId);
-      setReorderId(undefined);
-    };
+      const startReordering = ({ clientX, clientY }: React.MouseEvent) => setReorderInfo({
+        active: true,
+        id: habit.id,
+        position,
+        deltaMousePosition: { x: 0, y: 0 },
+        initialMousePosition: { x: clientX, y: clientY },
+        actualMousePosition: { x: clientX, y: clientY },
+        initialScroll: window.scrollY,
+        actualScroll: window.scrollY,
+        deltaScroll: 0,
+      });
 
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseup', onMouseUp);
+      let classNameAdditions = '';
+      if (beingReordered) classNameAdditions += ' reordered-item';
 
-    // eslint-disable-next-line consistent-return
-    return () => {
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseup', onMouseUp);
-    };
-  }, [
-    elementConstructors.length,
-    elementCurrentIndices,
-    elementStartingIndices,
-    height,
-    startingMouseOffsetY,
-    startingScrollOffset,
-    onIndexChange,
-    reorderId,
-  ]);
+      return prepopulatedListItem(
+        habit,
+        position,
+        startReordering,
+        styleAdditions,
+        classNameAdditions,
+      );
+    });
+  }, [habits, prepopulatedListItem, reorderInfo]);
 
-  const onMouseDown = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, elementId: number) => {
-    if (e.button !== 0) return;
-    const currentIndices: ElementIndices = {};
-    elementConstructors.forEach(({ id }, index) => { currentIndices[id] = index; });
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    if (reorderInfo.active) {
+      const onScroll = () => {
+        const { initialScroll } = reorderInfo;
+        const deltaScroll = window.scrollY - initialScroll;
+        const updatedReorderInfo = {
+          ...reorderInfo,
+          deltaScroll,
+          actualScroll: window.scrollY,
+        };
 
-    setMouseOffsetY(0);
-    setStartingMouseOffsetY(e.clientY);
-    setStartingScrollOffset(window.scrollY);
-    setReorderId(elementId);
-    setElementStartingIndices(currentIndices);
-    setElementCurrentIndices(currentIndices);
-  };
+        const {
+          newReorderInfo,
+        } = checkForReorder(habits, updatedReorderInfo, updateHabitListPosition);
+
+        setReorderInfo(newReorderInfo);
+      };
+
+      window.addEventListener('scroll', onScroll);
+      return () => window.removeEventListener('scroll', onScroll);
+    }
+  }, [reorderInfo, habits, updateHabitListPosition]);
+
+  // eslint-disable-next-line consistent-return
+  useEffect(() => {
+    if (reorderInfo.active) {
+      const onMouseMove = ({ clientX, clientY }: MouseEvent) => {
+        const deltaMousePosition = {
+          x: clientX - reorderInfo.initialMousePosition.x,
+          y: clientY - reorderInfo.initialMousePosition.y,
+        };
+
+        const updatedReorderInfo = {
+          ...reorderInfo,
+          deltaMousePosition,
+          actualMousePosition: { x: clientX, y: clientY },
+        };
+
+        const {
+          newReorderInfo,
+        } = checkForReorder(habits, updatedReorderInfo, updateHabitListPosition);
+
+        setReorderInfo(newReorderInfo);
+      };
+
+      const onMouseUp = () => {
+        setReorderInfo({ active: false });
+        setReorderingList(false);
+        document.removeEventListener('mouseup', onMouseUp);
+        document.removeEventListener('mousemove', onMouseMove);
+      };
+
+      document.addEventListener('mouseup', onMouseUp);
+      document.addEventListener('mousemove', onMouseMove);
+
+      return () => {
+        document.removeEventListener('mouseup', onMouseUp);
+        document.removeEventListener('mousemove', onMouseMove);
+      };
+    }
+  }, [habits, reorderInfo, setReorderingList, updateHabitListPosition]);
 
   return (
-    <div
-      ref={listContainerRef}
-      style={{
-        position: 'relative',
-        height: `${elementConstructors.length * height}px`,
-        width: `${width}px`,
-      }}
-    >
-      {elementConstructors.map(({ id, elementConstructor }, index) => {
-        const reordering = reorderId !== undefined;
-
-        let top = `${index * height}px`;
-
-        const listTop = listContainerRef.current?.getBoundingClientRect().top || 0;
-
-        const elementRestingPosition = listTop + 50 * elementStartingIndices[id];
-
-        const scrollOffset = window.scrollY - startingScrollOffset;
-
-        if (reordering) {
-          if (clampMovement) {
-            const minPos = listTop;
-            const maxPos = listTop + 50 * (elementConstructors.length - 1);
-            top = reorderId === id
-              ? `${Math.min(
-                maxPos,
-                Math.max(elementRestingPosition + mouseOffsetY + scrollOffset, minPos),
-              )}px`
-              : `${elementCurrentIndices[id] * 50}px`;
-          } else {
-            top = reorderId === id
-              ? `${elementRestingPosition + mouseOffsetY + scrollOffset}px`
-              : `${elementCurrentIndices[id] * 50}px`;
-          }
-        }
-
-        let className = '';
-
-        if (activeClass && reordering && reorderId === id) {
-          className = activeClass;
-        }
-
-        if (inactiveClass && reordering && reorderId !== id) {
-          className = inactiveClass;
-        }
-
-        return (
-          <div
-            key={id}
-            style={{
-              position: reorderId === id ? 'fixed' : 'absolute',
-              top,
-              transition: transition && reordering && reorderId !== id ? `top ${transition}` : '',
-            }}
-            className={className || undefined}
-          >
-            {elementConstructor((e) => { onMouseDown(e, id); })}
-          </div>
-        );
-      })}
-    </div>
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <>
+      {elements}
+    </>
   );
 }
-
-ReorderableList.defaultProps = {
-  transition: '',
-  activeClass: '',
-  inactiveClass: '',
-  clampMovement: false,
-};
