@@ -51,6 +51,10 @@ $icon-width: 42px; // 42 to align icons with dates
       transition: none;
     }
 
+    &.selected {
+      z-index: 3; // when reordering with shortcut, selected item is always on top
+    }
+
     .launch-animation & {
       @include list-launch;
     }
