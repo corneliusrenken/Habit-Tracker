@@ -16,11 +16,15 @@ $icon-width: 42px; // 42 to align icons with dates
 }
 
 .list {
+  position: relative;
   transition: opacity 600ms;
 
   &-item {
     @include fonts.main;
     color: theme.$primary;
+
+    position: relative;
+    z-index: 0;
 
     height: 50px;
     width: 350px;
@@ -29,16 +33,31 @@ $icon-width: 42px; // 42 to align icons with dates
     align-items: center;
     gap: variables.$universal-margin;
 
+    .selection-view & {
+      position: absolute;
+      transition:
+        top 200ms ease-out,
+        left 200ms ease-out,
+        color 100ms ease-out,
+        width 400ms,
+        z-index 200ms step-end;
+    }
+
+    .being-reordered &:not(.reordered-item) {
+      color: theme.$tertiary;
+    }
+
+    &.reordered-item {
+      z-index: 3;
+      transition: none;
+    }
+
     .launch-animation & {
       @include list-launch;
     }
 
     &.complete {
       color: theme.$tertiary;
-    }
-
-    &.selected {
-      transition: width 400ms;
     }
 
     &.being-renamed {

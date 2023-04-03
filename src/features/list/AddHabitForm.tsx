@@ -32,7 +32,7 @@ export default function AddHabitForm({
   if (selectedIndex === habits.length) className += ' selected';
 
   return (
-    <div className={className}>
+    <div className={className} style={{ top: `${habits.length * 50}px` }}>
       <CustomForm
         active={selectedIndex === habits.length}
         activeOnClick

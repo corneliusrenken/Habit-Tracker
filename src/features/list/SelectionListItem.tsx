@@ -6,7 +6,8 @@ import getInputValidationError from './getInputValidationError';
 import createDeleteHabitModalGenerator from '../deleteHabitModal';
 
 type Props = {
-  style?: React.CSSProperties;
+  styleAdditions: React.CSSProperties;
+  classNameAdditions: string;
   ignoreMouse: boolean;
   habit: Habit;
   visible: boolean;
@@ -23,7 +24,8 @@ type Props = {
 };
 
 export default function SelectionListItem({
-  style,
+  styleAdditions,
+  classNameAdditions,
   ignoreMouse,
   habit,
   visible,
@@ -45,12 +47,13 @@ export default function SelectionListItem({
   let containerClassName = 'list-item';
   if (selected) containerClassName += ' selected';
   if (beingRenamed) containerClassName += ' being-renamed';
+  containerClassName += ` ${classNameAdditions}`;
 
   return (
     <div
       className={containerClassName}
       onMouseEnter={ignoreMouse ? undefined : select}
-      style={style}
+      style={styleAdditions}
     >
       <CustomForm
         active={beingRenamed}
@@ -120,7 +123,3 @@ export default function SelectionListItem({
     </div>
   );
 }
-
-SelectionListItem.defaultProps = {
-  style: {},
-};

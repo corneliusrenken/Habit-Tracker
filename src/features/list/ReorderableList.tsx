@@ -91,8 +91,13 @@ function checkForReorder(
 }
 
 type Props = {
-  // eslint-disable-next-line max-len
-  prepopulatedListItem: (habit: Habit, position: number, style: React.CSSProperties, reorder: (e: React.MouseEvent) => void) => JSX.Element;
+  prepopulatedListItem: (
+    habit: Habit,
+    position: number,
+    reorder: (e: React.MouseEvent) => void,
+    styleAdditions?: React.CSSProperties,
+    classNameAdditions?: string,
+  ) => JSX.Element;
   habits: Habit[];
   setReorderingList: React.Dispatch<React.SetStateAction<boolean>>;
   updateHabitListPosition: (habitId: number, newPosition: number) => void;
@@ -107,26 +112,22 @@ export default function ReorderableList({
   const [reorderInfo, setReorderInfo] = useState<ReorderInfo>({ active: false });
 
   const elements = useMemo(() => {
-    // sort by id to ensure order of elements in dom is consistent
+    // sort by id to ensure order of elements in dom is consistent preventing rerender on move
     const habitsSortedById = [...habits].sort((a, b) => a.id - b.id);
 
     return habitsSortedById.map((habit) => {
+      const beingReordered = reorderInfo.active && reorderInfo.id === habit.id;
       const position = habits.findIndex(({ id }) => habit.id === id);
 
-      const style: React.CSSProperties = {
-        position: 'absolute',
+      const styleAdditions: React.CSSProperties = {
         top: `${position * 50}px`,
         left: '0px',
-        zIndex: 0,
-        transition: 'top 0.2s ease, left 0.2s ease, z-index 0.2s step-end',
       };
 
-      if (reorderInfo.active && reorderInfo.id === habit.id) {
+      if (beingReordered) {
         const { deltaMousePosition, deltaScroll } = reorderInfo;
-        style.top = `${position * 50 + deltaMousePosition.y + deltaScroll}px`;
-        style.left = `${deltaMousePosition.x}px`;
-        style.zIndex = 3;
-        delete style.transition;
+        styleAdditions.top = `${position * 50 + deltaMousePosition.y + deltaScroll}px`;
+        styleAdditions.left = `${deltaMousePosition.x}px`;
       }
 
       const startReordering = ({ clientX, clientY }: React.MouseEvent) => setReorderInfo({
@@ -141,7 +142,16 @@ export default function ReorderableList({
         deltaScroll: 0,
       });
 
-      return prepopulatedListItem(habit, position, style, startReordering);
+      let classNameAdditions = '';
+      if (beingReordered) classNameAdditions += ' reordered-item';
+
+      return prepopulatedListItem(
+        habit,
+        position,
+        startReordering,
+        styleAdditions,
+        classNameAdditions,
+      );
     });
   }, [habits, prepopulatedListItem, reorderInfo]);
 
@@ -209,8 +219,9 @@ export default function ReorderableList({
   }, [habits, reorderInfo, setReorderingList, updateHabitListPosition]);
 
   return (
-    <div style={{ position: 'relative', width: '350px', height: `${habits.length * 50}px` }}>
+    // eslint-disable-next-line react/jsx-no-useless-fragment
+    <>
       {elements}
-    </div>
+    </>
   );
 }

@@ -66,9 +66,13 @@ function List({
     }, [view]),
   );
 
+  let listClassName = 'list';
+  if (reorderingList) listClassName += ' being-reordered';
+  if (listView.name === 'selection') listClassName += ' selection-view';
+
   return (
     <div
-      className="list"
+      className={listClassName}
       style={{ opacity: viewToViewType[view.name] === 'list' ? 1 : 0 }}
     >
       {listView.name !== 'selection' ? (

@@ -49,8 +49,9 @@ export default function SelectionList({
   const prepopulatedListItem = useCallback((
     habit: Habit,
     position: number,
-    style: React.CSSProperties,
     reorder: (e: React.MouseEvent) => void,
+    styleAdditions: React.CSSProperties = {},
+    classNameAdditions = '',
   ) => {
     const visible = (
       occurrenceData.dates[dateObject.today.dateString][habit.id]
@@ -60,7 +61,8 @@ export default function SelectionList({
     return (
       <SelectionListItem
         key={habit.id}
-        style={style}
+        styleAdditions={styleAdditions}
+        classNameAdditions={classNameAdditions}
         ignoreMouse={ignoreMouse}
         habit={habit}
         move={(e) => {
