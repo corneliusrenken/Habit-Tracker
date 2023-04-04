@@ -6,6 +6,7 @@ import { View, viewToViewType, ViewType } from '../../globalTypes';
 import Icon from '../icon';
 import Masks from './Masks';
 import triggerElementReflow from './triggerElementReflow';
+import getScrollDistance from './getScrollDistance';
 
 type States = {
   layoutElement: HTMLDivElement;
@@ -16,16 +17,18 @@ type States = {
 function transition(
   displayedViewType: ViewType,
   nextViewType: ViewType,
-  scrollDistance: { fromTop: number; fromBottom: number },
+  scrollDistancePreTransition: { fromTop: number; fromBottom: number },
   { layoutElement, scrollElement, setInTransition }: States,
 ) {
   setInTransition(true);
 
+  const { fromTop, fromBottom } = scrollDistancePreTransition;
+
   // have to remove and add the classes manually before the next render for the element reflow
-  layoutElement.classList.remove('initial-render');
-  layoutElement.classList.remove(displayedViewType);
-  layoutElement.classList.add(nextViewType);
-  document.documentElement.style.setProperty('--transition-scroll-distance', `${displayedViewType === 'list' ? scrollDistance.fromTop : scrollDistance.fromBottom}px`);
+  layoutElement.classList.remove('initial-view-type');
+  layoutElement.classList.remove(`${displayedViewType}-view`);
+  layoutElement.classList.add(`${nextViewType}-view`);
+  document.documentElement.style.setProperty('--transition-scroll-distance', `${displayedViewType === 'list' ? fromTop : fromBottom}px`);
 
   triggerElementReflow(layoutElement);
 
@@ -84,14 +87,13 @@ export default function Layout({
 
   const layoutRef = React.useRef<HTMLDivElement>(null);
   const scrollRef = React.useRef<HTMLDivElement>(null);
-  const initialRender = React.useRef(true); // used to disable css animations until view type change
+  const initialViewType = React.useRef(true); // to disable css animations until type changes
 
   // handle view transitions
   useEffect(() => {
     const nextView = view;
 
-    const scrollDistanceFromTop = window.scrollY;
-    const scrollDistanceFromBottom = document.body.scrollHeight - window.scrollY - window.innerHeight; // eslint-disable-line max-len
+    const scrollDistancePreTransition = getScrollDistance();
 
     document.documentElement.style.setProperty('--list-height', `${listHeight}px`);
     document.documentElement.style.setProperty('--occurrence-height', `max(50vh - 25px, ${occurrenceHeight}px)`);
@@ -107,12 +109,12 @@ export default function Layout({
     if (displayedViewType !== nextViewType) {
       if (!layoutRef.current || !scrollRef.current) throw new Error('Can\'t transition with refs not set');
 
-      initialRender.current = false;
+      initialViewType.current = false;
 
       transition(
         displayedViewType,
         nextViewType,
-        { fromTop: scrollDistanceFromTop, fromBottom: scrollDistanceFromBottom },
+        scrollDistancePreTransition,
         { layoutElement: layoutRef.current, scrollElement: scrollRef.current, setInTransition },
       );
     } else if (displayedViewType === 'list') {
@@ -155,7 +157,7 @@ export default function Layout({
   let layoutClassName = 'layout';
   layoutClassName += ` ${viewToViewType[displayedView.name]}-view`;
   if (freezeScroll) layoutClassName += ' frozen';
-  if (initialRender.current) layoutClassName += ' initial-render';
+  if (initialViewType.current) layoutClassName += ' initial-view-type';
   if (launchAnimationActive) layoutClassName += ' launch-animation';
 
   let scrollIndicatorClassName = 'scroll-indicator';
