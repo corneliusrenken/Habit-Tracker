@@ -33,7 +33,7 @@ $icon-width: 42px; // 42 to align icons with dates
     align-items: center;
     gap: variables.$universal-margin;
 
-    @include utils.nested-parent-state('.list', '.selection-view') {
+    @include utils.check-nested-parent-state('.list', '.selection-view') {
       position: absolute;
       transition:
         top 200ms ease-out,
@@ -42,7 +42,7 @@ $icon-width: 42px; // 42 to align icons with dates
         width 400ms;
     }
 
-    @include utils.nested-parent-state('.list', '.being-reordered') {
+    @include utils.check-nested-parent-state('.list', '.being-reordered') {
       transition:
         top 200ms ease-out,
         left 200ms ease-out,
@@ -154,7 +154,7 @@ $icon-width: 42px; // 42 to align icons with dates
         color: theme.$tertiary;
       }
 
-      @include utils.nested-parent-state('.list', '.being-reordered') {
+      @include utils.check-nested-parent-state('.list', '.being-reordered') {
         &.move-icon {
           color: theme.$tertiary;
         }
@@ -164,7 +164,7 @@ $icon-width: 42px; // 42 to align icons with dates
         display: none;
       }
 
-      @include utils.nested-parent-state('.list-item', '.selected') {
+      @include utils.check-nested-parent-state('.list-item', '.selected') {
         transition: opacity 300ms;
 
         @for $index from 0 through 3 {
@@ -174,7 +174,7 @@ $icon-width: 42px; // 42 to align icons with dates
         }
       }
 
-      @include utils.nested-parent-state('.list-item', '.being-renamed') {
+      @include utils.check-nested-parent-state('.list-item', '.being-renamed') {
         @for $index from 0 through 3 {
           &:nth-of-type(#{4 - $index}) {
             transition-delay: $index * 50ms;

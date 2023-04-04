@@ -54,7 +54,7 @@ $transition-distance: calc((50vh - 25px) - 50px - variables.$layout-vertical-mar
   .freeze-container {
     position: relative;
 
-    @include utils.nested-parent-state('.layout', '.frozen') {
+    @include utils.check-nested-parent-state('.layout', '.frozen') {
       top: calc(-1 * var(--freeze-scroll-distance, 0px));
     }
   }
@@ -66,15 +66,15 @@ $transition-distance: calc((50vh - 25px) - 50px - variables.$layout-vertical-mar
     animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1.0);
     animation-fill-mode: forwards;
 
-    @include utils.nested-parent-state('.layout', '.initial-view-type') {
+    @include utils.check-nested-parent-state('.layout', '.initial-view-type') {
       animation-duration: 0s;
     }
 
-    @include utils.nested-parent-state('.layout', '.list-view') {
+    @include utils.check-nested-parent-state('.layout', '.list-view') {
       animation-name: scroll-to-list-view;
     }
 
-    @include utils.nested-parent-state('.layout', '.occurrence-view') {
+    @include utils.check-nested-parent-state('.layout', '.occurrence-view') {
       animation-name: scroll-to-occurrence-view;
     }
   }
@@ -119,7 +119,7 @@ $transition-distance: calc((50vh - 25px) - 50px - variables.$layout-vertical-mar
       align-items: center;
       color: theme.$primary;
 
-      @include utils.nested-parent-state('.layout', '.launch-animation') {
+      @include utils.check-nested-parent-state('.layout', '.launch-animation') {
         opacity: 0;
       }
 
@@ -144,7 +144,7 @@ $transition-distance: calc((50vh - 25px) - 50px - variables.$layout-vertical-mar
 
     height: var(--list-height, 0px);
 
-    @include utils.nested-parent-state('.layout', '.occurrence-view') {
+    @include utils.check-nested-parent-state('.layout', '.occurrence-view') {
       top: calc(-1 * var(--transition-scroll-distance, 0px));
     }
   }

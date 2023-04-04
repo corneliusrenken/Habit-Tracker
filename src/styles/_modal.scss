@@ -33,7 +33,7 @@
     background-color: rgba(0, 0, 0, 0.08);
     backdrop-filter: blur(3px);
 
-    @include utils.nested-parent-state('.modal', '.hidden') {
+    @include utils.check-nested-parent-state('.modal', '.hidden') {
       background-color: rgba(0, 0, 0, 0);
       backdrop-filter: blur(0);
     }
@@ -63,7 +63,7 @@
 
     // transition: transform 100ms, opacity 100ms;
 
-    @include utils.nested-parent-state('.modal', '.hidden') {
+    @include utils.check-nested-parent-state('.modal', '.hidden') {
       // transform: scale(0.95);
       opacity: 0;
     }
