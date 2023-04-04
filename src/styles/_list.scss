@@ -16,6 +16,16 @@ $icon-width: 42px; // 42 to align icons with dates
   animation-fill-mode: forwards;
 }
 
+@mixin create-form-transition-override {
+  &:last-of-type {
+    transition: none;
+
+    &.transition-top {
+      transition: top 100ms ease-out;
+    }
+  }
+}
+
 .list {
   position: relative;
   transition: opacity 600ms;
@@ -36,16 +46,18 @@ $icon-width: 42px; // 42 to align icons with dates
     @include utils.check-nested-parent-state('.list', '.selection-view') {
       position: absolute;
       transition:
-        top 200ms ease-out,
-        left 200ms ease-out,
+        top 100ms ease-out,
+        left 100ms ease-out,
         color 100ms ease-out,
         width 400ms;
+
+      @include create-form-transition-override;
     }
 
     @include utils.check-nested-parent-state('.list', '.being-reordered') {
       transition:
-        top 200ms ease-out,
-        left 200ms ease-out,
+        top 100ms ease-out,
+        left 100ms ease-out,
         color 100ms ease-out,
         width 400ms,
         z-index 200ms step-end;
@@ -53,15 +65,17 @@ $icon-width: 42px; // 42 to align icons with dates
       &:not(.reordered-item) {
         color: theme.$tertiary;
       }
+
+      @include create-form-transition-override;
+    }
+
+    &.selected {
+      z-index: 1; // when reordering with shortcut, selected item is on top of others
     }
 
     &.reordered-item { // reordered by dragging
       z-index: 3;
       transition: none;
-    }
-
-    &.selected {
-      z-index: 1; // when reordering with shortcut, selected item is on top of others
     }
 
     .launch-animation & {

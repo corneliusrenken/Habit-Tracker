@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Habit } from '../../globalTypes';
 import CustomForm from './CustomForm';
 import getInputValidationError from './getInputValidationError';
+import useLatch from '../common/useLatch';
 
 type Props = {
   habits: Habit[];
@@ -20,6 +21,8 @@ export default function AddHabitForm({
   inInput,
   setInInput,
 }: Props) {
+  const lastHabitCountRef = useRef(habits.length);
+
   // development
   // development
   // development
@@ -27,9 +30,21 @@ export default function AddHabitForm({
     throw new Error('inInput should never be false when form is selected');
   }
 
+  // only transition when the list is decreasing in size, should snap when creating (increasing)
+  const transitionTop = useLatch(false, useCallback((prev) => {
+    const lastHabitCount = lastHabitCountRef.current;
+    const newHabitCount = habits.length;
+    lastHabitCountRef.current = newHabitCount;
+
+    if (newHabitCount > lastHabitCount) return false;
+    if (newHabitCount < lastHabitCount) return true;
+    return prev;
+  }, [habits.length]));
+
   let className = 'list-item';
 
   if (selectedIndex === habits.length) className += ' selected';
+  if (transitionTop) className += ' transition-top';
 
   return (
     <div className={className} style={{ top: `${habits.length * 50}px` }}>
