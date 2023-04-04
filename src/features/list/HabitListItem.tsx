@@ -34,8 +34,8 @@ export default function HabitListItem({
       onMouseEnter={ignoreMouse ? undefined : select}
       style={style}
     >
-      <div className="list-item-name">{name}</div>
-      <div className="list-item-streak">{streak}</div>
+      <div className="name">{name}</div>
+      <div className="streak">{streak}</div>
     </button>
   );
 }

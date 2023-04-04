@@ -6,15 +6,15 @@ type Props = {
   icon: keyof typeof iconPaths;
   onClick?: React.MouseEventHandler<HTMLButtonElement>;
   onMouseDown?: React.MouseEventHandler<HTMLButtonElement>;
-  className?: string;
+  classNameAdditions?: string;
   hidden?: boolean;
 };
 
 export default function IconButton({
-  icon, onClick, onMouseDown, className, hidden,
+  icon, onClick, onMouseDown, classNameAdditions, hidden,
 }: Props) {
-  let buttonClassName = className || 'icon-button';
-
+  let buttonClassName = 'icon-button';
+  if (classNameAdditions) buttonClassName += ` ${classNameAdditions}`;
   if (hidden) buttonClassName += ' hidden';
 
   return (
@@ -33,6 +33,6 @@ export default function IconButton({
 IconButton.defaultProps = {
   onClick: undefined,
   onMouseDown: undefined,
-  className: undefined,
+  classNameAdditions: undefined,
   hidden: false,
 };

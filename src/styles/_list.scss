@@ -1,3 +1,4 @@
+@use 'utils';
 @use 'fonts';
 @use 'theme';
 @use 'variables';
@@ -6,7 +7,7 @@ $selector-padding: 15px;
 $list-content-padding: 21px;
 $icon-width: 42px; // 42 to align icons with dates
 
-@mixin list-launch {
+@mixin launch-animation {
   opacity: 0;
   animation-name: launch-animation;
   animation-delay: var(--launch-animation-offset);
@@ -19,7 +20,7 @@ $icon-width: 42px; // 42 to align icons with dates
   position: relative;
   transition: opacity 600ms;
 
-  &-item {
+  .list-item {
     @include fonts.main;
     color: theme.$primary;
 
@@ -32,31 +33,39 @@ $icon-width: 42px; // 42 to align icons with dates
     align-items: center;
     gap: variables.$universal-margin;
 
-    .selection-view & {
+    @include utils.nested-parent-state('.list', '.selection-view') {
       position: absolute;
+      transition:
+        top 200ms ease-out,
+        left 200ms ease-out,
+        color 100ms ease-out,
+        width 400ms;
+    }
+
+    @include utils.nested-parent-state('.list', '.being-reordered') {
       transition:
         top 200ms ease-out,
         left 200ms ease-out,
         color 100ms ease-out,
         width 400ms,
         z-index 200ms step-end;
+
+      &:not(.reordered-item) {
+        color: theme.$tertiary;
+      }
     }
 
-    .being-reordered &:not(.reordered-item) {
-      color: theme.$tertiary;
-    }
-
-    &.reordered-item {
+    &.reordered-item { // reordered by dragging
       z-index: 3;
       transition: none;
     }
 
     &.selected {
-      z-index: 3; // when reordering with shortcut, selected item is always on top
+      z-index: 1; // when reordering with shortcut, selected item is on top of others
     }
 
     .launch-animation & {
-      @include list-launch;
+      @include launch-animation;
     }
 
     &.complete {
@@ -67,38 +76,38 @@ $icon-width: 42px; // 42 to align icons with dates
       width: calc(350px + 3 * $icon-width + 3 * variables.$universal-margin);
     }
 
-    &-name, &-error, &-rename-form, &-create-form, &-placeholder, &-streak {
+    .name, .error, .rename-form, .create-form, .placeholder, .streak {
       position: relative; // needs explicit position value to render over ::before element
       line-height: 38px; // needed to center text properly
     }
 
-    &-rename-form, &-create-form {
+    .rename-form, .create-form {
       line-height: 22px; // slightly smaller looks better when highlighting
       height: 50px; // form height important for scrolling into view when being typed into
       display: flex;
       align-items: center;
     }
 
-    &-name, &-error, &-rename-form, &-create-form, &-placeholder {
+    .name, .error, .rename-form, .create-form, .placeholder {
       white-space: nowrap;
       overflow: hidden;
       flex-grow: 1;
       text-overflow: ellipsis;
     }
 
-    &-name, &-error, &-rename-form, &-create-form, &-placeholder {
+    .name, .error, .rename-form, .create-form, .placeholder {
       margin-left: $list-content-padding;
     }
 
-    &-create-form, &-placeholder, &-streak {
+    .create-form, .placeholder, .streak {
       margin-right: $list-content-padding;
     }
 
-    &-placeholder { // different than ::placeholder element, used in create habit form
+    .placeholder { // different than ::placeholder element, used in create habit form
       color: theme.$tertiary;
     }
 
-    &-input {
+    .input {
       width: 100%;
 
       &::placeholder {
@@ -106,7 +115,7 @@ $icon-width: 42px; // 42 to align icons with dates
       }
     }
 
-    &-error {
+    .error {
       color: theme.$error;
     }
 
@@ -128,7 +137,7 @@ $icon-width: 42px; // 42 to align icons with dates
       background-color: theme.$background-error;
     }
 
-    &-icon-button {
+    .icon-button {
       position: relative; // needs explicit position value to render over ::before element
       height: 38px;
       min-width: $icon-width;
@@ -141,15 +150,21 @@ $icon-width: 42px; // 42 to align icons with dates
         margin-right: calc((50px - $icon-width) / 2);
       }
 
-      &.greyed-out, .being-reordered &.move-icon {
+      &.greyed-out {
         color: theme.$tertiary;
+      }
+
+      @include utils.nested-parent-state('.list', '.being-reordered') {
+        &.move-icon {
+          color: theme.$tertiary;
+        }
       }
 
       &.hidden {
         display: none;
       }
 
-      .selected & {
+      @include utils.nested-parent-state('.list-item', '.selected') {
         transition: opacity 300ms;
 
         @for $index from 0 through 3 {
@@ -159,7 +174,7 @@ $icon-width: 42px; // 42 to align icons with dates
         }
       }
 
-      .being-renamed & {
+      @include utils.nested-parent-state('.list-item', '.being-renamed') {
         @for $index from 0 through 3 {
           &:nth-of-type(#{4 - $index}) {
             transition-delay: $index * 50ms;

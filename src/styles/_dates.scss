@@ -2,7 +2,7 @@
 @use 'theme';
 @use 'variables';
 
-@mixin date-launch {
+@mixin launch-animation {
   opacity: 0;
   animation-name: launch-animation;
   animation-duration: variables.$launch-animation-time;
@@ -17,7 +17,7 @@
   height: 50px;
   align-items: center;
 
-  &-date {
+  .date {
     @include fonts.date;
 
     width: 50px;
@@ -29,11 +29,11 @@
     }
 
     .launch-animation & {
-      @include date-launch;
+      @include launch-animation;
     }
   }
 
-  &-day-indicator {
+  .day-indicator {
     width: 50px;
     height: 50px;
     position: absolute;
@@ -56,9 +56,5 @@
     .launch-animation &:after {
       display: none;
     }
-
-    // &.yesterday:after {
-    //   background-color: theme.$tertiary;
-    // }
   }
 }

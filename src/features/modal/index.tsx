@@ -63,7 +63,7 @@ export default function Modal(props: Props) {
     <div className={modalClassName}>
       <div
         ref={modalBackgroundRef}
-        className="modal-backdrop"
+        className="backdrop"
         onClick={'forceOpen' in props ? undefined : (e) => {
           const { setModal } = props;
           if (e.target === modalBackgroundRef.current) {
@@ -72,7 +72,7 @@ export default function Modal(props: Props) {
         }}
       />
       <div
-        className="modal-container"
+        className="container"
         key={displayingModal.toString()} // modal is re-rendered -> tab index is reset
       >
         {modalContent}

@@ -8,7 +8,7 @@ export default function Masks({ scrollPos }: Props) {
   const translucentMaskExpandPercentage = Math.min(1, scrollPos / 25);
 
   return (
-    <div className="masks">
+    <div>
       <div
         className="mask full"
         style={{

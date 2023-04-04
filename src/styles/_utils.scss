@@ -1,0 +1,7 @@
+@mixin nested-parent-state($parent, $state) {
+  @at-root {
+    #{selector-replace(&, $parent, $parent + $state)} {
+      @content;
+    }
+  }
+}

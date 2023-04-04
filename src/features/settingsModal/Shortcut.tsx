@@ -2,7 +2,6 @@ import React from 'react';
 import Keybind from './Keybind';
 
 type Props = {
-  className?: string;
   name: string;
   shortcuts: {
     keydownCode: string;
@@ -10,9 +9,7 @@ type Props = {
   }[];
 };
 
-export default function Shortcut({ className, name, shortcuts }: Props) {
-  const classNamePrefix = className || 'shortcut';
-
+export default function Shortcut({ name, shortcuts }: Props) {
   const keybindElements = shortcuts.reduce<JSX.Element[]>((elements, shortcut) => {
     const shortcutElements: JSX.Element[] = [];
 
@@ -20,7 +17,7 @@ export default function Shortcut({ className, name, shortcuts }: Props) {
       shortcutElements.push(
         <Keybind
           key={`${JSON.stringify(shortcut)}-alt`}
-          className={`${classNamePrefix}-keybinds-keybind`}
+          className="keybind"
           keydownKey="Alt"
         />,
       );
@@ -29,7 +26,7 @@ export default function Shortcut({ className, name, shortcuts }: Props) {
     shortcutElements.push(
       <Keybind
         key={shortcut.keydownCode}
-        className={`${classNamePrefix}-keybinds-keybind`}
+        className="keybind"
         keydownCode={shortcut.keydownCode}
       />,
     );
@@ -39,7 +36,7 @@ export default function Shortcut({ className, name, shortcuts }: Props) {
       shortcutElements.unshift(
         <div
           key={`${JSON.stringify(shortcut)}-divider`}
-          className={`${classNamePrefix}-keybinds-divider`}
+          className="divider"
         >
           or
         </div>,
@@ -50,16 +47,12 @@ export default function Shortcut({ className, name, shortcuts }: Props) {
   }, []);
 
   return (
-    <div className={classNamePrefix}>
-      <div className={`${classNamePrefix}-name`}>{name}</div>
-      <div className={`${classNamePrefix}-line`} />
-      <div className={`${classNamePrefix}-keybinds`}>
+    <div className="shortcut">
+      <div className="name">{name}</div>
+      <div className="line" />
+      <div className="keybinds">
         {keybindElements}
       </div>
     </div>
   );
 }
-
-Shortcut.defaultProps = {
-  className: undefined,
-};

@@ -2,7 +2,7 @@
 @use 'theme';
 @use 'variables';
 
-@mixin day-launch {
+@mixin launch-animation {
   opacity: 0;
   animation-name: launch-animation;
   $delay: 200ms;
@@ -20,7 +20,7 @@
   align-items: center;
   transition: opacity 600ms;
 
-  &-day {
+  .day {
     @include fonts.day;
     width: 50px;
     text-align: center;
@@ -31,7 +31,7 @@
     }
 
     .launch-animation & {
-      @include day-launch;
+      @include launch-animation;
     }
   }
 }

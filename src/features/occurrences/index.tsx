@@ -79,7 +79,7 @@ function Occurrences({
           .map(({ date, fullDate, complete }, index) => {
             const row = Math.floor((latchedSelectedOccurrences.length - index - 1) / 7);
 
-            let className = 'occurrences-occurrence';
+            let className = 'occurrence';
             if (complete) className += ' complete';
 
             const key = `${occurrenceView.name}-${fullDate}`;

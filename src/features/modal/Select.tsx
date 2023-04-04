@@ -1,7 +1,6 @@
 import React from 'react';
 
 type Props<T> = {
-  className?: string;
   options: T[];
   disableTabIndex?: boolean;
   selectedOption: T;
@@ -9,21 +8,17 @@ type Props<T> = {
 };
 
 export default function Select<T extends string>({
-  className,
   options,
   disableTabIndex,
   selectedOption,
   setSelectedOption,
 }: Props<T>) {
-  const classNamePrefix = className || 'select';
-
   return (
     <div
-      className={classNamePrefix}
+      className="select-input"
     >
       {options.map((option) => {
-        let buttonClassName = `${classNamePrefix}-option`;
-
+        let buttonClassName = 'option';
         if (option === selectedOption) buttonClassName += ' selected';
 
         return (
@@ -43,6 +38,5 @@ export default function Select<T extends string>({
 }
 
 Select.defaultProps = {
-  className: undefined,
   disableTabIndex: undefined,
 };

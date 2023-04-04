@@ -153,12 +153,12 @@ export default function Layout({
   }, [freezeScroll, listHeight, occurrenceHeight]);
 
   let layoutClassName = 'layout';
-  layoutClassName += ` ${viewToViewType[displayedView.name]}`;
+  layoutClassName += ` ${viewToViewType[displayedView.name]}-view`;
   if (freezeScroll) layoutClassName += ' frozen';
   if (initialRender.current) layoutClassName += ' initial-render';
   if (launchAnimationActive) layoutClassName += ' launch-animation';
 
-  let scrollIndicatorClassName = 'layout-scroll-indicator';
+  let scrollIndicatorClassName = 'scroll-indicator';
   if (!displayScrollIndicator) scrollIndicatorClassName += ' hidden';
 
   return (
@@ -170,20 +170,20 @@ export default function Layout({
           '--freeze-scroll-distance': `${scrollPos}px`,
         } as React.CSSProperties}
       >
-        <div className="layout-freeze">
-          <div className="layout-scroll" ref={scrollRef}>
-            <div className="layout-occurrences-and-days">
-              <div className="layout-occurrences" style={{ position: 'absolute', bottom: 0 }}>{occurrences}</div>
-              <div className="layout-days" style={{ position: 'absolute', bottom: 0 }}>{days}</div>
+        <div className="freeze-container">
+          <div className="scroll-container" ref={scrollRef}>
+            <div className="sticky-container">
+              <div className="occurrences-layout" style={{ position: 'absolute', bottom: 0 }}>{occurrences}</div>
+              <div className="days-layout" style={{ position: 'absolute', bottom: 0 }}>{days}</div>
               <Masks scrollPos={scrollPos} />
               <div className={scrollIndicatorClassName}><Icon icon="chevron down" /></div>
             </div>
-            <div className="layout-dates">{dates}</div>
-            <div className="layout-list">{list}</div>
+            <div className="dates-layout">{dates}</div>
+            <div className="list-layout">{list}</div>
           </div>
         </div>
       </div>
-      <div className={`layout-settings-button${launchAnimationActive ? ' hidden' : ''}`}>
+      <div className={`settings-button-layout${launchAnimationActive ? ' hidden' : ''}`}>
         {settingsButton}
       </div>
     </>
