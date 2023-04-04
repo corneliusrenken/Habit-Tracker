@@ -26,7 +26,7 @@ $transition-distance: calc((50vh - 25px) - 50px - variables.$layout-vertical-mar
 
 @keyframes scroll-to-occurrence-view {
   0% {
-    top: calc(-1 * $transition-distance - var(--transition-scroll-distance, 0px));
+    top: calc(-1 * $transition-distance);
   }
   100% {
     top: 0px;
@@ -66,7 +66,7 @@ $transition-distance: calc((50vh - 25px) - 50px - variables.$layout-vertical-mar
     animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1.0);
     animation-fill-mode: forwards;
 
-    @include utils.nested-parent-state('.layout', '.initial-render') {
+    @include utils.nested-parent-state('.layout', '.initial-view-type') {
       animation-duration: 0s;
     }
 
@@ -143,6 +143,10 @@ $transition-distance: calc((50vh - 25px) - 50px - variables.$layout-vertical-mar
     position: relative;
 
     height: var(--list-height, 0px);
+
+    @include utils.nested-parent-state('.layout', '.occurrence-view') {
+      top: calc(-1 * var(--transition-scroll-distance, 0px));
+    }
   }
 }
 
