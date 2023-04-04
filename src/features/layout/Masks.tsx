@@ -8,19 +8,19 @@ export default function Masks({ scrollPos }: Props) {
   const translucentMaskExpandPercentage = Math.min(1, scrollPos / 25);
 
   return (
-    <div className="masks">
+    <div>
       <div
         className="mask full"
         style={{
-          height: 'calc(75px + var(--layout-vertical-margin))',
+          height: 'max(75px + var(--layout-vertical-margin, 0px), 25px + var(--occurrence-height, 0px))',
           bottom: 'calc(-75px + 50px)',
-          WebkitMaskImage: 'linear-gradient(to bottom, black var(--layout-vertical-margin), transparent)',
+          WebkitMaskImage: 'linear-gradient(to bottom, black calc(100% - 75px), transparent)',
         }}
       />
       <div
         className="mask full"
         style={{
-          height: 'var(--layout-vertical-margin)',
+          height: 'var(--layout-vertical-margin, 0px)',
           bottom: 'calc(50px + var(--layout-vertical-margin, 0px) - 100vh)',
         }}
       />

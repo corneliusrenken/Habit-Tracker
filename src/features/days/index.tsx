@@ -22,7 +22,7 @@ function Days({ view, dateObject, selectedOccurrences }: Props) {
     >
       {dateObject.weekDays.map(((day, index) => {
         const { complete } = weekOccurrences[index];
-        let className = 'days-day';
+        let className = 'day';
         if (complete) className += ' complete';
 
         return (

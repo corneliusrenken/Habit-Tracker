@@ -27,106 +27,88 @@ function SettingsModal({
 
   return (
     <>
-      <div className="modal-container-header">Settings</div>
-      <div className="modal-container-subheading">Save location</div>
+      <div className="heading">Settings</div>
+      <div className="subheading">Save location</div>
       <PathInput
         path={databaseDirectoryPath}
         setPath={(path) => updateConfig({ databaseDirectoryPath: path })}
         disableTabIndex={disableTabIndex}
-        className="modal-container-path-input"
       />
-      <div className="modal-container-subheading">Start week on</div>
+      <div className="subheading">Start week on</div>
       <Select
         disableTabIndex={disableTabIndex}
-        className="modal-container-select"
         options={weekStartOptions}
         selectedOption={startWeekOn}
         setSelectedOption={(option) => updateConfig({ startWeekOn: option })}
       />
-      <div className="modal-container-subheading">Theme</div>
+      <div className="subheading">Theme</div>
       <Select
         disableTabIndex={disableTabIndex}
-        className="modal-container-select"
         options={themeOptions}
         selectedOption={theme}
         setSelectedOption={(option) => updateConfig({ theme: option })}
       />
-      <div className="modal-container-header">Shortcuts</div>
-      <div className="modal-container-subheading">Global</div>
+      <div className="header">Shortcuts</div>
+      <div className="subheading">Global</div>
       <Shortcut
-        className="modal-container-shortcut"
         name="Go to today"
         shortcuts={[{ keydownCode: 'KeyT' }]}
       />
       <Shortcut
-        className="modal-container-shortcut"
         name="Go to yesterday"
         shortcuts={[{ keydownCode: 'KeyY' }]}
       />
       <Shortcut
-        className="modal-container-shortcut"
         name="Edit habits"
         shortcuts={[{ keydownCode: 'KeyE' }]}
       />
       <Shortcut
-        className="modal-container-shortcut"
         name="View history"
         shortcuts={[{ keydownCode: 'KeyH' }]}
       />
       <Shortcut
-        className="modal-container-shortcut"
         name="View selected habit's history"
         shortcuts={[{ keydownCode: 'KeyF' }]}
       />
       <Shortcut
-        className="modal-container-shortcut"
         name="Open settings & shortcuts"
         shortcuts={[{ keydownCode: 'Comma' }]}
       />
       <Shortcut
-        className="modal-container-shortcut"
         name="Close popup"
         shortcuts={[{ keydownCode: 'Escape' }]}
       />
       <Shortcut
-        className="modal-container-shortcut"
         name="Traverse habits"
         shortcuts={[{ keydownCode: 'ArrowUp' }, { keydownCode: 'ArrowDown' }]}
       />
-      <div className="modal-container-subheading">While editing habits</div>
+      <div className="subheading">While editing habits</div>
       <Shortcut
-        className="modal-container-shortcut"
         name="Rename habit"
         shortcuts={[{ keydownCode: 'KeyR' }]}
       />
       <Shortcut
-        className="modal-container-shortcut"
         name="Toggle habit visibility"
         shortcuts={[{ keydownCode: 'KeyV' }]}
       />
       <Shortcut
-        className="modal-container-shortcut"
         name="Create new habit"
         shortcuts={[{ keydownCode: 'KeyC' }]}
       />
       <Shortcut
-        className="modal-container-shortcut"
         name="Delete habit"
         shortcuts={[{ keydownCode: 'Backspace' }, { keydownCode: 'Delete' }]}
       />
       <Shortcut
-        className="modal-container-shortcut"
         name="Move habit"
         shortcuts={[{ keydownCode: 'ArrowUp', altKey: true }, { keydownCode: 'ArrowDown', altKey: true }]}
       />
-      <div className="modal-container-subheading">While renaming or creating habits</div>
+      <div className="subheading">While renaming or creating habits</div>
       <Shortcut
-        className="modal-container-shortcut"
         name="Confirm"
         shortcuts={[{ keydownCode: 'Enter' }]}
       />
       <Shortcut
-        className="modal-container-shortcut"
         name="Cancel"
         shortcuts={[{ keydownCode: 'Escape' }]}
       />

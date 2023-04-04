@@ -52,8 +52,7 @@ export default function AddHabitForm({
           addHabit(name);
           setInInput(false);
         }}
-        classNameBeforeAppend="list-item"
-        formClassAppendOverwrite="create-form"
+        formClassOverwrite="create-form"
       />
     </div>
   );

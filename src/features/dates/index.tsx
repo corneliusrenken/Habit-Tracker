@@ -14,14 +14,13 @@ function Dates({ dateObject, view, selectedOccurrences }: Props) {
 
   const weekOccurrences = selectedOccurrences.slice(-7);
 
-  let dayIndicatorClassName = 'dates-day-indicator';
+  let dayIndicatorClassName = 'day-indicator';
   if (weekOccurrences[selectedDayIndex].complete) dayIndicatorClassName += ' complete';
-  if (view.name === 'yesterday') dayIndicatorClassName += ' yesterday';
 
   return (
     <div className="dates">
       {weekOccurrences.map(({ date, fullDate, complete }) => {
-        let dateClassName = 'dates-date';
+        let dateClassName = 'date';
         if (complete) dateClassName += ' complete';
 
         return (

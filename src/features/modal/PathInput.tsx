@@ -6,21 +6,18 @@ type Props = {
   path: string,
   setPath: (path: string) => void,
   disableTabIndex: boolean;
-  className?: string;
 };
 
 export default function PathInput({
   path,
   setPath,
   disableTabIndex,
-  className,
 }: Props) {
   const [dialogWindowOpen, setDialogWindowOpen] = React.useState(false);
-  const classNamePrefix = className || 'path-input';
 
   const { showBoundary } = useErrorBoundary();
 
-  let buttonClassName = classNamePrefix;
+  let buttonClassName = 'path-input';
   if (dialogWindowOpen) buttonClassName += ' dialog-open';
 
   return (
@@ -45,17 +42,13 @@ export default function PathInput({
         }
       }}
     >
-      <div className={`${classNamePrefix}-path`}>
+      <div className="path">
         {path}
       </div>
       <Icon
-        className={`${classNamePrefix}-icon`}
+        className="icon"
         icon="open"
       />
     </button>
   );
 }
-
-PathInput.defaultProps = {
-  className: undefined,
-};

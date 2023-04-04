@@ -1,7 +1,9 @@
 $launch-animation-time: 1900ms;
+$layout-vertical-margin: 20vh;
 
 :root {
   --launch-animation-time: #{$launch-animation-time};
+  --layout-vertical-margin: #{$layout-vertical-margin};
 }
 
 $universal-margin: 8px;

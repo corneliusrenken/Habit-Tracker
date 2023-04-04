@@ -11,11 +11,10 @@ type Props = {
   initialValue?: string;
   getInputValidationError?: (input: string) => string;
   onSubmit: (input: string) => void;
-  classNameBeforeAppend: string;
-  placeholderClassAppendOverwrite?: string,
-  errorClassAppendOverwrite?: string,
-  formClassAppendOverwrite?: string,
-  inputClassAppendOverwrite?: string,
+  placeholderClassOverwrite?: string,
+  errorClassOverwrite?: string,
+  formClassOverwrite?: string,
+  inputClassOverwrite?: string,
 };
 
 /**
@@ -29,11 +28,10 @@ export default function CustomForm({
   initialValue = '',
   getInputValidationError = () => '',
   onSubmit,
-  classNameBeforeAppend,
-  placeholderClassAppendOverwrite = undefined,
-  errorClassAppendOverwrite = undefined,
-  formClassAppendOverwrite = undefined,
-  inputClassAppendOverwrite = undefined,
+  placeholderClassOverwrite = undefined,
+  errorClassOverwrite = undefined,
+  formClassOverwrite = undefined,
+  inputClassOverwrite = undefined,
 }: Props) {
   const [error, setError] = useState('');
   const [input, setInput] = useState(initialValue);
@@ -72,11 +70,11 @@ export default function CustomForm({
   }, [error]);
 
   if (!active) {
-    const classNameAppend = placeholderClassAppendOverwrite || 'placeholder';
+    const placeholderClassName = placeholderClassOverwrite || 'placeholder';
 
     return (
       <div
-        className={`${classNameBeforeAppend}-${classNameAppend}`}
+        className={placeholderClassName}
         onClick={!activeOnClick ? undefined : () => {
           if (activeOnClick) {
             setActive(true);
@@ -89,23 +87,23 @@ export default function CustomForm({
   }
 
   if (error) {
-    const classNameAppend = errorClassAppendOverwrite || 'error';
+    const errorClassName = errorClassOverwrite || 'error';
 
     return (
       <div
-        className={`${classNameBeforeAppend}-${classNameAppend}`}
+        className={errorClassName}
       >
         {error}
       </div>
     );
   }
 
-  const formClassNameAppend = formClassAppendOverwrite || 'form';
-  const inputClassNameAppend = inputClassAppendOverwrite || 'input';
+  const formClassName = formClassOverwrite || 'form';
+  const inputClassName = inputClassOverwrite || 'input';
 
   return (
     <form
-      className={`${classNameBeforeAppend}-${formClassNameAppend}`}
+      className={formClassName}
       onSubmit={(e) => {
         e.preventDefault();
         const validationError = getInputValidationError(input);
@@ -117,7 +115,7 @@ export default function CustomForm({
       }}
     >
       <input
-        className={`${classNameBeforeAppend}-${inputClassNameAppend}`}
+        className={inputClassName}
         spellCheck={false}
         ref={inputRef}
         type="text"
@@ -144,8 +142,8 @@ CustomForm.defaultProps = {
   activeOnClick: false,
   initialValue: '',
   getInputValidationError: () => '',
-  placeholderClassAppendOverwrite: undefined,
-  errorClassAppendOverwrite: undefined,
-  formClassAppendOverwrite: undefined,
-  inputClassAppendOverwrite: undefined,
+  placeholderClassOverwrite: undefined,
+  errorClassOverwrite: undefined,
+  formClassOverwrite: undefined,
+  inputClassOverwrite: undefined,
 };

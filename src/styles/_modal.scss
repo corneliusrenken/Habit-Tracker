@@ -1,3 +1,4 @@
+@use 'utils';
 @use 'fonts';
 @use 'theme';
 @use 'variables';
@@ -22,7 +23,7 @@
     overflow: hidden;
   }
 
-  &-backdrop {
+  .backdrop {
     position: fixed;
     z-index: 4;
     inset: 0px;
@@ -32,13 +33,13 @@
     background-color: rgba(0, 0, 0, 0.08);
     backdrop-filter: blur(3px);
 
-    .hidden & {
+    @include utils.check-nested-parent-state('.modal', '.hidden') {
       background-color: rgba(0, 0, 0, 0);
       backdrop-filter: blur(0);
     }
   }
 
-  &-container {
+  .container {
     position: relative;
     z-index: 4;
 
@@ -62,12 +63,12 @@
 
     // transition: transform 100ms, opacity 100ms;
 
-    .hidden & {
+    @include utils.check-nested-parent-state('.modal', '.hidden') {
       // transform: scale(0.95);
       opacity: 0;
     }
 
-    &-header {
+    .heading {
       @include fonts.main;
 
       margin: 0 variables.$universal-margin;
@@ -79,15 +80,7 @@
       }
     }
 
-    // descriptor for header
-    &-subtext {
-      color: theme.$secondary;
-
-      margin: 0 variables.$universal-margin;
-      margin-bottom: variables.$vertical-margin-3;
-    }
-
-    &-subheading {
+    .subheading {
       color: theme.$secondary;
 
       margin: 0 variables.$universal-margin;
@@ -95,7 +88,14 @@
       margin-bottom: variables.$vertical-margin-1;
     }
 
-    &-dialog-button-group {
+    .description {
+      color: theme.$secondary;
+
+      margin: 0 variables.$universal-margin;
+      margin-bottom: variables.$vertical-margin-3;
+    }
+
+    .dialog-button-group {
       @include fonts.main;
 
       display: flex;
@@ -137,7 +137,7 @@
       }
     }
 
-    &-path-input {
+    .path-input {
       border-radius: variables.$border-radius;
 
       margin: variables.$vertical-margin-1 0;
@@ -153,14 +153,14 @@
       gap: variables.$universal-margin;
       justify-content: space-between;
 
-      &-path {
+      .path {
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
         flex-grow: 1;
       }
 
-      &-icon {
+      .icon {
         min-width: fit-content;
       }
 
@@ -182,13 +182,13 @@
       }
     }
 
-    &-select {
+    .select-input {
       display: flex;
       gap: variables.$universal-margin;
 
       margin: variables.$vertical-margin-1 0;
 
-      &-option {
+      .option {
         height: variables.$modal-element-height;
         line-height: variables.$modal-element-height;
         min-width: variables.$modal-element-height;
@@ -216,7 +216,7 @@
       }
     }
 
-    &-shortcut {
+    .shortcut {
       margin: variables.$vertical-margin-1 0;
       margin-left: variables.$universal-margin;
 
@@ -226,19 +226,19 @@
 
       line-height: 100%;
 
-      &-name, &-keybinds {
+      .name, .keybinds {
         height: variables.$keybind-size;
         line-height: variables.$keybind-size;
       }
 
-      &-line {
+      .line {
         flex-grow: 1;
         padding: 0 variables.$universal-margin;
         background-color: theme.$background-active;
         height: 1px;
       }
 
-      &-keybinds {
+      .keybinds {
         display: flex;
         gap: variables.$universal-margin;
 
@@ -246,7 +246,7 @@
 
         text-align: center;
 
-        &-keybind {
+        .keybind {
           @include fonts.keybind;
 
           background-color: theme.$background-active;

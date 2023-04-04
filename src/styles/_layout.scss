@@ -1,3 +1,4 @@
+@use 'utils';
 @use 'variables';
 @use 'theme';
 
@@ -6,11 +7,31 @@
   left: calc(50vw - 175px);
 }
 
-:root {
-  --layout-vertical-margin: 20vh;
+$transition-distance: calc((50vh - 25px) - 50px - variables.$layout-vertical-margin);
+
+@keyframes scroll-to-list-view {
+  0% {
+    top: calc(
+      variables.$layout-vertical-margin
+      - var(--occurrence-height, 0px)
+      + 50px
+      + $transition-distance
+      + var(--transition-scroll-distance, 0px)
+    );
+  }
+  100% {
+    top: calc(variables.$layout-vertical-margin - var(--occurrence-height, 0px) + 50px);
+  }
 }
 
-$transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin, 0px));
+@keyframes scroll-to-occurrence-view {
+  0% {
+    top: calc(-1 * $transition-distance);
+  }
+  100% {
+    top: 0px;
+  }
+}
 
 .layout {
   position: relative;
@@ -18,11 +39,11 @@ $transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin, 
 
   min-height: 100vh;
 
-  &.list {
-    height: calc(100px + var(--list-height, 0px) + 2 * var(--layout-vertical-margin, 0px));
+  &.list-view {
+    height: calc(100px + var(--list-height, 0px) + 2 * variables.$layout-vertical-margin);
   }
 
-  &.occurrence {
+  &.occurrence-view {
     height: calc(var(--occurrence-height, 0px) + 25px + 50vh);
   }
 
@@ -30,71 +51,41 @@ $transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin, 
     height: 100vh;
   }
 
-  &-freeze {
+  .freeze-container {
     position: relative;
 
-    .frozen & {
+    @include utils.check-nested-parent-state('.layout', '.frozen') {
       top: calc(-1 * var(--freeze-scroll-distance, 0px));
     }
   }
 
-  &-scroll {
+  .scroll-container {
     position: relative;
-
     will-change: top;
-
-    .list & {
-      top: calc(var(--layout-vertical-margin, 0px) - var(--occurrence-height, 0px) + 50px);
-
-      @keyframes to-list {
-        0% {
-          top: calc(
-            var(--layout-vertical-margin, 0px)
-            - var(--occurrence-height, 0px)
-            + 50px
-            + $transition-distance
-            + var(--transition-scroll-distance, 0px)
-          );
-        }
-        100% {
-          top: calc(var(--layout-vertical-margin, 0px) - var(--occurrence-height, 0px) + 50px);
-        }
-      }
-
-      animation-name: to-list;
-    }
-
-    .occurrence & {
-      top: 0px;
-
-      @keyframes to-occurrence {
-        0% {
-          top: calc(-1 * $transition-distance - var(--transition-scroll-distance, 0px));
-        }
-        100% {
-          top: 0px;
-        }
-      }
-
-      animation-name: to-occurrence;
-    }
-
     animation-duration: 0.6s;
+    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1.0);
+    animation-fill-mode: forwards;
 
-    .initial-render & {
+    @include utils.check-nested-parent-state('.layout', '.initial-view-type') {
       animation-duration: 0s;
     }
 
-    animation-timing-function: cubic-bezier(0.25, 0.1, 0.25, 1.0);
+    @include utils.check-nested-parent-state('.layout', '.list-view') {
+      animation-name: scroll-to-list-view;
+    }
+
+    @include utils.check-nested-parent-state('.layout', '.occurrence-view') {
+      animation-name: scroll-to-occurrence-view;
+    }
   }
 
-  &-occurrences-and-days {
+  .sticky-container {
     position: sticky;
     z-index: 2;
     height: var(--occurrence-height, 0px);
-    top: calc(var(--layout-vertical-margin, 0px) - var(--occurrence-height, 0px) + 50px);
+    top: calc(variables.$layout-vertical-margin - var(--occurrence-height, 0px) + 50px);
 
-    .layout-occurrences, .layout-days {
+    .occurrences-layout, .days-layout {
       position: absolute;
       z-index: 3;
       @include center-horizontally;
@@ -117,41 +108,49 @@ $transition-distance: calc((50vh - 25px) - 50px - var(--layout-vertical-margin, 
       }
     }
 
-    .layout-scroll-indicator {
+    .scroll-indicator {
       position: absolute;
       height: 50px;
       width: 50px;
       left: calc(50vw - 25px);
-      bottom: calc(2 * var(--layout-vertical-margin, 0px) - 100vh);
+      bottom: calc(2 * variables.$layout-vertical-margin - 100vh);
       display: flex;
       justify-content: center;
       align-items: center;
       color: theme.$primary;
 
-      .launch-animation &, &.hidden {
+      @include utils.check-nested-parent-state('.layout', '.launch-animation') {
+        opacity: 0;
+      }
+
+      &.hidden {
         opacity: 0;
       }
     }
   }
 
-  &-dates {
+  .dates-layout {
     @include center-horizontally;
 
     height: 50px;
     position: sticky;
     z-index: 3;
-    top: calc(var(--layout-vertical-margin, 0px) + 50px);
+    top: calc(variables.$layout-vertical-margin + 50px);
   }
 
-  &-list {
+  .list-layout {
     @include center-horizontally;
     position: relative;
 
     height: var(--list-height, 0px);
+
+    @include utils.check-nested-parent-state('.layout', '.occurrence-view') {
+      top: calc(-1 * var(--transition-scroll-distance, 0px));
+    }
   }
 }
 
-.layout-settings-button {
+.settings-button-layout {
   position: fixed;
   z-index: 3;
   right: variables.$universal-margin;

@@ -74,9 +74,8 @@ export default function SelectionListItem({
           if (newName !== habit.name) renameHabit(newName);
           setInInput(false);
         }}
-        classNameBeforeAppend="list-item"
-        placeholderClassAppendOverwrite="name"
-        formClassAppendOverwrite="rename-form"
+        placeholderClassOverwrite="name"
+        formClassOverwrite="rename-form"
       />
       <IconButton
         icon="rename"
@@ -94,7 +93,7 @@ export default function SelectionListItem({
         onClick={() => {
           if (!inInput && !ignoreNextMouseUp.current) setInInput(true);
         }}
-        className={`list-item-icon-button rename-icon${beingRenamed ? ' greyed-out' : ''}`}
+        classNameAdditions={`rename-icon${beingRenamed ? ' greyed-out' : ''}`}
         hidden={!selected}
       />
       <IconButton
@@ -106,18 +105,17 @@ export default function SelectionListItem({
           });
           setModal(() => modalGenerator);
         }}
-        className="list-item-icon-button"
         hidden={!selected}
       />
       <IconButton
         icon="move"
-        className="list-item-icon-button move-icon"
+        classNameAdditions="move-icon"
         onMouseDown={move}
         hidden={!selected}
       />
       <IconButton
         icon={visible ? 'visible' : 'hidden'}
-        className={`list-item-icon-button${!visible ? [' greyed-out'] : ''}`}
+        classNameAdditions={!visible ? 'greyed-out' : undefined}
         onClick={toggleVisibility}
       />
     </div>
