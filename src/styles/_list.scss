@@ -65,7 +65,7 @@ $selector-height: 38px;
         z-index 200ms step-end;
 
       &:not(.reordered-item) {
-        color: theme.$tertiary;
+        color: theme.$secondary;
       }
 
       @include create-form-transition-override;
@@ -85,7 +85,7 @@ $selector-height: 38px;
     }
 
     &.complete {
-      color: theme.$tertiary;
+      color: theme.$secondary;
     }
 
     &.being-renamed {
@@ -120,7 +120,7 @@ $selector-height: 38px;
     }
 
     .placeholder { // different than ::placeholder element, used in create habit form
-      color: theme.$tertiary;
+      color: theme.$secondary;
     }
 
     .input {
@@ -128,7 +128,7 @@ $selector-height: 38px;
       padding: calc(($selector-height - $input-line-height) / 2) 0; // padding so that clicking on the selector clicks on input
 
       &::placeholder {
-        color: theme.$tertiary;
+        color: theme.$secondary;
       }
     }
 
@@ -143,16 +143,16 @@ $selector-height: 38px;
       left: calc($list-content-padding - $selector-padding);
       width: calc(350px - 2 * $list-content-padding + 2 * $selector-padding);
       border-radius: variables.$border-radius;
-      background-color: theme.$background-active;
+      background-color: theme.$background-selected;
     }
 
     .launch-animation &.selected:before {
       display: none;
     }
 
-    &:has(.list-item-error):before {
-      background-color: theme.$background-error;
-    }
+    // &:has(.list-item-error):before {
+    //   background-color: theme.$background-error;
+    // }
 
     .icon-button {
       position: relative; // needs explicit position value to render over ::before element
@@ -168,12 +168,12 @@ $selector-height: 38px;
       }
 
       &.greyed-out {
-        color: theme.$tertiary;
+        color: theme.$secondary;
       }
 
       @include utils.check-nested-parent-state('.list', '.being-reordered') {
         &.move-icon {
-          color: theme.$tertiary;
+          color: theme.$secondary;
         }
       }
 

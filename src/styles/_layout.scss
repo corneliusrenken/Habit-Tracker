@@ -97,12 +97,12 @@ $transition-distance: calc((50vh - 25px) - 50px - variables.$layout-vertical-mar
       right: 0;
 
       &.full {
-        background-color: theme.$background-main;
+        background-color: theme.$background;
       }
 
       &.translucent {
         pointer-events: none;
-        background-color: theme.$background-main-translucent;
+        background-color: theme.$background-translucent-mask;
         backdrop-filter: blur(7px);
         // backdrop-filter: brightness(0%) blur(7px);
       }

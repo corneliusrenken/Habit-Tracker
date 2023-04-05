@@ -11,10 +11,10 @@
   border-radius: variables.$border-radius;
 
   &:hover {
-    background-color: theme.$background-active;
+    background-color: theme.$background-selected;
   }
 
   &:active {
-    background-color: theme.$background-active-press;
+    background-color: theme.$background-selected;
   }
 }
