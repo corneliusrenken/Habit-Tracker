@@ -1,8 +1,8 @@
 {
-  "name": "electron-typescript-webpack-react",
-  "productName": "electron-typescript-webpack-react",
+  "name": "twice",
+  "productName": "Twice",
   "version": "1.0.0",
-  "description": "My Electron application description",
+  "description": "Habit tracker",
   "main": ".webpack/main",
   "scripts": {
     "start": "electron-forge start",
