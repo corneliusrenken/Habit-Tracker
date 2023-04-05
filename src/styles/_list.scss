@@ -6,6 +6,8 @@
 $selector-padding: 15px;
 $list-content-padding: 21px;
 $icon-width: 42px; // 42 to align icons with dates
+$input-line-height: 22px;
+$selector-height: 38px;
 
 @mixin launch-animation {
   opacity: 0;
@@ -92,11 +94,11 @@ $icon-width: 42px; // 42 to align icons with dates
 
     .name, .error, .rename-form, .create-form, .placeholder, .streak {
       position: relative; // needs explicit position value to render over ::before element
-      line-height: 38px; // needed to center text properly
+      line-height: $selector-height; // needed to center text properly
     }
 
     .rename-form, .create-form {
-      line-height: 22px; // slightly smaller looks better when highlighting
+      line-height: $input-line-height; // slightly smaller looks better when highlighting
       height: 50px; // form height important for scrolling into view when being typed into
       display: flex;
       align-items: center;
@@ -123,6 +125,7 @@ $icon-width: 42px; // 42 to align icons with dates
 
     .input {
       width: 100%;
+      padding: calc(($selector-height - $input-line-height) / 2) 0; // padding so that clicking on the selector clicks on input
 
       &::placeholder {
         color: theme.$tertiary;
@@ -136,7 +139,7 @@ $icon-width: 42px; // 42 to align icons with dates
     &.selected:before { // list item selector
       content: '';
       position: absolute;
-      height: 38px;
+      height: $selector-height;
       left: calc($list-content-padding - $selector-padding);
       width: calc(350px - 2 * $list-content-padding + 2 * $selector-padding);
       border-radius: variables.$border-radius;
@@ -153,7 +156,7 @@ $icon-width: 42px; // 42 to align icons with dates
 
     .icon-button {
       position: relative; // needs explicit position value to render over ::before element
-      height: 38px;
+      height: $selector-height;
       min-width: $icon-width;
 
       display: flex;
