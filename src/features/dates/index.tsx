@@ -28,7 +28,7 @@ function Dates({ dateObject, view, selectedOccurrences }: Props) {
             key={fullDate}
             className={dateClassName}
           >
-            {date}
+            {complete ? '*' : date}
           </div>
         );
       })}

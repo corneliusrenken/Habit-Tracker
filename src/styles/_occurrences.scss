@@ -14,6 +14,7 @@
     will-change: opacity;
 
     width: 50px;
+    line-height: 50px;
     text-align: center;
     opacity: 0;
     animation-duration: 600ms;
@@ -21,6 +22,8 @@
     color: theme.$primary;
 
     &.complete {
+      @include fonts.asterisk;
+
       color: theme.$tertiary;
     }
   }

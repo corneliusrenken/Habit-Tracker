@@ -95,7 +95,7 @@ function Occurrences({
                     : '',
                 }}
               >
-                {date}
+                {complete ? '*' : date}
               </div>
             );
           })}
