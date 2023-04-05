@@ -48,7 +48,7 @@ function SettingsModal({
         selectedOption={theme}
         setSelectedOption={(option) => updateConfig({ theme: option })}
       />
-      <div className="header">Shortcuts</div>
+      <div className="heading">Shortcuts</div>
       <div className="subheading">Global</div>
       <Shortcut
         name="Go to today"
