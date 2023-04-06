@@ -24,7 +24,7 @@
     &.complete {
       @include fonts.asterisk;
 
-      color: theme.$tertiary;
+      color: theme.$secondary;
     }
   }
 

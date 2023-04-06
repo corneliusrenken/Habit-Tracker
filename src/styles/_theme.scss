@@ -1,24 +1,51 @@
-$background-main: #FCFCFC;
-$background-main-translucent: #FCFCFC57;
-$background-modal: #FCFCFC;
-$background-active: #F6F6F6;
-$background-active-hover: rgba(0, 0, 0, 0.05);
-// $background-active-press: #F2F2F2;
-$background-active-press: rgba(0, 0, 0, 0.08);
-$background-error: #FCEDF0;
-$primary: #171717;
-$secondary: #909090;
-$tertiary: #D0D0D0;
-$error: #E02445;
-$focus: #1C46F5;
+$background: var(--background);
+$background-translucent-mask: var(--background-translucent-mask);
+$background-selected: var(--background-selected);
+$background-selected-secondary: var(--background-selected-secondary);
+$background-modal: var(--background-modal);
+$modal-backdrop: var(--modal-backdrop);
+$primary: var(--primary);
+$secondary: var(--secondary);
+$error: var(--error);
 
-// testing purposes
+@mixin light-theme {
+  --background: rgb(253, 253, 253);
+  --background-translucent-mask: rgba(253, 253, 253, 0.5);
+  --background-selected: rgb(235, 235, 235);
+  --background-selected-secondary: rgb(245, 245, 245);
+  --background-modal: rgb(253, 253, 253);
+  --modal-backdrop: rgba(0, 0, 0, 0.08);
+  --primary: rgb(23, 23, 23);
+  --secondary: rgb(173, 172, 172);
+  --error: rgb(224, 36, 69);
+}
 
-// $background-main: #ff0000;
-// $background-modal: #eeff00;
-// $background-active: #1eff00;
-// $background-error: #00ffd9;
-// $primary: #0091ff;
-// $secondary: #7b00ff;
-// $tertiary: #b0695f;
-// $error: #6f7d37;
+@mixin dark-theme {
+  --background: rgb(38, 38, 38);
+  --background-translucent-mask: rgba(38, 38, 38, 0.5);
+  --background-selected: rgb(58, 58, 58);
+  --background-selected-secondary: rgb(48, 48, 48);
+  --background-modal: rgb(38, 38, 38);
+  --modal-backdrop: rgba(0, 0, 0, 0.2);
+  --primary: rgb(255, 255, 255);
+  --secondary: rgb(110, 110, 110);
+  --error: rgb(224, 36, 69);
+}
+
+:root:not(.light):not(.dark) {
+  @include light-theme;
+}
+
+@media (prefers-color-scheme: Dark) {
+  :root:not(.light):not(.dark) {
+    @include dark-theme;
+  }
+}
+
+:root.light {
+  @include light-theme;
+}
+
+:root.dark {
+  @include dark-theme;
+}

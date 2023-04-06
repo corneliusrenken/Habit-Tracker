@@ -28,7 +28,7 @@
     &.complete {
       @include fonts.asterisk;
 
-      color: theme.$tertiary;
+      color: theme.$secondary;
     }
 
     .launch-animation & {
@@ -53,7 +53,7 @@
     }
 
     &.complete:after {
-      background-color: theme.$tertiary;
+      background-color: theme.$secondary;
     }
 
     .launch-animation &:after {

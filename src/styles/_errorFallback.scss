@@ -41,15 +41,15 @@
       border-radius: variables.$border-radius;
 
       &:focus {
-        background-color: theme.$background-active;
+        background-color: theme.$background-selected;
       }
 
       &:hover {
-        background-color: theme.$background-active-hover;
+        background-color: theme.$background-selected;
       }
 
       &:active {
-        background-color: theme.$background-active-press;
+        background-color: theme.$background-selected;
       }
     }
   }

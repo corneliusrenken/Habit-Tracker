@@ -30,11 +30,11 @@
 
     transition: background-color 300ms, backdrop-filter 300ms;
 
-    background-color: rgba(0, 0, 0, 0.08);
+    background-color: theme.$modal-backdrop;
     backdrop-filter: blur(3px);
 
     @include utils.check-nested-parent-state('.modal', '.hidden') {
-      background-color: rgba(0, 0, 0, 0);
+      background-color: transparent;
       backdrop-filter: blur(0);
     }
   }
@@ -117,20 +117,20 @@
         }
 
         &:disabled {
-          color: theme.$tertiary;
+          color: theme.$secondary;
         }
 
         &:not(:disabled) {
           &:focus {
-            background-color: theme.$background-active;
+            background-color: theme.$background-selected-secondary;
           }
 
           &:hover {
-            background-color: theme.$background-active-hover;
+            background-color: theme.$background-selected-secondary;
           }
 
           &:active {
-            background-color: theme.$background-active-press;
+            background-color: theme.$background-selected-secondary;
           }
         }
 
@@ -165,19 +165,19 @@
       }
 
       &:focus {
-        background-color: theme.$background-active;
+        background-color: theme.$background-selected-secondary;
       }
 
       &:hover {
-        background-color: theme.$background-active-hover;
+        background-color: theme.$background-selected-secondary;
       }
 
       &:active {
-        background-color: theme.$background-active-press;
+        background-color: theme.$background-selected-secondary;
       }
 
       &.dialog-open {
-        background-color: theme.$background-active-hover;
+        background-color: theme.$background-selected-secondary;
         color: theme.$secondary;
       }
     }
@@ -199,19 +199,19 @@
         border-radius: variables.$border-radius;
 
         &:focus {
-          background-color: theme.$background-active;
+          background-color: theme.$background-selected-secondary;
         }
 
         &:hover {
-          background-color: theme.$background-active-hover;
-        }
-
-        &.selected {
-          background-color: theme.$background-active-hover;
+          background-color: theme.$background-selected-secondary;
         }
 
         &:active {
-          background-color: theme.$background-active-press;
+          background-color: theme.$background-selected-secondary;
+        }
+
+        &.selected {
+          background-color: theme.$background-selected;
         }
       }
     }
@@ -234,7 +234,7 @@
       .line {
         flex-grow: 1;
         padding: 0 variables.$universal-margin;
-        background-color: theme.$background-active;
+        background-color: theme.$background-selected;
         height: 1px;
       }
 
@@ -249,7 +249,7 @@
         .keybind {
           @include fonts.keybind;
 
-          background-color: theme.$background-active;
+          background-color: theme.$background-selected-secondary;
 
           border-radius: variables.$border-radius;
 
@@ -264,7 +264,7 @@
           }
 
           &.pressed {
-            background-color: theme.$background-active-press;
+            background-color: theme.$background-selected;
           }
         }
       }

@@ -11,6 +11,6 @@ export default function getInputValidationError(name: string, { habits }: States
   const isUnique = !habits.some((habit) => habit.name === name);
 
   if (!isUnique) return 'A habit with this name already exists';
-  if (name === '') return 'Habit name needs to be non-empty';
+  if (name === '') return 'Habit name can\'t be empty';
   return '';
 }
