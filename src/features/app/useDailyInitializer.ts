@@ -9,7 +9,7 @@ import {
   View,
 } from '../../globalTypes';
 import getDateObject from '../common/getDateObject';
-import ConfigContext from '../initializer/ConfigContext';
+import ConfigContext from '../configLoader/ConfigContext';
 import onDateChange from '../onDateChange/onDateChange';
 import TaskQueue from '../taskQueue';
 import initialize from './initialize';

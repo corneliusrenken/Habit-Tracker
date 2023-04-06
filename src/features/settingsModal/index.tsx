@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Config } from '../../api/config/defaultConfig';
 import { ModalGenerator } from '../../globalTypes';
-import ConfigContext from '../initializer/ConfigContext';
+import ConfigContext from '../configLoader/ConfigContext';
 import PathInput from '../modal/PathInput';
 import Select from '../modal/Select';
 import Shortcut from './Shortcut';
@@ -103,7 +103,7 @@ function SettingsModal({
         name="Move habit"
         shortcuts={[{ keydownCode: 'ArrowUp', altKey: true }, { keydownCode: 'ArrowDown', altKey: true }]}
       />
-      <div className="subheading">While renaming or creating habits</div>
+      <div className="subheading">While typing</div>
       <Shortcut
         name="Confirm"
         shortcuts={[{ keydownCode: 'Enter' }]}

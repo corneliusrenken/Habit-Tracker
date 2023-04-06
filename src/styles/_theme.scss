@@ -1,23 +1,51 @@
-/* light mode */
+$background: var(--background);
+$background-translucent-mask: var(--background-translucent-mask);
+$background-selected: var(--background-selected);
+$background-selected-secondary: var(--background-selected-secondary);
+$background-modal: var(--background-modal);
+$modal-backdrop: var(--modal-backdrop);
+$primary: var(--primary);
+$secondary: var(--secondary);
+$error: var(--error);
 
-$background: rgb(253, 253, 253);
-$background-translucent-mask: rgba(253, 253, 253, 0.5);
-$background-selected: rgb(235, 235, 235);
-$background-selected-secondary: rgb(245, 245, 245);
-$background-modal: rgb(253, 253, 253);
-$modal-backdrop: rgba(0, 0, 0, 0.08);
-$primary: rgb(23, 23, 23);
-$secondary: rgb(173, 172, 172);
-$error: rgb(224, 36, 69);
+@mixin light-theme {
+  --background: rgb(253, 253, 253);
+  --background-translucent-mask: rgba(253, 253, 253, 0.5);
+  --background-selected: rgb(235, 235, 235);
+  --background-selected-secondary: rgb(245, 245, 245);
+  --background-modal: rgb(253, 253, 253);
+  --modal-backdrop: rgba(0, 0, 0, 0.08);
+  --primary: rgb(23, 23, 23);
+  --secondary: rgb(173, 172, 172);
+  --error: rgb(224, 36, 69);
+}
 
-/* dark mode */
+@mixin dark-theme {
+  --background: rgb(38, 38, 38);
+  --background-translucent-mask: rgba(38, 38, 38, 0.5);
+  --background-selected: rgb(58, 58, 58);
+  --background-selected-secondary: rgb(48, 48, 48);
+  --background-modal: rgb(38, 38, 38);
+  --modal-backdrop: rgba(0, 0, 0, 0.2);
+  --primary: rgb(255, 255, 255);
+  --secondary: rgb(110, 110, 110);
+  --error: rgb(224, 36, 69);
+}
 
-// $background: rgb(38, 38, 38);
-// $background-translucent-mask: rgba(38, 38, 38, 0.5);
-// $background-selected: rgb(58, 58, 58);
-// $background-selected-secondary: rgb(48, 48, 48);
-// $background-modal: rgb(38, 38, 38);
-// $modal-backdrop: rgba(0, 0, 0, 0.2);
-// $primary: rgb(255, 255, 255);
-// $secondary: rgb(110, 110, 110);
-// $error: rgb(224, 36, 69);
+:root {
+  @include light-theme;
+}
+
+@media (prefers-color-scheme: Dark) {
+  :root {
+    @include dark-theme;
+  }
+}
+
+:root.light {
+  @include light-theme;
+}
+
+:root.dark {
+  @include dark-theme;
+}

@@ -25,7 +25,7 @@ import Dates from '../dates';
 import List from '../list';
 import useSelectedData from '../selectedData/useSelectedData';
 import { Config } from '../../api/config/defaultConfig';
-import ConfigContext from '../initializer/ConfigContext';
+import ConfigContext from '../configLoader/ConfigContext';
 import Icon from '../icon';
 import createSettingsModalGenerator from '../settingsModal';
 import getLaunchAnimationTime from '../common/getLaunchAnimationTime';
