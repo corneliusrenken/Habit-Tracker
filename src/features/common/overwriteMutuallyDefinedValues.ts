@@ -1,4 +1,4 @@
-export default function overwriteMutuallyDefinedValues<S>(target: S, source: Partial<S>) {
+export default function overwriteMutuallyDefinedValues<S>(target: S, source: Partial<S>): S {
   const targetCopy = JSON.parse(JSON.stringify(target));
 
   let keys = Object.keys(source) as (keyof Partial<S>)[];

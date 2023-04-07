@@ -1,5 +1,5 @@
 /* eslint-disable no-underscore-dangle */
-import { IpcMainInvokeEvent } from 'electron';
+import { BrowserWindow, IpcMainInvokeEvent, nativeTheme } from 'electron';
 import { access } from 'fs/promises';
 import { writeFile } from 'atomically';
 import { join } from 'path';
@@ -9,16 +9,35 @@ import moveDatabase from './moveDatabase';
 import MutuallyExclusiveUnion from '../../../helpers/MutuallyExclusiveUnion';
 import NonUnderscored from '../../../helpers/NonUnderscored';
 import overwriteMutuallyDefinedValues from '../../../../features/common/overwriteMutuallyDefinedValues';
+import getCurrentBackgroundColor from '../../../../getCurrentBackgroundColor';
 
 export default async function updateConfig(
   e: IpcMainInvokeEvent,
   updateData: MutuallyExclusiveUnion<Pick<Config, keyof NonUnderscored<Config>>>,
 ) {
-  const oldConfig = await getConfig();
+  const window = BrowserWindow.fromWebContents(e.sender);
 
+  if (!window) throw new Error('No window found for event sender.');
+
+  const oldConfig = await getConfig();
   const newConfig = overwriteMutuallyDefinedValues(oldConfig, updateData);
 
-  if (oldConfig.databaseDirectoryPath !== newConfig.databaseDirectoryPath) {
+  const updatedTheme = oldConfig.theme !== newConfig.theme;
+
+  if (updatedTheme) {
+    const themeLowerCase = newConfig.theme.toLowerCase();
+    if (themeLowerCase !== 'dark' && themeLowerCase !== 'light' && themeLowerCase !== 'system') {
+      throw new Error('invalid theme value');
+    }
+    nativeTheme.themeSource = themeLowerCase;
+    window.setBackgroundColor(getCurrentBackgroundColor());
+  }
+
+  const updatedDatabaseDirectoryPath = (
+    oldConfig.databaseDirectoryPath !== newConfig.databaseDirectoryPath
+  );
+
+  if (updatedDatabaseDirectoryPath) {
     let databaseExistedAtOldLocation: boolean;
     try {
       const oldDatabaseFilePath = join(
