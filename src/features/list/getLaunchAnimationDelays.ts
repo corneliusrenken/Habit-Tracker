@@ -12,7 +12,7 @@ export default function getLaunchAnimationDelays(habitCount: number) {
   const minDelay = 400;
   const maxDelay = 0.6 * launchAnimationTime;
 
-  const delayPerStep = (maxDelay - minDelay) / (habitsInView - 1);
+  const delayPerStep = (maxDelay - minDelay) / Math.max(1, (habitsInView - 1));
 
   return new Array(habitCount).fill(0).map((v, index) => (
     minDelay + Math.round(delayPerStep * index)
