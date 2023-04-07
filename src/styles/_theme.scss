@@ -32,20 +32,14 @@ $error: var(--error);
   --error: rgb(224, 36, 69);
 }
 
-:root:not(.light):not(.dark) {
-  @include light-theme;
-}
-
-@media (prefers-color-scheme: Dark) {
-  :root:not(.light):not(.dark) {
-    @include dark-theme;
+@media (prefers-color-scheme: Light) {
+  :root {
+    @include light-theme;
   }
 }
 
-:root.light {
-  @include light-theme;
-}
-
-:root.dark {
-  @include dark-theme;
+@media (prefers-color-scheme: Dark) {
+  :root {
+    @include dark-theme;
+  }
 }

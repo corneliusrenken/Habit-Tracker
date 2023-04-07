@@ -29,14 +29,6 @@ export default function Initializer() {
     })();
   }, []);
 
-  useEffect(() => {
-    document.documentElement.classList.remove('dark');
-    document.documentElement.classList.remove('light');
-    if (config.theme !== 'System') {
-      document.documentElement.classList.add(config.theme.toLowerCase());
-    }
-  }, [config.theme]);
-
   if (!loadedConfig.current) return null;
 
   if (!databaseExists) {
