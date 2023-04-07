@@ -4,6 +4,14 @@ import { rules } from './webpack.rules';
 import { plugins } from './webpack.plugins';
 
 rules.push({
+  test: /\.ttf$/,
+  type: 'asset/resource',
+  generator: {
+    filename: './fonts/[name][ext]',
+  },
+})
+
+rules.push({
   test: /\.scss$/,
   use: [
     { loader: 'style-loader' },
