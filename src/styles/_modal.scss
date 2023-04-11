@@ -49,14 +49,14 @@
       position: absolute;
     }
 
-    width: 400px;
-    left: calc(50vw - 200px);
+    $width: 400px;
+    width: $width;
+    left: calc(50vw - $width / 2);
 
-    margin: variables.$vertical-margin-5 0;
+    margin: variables.$spacing-xl 0;
 
-    padding: variables.$universal-margin;
-    padding-top: 2 * variables.$universal-margin;
-    border-radius: variables.$border-radius;
+    padding: variables.$spacing-m variables.$spacing-s;
+    border-radius: variables.$border-radius-s;
     background-color: theme.$background-modal;
 
     box-shadow: 0px 100px 80px rgba(0, 0, 0, 0.07), 0px 41.7776px 33.4221px rgba(0, 0, 0, 0.0503198), 0px 22.3363px 17.869px rgba(0, 0, 0, 0.0417275), 0px 12.5216px 10.0172px rgba(0, 0, 0, 0.035), 0px 6.6501px 5.32008px rgba(0, 0, 0, 0.0282725), 0px 2.76726px 2.21381px rgba(0, 0, 0, 0.0196802);
@@ -68,12 +68,16 @@
       opacity: 0;
     }
 
+    .heading, .subheading, .description, .dialog-button-group {
+      height: variables.$block-size-m;
+      line-height: variables.$block-size-m;
+    }
+
     .heading {
       @include fonts.main;
 
-      margin: 0 variables.$universal-margin;
-      margin-top: variables.$vertical-margin-5;
-      margin-bottom: variables.$vertical-margin-1;
+      margin: 0 variables.$spacing-s;
+      margin-top: variables.$spacing-xl;
 
       b {
         @include fonts.main-bold;
@@ -83,34 +87,30 @@
     .subheading {
       color: theme.$secondary;
 
-      margin: 0 variables.$universal-margin;
-      margin-top: variables.$vertical-margin-3;
-      margin-bottom: variables.$vertical-margin-1;
+      margin: 0 variables.$spacing-s;
+      margin-top: variables.$spacing-m;
     }
 
     .description {
       color: theme.$secondary;
 
-      margin: 0 variables.$universal-margin;
-      margin-bottom: variables.$vertical-margin-3;
+      margin: 0 variables.$spacing-s;
+      margin-bottom: variables.$spacing-m;
     }
 
     .dialog-button-group {
       @include fonts.main;
 
+      margin-top: variables.$spacing-s;
+
       display: flex;
       justify-content: flex-end;
-      gap: variables.$universal-margin;
-
-      margin-top: variables.$vertical-margin-3;
+      gap: variables.$spacing-s;
 
       button {
-        padding: 0 variables.$universal-margin;
+        padding: 0 variables.$spacing-s;
 
-        height: variables.$modal-element-height;
-        line-height: variables.$modal-element-height;
-
-        border-radius: variables.$border-radius;
+        border-radius: variables.$border-radius-s;
 
         &:last-of-type {
           @include fonts.main-bold;
@@ -129,8 +129,8 @@
             background-color: theme.$background-selected-secondary;
           }
 
-          &:active {
-            background-color: theme.$background-selected-secondary;
+          &:active:hover {
+            background-color: theme.$background-selected;
           }
         }
 
@@ -138,19 +138,17 @@
     }
 
     .path-input {
-      border-radius: variables.$border-radius;
+      border-radius: variables.$border-radius-s;
 
-      margin: variables.$vertical-margin-1 0;
+      padding: 0 variables.$spacing-s;
 
-      padding: 0 variables.$universal-margin;
-
-      height: variables.$modal-element-height;
-      line-height: variables.$modal-element-height;
+      height: variables.$block-size-m;
+      line-height: variables.$block-size-m;
       width: 100%;
 
       display: flex;
       align-items: center;
-      gap: variables.$universal-margin;
+      gap: variables.$spacing-s;
       justify-content: space-between;
 
       .path {
@@ -172,31 +170,29 @@
         background-color: theme.$background-selected-secondary;
       }
 
-      &:active {
-        background-color: theme.$background-selected-secondary;
+      &:active:hover {
+        background-color: theme.$background-selected;
       }
 
       &.dialog-open {
-        background-color: theme.$background-selected-secondary;
+        background-color: theme.$background-selected;
         color: theme.$secondary;
       }
     }
 
     .select-input {
       display: flex;
-      gap: variables.$universal-margin;
-
-      margin: variables.$vertical-margin-1 0;
+      gap: variables.$spacing-s;
 
       .option {
-        height: variables.$modal-element-height;
-        line-height: variables.$modal-element-height;
-        min-width: variables.$modal-element-height;
+        height: variables.$block-size-m;
+        line-height: variables.$block-size-m;
+        min-width: variables.$block-size-m;
 
         text-align: center;
 
-        padding: 0 variables.$universal-margin;
-        border-radius: variables.$border-radius;
+        padding: 0 variables.$spacing-s;
+        border-radius: variables.$border-radius-s;
 
         &:focus {
           background-color: theme.$background-selected-secondary;
@@ -206,8 +202,8 @@
           background-color: theme.$background-selected-secondary;
         }
 
-        &:active {
-          background-color: theme.$background-selected-secondary;
+        &:active:hover {
+          background-color: theme.$background-selected;
         }
 
         &.selected {
@@ -217,30 +213,31 @@
     }
 
     .shortcut {
-      margin: variables.$vertical-margin-1 0;
-      margin-left: variables.$universal-margin;
+      height: variables.$block-size-m;
+
+      margin: 0 variables.$spacing-s;
 
       display: flex;
-      gap: variables.$universal-margin;
+      gap: variables.$spacing-s;
       align-items: center;
 
       line-height: 100%;
 
       .name, .keybinds {
-        height: variables.$keybind-size;
-        line-height: variables.$keybind-size;
+        height: variables.$block-size-s;
+        line-height: variables.$block-size-s;
       }
 
       .line {
         flex-grow: 1;
-        padding: 0 variables.$universal-margin;
+        padding: 0 variables.$spacing-s;
         background-color: theme.$background-selected;
         height: 1px;
       }
 
       .keybinds {
         display: flex;
-        gap: variables.$universal-margin;
+        gap: variables.$spacing-s;
 
         color: theme.$secondary;
 
@@ -251,15 +248,15 @@
 
           background-color: theme.$background-selected-secondary;
 
-          border-radius: variables.$border-radius;
+          border-radius: variables.$border-radius-s;
 
           &.single {
-            width: variables.$keybind-size;
+            width: variables.$block-size-s;
             text-transform: capitalize;
           }
 
           &:not(.single) {
-            padding: 0 variables.$universal-margin;
+            padding: 0 variables.$spacing-s;
             text-transform: lowercase;
           }
 

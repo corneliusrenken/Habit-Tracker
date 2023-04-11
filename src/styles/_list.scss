@@ -3,11 +3,11 @@
 @use 'theme';
 @use 'variables';
 
-$selector-padding: 15px;
-$list-content-padding: 21px;
-$icon-width: 42px; // 42 to align icons with dates
-$input-line-height: 22px;
-$selector-height: 38px;
+$selector-padding: variables.$spacing-m;
+$list-content-padding: variables.$spacing-l;
+$icon-button-width: variables.$block-size-xl;
+$input-line-height: variables.$block-size-m;
+$selector-height: variables.$block-size-l;
 
 @mixin launch-animation {
   opacity: 0;
@@ -38,12 +38,12 @@ $selector-height: 38px;
 
     z-index: 0;
 
-    height: 50px;
-    width: 350px;
+    height: variables.$block-size-xl;
+    width: variables.$block-size-xl * 7;
 
     display: flex;
     align-items: center;
-    gap: variables.$universal-margin;
+    gap: variables.$spacing-s;
 
     @include utils.check-nested-parent-state('.list', '.selection-view') {
       position: absolute;
@@ -89,7 +89,7 @@ $selector-height: 38px;
     }
 
     &.being-renamed {
-      width: calc(350px + 3 * $icon-width + 3 * variables.$universal-margin);
+      width: calc(variables.$block-size-xl * 7 + 3 * $icon-button-width);
     }
 
     .name, .error, .rename-form, .create-form, .placeholder, .streak {
@@ -99,7 +99,7 @@ $selector-height: 38px;
 
     .rename-form, .create-form {
       line-height: $input-line-height; // slightly smaller looks better when highlighting
-      height: 50px; // form height important for scrolling into view when being typed into
+      height: variables.$block-size-xl; // form height important for scrolling into view when being typed into
       display: flex;
       align-items: center;
     }
@@ -141,8 +141,8 @@ $selector-height: 38px;
       position: absolute;
       height: $selector-height;
       left: calc($list-content-padding - $selector-padding);
-      width: calc(350px - 2 * $list-content-padding + 2 * $selector-padding);
-      border-radius: variables.$border-radius;
+      width: calc(variables.$block-size-xl * 7 - 2 * $list-content-padding + 2 * $selector-padding);
+      border-radius: variables.$border-radius-s;
       background-color: theme.$background-selected;
     }
 
@@ -154,18 +154,18 @@ $selector-height: 38px;
     //   background-color: theme.$background-error;
     // }
 
+    .icon-button-container {
+      min-width: fit-content;
+    }
+
     .icon-button {
       position: relative; // needs explicit position value to render over ::before element
       height: $selector-height;
-      min-width: $icon-width;
+      min-width: $icon-button-width;
 
-      display: flex;
+      display: inline-flex;
       justify-content: center;
       align-items: center;
-
-      &:last-of-type {
-        margin-right: calc((50px - $icon-width) / 2);
-      }
 
       &.greyed-out {
         color: theme.$secondary;

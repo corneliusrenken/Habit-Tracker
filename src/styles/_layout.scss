@@ -3,24 +3,24 @@
 @use 'theme';
 
 @mixin center-horizontally {
-  width: 350px;
-  left: calc(50vw - 175px);
+  width: variables.$block-size-xl * 7;
+  left: calc(50vw - variables.$block-size-xl * 3.5);
 }
 
-$transition-distance: calc((50vh - 25px) - 50px - variables.$layout-vertical-margin);
+$transition-distance: calc((50vh - variables.$block-size-xl / 2) - variables.$block-size-xl - variables.$layout-vertical-margin);
 
 @keyframes scroll-to-list-view {
   0% {
     top: calc(
       variables.$layout-vertical-margin
       - var(--occurrence-height, 0px)
-      + 50px
+      + variables.$block-size-xl
       + $transition-distance
       + var(--transition-scroll-distance, 0px)
     );
   }
   100% {
-    top: calc(variables.$layout-vertical-margin - var(--occurrence-height, 0px) + 50px);
+    top: calc(variables.$layout-vertical-margin - var(--occurrence-height, 0px) + variables.$block-size-xl);
   }
 }
 
@@ -44,7 +44,7 @@ $transition-distance: calc((50vh - 25px) - 50px - variables.$layout-vertical-mar
   }
 
   &.occurrence-view {
-    height: calc(var(--occurrence-height, 0px) + 25px + 50vh);
+    height: calc(var(--occurrence-height, 0px) + variables.$block-size-xl / 2 + 50vh);
   }
 
   &.frozen {
@@ -83,7 +83,7 @@ $transition-distance: calc((50vh - 25px) - 50px - variables.$layout-vertical-mar
     position: sticky;
     z-index: 2;
     height: var(--occurrence-height, 0px);
-    top: calc(variables.$layout-vertical-margin - var(--occurrence-height, 0px) + 50px);
+    top: calc(variables.$layout-vertical-margin - var(--occurrence-height, 0px) + variables.$block-size-xl);
 
     .occurrences-layout, .days-layout {
       position: absolute;
@@ -104,15 +104,14 @@ $transition-distance: calc((50vh - 25px) - 50px - variables.$layout-vertical-mar
         pointer-events: none;
         background-color: theme.$background-translucent-mask;
         backdrop-filter: blur(7px);
-        // backdrop-filter: brightness(0%) blur(7px);
       }
     }
 
     .scroll-indicator {
       position: absolute;
-      height: 50px;
-      width: 50px;
-      left: calc(50vw - 25px);
+      height: variables.$block-size-xl;
+      width: variables.$block-size-xl;
+      left: calc(50vw - variables.$block-size-xl / 2);
       bottom: calc(2 * variables.$layout-vertical-margin - 100vh);
       display: flex;
       justify-content: center;
@@ -132,10 +131,10 @@ $transition-distance: calc((50vh - 25px) - 50px - variables.$layout-vertical-mar
   .dates-layout {
     @include center-horizontally;
 
-    height: 50px;
+    height: variables.$block-size-xl;
     position: sticky;
     z-index: 3;
-    top: calc(variables.$layout-vertical-margin + 50px);
+    top: calc(variables.$layout-vertical-margin + variables.$block-size-xl);
   }
 
   .list-layout {
@@ -153,8 +152,8 @@ $transition-distance: calc((50vh - 25px) - 50px - variables.$layout-vertical-mar
 .settings-button-layout {
   position: fixed;
   z-index: 3;
-  right: variables.$universal-margin;
-  bottom: calc(100% - 100vh + variables.$universal-margin);
+  right: variables.$spacing-s;
+  bottom: calc(100% - 100vh + variables.$spacing-s);
 
   &.hidden {
     display: none;

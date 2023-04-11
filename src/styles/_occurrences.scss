@@ -1,20 +1,21 @@
 @use 'fonts';
 @use 'theme';
+@use 'variables';
 
 .occurrences {
   display: flex;
   flex-direction: row;
   align-items: center;
   flex-wrap: wrap;
-  width: 350px;
+  width: variables.$block-size-xl * 7;
 
   .occurrence {
     @include fonts.date;
 
     will-change: opacity;
 
-    width: 50px;
-    line-height: 50px;
+    width: variables.$block-size-xl;
+    line-height: variables.$block-size-xl;
     text-align: center;
     opacity: 0;
     animation-duration: 600ms;

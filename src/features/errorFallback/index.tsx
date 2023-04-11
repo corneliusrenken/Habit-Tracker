@@ -8,7 +8,7 @@ export default function ErrorFallback({
   return (
     <div className="error-fallback">
       <div className="container">
-        <div className="title">Error</div>
+        <div className="title">Error:</div>
         {(error instanceof Error
           ? <div className="error-message">{error.message}</div>
           : <div className="error-message">Unknown error</div>
