@@ -77,47 +77,49 @@ export default function SelectionListItem({
         placeholderClassOverwrite="name"
         formClassOverwrite="rename-form"
       />
-      <IconButton
-        icon="rename"
-        onMouseDown={() => {
-          const onMouseUp = () => {
-            setTimeout(() => { ignoreNextMouseUp.current = false; }, 0);
-            window.removeEventListener('mouseup', onMouseUp);
-          };
+      <div className="icon-button-container">
+        <IconButton
+          icon="rename"
+          onMouseDown={() => {
+            const onMouseUp = () => {
+              setTimeout(() => { ignoreNextMouseUp.current = false; }, 0);
+              window.removeEventListener('mouseup', onMouseUp);
+            };
 
-          if (beingRenamed) {
-            ignoreNextMouseUp.current = true;
-            window.addEventListener('mouseup', onMouseUp);
-          }
-        }}
-        onClick={() => {
-          if (!inInput && !ignoreNextMouseUp.current) setInInput(true);
-        }}
-        classNameAdditions={`rename-icon${beingRenamed ? ' greyed-out' : ''}`}
-        hidden={!selected}
-      />
-      <IconButton
-        icon="trash"
-        onClick={() => {
-          const modalGenerator: ModalGenerator = createDeleteHabitModalGenerator(habit, {
-            deleteHabit,
-            setModal,
-          });
-          setModal(() => modalGenerator);
-        }}
-        hidden={!selected}
-      />
-      <IconButton
-        icon="move"
-        classNameAdditions="move-icon"
-        onMouseDown={move}
-        hidden={!selected}
-      />
-      <IconButton
-        icon={visible ? 'visible' : 'hidden'}
-        classNameAdditions={!visible ? 'greyed-out' : undefined}
-        onClick={toggleVisibility}
-      />
+            if (beingRenamed) {
+              ignoreNextMouseUp.current = true;
+              window.addEventListener('mouseup', onMouseUp);
+            }
+          }}
+          onClick={() => {
+            if (!inInput && !ignoreNextMouseUp.current) setInInput(true);
+          }}
+          classNameAdditions={`rename-icon${beingRenamed ? ' greyed-out' : ''}`}
+          hidden={!selected}
+        />
+        <IconButton
+          icon="trash"
+          onClick={() => {
+            const modalGenerator: ModalGenerator = createDeleteHabitModalGenerator(habit, {
+              deleteHabit,
+              setModal,
+            });
+            setModal(() => modalGenerator);
+          }}
+          hidden={!selected}
+        />
+        <IconButton
+          icon="move"
+          classNameAdditions="move-icon"
+          onMouseDown={move}
+          hidden={!selected}
+        />
+        <IconButton
+          icon={visible ? 'visible' : 'hidden'}
+          classNameAdditions={!visible ? 'greyed-out' : undefined}
+          onClick={toggleVisibility}
+        />
+      </div>
     </div>
   );
 }

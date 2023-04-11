@@ -6,30 +6,18 @@ $layout-vertical-margin: 20vh;
   --layout-vertical-margin: #{$layout-vertical-margin};
 }
 
-$universal-margin: 8px;
-$border-radius: 6px;
-// $vertical-margin-section: 40px;
-// $vertical-margin-large: 18px;
-// $vertical-margin-small: 8px;
-$modal-element-height: 31px;
-$keybind-size: 24px;
+$block-size-s: 22px;
+$block-size-m: 30px; // careful, this is used for input height -> needs to be larger than font height
+$block-size-l: 38px;
+$block-size-xl: 50px;
 
-// using golden ratio starting from 8
-$vertical-margin-1: 8px;
-$vertical-margin-2: 13px;
-// $vertical-margin-3: 21px;
-$vertical-margin-3: 17px;
-$vertical-margin-4: 34px;
-$vertical-margin-5: 55px;
+$border-radius-s: 4px;
+$border-radius-m: 6px;
+$border-radius-l: 10px;
+$border-radius-xl: 16px;
 
-// $vertical-margin-1: 6px;
-// $vertical-margin-2: 10px;
-// $vertical-margin-3: 16px;
-// $vertical-margin-4: 26px;
-// $vertical-margin-5: 42px;
-
-// 8px
-// 13px (Golden ratio)
-// 21px (Golden ratio)
-// 34px (Golden ratio)
-// 55px (Golden ratio)
+$spacing-s: 8px;
+$spacing-m: 13px;
+$spacing-l: 21px;
+$spacing-xl: 34px;
+// $spacing-xxl: 55px;

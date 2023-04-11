@@ -14,14 +14,13 @@
   position: relative;
   display: flex;
   flex-direction: row;
-  height: 50px;
   align-items: center;
 
   .date {
     @include fonts.date;
 
-    width: 50px;
-    line-height: 50px;
+    width: variables.$block-size-xl;
+    line-height: variables.$block-size-xl;
     text-align: center;
     color: theme.$primary;
 
@@ -37,8 +36,8 @@
   }
 
   .day-indicator {
-    width: 50px;
-    height: 50px;
+    width: variables.$block-size-xl;
+    height: variables.$block-size-xl;
     position: absolute;
 
     &:after {

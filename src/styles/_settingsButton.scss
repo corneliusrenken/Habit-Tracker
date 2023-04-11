@@ -8,7 +8,7 @@
   justify-content: center;
   align-items: center;
   color: theme.$primary;
-  border-radius: variables.$border-radius;
+  border-radius: variables.$border-radius-s;
 
   &:hover {
     background-color: theme.$background-selected;
