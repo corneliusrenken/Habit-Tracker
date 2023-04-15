@@ -48,8 +48,8 @@ $selector-height: variables.$block-size-l;
     @include utils.check-nested-parent-state('.list', '.selection-view') {
       position: absolute;
       transition:
-        top 100ms ease-out,
-        left 100ms ease-out,
+        top variables.$reorder-translate-time ease-out,
+        left variables.$reorder-translate-time ease-out,
         color 100ms ease-out,
         width 400ms;
 
@@ -57,13 +57,6 @@ $selector-height: variables.$block-size-l;
     }
 
     @include utils.check-nested-parent-state('.list', '.being-reordered') {
-      transition:
-        top 100ms ease-out,
-        left 100ms ease-out,
-        color 100ms ease-out,
-        width 400ms,
-        z-index 200ms step-end;
-
       &:not(.reordered-item) {
         color: theme.$secondary;
       }

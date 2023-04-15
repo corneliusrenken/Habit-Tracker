@@ -5,6 +5,7 @@ import React, {
 } from 'react';
 import { Habit } from '../../globalTypes';
 import getVerticalMarginHeight from '../common/getVerticalMarginHeight';
+import getReorderTranslateTime from './getReorderTranslateTime';
 
 type ReorderInfo = {
   active: false;
@@ -108,6 +109,7 @@ export default function ReorderableList({
   updateHabitListPosition,
 }: Props) {
   const [reorderInfo, setReorderInfo] = useState<ReorderInfo>({ active: false });
+  const [idReturningToRestingPos, setIdReturningToRestingPos] = useState<number | null>(null);
 
   const elements = useMemo(() => {
     // sort by id to ensure order of elements in dom is consistent preventing rerender on move
@@ -125,6 +127,10 @@ export default function ReorderableList({
           top: `${position * 50}px`,
           left: '0px',
         };
+
+      if (idReturningToRestingPos === habit.id) {
+        styleAdditions.zIndex = 3;
+      }
 
       const startReordering = ({ clientX, clientY }: React.MouseEvent) => setReorderInfo({
         active: true,
@@ -149,7 +155,7 @@ export default function ReorderableList({
         classNameAdditions,
       );
     });
-  }, [habits, prepopulatedListItem, reorderInfo]);
+  }, [habits, prepopulatedListItem, reorderInfo, idReturningToRestingPos]);
 
   // eslint-disable-next-line consistent-return
   useEffect(() => {
@@ -198,8 +204,15 @@ export default function ReorderableList({
       };
 
       const onMouseUp = () => {
+        const { id } = reorderInfo;
         setReorderInfo({ active: false });
         setReorderingList(false);
+
+        setIdReturningToRestingPos(id);
+        setTimeout(() => {
+          setIdReturningToRestingPos(null);
+        }, getReorderTranslateTime());
+
         document.removeEventListener('mouseup', onMouseUp);
         document.removeEventListener('mousemove', onMouseMove);
       };
