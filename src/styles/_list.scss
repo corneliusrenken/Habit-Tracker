@@ -23,7 +23,7 @@ $selector-height: variables.$block-size-l;
     transition: none;
 
     &.transition-top {
-      transition: top 100ms ease-out;
+      transition: top variables.$reorder-translate-time ease-out;
     }
   }
 }
