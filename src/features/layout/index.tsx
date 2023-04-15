@@ -138,6 +138,7 @@ export default function Layout({
   useEffect(() => {
     const onResizeZoomScroll = () => {
       if (freezeScroll) return;
+      console.log(window.scrollY);
       setScrollPos(window.scrollY);
       setDisplayScrollIndicator(checkToDisplayScrollIndicator());
     };
@@ -152,7 +153,7 @@ export default function Layout({
       window.removeEventListener('zoom', onResizeZoomScroll);
       window.removeEventListener('scroll', onResizeZoomScroll);
     };
-  }, [freezeScroll, listHeight, occurrenceHeight]);
+  }, [freezeScroll, listHeight, occurrenceHeight, view.name]);
 
   let layoutClassName = 'layout';
   layoutClassName += ` ${viewToViewType[displayedView.name]}-view`;
