@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from 'react';
+import { useErrorBoundary } from 'react-error-boundary';
 import {
   DateObject, Habit, ModalGenerator, OccurrenceData, View,
 } from '../../globalTypes';
@@ -42,6 +43,8 @@ type States = {
 };
 
 export default function useShortcutManager(disabled: boolean, states: States) {
+  const { showBoundary } = useErrorBoundary();
+
   const onKeyDown = useCallback((e: KeyboardEvent) => {
     const {
       modal,
@@ -92,8 +95,13 @@ export default function useShortcutManager(disabled: boolean, states: States) {
 
     setIgnoreMouse(true);
     e.preventDefault();
-    shortcut();
-  }, [states]);
+
+    try {
+      shortcut();
+    } catch (error) {
+      showBoundary(error);
+    }
+  }, [states, showBoundary]);
 
   useEffect(() => {
     if (disabled) return;
