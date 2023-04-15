@@ -138,7 +138,6 @@ export default function Layout({
   useEffect(() => {
     const onResizeZoomScroll = () => {
       if (freezeScroll) return;
-      console.log(window.scrollY);
       setScrollPos(window.scrollY);
       setDisplayScrollIndicator(checkToDisplayScrollIndicator());
     };
