@@ -1,9 +1,11 @@
 $launch-animation-time: 1900ms;
 $layout-vertical-margin: 20vh;
+$reorder-translate-time: 200ms;
 
 :root {
   --launch-animation-time: #{$launch-animation-time};
   --layout-vertical-margin: #{$layout-vertical-margin};
+  --reorder-translate-time: #{$reorder-translate-time};
 }
 
 $block-size-s: 22px;
