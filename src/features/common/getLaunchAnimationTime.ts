@@ -6,7 +6,8 @@ export default function getLaunchAnimationTime() {
       propertyValue.slice(0, -2),
     );
   } else {
-    throw new Error(`${propertyValue} is invalid. Launch animation time must be in ms`);
+    console.error(`${propertyValue} is invalid. Launch animation time must be in ms`);
+    return 1900;
   }
 
   return launchAnimationTime;

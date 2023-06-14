@@ -28,7 +28,7 @@ function SettingsModal({
       <div className="heading">Settings</div>
       <div className="subheading">Save location (disabled in web demo)</div>
       <PathInput
-        path={'/sample/path/to/local/database'}
+        path={'/Documents'}
         setPath={() => {}} // not needed for web demo
         disableTabIndex={disableTabIndex}
       />
