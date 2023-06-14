@@ -11,5 +11,13 @@ export default function updateConfigClient(
 ) {
   const { setConfig } = states;
 
+  if (updateData.theme) {
+    if (updateData.theme === 'System') {
+      document.documentElement.removeAttribute('data-theme');
+    } else {
+      document.documentElement.setAttribute('data-theme', updateData.theme.toLowerCase());
+    }
+  }
+
   setConfig((previousConfig) => overwriteMutuallyDefinedValues(previousConfig, updateData));
 }

@@ -43,3 +43,11 @@ $error: var(--error);
     @include dark-theme;
   }
 }
+
+[data-theme='light'] {
+  @include light-theme;
+}
+
+[data-theme='dark'] {
+  @include dark-theme;
+}
