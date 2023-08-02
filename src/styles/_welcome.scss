@@ -3,8 +3,9 @@
 @use 'variables';
 
 .welcome {
+  color: theme.$primary ;
   z-index: 199;
-  background-color: theme.$background;
+  background-color: theme.$background-modal;
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
   position: fixed;
