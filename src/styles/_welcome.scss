@@ -8,7 +8,10 @@
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
   position: fixed;
-  right: variables.$spacing-xl;
+  left: max(
+    100vw - 450px - variables.$spacing-xl,
+    1320px - 450px - variables.$spacing-xl
+  );
   top: variables.$spacing-xl;
   width: 450px;
   @include fonts.main;
