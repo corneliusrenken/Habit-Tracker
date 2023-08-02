@@ -4,7 +4,7 @@ import recalculateStreak from './features/common/recalculateStreak';
 import { Config, Habit, OccurrenceData, Streaks } from './globalTypes';
 
 // seed used to select how many habits are 'done' on a given day
-const seed = '4240044002434202134240443444441344420403042044222122440013443442344214134434231444321444430241042400';
+const seed = '3240044002434202134240443444441344420403042044222122440013443442344214134434231444321444430241042400';
 
 const today = new Date();
 const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, etc.

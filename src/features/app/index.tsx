@@ -1,10 +1,8 @@
 import React, {
   useContext,
   useEffect,
-  useRef,
   useState,
 } from 'react';
-import { useErrorBoundary } from 'react-error-boundary';
 import {
   Config,
   Habit,
@@ -28,6 +26,7 @@ import ConfigContext from '../configLoader/ConfigContext';
 import Icon from '../icon';
 import createSettingsModalGenerator from '../settingsModal';
 import getLaunchAnimationTime from '../common/getLaunchAnimationTime';
+import Welcome from '../welcome';
 
 type Props = {
   setConfig: React.Dispatch<React.SetStateAction<Config>>;
@@ -48,10 +47,15 @@ export default function App({ setConfig }: Props) {
   const [streaks, setStreaks] = useState<Streaks>({});
   const [ignoreMouse, setIgnoreMouse] = useState(true);
 
+  const [showWelcome, setShowWelcome] = useState(false);
+
   useEffect(() => {
     const launchAnimationTime = getLaunchAnimationTime();
     const postAnimationWait = 300;
-    setTimeout(() => setLaunchAnimationActive(false), launchAnimationTime + postAnimationWait);
+    setTimeout(() => {
+      setLaunchAnimationActive(false);
+      setShowWelcome(true);
+    }, launchAnimationTime + postAnimationWait);
   }, []);
 
   // eslint-disable-next-line consistent-return
@@ -150,6 +154,7 @@ export default function App({ setConfig }: Props) {
 
   return (
     <>
+      <Welcome hidden={!showWelcome || modal !== undefined} setHidden={setShowWelcome} view={view} />
       {launchAnimationActive && <div className="launch-mouse-blocker" style={{ position: 'fixed', inset: 0, zIndex: 5 }} />}
       <Modal
         modal={modal}
