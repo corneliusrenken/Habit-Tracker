@@ -9,16 +9,16 @@
   backdrop-filter: blur(3px);
   position: fixed;
   left: max(
-    100vw - 450px - variables.$spacing-xl,
-    1320px - 450px - variables.$spacing-xl
+    100vw - 440px - variables.$spacing-s,
+    1240px - 440px - variables.$spacing-s
   );
-  top: variables.$spacing-xl;
-  width: 450px;
+  top: variables.$spacing-s;
+  width: 440px;
   @include fonts.main;
   display: flex;
   flex-direction: column;
   line-height: variables.$block-size-s;
-  padding: variables.$spacing-s;
+  padding: 0 variables.$spacing-s;
   transition: opacity 0.5s ease-in-out;
 
   b {
