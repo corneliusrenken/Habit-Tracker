@@ -1,6 +1,4 @@
 $background: var(--background);
-$background-translucent-mask: var(--background-translucent-mask);
-$background-translucent-mask: var(--background-translucent-mask-welcome);
 $background-selected: var(--background-selected);
 $background-selected-secondary: var(--background-selected-secondary);
 $background-modal: var(--background-modal);
@@ -11,8 +9,6 @@ $error: var(--error);
 
 @mixin light-theme {
   --background: rgb(253, 253, 253); // remember to change launch background color in index.ts if you change this
-  --background-translucent-mask: rgba(253, 253, 253, 0.5);
-  --background-translucent-mask-welcome: rgba(253, 253, 253, 0.7);
   --background-selected: rgb(235, 235, 235);
   --background-selected-secondary: rgb(245, 245, 245);
   --background-modal: rgb(253, 253, 253);
@@ -24,8 +20,6 @@ $error: var(--error);
 
 @mixin dark-theme {
   --background: rgb(38, 38, 38); // remember to change launch background color in index.ts if you change this
-  --background-translucent-mask: rgba(38, 38, 38, 0.5);
-  --background-translucent-mask-welcome: rgba(38, 38, 38, 0.7);
   --background-selected: rgb(58, 58, 58);
   --background-selected-secondary: rgb(48, 48, 48);
   --background-modal: rgb(38, 38, 38);
