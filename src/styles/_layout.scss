@@ -102,7 +102,7 @@ $transition-distance: calc((50vh - variables.$block-size-xl / 2) - variables.$bl
 
       &.translucent {
         pointer-events: none;
-        background-color: theme.$background-translucent-mask;
+        background-color: none;
         backdrop-filter: blur(7px);
       }
     }
