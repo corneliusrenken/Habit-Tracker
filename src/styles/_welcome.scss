@@ -4,14 +4,15 @@
 
 .welcome {
   color: theme.$primary ;
-  z-index: 199;
+  z-index: 5;
   background-color: theme.$background-modal;
+  border-radius: variables.$border-radius-s;
   -webkit-backdrop-filter: blur(3px);
   backdrop-filter: blur(3px);
   position: fixed;
   left: max(
     100vw - 440px - variables.$spacing-s,
-    1240px - 440px - variables.$spacing-s
+    1320px - 440px - variables.$spacing-s
   );
   top: variables.$spacing-s;
   width: 440px;

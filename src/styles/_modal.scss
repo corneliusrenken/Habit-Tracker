@@ -51,8 +51,10 @@
 
     $width: 400px;
     width: $width;
-    left: calc(50vw - $width / 2);
-
+    left: max(
+      (100vw - $width) / 2,
+      (1320px - $width) / 2
+    );
     margin: variables.$spacing-xl 0;
 
     padding: variables.$spacing-m variables.$spacing-s;

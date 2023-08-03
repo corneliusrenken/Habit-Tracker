@@ -154,7 +154,7 @@ export default function App({ setConfig }: Props) {
 
   return (
     <>
-      <Welcome hidden={!showWelcome || modal !== undefined} setHidden={setShowWelcome} view={view} />
+      <Welcome hidden={!showWelcome} setHidden={setShowWelcome} view={view} />
       {launchAnimationActive && <div className="launch-mouse-blocker" style={{ position: 'fixed', inset: 0, zIndex: 5 }} />}
       <Modal
         modal={modal}
