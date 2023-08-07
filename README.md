@@ -13,5 +13,7 @@ A minimalist habit tracker designed for a satisfying, focused experience.
 
 ## A Note on Design Decisions
 - I designed the app to be a small unobtrusive window on your monitor. It shouldn't distract you, but remind you of your goals.
-- I purposely limited features to maintain a streamlined functionality: Habits can only be marked as completed for today or yesterday, catering to any late-night habits.
-- I decided to use [SQLite](https://www.sqlite.org/index.html) due to it's embedded nature. This prevents the need for any further installation dependencies when sharing the app.
+- I purposely limited features to maintain a streamlined functionality:
+    - Habits can only be marked as completed for today or yesterday, catering to any late-night habits.
+    - Adding, hiding, or deleting habits from your list only affects today; you probably hadn't committed to the habit if it wasn't in the list during the day.
+- I decided to use [SQLite](https://www.sqlite.org/index.html) due to its embedded nature. This prevents the need for any further installation dependencies when sharing the app.
