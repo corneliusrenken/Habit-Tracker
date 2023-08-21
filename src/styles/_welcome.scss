@@ -78,9 +78,12 @@
   }
 
   .keybind {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
     color: theme.$secondary;
 
-    text-align: center;
     @include fonts.keybind;
 
     background-color: theme.$background-selected-secondary;
