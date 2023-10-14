@@ -10,6 +10,8 @@ export default function getVerticalMarginHeight() {
       propertyValue.slice(0, -2),
     ) * window.innerHeight) / 100;
   } else {
+    // for web-demo, fix the error by returning 20vh
+    verticalMargin = 20 * window.innerHeight / 100;
     throw new Error(`${propertyValue} is invalid. Vertical margin must be in px or vh`);
   }
   return verticalMargin;

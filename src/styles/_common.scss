@@ -1,5 +1,6 @@
 @use 'theme';
 @use 'variables';
+@use 'fonts';
 
 *,
 *:before,
@@ -53,4 +54,14 @@ button, input {
   100% {
     opacity: 1;
   }
+}
+
+.webdemo-resize-container {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  @include fonts.main;
 }

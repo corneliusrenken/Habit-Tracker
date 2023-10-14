@@ -31,6 +31,7 @@ export default function Welcome({ hidden, setHidden, view }: Props) {
         </div>
       </div>
       <div>For a full list of keyboard shortcuts, press the cog wheel in the bottom right corner</div>
+      <a href="https://github.com/corneliusrenken/twice#readme">GitHub Repo</a>
     </div>
   )
 }

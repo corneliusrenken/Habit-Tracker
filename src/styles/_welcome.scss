@@ -32,11 +32,12 @@
     margin-bottom: variables.$spacing-l;
   }
 
-  div:not(.heading) {
+  div:not(.heading),
+  a:not(.heading) {
     margin-bottom: variables.$spacing-m;
   }
 
-  div {
+  div, a {
     padding: 0 variables.$spacing-s;
   }
 

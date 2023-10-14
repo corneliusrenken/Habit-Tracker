@@ -32,7 +32,13 @@ type Props = {
   setConfig: React.Dispatch<React.SetStateAction<Config>>;
 };
 
+const minScreenDimensions = {
+  width: 1320,
+  height: 500,
+};
+
 export default function App({ setConfig }: Props) {
+  const [screenSize, setScreenSize] = useState({ width: window.innerWidth, height: window.innerHeight });
   const [launchAnimationActive, setLaunchAnimationActive] = useState(true);
   const { startWeekOn } = useContext(ConfigContext);
   const [dateObject, setDateObject] = useState(() => getDateObject(startWeekOn));
@@ -48,6 +54,17 @@ export default function App({ setConfig }: Props) {
   const [ignoreMouse, setIgnoreMouse] = useState(true);
 
   const [showWelcome, setShowWelcome] = useState(false);
+
+  console.log('screen size', screenSize.width, screenSize.height);
+
+  useEffect(() => {
+    const onResize = () => {
+      setScreenSize({ width: window.innerWidth, height: window.innerHeight });
+    };
+
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
 
   useEffect(() => {
     const launchAnimationTime = getLaunchAnimationTime();
@@ -151,6 +168,31 @@ export default function App({ setConfig }: Props) {
   });
 
   if (occurrenceData.dates[dateObject.today.dateString] === undefined) return null;
+
+  if (screenSize.width < minScreenDimensions.width || screenSize.height < minScreenDimensions.height) {
+    return (
+      <div className="webdemo-resize-container">
+        <div style={{
+          width: '400px',
+          textAlign: 'center',
+          lineHeight: '1.5',
+        }}>
+          The web-demo is not optimized for small screens.
+          <br />
+          Please use a larger desktop resolution.
+        </div>
+        <div style={{
+          width: '400px',
+          textAlign: 'center',
+          lineHeight: '1.5',
+          fontSize: '0.8em',
+        }}>
+          <br />
+          (min: 1320 x 500)
+        </div>
+      </div>
+    )
+  }
 
   return (
     <>
